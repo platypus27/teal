@@ -23,7 +23,7 @@ export function Toggle({ checked, onChange, label, icon, disabled = false, compa
         disabled={disabled}
         title={title}
         onClick={() => onChange(!checked)}
-        className={cn(track, disabled && 'cursor-not-allowed opacity-60', className)}
+        className={cn(track, 'p-0', disabled && 'cursor-not-allowed opacity-60', className)}
       >
         {thumb}
       </button>
