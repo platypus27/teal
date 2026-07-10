@@ -35,5 +35,6 @@ Move the library surface into `library/` and convert the repo to an npm workspac
 
 ## Maintenance / migration
 - On its next `git submodule update --remote`, `daedalus` must `npm install clsx tailwind-merge` — teal now imports them in `ui/cn.js`.
+- On its next submodule update, `daedalus` inherits the retuned radius scale: any of its own `rounded-lg`/`rounded-xl` usages shrink from 32/48px to 12/16px, and bare `rounded` from 16px to 8px. This is the intended design-language sync (teal drives the look) — give it a quick visual review after updating.
 - Delete the deprecated `@layer components` classes (`.card`, `.card-hover`, `.btn-primary`, `.btn-secondary`, `.input-field`) from `global.css` once `daedalus` is confirmed not to use them (or has migrated to npm). Until then they are kept aligned to the React modules, which are the single source of truth.
 

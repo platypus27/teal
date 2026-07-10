@@ -102,5 +102,5 @@ export function Select({ children, value, defaultValue, onChange, className = ''
 }
 
 export function TextArea({ className = '', ...props }) {
-  return <textarea className={cn(fieldBase, 'min-h-[120px] resize-y', className)} {...props} />
+  return <textarea className={cn(fieldBase, 'rounded-lg px-5 py-4 leading-relaxed min-h-[120px] resize-y', className)} {...props} />
 }
