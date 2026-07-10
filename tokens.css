@@ -1,5 +1,6 @@
 /* teal design tokens — Minimal Teal (Material 3) palette, light + dark. */
 :root {
+  color-scheme: light;
   --color-on-surface: 15 46 46;
   --color-primary-dim: 0 100 102;
   --color-secondary-fixed-dim: 6 90 96;
@@ -58,6 +59,7 @@
 }
 
 html.dark {
+  color-scheme: dark;
   --color-on-surface: 232 246 243;
   --color-primary-dim: 45 212 191;
   --color-secondary-fixed-dim: 45 212 191;
