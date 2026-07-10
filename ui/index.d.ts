@@ -68,3 +68,13 @@ export function EmptyState(props: {
 }): JSX.Element
 
 export function LoadingState(props: { className?: string }): JSX.Element
+
+export function Dialog(props: {
+  open: boolean
+  onOpenChange?: (open: boolean) => void
+  children?: ReactNode
+  className?: string
+}): JSX.Element
+export function DialogTitle(props: { children?: ReactNode; className?: string }): JSX.Element
+export function DialogDescription(props: { children?: ReactNode; className?: string }): JSX.Element
+export function DialogFooter(props: { children?: ReactNode; className?: string }): JSX.Element
