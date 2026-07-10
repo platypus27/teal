@@ -20,9 +20,18 @@ import {
 export const NAV = [
   {
     title: 'Docs',
+    items: [{ id: 'getting-started', label: 'Getting Started' }],
+  },
+  {
+    title: 'Design Language',
     items: [
-      { id: 'getting-started', label: 'Getting Started' },
-      { id: 'tokens', label: 'Tokens & Colours' },
+      { id: 'principles', label: 'Principles' },
+      { id: 'tokens', label: 'Color' },
+      { id: 'typography', label: 'Typography' },
+      { id: 'spacing', label: 'Spacing & Radius' },
+      { id: 'elevation', label: 'Elevation' },
+      { id: 'iconography', label: 'Iconography' },
+      { id: 'motion', label: 'Motion' },
     ],
   },
   {
