@@ -1,0 +1,24 @@
+{
+  "name": "teal",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Kryv Labs shared React design system — Minimal Teal (Material 3) tokens + Tailwind preset + UI primitives.",
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "tailwindcss": ">=3.4"
+  },
+  "exports": {
+    "./tokens.css": "./tokens.css",
+    "./global.css": "./global.css",
+    "./tailwind.preset.js": "./tailwind.preset.js",
+    "./ui": "./ui/index.js"
+  },
+  "files": [
+    "tokens.css",
+    "global.css",
+    "tailwind.preset.js",
+    "ui/"
+  ]
+}
