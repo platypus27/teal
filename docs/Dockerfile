@@ -6,6 +6,10 @@
 FROM node:22-alpine AS build
 WORKDIR /app
 
+# Root library deps (clsx, tailwind-merge) so /app/ui/cn.js resolves inside the image.
+COPY package.json package-lock.json ./
+RUN npm ci
+
 # Library surface the docs app imports through relative paths.
 COPY ui ./ui
 COPY tokens.css global.css tailwind.preset.js ./
