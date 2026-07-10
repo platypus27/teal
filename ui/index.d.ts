@@ -78,3 +78,10 @@ export function Dialog(props: {
 export function DialogTitle(props: { children?: ReactNode; className?: string }): JSX.Element
 export function DialogDescription(props: { children?: ReactNode; className?: string }): JSX.Element
 export function DialogFooter(props: { children?: ReactNode; className?: string }): JSX.Element
+
+export function Tooltip(props: {
+  content: ReactNode
+  side?: 'top' | 'bottom' | 'left' | 'right'
+  children?: ReactNode
+  className?: string
+}): JSX.Element
