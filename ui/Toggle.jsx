@@ -8,8 +8,8 @@ export function Toggle({ checked, onChange, label, icon, disabled = false, compa
   const thumb = (
     <span
       className={cn(
-        'absolute top-1 h-4 w-4 rounded-full bg-white transition-transform',
-        checked ? 'translate-x-6' : 'translate-x-1',
+        'absolute left-0.5 top-px h-5 w-5 rounded-full bg-white shadow-sm transition-transform',
+        checked ? 'translate-x-[18px]' : 'translate-x-0',
       )}
     />
   )
