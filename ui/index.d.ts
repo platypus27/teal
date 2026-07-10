@@ -85,3 +85,10 @@ export function Tooltip(props: {
   children?: ReactNode
   className?: string
 }): JSX.Element
+
+export function toast(
+  message: ReactNode,
+  opts?: { tone?: 'success' | 'error' | 'warning' | 'info' | 'neutral'; duration?: number },
+): number
+export function dismissToast(id: number): void
+export function Toaster(): JSX.Element
