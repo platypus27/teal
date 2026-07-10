@@ -5,6 +5,10 @@
   "type": "module",
   "types": "./ui/index.d.ts",
   "description": "Kryv Labs shared React design system — Minimal Teal (Material 3) tokens + Tailwind preset + UI primitives.",
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.5.4"
+  },
   "peerDependencies": {
     "react": ">=18",
     "react-dom": ">=18",
