@@ -15,6 +15,13 @@ import {
   PageHeader,
   EmptyState,
   LoadingState,
+  Dialog,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  Tooltip,
+  Toaster,
+  toast,
 } from '../../../ui'
 
 export const NAV = [
@@ -43,6 +50,9 @@ export const NAV = [
       { id: 'input', label: 'Input' },
       { id: 'toggle', label: 'Toggle' },
       { id: 'checkbox', label: 'Checkbox' },
+      { id: 'dialog', label: 'Dialog' },
+      { id: 'tooltip', label: 'Tooltip' },
+      { id: 'toast', label: 'Toast' },
       { id: 'page-header', label: 'Page Header' },
       { id: 'empty-state', label: 'Empty State' },
       { id: 'loading-state', label: 'Loading State' },
@@ -158,6 +168,59 @@ function CheckboxDemo() {
       <Checkbox checked={on} onChange={(e) => setOn(e.target.checked)} label="Enabled" />
       <Checkbox disabled label="Disabled" />
     </div>
+  )
+}
+
+function DialogDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Open dialog</Button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTitle>Archive project?</DialogTitle>
+        <DialogDescription>This moves the project to your archive. You can restore it at any time.</DialogDescription>
+        <DialogFooter>
+          <Button variant="secondary" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button onClick={() => setOpen(false)}>Archive</Button>
+        </DialogFooter>
+      </Dialog>
+    </>
+  )
+}
+
+function TooltipDemo() {
+  return (
+    <>
+      {['top', 'right', 'bottom', 'left'].map((side) => (
+        <Tooltip key={side} content={`Tooltip on ${side}`} side={side}>
+          <Button variant="secondary">{side}</Button>
+        </Tooltip>
+      ))}
+    </>
+  )
+}
+
+function ToastDemo() {
+  return (
+    <>
+      <div className="flex flex-wrap gap-2">
+        <Button variant="secondary" onClick={() => toast('Changes saved', { tone: 'success' })}>
+          Success
+        </Button>
+        <Button variant="secondary" onClick={() => toast('Something went wrong', { tone: 'error' })}>
+          Error
+        </Button>
+        <Button variant="secondary" onClick={() => toast('Storage almost full', { tone: 'warning' })}>
+          Warning
+        </Button>
+        <Button variant="secondary" onClick={() => toast('New update available', { tone: 'info' })}>
+          Info
+        </Button>
+      </div>
+      <Toaster />
+    </>
   )
 }
 
@@ -377,6 +440,81 @@ export const COMPONENTS = [
       { name: 'label', type: 'string', default: '—', description: 'Optional text label.' },
       { name: 'disabled', type: 'boolean', default: '—', description: 'Disable interaction.' },
       el.className,
+    ],
+  },
+
+  {
+    id: 'dialog',
+    name: 'Dialog',
+    importLine: "import { Dialog, DialogTitle, DialogDescription, DialogFooter } from '../teal/ui'",
+    description:
+      'A modal dialog rendered in a portal with a blurred scrim. Closes on Escape or a scrim click, traps focus, locks body scroll, and restores focus to the trigger on close.',
+    examples: [
+      {
+        title: 'Usage',
+        code: `const [open, setOpen] = useState(false)\n<Button onClick={() => setOpen(true)}>Open dialog</Button>\n<Dialog open={open} onOpenChange={setOpen}>\n  <DialogTitle>Archive project?</DialogTitle>\n  <DialogDescription>You can restore it later.</DialogDescription>\n  <DialogFooter>\n    <Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button>\n    <Button onClick={() => setOpen(false)}>Archive</Button>\n  </DialogFooter>\n</Dialog>`,
+        Demo: DialogDemo,
+      },
+    ],
+    props: [
+      { name: 'open', type: 'boolean', default: '—', description: 'Controlled open state (required).' },
+      { name: 'onOpenChange', type: '(open: boolean) => void', default: '—', description: 'Called to change open (Escape / scrim / your buttons).' },
+      el.children,
+      el.className,
+    ],
+    extraProps: [
+      {
+        title: 'DialogTitle / DialogDescription / DialogFooter',
+        props: [
+          { name: 'children', type: 'ReactNode', default: '—', description: 'Content.' },
+          { name: 'className', type: 'string', default: "''", description: 'Extra classes.' },
+        ],
+      },
+    ],
+  },
+
+  {
+    id: 'tooltip',
+    name: 'Tooltip',
+    importLine: "import { Tooltip } from '../teal/ui'",
+    description:
+      'A small anchored hint shown on hover or focus. CSS-anchored (no portal), so it can clip inside overflow:hidden ancestors — wrap the trigger and pick a side.',
+    examples: [
+      {
+        title: 'Sides',
+        code: `<Tooltip content="Tooltip on top" side="top">\n  <Button variant="secondary">top</Button>\n</Tooltip>`,
+        Demo: TooltipDemo,
+      },
+    ],
+    props: [
+      { name: 'content', type: 'ReactNode', default: '—', description: 'Tooltip text / content (required).' },
+      { name: 'side', type: "'top' | 'bottom' | 'left' | 'right'", default: "'top'", description: 'Placement relative to the trigger.' },
+      el.children,
+      el.className,
+    ],
+  },
+
+  {
+    id: 'toast',
+    name: 'Toast',
+    importLine: "import { Toaster, toast } from '../teal/ui'",
+    description:
+      'Imperative toast notifications. Call toast(message, { tone, duration }) from anywhere; mount <Toaster /> once (here, inside the demo) to render the bottom-right stack.',
+    examples: [
+      {
+        title: 'Tones',
+        code: `<Button onClick={() => toast('Changes saved', { tone: 'success' })}>Success</Button>\n<Toaster />`,
+        Demo: ToastDemo,
+      },
+    ],
+    props: [
+      {
+        name: 'toast(message, opts)',
+        type: '(message, { tone?, duration? }) => number',
+        default: '—',
+        description: 'Show a toast. tone: success | error | warning | info | neutral; duration in ms (default 4000). Returns the id.',
+      },
+      { name: '<Toaster />', type: 'component', default: '—', description: 'Host that renders active toasts — mount once near the root.' },
     ],
   },
 
