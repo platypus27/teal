@@ -38,6 +38,7 @@ export default {
         'surface-bright': colorVar('--color-surface-bright'),
         'tertiary-container': colorVar('--color-tertiary-container'),
         'primary': colorVar('--color-primary'),
+        'warning': colorVar('--color-warning'),
         'background': colorVar('--color-background'),
         'surface-container': colorVar('--color-surface-container'),
         'tertiary-fixed': colorVar('--color-tertiary-fixed'),

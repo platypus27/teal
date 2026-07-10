@@ -26,6 +26,7 @@
   --color-surface-variant: 232 243 242;
   --color-on-primary: 255 255 255;
   --color-error: 225 29 72;
+  --color-warning: 180 83 9;
   --color-on-primary-fixed: 255 255 255;
   --color-primary-fixed: 0 100 102;
   --color-inverse-primary: 232 246 245;
@@ -83,6 +84,7 @@ html.dark {
   --color-surface-variant: 20 58 58;
   --color-on-primary: 0 0 0;
   --color-error: 251 113 133;
+  --color-warning: 251 191 36;
   --color-on-primary-fixed: 0 0 0;
   --color-primary-fixed: 45 212 191;
   --color-inverse-primary: 0 100 102;
