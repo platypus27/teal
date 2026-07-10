@@ -42,30 +42,27 @@
 }
 
 @layer components {
+  /* @deprecated use <Card> from teal/ui — kept for legacy consumers (single source of truth is the React module) */
   .card {
-    @apply rounded-[1.5rem] border border-outline-variant/30 bg-surface-container shadow-[0_8px_32px_-12px_rgba(0,100,102,0.10)] transition;
+    @apply rounded-[1.5rem] border border-outline-variant/10 bg-surface-container p-6 shadow-[0_4px_28px_-10px_rgba(0,100,102,0.12)] transition;
   }
 
-  html.dark .card {
-    @apply border-outline-variant/20 bg-surface-container shadow-[0_8px_32px_-12px_rgba(0,0,0,0.35)];
-  }
-
+  /* @deprecated use <Card hover> from teal/ui — kept for legacy consumers */
   .card-hover:hover {
-    @apply border-primary/40 bg-surface-container-high shadow-[0_12px_40px_-12px_rgba(0,100,102,0.18)];
+    @apply -translate-y-0.5 border-primary/30 shadow-[0_8px_32px_-10px_rgba(0,100,102,0.18)];
   }
 
-  html.dark .card-hover:hover {
-    @apply border-primary/30 bg-surface-container-high;
-  }
-
+  /* @deprecated use <Button variant="primary"> from teal/ui — kept for legacy consumers */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-on-primary transition hover:opacity-90 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60;
   }
 
+  /* @deprecated use <Button variant="secondary"> from teal/ui — kept for legacy consumers */
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2 rounded-full border border-outline-variant/40 bg-surface-container px-5 py-2.5 text-sm font-bold text-on-surface transition hover:bg-surface-container-high disabled:cursor-not-allowed disabled:opacity-60;
   }
 
+  /* @deprecated use <Input> from teal/ui — kept for legacy consumers */
   .input-field {
     @apply w-full rounded-xl border border-outline-variant bg-surface-container-highest px-4 py-3 text-sm text-on-surface outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20;
   }

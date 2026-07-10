@@ -32,3 +32,8 @@ Move the library surface into `library/` and convert the repo to an npm workspac
 - Syntax highlighting in `CodeBlock`.
 - Responsive sidebar (collapse on small screens).
 - Storybook, visual-regression tests, CI.
+
+## Maintenance / migration
+- On its next `git submodule update --remote`, `daedalus` must `npm install clsx tailwind-merge` — teal now imports them in `ui/cn.js`.
+- Delete the deprecated `@layer components` classes (`.card`, `.card-hover`, `.btn-primary`, `.btn-secondary`, `.input-field`) from `global.css` once `daedalus` is confirmed not to use them (or has migrated to npm). Until then they are kept aligned to the React modules, which are the single source of truth.
+
