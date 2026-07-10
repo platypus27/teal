@@ -32,11 +32,11 @@ export function dismissToast(id) {
 }
 
 const TONES = {
-  success: { icon: 'check_circle', bar: 'bg-tertiary', text: 'text-tertiary' },
-  error: { icon: 'error', bar: 'bg-error', text: 'text-error' },
-  warning: { icon: 'warning', bar: 'bg-warning', text: 'text-warning' },
-  info: { icon: 'info', bar: 'bg-primary', text: 'text-primary' },
-  neutral: { icon: 'notifications', bar: 'bg-outline', text: 'text-on-surface-variant' },
+  success: { icon: 'check_circle', text: 'text-tertiary' },
+  error: { icon: 'error', text: 'text-error' },
+  warning: { icon: 'warning', text: 'text-warning' },
+  info: { icon: 'info', text: 'text-primary' },
+  neutral: { icon: 'notifications', text: 'text-on-surface-variant' },
 }
 
 function ToastItem({ t }) {
@@ -65,7 +65,6 @@ function ToastItem({ t }) {
       onClick={() => dismissToast(t.id)}
       className="relative flex w-72 cursor-pointer items-center gap-3 overflow-hidden rounded-xl border border-outline-variant/40 bg-surface-container py-3 pl-4 pr-3 shadow-[0_12px_32px_-12px_rgba(0,100,102,0.25)]"
     >
-      <span className={cn('absolute inset-y-0 left-0 w-1', tone.bar)} />
       <span className={cn('material-symbols-outlined text-[20px]', tone.text)} style={{ fontVariationSettings: "'FILL' 1" }}>
         {tone.icon}
       </span>
