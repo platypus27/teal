@@ -4,6 +4,8 @@ Kryv Labs shared React design system. Teal provides typed React modules,
 semantic design tokens, compiled styles, and a documentation site with live
 examples, interactive playgrounds, and generated interface tables.
 
+Documentation: <https://teal.kryvlabs.com>
+
 ## Install
 
 ```bash
@@ -80,6 +82,9 @@ docker compose up --build
 
 The site is available at `http://localhost:8087`. The container restarts
 automatically (`restart: unless-stopped`), so the docs stay up across reboots.
+In production the container sits behind the Traefik reverse proxy, which serves
+it publicly at <https://teal.kryvlabs.com> with a Cloudflare-issued TLS
+certificate.
 
 ## Release policy
 
