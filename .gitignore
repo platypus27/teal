@@ -1,8 +1,6 @@
 node_modules
 dist
-apps/docs/node_modules
-apps/docs/dist
-apps/docs/test-results
-apps/docs/playwright-report
+test-results
+playwright-report
 .DS_Store
 *.log

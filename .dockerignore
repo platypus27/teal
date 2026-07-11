@@ -1,8 +1,8 @@
 .git
 node_modules
-apps/docs/node_modules
-apps/docs/dist
 **/dist
+**/test-results
+**/playwright-report
 .DS_Store
 *.log
 README.md
