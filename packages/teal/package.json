@@ -2,6 +2,25 @@
   "name": "@kryv/teal",
   "version": "0.2.0",
   "description": "Kryv Labs shared React design system",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/platypus27/teal.git",
+    "directory": "packages/teal"
+  },
+  "homepage": "https://github.com/platypus27/teal#readme",
+  "bugs": {
+    "url": "https://github.com/platypus27/teal/issues"
+  },
+  "keywords": [
+    "react",
+    "design-system",
+    "components",
+    "ui",
+    "radix",
+    "tailwindcss",
+    "accessibility"
+  ],
   "type": "module",
   "sideEffects": [
     "**/*.css"
