@@ -14,3 +14,82 @@ body {
 :focus-visible {
   scroll-margin: 6rem;
 }
+
+:root {
+  --prism-text: #24292f;
+  --prism-comment: #6e7781;
+  --prism-keyword: #cf222e;
+  --prism-string: #0a7a3d;
+  --prism-function: #8250df;
+  --prism-number: #0550ae;
+  --prism-tag: #116329;
+  --prism-attr: #953800;
+  --prism-punctuation: #57606a;
+}
+
+html.dark {
+  --prism-text: #e6edf3;
+  --prism-comment: #8d96a0;
+  --prism-keyword: #ff7b72;
+  --prism-string: #7ee787;
+  --prism-function: #d2a8ff;
+  --prism-number: #79c0ff;
+  --prism-tag: #7ee787;
+  --prism-attr: #ffa657;
+  --prism-punctuation: #8d96a0;
+}
+
+.docs-code {
+  color: var(--prism-text);
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+.docs-code .token.comment,
+.docs-code .token.prolog,
+.docs-code .token.doctype,
+.docs-code .token.cdata {
+  color: var(--prism-comment);
+}
+
+.docs-code .token.punctuation,
+.docs-code .token.operator {
+  color: var(--prism-punctuation);
+}
+
+.docs-code .token.property,
+.docs-code .token.tag,
+.docs-code .token.constant,
+.docs-code .token.symbol {
+  color: var(--prism-tag);
+}
+
+.docs-code .token.boolean,
+.docs-code .token.number {
+  color: var(--prism-number);
+}
+
+.docs-code .token.attr-name,
+.docs-code .token.builtin,
+.docs-code .token.char,
+.docs-code .token.inserted,
+.docs-code .token.selector,
+.docs-code .token.string {
+  color: var(--prism-string);
+}
+
+.docs-code .token.atrule,
+.docs-code .token.attr-value,
+.docs-code .token.keyword {
+  color: var(--prism-keyword);
+}
+
+.docs-code .token.class-name,
+.docs-code .token.function {
+  color: var(--prism-function);
+}
+
+.docs-code .token.important,
+.docs-code .token.regex,
+.docs-code .token.variable {
+  color: var(--prism-attr);
+}

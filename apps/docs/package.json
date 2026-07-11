@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "generate:api": "node scripts/generate-api.mjs",
-    "dev": "npm run generate:api && vite",
-    "build": "npm run generate:api && vite build",
-    "typecheck": "tsc --noEmit --allowJs --checkJs --jsx react-jsx --moduleResolution bundler --module esnext --target es2022 src/**/*.jsx vite.config.js",
+    "generate:changelog": "node scripts/generate-changelog.mjs",
+    "generate:llms": "node scripts/generate-llms.mjs",
+    "generate": "npm run generate:api && npm run generate:changelog && npm run generate:llms",
+    "dev": "npm run generate && vite",
+    "build": "npm run generate && vite build",
+    "typecheck": "tsc --noEmit --allowJs --checkJs --jsx react-jsx --moduleResolution bundler --module esnext --target es2022 src/vite-env.d.ts src/**/*.jsx vite.config.js",
     "lint": "eslint src scripts --max-warnings 0",
     "test:e2e": "playwright test",
     "test": "npm run test:e2e"
@@ -15,6 +18,7 @@
   "dependencies": {
     "@kryv/teal": "*",
     "lucide-react": "^0.562.0",
+    "prismjs": "^1.30.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.6.1"
