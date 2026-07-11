@@ -1,51 +1,71 @@
-# teal
+# Teal
 
-Kryv Labs shared React design system. Minimal Teal (Material 3) colour system, a Tailwind preset, and a small set of UI primitives. Extracted from `daedalus` and kept in sync with its look.
+Kryv Labs shared React design system. Teal provides typed React modules, semantic design tokens, compiled styles, and a responsive documentation site.
 
-## Contents
-- `tokens.css` — `:root` + `html.dark` CSS variables (the palette).
-- `global.css` — `@tailwind` directives, `@layer base/components/utilities`, Material Symbols + scrollbar styling. Imports `tokens.css`.
-- `tailwind.preset.js` — the `colorVar()` theme mapping, fonts (Plus Jakarta Sans / Manrope), radii, safelist.
-- `ui/` — `Button, IconButton, Card/CardHeader/CardTitle/CardSubtitle, Badge, Input/Select/TextArea, Toggle, Checkbox, PageHeader, EmptyState, LoadingState`.
+## Install
 
-## Use as a git submodule (recommended)
 ```bash
-# in the consuming app
-git submodule add /mnt/fast/git-repos/teal teal   # or a git URL once hosted
-git submodule update --init --remote
+npm install @kryv/teal
 ```
 
-**tailwind.config.js**
+Import the required module styles once in the application entrypoint:
+
 ```js
-import tealPreset from './teal/tailwind.preset.js'
-export default {
-  presets: [tealPreset],
-  content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}', './teal/ui/**/*.{js,jsx}'],
-}
+import '@kryv/teal/styles.css'
 ```
 
-**src/main.jsx (or your global CSS)**
+The optional base stylesheet applies Teal typography, body colors, selection, and scrollbar defaults:
+
 ```js
-import '../teal/global.css'
+import '@kryv/teal/base.css'
 ```
 
-**Any component**
+Use modules from the package root:
+
 ```jsx
-import { Button, Card, CardTitle } from '../teal/ui'
-<Card><CardTitle>Hello</CardTitle><Button>Go</Button></Card>
+import { Button, Field, Input } from '@kryv/teal'
+
+<Field label="Workspace name" required>
+  <Input />
+</Field>
+<Button>Save changes</Button>
 ```
 
-## Requirements in the consuming app
-- React 18+, Tailwind 3.4+.
-- Load fonts **Plus Jakarta Sans** and **Manrope** (e.g. Google Fonts in `index.html`).
-- Load **Material Symbols Outlined** for icons (`Toggle`, `Checkbox`, `EmptyState`, `LoadingState` use icon names).
-- Dark mode: toggle the `dark` class on `<html>`.
+## Supported environment
 
-## Updating everywhere
-Edit tokens/components here, commit, then in each app:
+- React 18 or 19
+- Modern ESM bundler
+- Tailwind is not required to render Teal modules
+- Current Tailwind 3 applications can use `@kryv/teal/tailwind-preset` for semantic utility classes
+
+Teal uses Radix internally for complex interaction behavior and Lucide for SVG icons. Radix is not part of the public interface.
+
+## Workspace
+
+- `packages/teal`: published package, tokens, source, and interface tests
+- `apps/docs`: routed documentation, live examples, generated interface tables, and browser tests
+
+## Development
+
 ```bash
-git submodule update --remote teal
+npm install
+npm run verify
 ```
 
-## Magic UI
-Drop Magic UI components into `ui/magic/`, recoloured to these tokens. They are Tailwind + Framer Motion and theme through the same CSS variables.
+Run the documentation site locally:
+
+```bash
+npm run dev --workspace @kryv/teal-docs
+```
+
+Build and serve it with Docker:
+
+```bash
+docker compose up --build
+```
+
+The site is available at `http://localhost:8087`.
+
+## Release policy
+
+Teal remains pre-1.0 while its interfaces are proven across Kryv applications. Releases use Changesets and generated release notes. Product-specific status mappings, persistence, data queries, and domain language stay in consuming applications.

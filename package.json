@@ -1,30 +1,21 @@
 {
-  "name": "teal",
-  "version": "0.1.1",
+  "name": "teal-workspace",
+  "version": "0.0.0",
   "private": true,
   "type": "module",
-  "types": "./ui/index.d.ts",
-  "description": "Kryv Labs shared React design system — Minimal Teal (Material 3) tokens + Tailwind preset + UI primitives.",
-  "dependencies": {
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^2.5.4"
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "pack:check": "npm pack --workspace @kryv/teal --dry-run --cache /tmp/teal-npm-cache",
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run pack:check"
   },
-  "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18",
-    "tailwindcss": ">=3.4"
-  },
-  "exports": {
-    "./tokens.css": "./tokens.css",
-    "./global.css": "./global.css",
-    "./tailwind.preset.js": "./tailwind.preset.js",
-    "./ui": "./ui/index.js",
-    "./ui/index.d.ts": "./ui/index.d.ts"
-  },
-  "files": [
-    "tokens.css",
-    "global.css",
-    "tailwind.preset.js",
-    "ui/"
-  ]
+  "devDependencies": {
+    "@changesets/cli": "^2.29.7"
+  }
 }

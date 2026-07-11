@@ -1,7 +1,7 @@
 .git
 node_modules
-docs/node_modules
-docs/dist
+apps/docs/node_modules
+apps/docs/dist
 **/dist
 .DS_Store
 *.log

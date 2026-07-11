@@ -1,0 +1,38 @@
+{
+  "name": "@kryv/teal-docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate:api": "node scripts/generate-api.mjs",
+    "dev": "npm run generate:api && vite",
+    "build": "npm run generate:api && vite build",
+    "typecheck": "tsc --noEmit --allowJs --checkJs --jsx react-jsx --moduleResolution bundler --module esnext --target es2022 src/**/*.jsx vite.config.js",
+    "lint": "eslint src scripts --max-warnings 0",
+    "test:e2e": "playwright test",
+    "test": "npm run test:e2e"
+  },
+  "dependencies": {
+    "@kryv/teal": "*",
+    "lucide-react": "^0.562.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.6.1"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.57.0",
+    "@vitejs/plugin-react": "^5.1.1",
+    "autoprefixer": "^10.4.23",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^16.5.0",
+    "postcss": "^8.5.6",
+    "react-docgen-typescript": "^2.4.0",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.4"
+  }
+}

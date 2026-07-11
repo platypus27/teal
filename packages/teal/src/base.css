@@ -1,0 +1,41 @@
+@import './tokens.css';
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-on-surface));
+  font-family: var(--teal-font-body);
+  transition:
+    background-color var(--teal-motion-standard) ease,
+    color var(--teal-motion-standard) ease;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-headline {
+  font-family: var(--teal-font-headline);
+}
+
+::selection {
+  background: rgb(var(--color-primary) / 0.22);
+}
+
+* {
+  scrollbar-color: rgb(var(--color-outline-variant) / 0.65) transparent;
+  scrollbar-width: thin;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

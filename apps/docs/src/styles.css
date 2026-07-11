@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  min-width: 320px;
+}
+
+.docs-grid {
+  background-image: radial-gradient(rgb(var(--color-outline-variant) / 0.7) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+:focus-visible {
+  scroll-margin: 6rem;
+}

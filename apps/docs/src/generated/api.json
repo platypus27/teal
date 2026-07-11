@@ -1,0 +1,899 @@
+[
+  {
+    "description": "",
+    "displayName": "Badge",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "tone",
+        "required": false,
+        "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\" | null"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Button",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "variant",
+        "required": false,
+        "type": "\"danger\" | \"primary\" | \"secondary\" | \"ghost\" | null"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "size",
+        "required": false,
+        "type": "\"sm\" | \"md\" | \"lg\" | null"
+      },
+      {
+        "defaultValue": "false",
+        "description": "",
+        "name": "asChild",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "false",
+        "description": "",
+        "name": "loading",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "IconButton",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "variant",
+        "required": false,
+        "type": "\"danger\" | \"secondary\" | \"ghost\" | null"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "size",
+        "required": false,
+        "type": "\"sm\" | \"md\" | \"lg\" | null"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Card",
+    "props": [
+      {
+        "defaultValue": "div",
+        "description": "",
+        "name": "as",
+        "required": false,
+        "type": "ElementType"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "type",
+        "required": false,
+        "type": "enum"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "CardHeader",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "CardTitle",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "CardDescription",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "CardContent",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "CardFooter",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "Checkbox",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "label",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "false",
+        "description": "",
+        "name": "visuallyHiddenLabel",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "asChild",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Dialog",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Close",
+        "description": "",
+        "name": "closeLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "defaultOpen",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "footer",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "onOpenChange",
+        "required": false,
+        "type": "(open: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "open",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "md",
+        "description": "",
+        "name": "size",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "title",
+        "required": true,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "EmptyState",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "action",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "icon",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "title",
+        "required": true,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Field",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "error",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "label",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "false",
+        "description": "",
+        "name": "required",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "mergeDescriptionIds",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "Label",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "asChild",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Input",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "size",
+        "required": false,
+        "type": "\"sm\" | \"md\" | \"lg\" | null"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "TextArea",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "size",
+        "required": false,
+        "type": "\"sm\" | \"md\" | \"lg\" | null"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Spinner",
+    "props": [
+      {
+        "defaultValue": "Loading",
+        "description": "",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "md",
+        "description": "",
+        "name": "size",
+        "required": false,
+        "type": "enum"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "LoadingState",
+    "props": [
+      {
+        "defaultValue": "Loading",
+        "description": "",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Skeleton",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "Progress",
+    "props": [
+      {
+        "defaultValue": "Loading",
+        "description": "",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "asChild",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Menu",
+    "props": [
+      {
+        "defaultValue": "end",
+        "description": "",
+        "name": "align",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "items",
+        "required": true,
+        "type": "MenuItem[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "trigger",
+        "required": true,
+        "type": "ReactElement<unknown, string | JSXElementConstructor<any>>"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "PageHeader",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "actions",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "subtitle",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "title",
+        "required": true,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Pagination",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Pagination",
+        "description": "",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "onPageChange",
+        "required": true,
+        "type": "(page: number) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "page",
+        "required": true,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "pageCount",
+        "required": true,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Popover",
+    "props": [
+      {
+        "defaultValue": "center",
+        "description": "",
+        "name": "align",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "defaultOpen",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "onOpenChange",
+        "required": false,
+        "type": "(open: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "open",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "bottom",
+        "description": "",
+        "name": "side",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "trigger",
+        "required": true,
+        "type": "ReactElement<unknown, string | JSXElementConstructor<any>>"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Select",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "aria-describedby",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "name",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "onValueChange",
+        "required": false,
+        "type": "(value: string) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "options",
+        "required": true,
+        "type": "SelectOption[]"
+      },
+      {
+        "defaultValue": "Select an option",
+        "description": "",
+        "name": "placeholder",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "required",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "size",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "value",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Separator",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "asChild",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Switch",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "label",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "md",
+        "description": "",
+        "name": "size",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "asChild",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Table",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "caption",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "columns",
+        "required": true,
+        "type": "TableColumn<Row>[]"
+      },
+      {
+        "defaultValue": "comfortable",
+        "description": "",
+        "name": "density",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "No results",
+        "description": "",
+        "name": "empty",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "getRowKey",
+        "required": true,
+        "type": "(row: Row) => string"
+      },
+      {
+        "defaultValue": "false",
+        "description": "",
+        "name": "loading",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "Loading table data",
+        "description": "",
+        "name": "loadingLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "rows",
+        "required": true,
+        "type": "Row[]"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Tabs",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "aria-label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "items",
+        "required": true,
+        "type": "TabItem[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "onValueChange",
+        "required": false,
+        "type": "(value: string) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "value",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "toast",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "action",
+        "required": false,
+        "type": "{ label: string; onClick: () => void; }"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "duration",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "title",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "tone",
+        "required": false,
+        "type": "enum"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "dismissToast",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "Tooltip",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "content",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "300",
+        "description": "",
+        "name": "delayDuration",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "top",
+        "description": "",
+        "name": "side",
+        "required": false,
+        "type": "enum"
+      }
+    ]
+  }
+]

@@ -1,0 +1,29 @@
+@import './tokens.css';
+
+@tailwind components;
+@tailwind utilities;
+
+@keyframes teal-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes teal-dialog-in {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.98); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.teal-dialog-overlay[data-state='open'] {
+  animation: teal-overlay-in var(--teal-motion-fast) ease-out;
+}
+
+.teal-dialog-content[data-state='open'] {
+  animation: teal-dialog-in var(--teal-motion-fast) ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teal-dialog-overlay,
+  .teal-dialog-content {
+    animation: none !important;
+  }
+}
