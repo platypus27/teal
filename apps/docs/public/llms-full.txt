@@ -1,0 +1,1671 @@
+# Teal design system - full documentation
+
+Version: v0.2.0
+---
+
+# Getting started
+
+Teal provides typed React modules, semantic design tokens, and tested interaction behavior for Kryv applications.
+
+## Principles
+
+- **Quiet by default** - Surface, type, and spacing create hierarchy. Color is reserved for action and meaning.
+
+- **Keyboard complete** - Every interactive module has visible focus and a complete keyboard path.
+
+- **One supported interface** - Applications import typed modules and compiled styles from @kryv/teal.
+
+- **Recipes before abstractions** - Product patterns remain recipes until repeated behavior proves a stable module seam.
+
+## Installation
+
+### 1. Install the package
+
+React 18 or 19 is required as a peer dependency.
+
+```bash
+npm install @kryv/teal
+```
+
+```bash
+pnpm add @kryv/teal
+```
+
+```bash
+yarn add @kryv/teal
+```
+
+```bash
+bun add @kryv/teal
+```
+
+### 2. Configure Tailwind
+
+Spread the Teal preset into your Tailwind config so every semantic token (primary, surface, outline, and friends) is available as a utility color.
+
+```js
+import tealPreset from '@kryv/teal/tailwind-preset'
+
+/** @type {import('tailwindcss').Config} */
+export default {
+  ...tealPreset,
+  content: ['./index.html', './src/**/*.{ts,tsx}'],
+}
+```
+
+### 3. Import the styles
+
+styles.css contains the compiled component layer and utilities; base.css adds the design tokens and document base styles. Import both once, at your app entry.
+
+```js
+import '@kryv/teal/styles.css'
+import '@kryv/teal/base.css'
+```
+
+### 4. Load the fonts
+
+Teal typesets headlines in Plus Jakarta Sans and body copy in Manrope. Add the Google Fonts links to your document head.
+
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+  rel="stylesheet"
+/>
+```
+
+### 5. Enable dark mode
+
+Tokens switch themes when the dark class is present on the html element. Persist the choice however your app prefers.
+
+```js
+// Teal themes by toggling the "dark" class on <html>.
+document.documentElement.classList.toggle('dark', darkMode)
+```
+
+### 6. Build something
+
+```jsx
+import { Button, Field, Input } from '@kryv/teal'
+
+export function SignInForm() {
+  return (
+    <form className="grid gap-4">
+      <Field label="Email" required>
+        <Input type="email" />
+      </Field>
+      <Button type="submit">Sign in</Button>
+    </form>
+  )
+}
+```
+
+---
+
+# Foundations
+
+Semantic tokens keep visual decisions consistent across themes and products.
+
+## Color
+
+Use semantic roles instead of raw palette values.
+
+- **Primary** - `--color-primary`
+- **Success** - `--color-tertiary`
+- **Warning** - `--color-warning`
+- **Danger** - `--color-error`
+- **Surface** - `--color-surface-container`
+- **Elevated surface** - `--color-surface-container-high`
+
+## Typography
+
+- **Plus Jakarta Sans** - `--teal-font-headline`
+- **Manrope** - `--teal-font-body`
+
+## Shape, elevation, and motion
+
+- Controls use 12 to 16 pixel radii.
+- Surfaces use soft teal elevation.
+- Motion stays between 150 and 200 milliseconds and respects reduced motion.
+
+---
+
+# Button
+
+Actions with consistent hierarchy, sizing, loading, and accessible icon treatment.
+
+## Usage
+
+```js
+import { Button, IconButton } from '@kryv/teal'
+```
+
+```jsx
+<Button variant="primary">Save changes</Button>
+<IconButton label="More options"><MoreHorizontal /></IconButton>
+```
+
+## Examples
+
+### Variants and sizes
+
+Primary, secondary, ghost, and danger variants with a dedicated IconButton for icon-only actions.
+
+```jsx
+import { Button, IconButton } from '@kryv/teal'
+import { Search } from 'lucide-react'
+
+export function ButtonDemo() {
+  return (
+    <>
+      <Button size="sm">Small</Button>
+      <Button>Primary</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="danger">Danger</Button>
+      <Button loading>Saving</Button>
+      <IconButton label="Search">
+        <Search />
+      </IconButton>
+    </>
+  )
+}
+```
+
+## Interface
+
+### Button
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"danger" \| "primary" \| "secondary" \| "ghost" \| null` | `"primary"` | Visual hierarchy of the action. |
+| `size` | `"sm" \| "md" \| "lg" \| null` | `"md"` | Height and horizontal padding. |
+| `asChild` | `boolean` | `false` | Merges the component onto its child element instead of rendering the default element (Radix Slot). Cannot be combined with disabled or loading. |
+| `loading` | `boolean` | `false` | Disables the button, prepends a spinner, and sets aria-busy. |
+
+### IconButton
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` (required) | `string` | - | Accessible label applied as `aria-label`; also used as the default tooltip text. |
+| `variant` | `"danger" \| "secondary" \| "ghost" \| null` | `"ghost"` | Visual treatment of the icon button. |
+| `size` | `"sm" \| "md" \| "lg" \| null` | `"md"` | Hit-target size; the icon scales with it. |
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `Tab` | Moves focus to and from the button. |
+| `Enter` + `Space` | Activates the button. |
+
+- Icon-only actions use IconButton, which requires a label applied as aria-label and mirrored in the title tooltip.
+- Loading buttons set aria-busy and are disabled so they cannot be activated twice.
+- The danger variant carries meaning through its label as well as its color.
+
+---
+
+# Field
+
+A deep form seam that connects labels, descriptions, errors, and required state.
+
+## Usage
+
+```js
+import { Field, Input } from '@kryv/teal'
+```
+
+```jsx
+<Field label="Display name" description="Shown to other workspace members" required>
+  <Input defaultValue="Avery Chen" />
+</Field>
+```
+
+## Examples
+
+### Label, description, and error
+
+Field wires the label, help text, and error message to the control inside it automatically.
+
+```jsx
+import { Field, Input, TextArea } from '@kryv/teal'
+
+export function FieldDemo() {
+  return (
+    <div className="grid w-full max-w-md gap-5">
+      <Field label="Display name" description="Shown to other workspace members" required>
+        <Input defaultValue="Avery Chen" />
+      </Field>
+      <Field label="Notes" error="Keep notes under 240 characters">
+        <TextArea defaultValue="Notify the incident team before changing this account." />
+      </Field>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Field
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `ReactNode` | - | The form control this field labels and describes. |
+| `description` | `ReactNode` | - | Help text rendered below the control and linked to it for assistive technology. |
+| `error` | `ReactNode` | - | Error message; marks the control as invalid and links the message to it. |
+| `label` (required) | `ReactNode` | - | Visible label associated with the control. |
+| `required` | `boolean` | `false` | Marks the control as required and renders a required indicator. |
+
+### Label
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `asChild` | `boolean` | - | Merges the component onto its child element instead of rendering the default element (Radix Slot). |
+
+## Accessibility
+
+- The label is wired to the control with htmlFor, so clicking the label focuses the control.
+- Description and error text are linked to Input and TextArea children through aria-describedby automatically.
+- Setting error marks the control aria-invalid and renders the message in error color.
+- The required indicator is decorative; the underlying control keeps the native required attribute.
+
+---
+
+# Input and TextArea
+
+Native text controls with Teal sizing, invalid states, and forwarded refs.
+
+## Usage
+
+```js
+import { Input, TextArea } from '@kryv/teal'
+```
+
+```jsx
+<Input placeholder="Project name" />
+<TextArea placeholder="Notes" rows={4} />
+```
+
+## Examples
+
+### States
+
+Default, invalid, and disabled inputs share the same sizing and focus treatment.
+
+```jsx
+import { Input, TextArea } from '@kryv/teal'
+
+export function InputDemo() {
+  return (
+    <div className="grid w-full max-w-md gap-4">
+      <Input aria-label="Search projects" placeholder="Search projects" />
+      <Input aria-label="Email address" defaultValue="not-an-email" aria-invalid="true" />
+      <Input aria-label="Disabled input" placeholder="Disabled input" disabled />
+      <TextArea aria-label="Team update" placeholder="Write a short update for the team" />
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Input
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `size` | `"sm" \| "md" \| "lg" \| null` | `"md"` | Height and text size of the control. |
+
+### TextArea
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `size` | `"sm" \| "md" \| "lg" \| null` | `"md"` | Text size of the control. |
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `Tab` | Moves focus to and from the control. |
+| `Typing` | Edits the value using native text editing keys. |
+
+- Inputs are native elements, so autofill, spellcheck, and input modes work without configuration.
+- Inside a Field, aria-invalid and aria-describedby are applied automatically when the field has an error or description.
+
+---
+
+# Select
+
+An accessible single-value picker with keyboard navigation, typeahead, and collision-aware positioning.
+
+## Usage
+
+```js
+import { Select } from '@kryv/teal'
+```
+
+```jsx
+<Select
+  aria-label="Role"
+  defaultValue="viewer"
+  options={[
+    { value: 'admin', label: 'Administrator' },
+    { value: 'viewer', label: 'Viewer' },
+  ]}
+/>
+```
+
+## Examples
+
+### Controlled selection
+
+Select is controlled through value and onValueChange with an options array.
+
+```jsx
+import { useState } from 'react'
+import { Select } from '@kryv/teal'
+
+export function SelectDemo() {
+  const [role, setRole] = useState('viewer')
+  return (
+    <div className="w-full max-w-xs">
+      <Select
+        aria-label="Project role"
+        value={role}
+        onValueChange={setRole}
+        options={[
+          { value: 'admin', label: 'Administrator' },
+          { value: 'editor', label: 'Editor' },
+          { value: 'viewer', label: 'Viewer' },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Select
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `aria-describedby` | `string` | - | Id of an element that describes the select, forwarded to the trigger. |
+| `aria-label` | `string` | - | Accessible name when there is no visible label. |
+| `className` | `string` | - | Additional classes merged onto the trigger. |
+| `defaultValue` | `string` | - | Initial value when uncontrolled. |
+| `disabled` | `boolean` | - | Prevents opening the select. |
+| `name` | `string` | - | Form field name submitted with the selected value. |
+| `onValueChange` | `(value: string) => void` | - | Called with the new value when selection changes. |
+| `options` (required) | `SelectOption[]` | - | Options rendered in the listbox. |
+| `placeholder` | `ReactNode` | `Select an option` | Text shown when no value is selected. |
+| `required` | `boolean` | - | Marks the select as required for form validation. |
+| `size` | `enum` | - | Size of the trigger button. |
+| `value` | `string` | - | Controlled selected value. |
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `Enter` + `Space` + `Arrow Down` | Opens the listbox and highlights the selected option. |
+| `Arrow Up` + `Arrow Down` | Moves the highlight between options. |
+| `Home` + `End` | Highlights the first or last option. |
+| `Typing` | Typeahead jumps to the first matching option. |
+| `Enter` + `Tab` | Commits the highlighted option and closes the listbox. |
+| `Escape` | Closes the listbox without changing the value. |
+
+- Provide aria-label when the select has no visible label; the demo options render visible text either way.
+- Disabled options are skipped during keyboard navigation and typeahead.
+
+---
+
+# Checkbox
+
+Boolean and indeterminate selection with an integrated label and description.
+
+## Usage
+
+```js
+import { Checkbox } from '@kryv/teal'
+```
+
+```jsx
+<Checkbox label="Include archived projects" defaultChecked />
+```
+
+## Examples
+
+### Checked, indeterminate, and disabled
+
+Checkbox supports a tri-state checked prop for select-all patterns.
+
+```jsx
+import { Checkbox } from '@kryv/teal'
+
+export function CheckboxDemo() {
+  return (
+    <div className="grid w-full max-w-sm gap-4">
+      <Checkbox
+        label="Include archived projects"
+        description="Show projects that have been archived"
+        defaultChecked
+      />
+      <Checkbox label="Select all reports" defaultChecked="indeterminate" />
+      <Checkbox label="Share with external reviewers" />
+      <Checkbox label="Billing locked" description="Managed by your administrator" disabled />
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Checkbox
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `description` | `ReactNode` | - | Supporting text rendered below the label. |
+| `label` (required) | `ReactNode` | - | Visible label rendered next to the checkbox. |
+| `visuallyHiddenLabel` | `boolean` | `false` | Hides the label visually while keeping it available to screen readers. |
+| `asChild` | `boolean` | - | Merges the component onto its child element instead of rendering the default element (Radix Slot). |
+| `checked` | `boolean \| "indeterminate"` | - | Controlled checked state. Use "indeterminate" for select-all patterns. |
+| `defaultChecked` | `boolean \| "indeterminate"` | - | Initial checked state for uncontrolled usage. |
+| `onCheckedChange` | `(checked: CheckedState) => void` | - | Called with the next state when the user toggles the checkbox. |
+| `disabled` | `boolean` | - | Prevents interaction and dims the control. |
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `Tab` | Moves focus to and from the checkbox. |
+| `Space` | Toggles the checkbox; indeterminate moves to checked. |
+
+- Supports a tri-state checked value for select-all patterns, announced as "mixed" by screen readers.
+- The label is clickable and the description is linked through aria-describedby.
+
+---
+
+# Switch
+
+An immediate boolean setting with explicit labeling and controlled or uncontrolled state.
+
+## Usage
+
+```js
+import { Switch } from '@kryv/teal'
+```
+
+```jsx
+<Switch label="Security notifications" description="High-risk account activity" defaultChecked />
+```
+
+## Examples
+
+### Settings
+
+Switches apply immediately, so label them as settings rather than form fields.
+
+```jsx
+import { Switch } from '@kryv/teal'
+
+export function SwitchDemo() {
+  return (
+    <div className="grid w-full max-w-sm gap-5">
+      <Switch
+        label="Security notifications"
+        description="Receive alerts for high-risk account activity"
+        defaultChecked
+      />
+      <Switch label="Weekly digest" />
+      <Switch label="Auto-deploy previews" size="sm" defaultChecked />
+      <Switch label="Billing alerts" description="Managed by your administrator" disabled />
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Switch
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `description` | `ReactNode` | - | Supporting text rendered below the label. |
+| `label` (required) | `ReactNode` | - | Visible label describing the setting the switch controls. |
+| `size` | `enum` | `md` | Track and thumb size. |
+| `asChild` | `boolean` | - | Merges the component onto its child element instead of rendering the default element (Radix Slot). |
+| `checked` | `boolean` | - | Controlled on/off state. |
+| `defaultChecked` | `boolean` | - | Initial state for uncontrolled usage. |
+| `onCheckedChange` | `(checked: boolean) => void` | - | Called with the next state when the user toggles the switch. |
+| `disabled` | `boolean` | - | Prevents interaction and dims the control. |
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `Tab` | Moves focus to and from the switch. |
+| `Space` + `Enter` | Toggles the setting. |
+
+- Renders role="switch" with aria-checked, so assistive technology announces it as an on/off setting.
+- The label and description are wired to the control automatically.
+
+---
+
+# Card
+
+A structural surface for related content without ambiguous interactive behavior.
+
+## Usage
+
+```js
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@kryv/teal'
+```
+
+```jsx
+<Card>
+  <CardHeader>
+    <CardTitle>Security report</CardTitle>
+    <CardDescription>Updated five minutes ago</CardDescription>
+  </CardHeader>
+  <CardContent>No critical findings were detected.</CardContent>
+</Card>
+```
+
+## Examples
+
+### Composition
+
+Cards compose header, content, and footer regions with consistent rhythm.
+
+```jsx
+import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@kryv/teal'
+
+export function CardDemo() {
+  return (
+    <Card className="w-full max-w-md">
+      <CardHeader className="flex-col items-start justify-start gap-1.5">
+        <CardTitle>Security report</CardTitle>
+        <CardDescription>Updated five minutes ago</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm text-on-surface">No critical findings were detected.</p>
+      </CardContent>
+      <CardFooter>
+        <Button size="sm" variant="secondary">
+          View report
+        </Button>
+      </CardFooter>
+    </Card>
+  )
+}
+```
+
+## Interface
+
+### Card
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `as` | `ElementType` | `div` | Element rendered by the card; use an interactive element for clickable cards. |
+| `disabled` | `boolean` | - | Applies disabled styling and blocks interaction on interactive cards. |
+| `type` | `enum` | - | Button type used when the card renders an interactive element. |
+
+### CardHeader
+
+_This module forwards native element properties._
+
+### CardTitle
+
+_This module forwards native element properties._
+
+### CardDescription
+
+_This module forwards native element properties._
+
+### CardContent
+
+_This module forwards native element properties._
+
+### CardFooter
+
+_This module forwards native element properties._
+
+## Accessibility
+
+- Cards are passive surfaces with no keyboard behavior of their own.
+- Render real links and buttons inside a card rather than making the card itself clickable.
+- The as prop lets you render the card as a section, article, or list item to fit the page outline.
+
+---
+
+# Badge
+
+A compact semantic status indicator using canonical information tones.
+
+## Usage
+
+```js
+import { Badge } from '@kryv/teal'
+```
+
+```jsx
+<Badge tone="success">Deployed</Badge>
+```
+
+## Examples
+
+### Tones
+
+Five tones cover neutral, informational, success, warning, and danger statuses.
+
+```jsx
+import { Badge } from '@kryv/teal'
+
+export function BadgeDemo() {
+  return (
+    <>
+      <Badge>Neutral</Badge>
+      <Badge tone="info">Information</Badge>
+      <Badge tone="success">Ready</Badge>
+      <Badge tone="warning">Attention</Badge>
+      <Badge tone="danger">Action required</Badge>
+    </>
+  )
+}
+```
+
+## Interface
+
+### Badge
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `tone` | `"neutral" \| "info" \| "success" \| "warning" \| "danger" \| null` | `"neutral"` | Semantic color treatment. |
+
+## Accessibility
+
+- Badges are plain text, so their status is announced verbatim by screen readers.
+- Always pair a tone with meaningful text; never rely on color alone to carry the status.
+
+---
+
+# Dialog
+
+A modal surface that owns focus management, naming, dismissal, and scroll locking.
+
+## Usage
+
+```js
+import { Dialog } from '@kryv/teal'
+```
+
+```jsx
+const [open, setOpen] = useState(false)
+
+<Button onClick={() => setOpen(true)}>Open dialog</Button>
+<Dialog
+  open={open}
+  onOpenChange={setOpen}
+  title="Archive project?"
+  description="The project can be restored later."
+>
+  <p>Project Orion will leave the active workspace.</p>
+</Dialog>
+```
+
+## Examples
+
+### Confirmation
+
+Dialog traps focus, restores it on close, and dismisses with Escape or the scrim.
+
+```jsx
+import { useState } from 'react'
+import { Button, Dialog } from '@kryv/teal'
+
+export function DialogDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Open dialog</Button>
+      <Dialog
+        open={open}
+        onOpenChange={setOpen}
+        title="Archive project?"
+        description="The project can be restored later."
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="danger" onClick={() => setOpen(false)}>
+              Archive
+            </Button>
+          </>
+        }
+      >
+        <p className="text-sm text-on-surface-variant">
+          Project Orion and its reports will leave the active workspace.
+        </p>
+      </Dialog>
+    </>
+  )
+}
+```
+
+## Interface
+
+### Dialog
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `ReactNode` | - | Body content of the dialog. |
+| `className` | `string` | - | Additional classes merged onto the dialog panel. |
+| `closeLabel` | `string` | `Close` | Accessible label for the close button. |
+| `defaultOpen` | `boolean` | - | Initial open state when uncontrolled. |
+| `description` | `ReactNode` | - | Supporting text rendered under the title. |
+| `footer` | `ReactNode` | - | Action area rendered at the bottom of the dialog. |
+| `onOpenChange` | `(open: boolean) => void` | - | Called when the dialog opens or closes. |
+| `open` | `boolean` | - | Controlled open state. |
+| `size` | `enum` | `md` | Width of the dialog surface. |
+| `title` (required) | `ReactNode` | - | Title rendered at the top; also the accessible name of the dialog. |
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `Escape` | Closes the dialog and returns focus to the trigger. |
+| `Tab` + `Shift+Tab` | Cycles focus through the focusable elements inside the dialog. |
+
+- Renders role="dialog" with aria-modal, labelled by the title and described by the description.
+- Focus moves into the dialog on open and is restored to the trigger on close.
+- Background content is scroll-locked while the dialog is open.
+
+---
+
+# Tooltip
+
+A short contextual hint with accessible trigger association and collision handling.
+
+## Usage
+
+```js
+import { Tooltip, IconButton } from '@kryv/teal'
+```
+
+```jsx
+<Tooltip content="Refresh search results">
+  <IconButton label="Refresh results">
+    <Search />
+  </IconButton>
+</Tooltip>
+```
+
+## Examples
+
+### Icon button hint
+
+Tooltips label icon-only controls on hover and keyboard focus. Click the icon to expand the search field.
+
+```jsx
+import { useEffect, useRef, useState } from 'react'
+import { IconButton, Input, Tooltip } from '@kryv/teal'
+import { Search, X } from 'lucide-react'
+
+export function TooltipDemo() {
+  const [open, setOpen] = useState(false)
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    if (!open) return undefined
+    const frame = requestAnimationFrame(() => inputRef.current?.focus())
+    return () => cancelAnimationFrame(frame)
+  }, [open])
+
+  return (
+    <div
+      className={`relative flex items-center transition-[width] duration-200 ease-out motion-reduce:transition-none ${
+        open ? 'w-64' : 'w-10'
+      }`}
+    >
+      {open ? (
+        <div className="flex h-10 w-full items-center gap-1 rounded-full border border-outline-variant/40 bg-surface pl-3 pr-1 shadow-sm">
+          <Search aria-hidden="true" className="size-4 shrink-0 text-on-surface-variant" />
+          <Input
+            ref={inputRef}
+            aria-label="Search"
+            placeholder="Search..."
+            onKeyDown={(event) => {
+              if (event.key === 'Escape') setOpen(false)
+            }}
+            className="h-10 min-h-0 flex-1 rounded-none border-transparent bg-transparent px-2 py-0 text-sm shadow-none focus-visible:border-transparent focus-visible:ring-0"
+          />
+          <IconButton label="Close search" size="sm" onClick={() => setOpen(false)}>
+            <X />
+          </IconButton>
+        </div>
+      ) : (
+        <Tooltip content="Search" delayDuration={0}>
+          <IconButton label="Open search" onClick={() => setOpen(true)}>
+            <Search />
+          </IconButton>
+        </Tooltip>
+      )}
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Tooltip
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | - | Element the tooltip describes; receives trigger props automatically. |
+| `className` | `string` | - | Additional classes merged onto the tooltip content. |
+| `content` (required) | `ReactNode` | - | Text rendered inside the tooltip. |
+| `delayDuration` | `number` | `300` | Delay in milliseconds before the tooltip opens. |
+| `side` | `enum` | `top` | Preferred side of the trigger for the tooltip. |
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `Focus` | Shows the tooltip when its trigger receives keyboard focus. |
+| `Escape` | Dismisses the tooltip. |
+
+- The trigger is described by the tooltip through aria-describedby.
+- Tooltips are for short hints only; never place interactive content inside them.
+
+---
+
+# Menu
+
+A structured action menu with keyboard navigation, disabled items, icons, and danger styling.
+
+## Usage
+
+```js
+import { Menu, IconButton } from '@kryv/teal'
+```
+
+```jsx
+<Menu
+  trigger={<IconButton label="Project actions"><MoreVertical /></IconButton>}
+  items={[
+    { id: 'settings', label: 'Settings', onSelect: () => undefined },
+    { id: 'archive', label: 'Archive', tone: 'danger', onSelect: () => undefined },
+  ]}
+/>
+```
+
+## Examples
+
+### Project actions
+
+Items support icons, separators, and a danger tone for destructive actions.
+
+```jsx
+import { IconButton, Menu } from '@kryv/teal'
+import { Archive, MoreVertical, Settings } from 'lucide-react'
+
+export function MenuDemo() {
+  return (
+    <Menu
+      trigger={
+        <IconButton label="Project actions">
+          <MoreVertical />
+        </IconButton>
+      }
+      items={[
+        { id: 'settings', label: 'Settings', icon: <Settings />, onSelect: () => undefined },
+        {
+          id: 'archive',
+          label: 'Archive',
+          icon: <Archive />,
+          tone: 'danger',
+          separatorBefore: true,
+          onSelect: () => undefined,
+        },
+      ]}
+    />
+  )
+}
+```
+
+## Interface
+
+### Menu
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `align` | `enum` | `end` | Horizontal alignment of the menu relative to the trigger. |
+| `className` | `string` | - | Additional classes merged onto the menu content. |
+| `items` (required) | `MenuItem[]` | - | Items rendered in the menu. |
+| `label` | `string` | - | Accessible name for the menu. |
+| `trigger` (required) | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | - | Element that opens the menu; receives trigger props automatically. |
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `Enter` + `Space` + `Arrow Down` | Opens the menu and highlights the first item. |
+| `Arrow Up` | Opens the menu and highlights the last item. |
+| `Arrow Up` + `Arrow Down` | Moves the highlight between items, skipping disabled ones. |
+| `Home` + `End` | Highlights the first or last item. |
+| `Typing` | Typeahead jumps to the first matching item. |
+| `Enter` + `Space` | Activates the highlighted item and closes the menu. |
+| `Escape` + `Tab` | Closes the menu and returns focus to the trigger. |
+
+- Renders the ARIA menu pattern with menuitem roles and roving highlight.
+- Icons are decorative; every item keeps a text label.
+
+---
+
+# Popover
+
+An anchored surface for arbitrary controls and supplemental content.
+
+## Usage
+
+```js
+import { Popover, Button, Checkbox } from '@kryv/teal'
+```
+
+```jsx
+<Popover trigger={<Button variant="secondary">Filters</Button>}>
+  <div className="grid gap-3">
+    <Checkbox label="Active only" defaultChecked />
+    <Button size="sm">Apply filters</Button>
+  </div>
+</Popover>
+```
+
+## Examples
+
+### Filter panel
+
+Popover anchors interactive content to a trigger with collision-aware placement.
+
+```jsx
+import { Button, Checkbox, Popover } from '@kryv/teal'
+import { Filter } from 'lucide-react'
+
+export function PopoverDemo() {
+  return (
+    <Popover
+      trigger={
+        <Button variant="secondary">
+          <Filter /> Filters
+        </Button>
+      }
+      align="start"
+    >
+      <div className="grid gap-3">
+        <h3 className="font-headline font-bold">Filter projects</h3>
+        <Checkbox label="Active only" defaultChecked />
+        <Button size="sm">Apply filters</Button>
+      </div>
+    </Popover>
+  )
+}
+```
+
+## Interface
+
+### Popover
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `align` | `enum` | `center` | Horizontal alignment of the content relative to the trigger. |
+| `children` (required) | `ReactNode` | - | Content rendered inside the popover surface. |
+| `className` | `string` | - | Additional classes merged onto the popover content. |
+| `defaultOpen` | `boolean` | - | Initial open state when uncontrolled. |
+| `onOpenChange` | `(open: boolean) => void` | - | Called when the popover opens or closes. |
+| `open` | `boolean` | - | Controlled open state. |
+| `side` | `enum` | `bottom` | Side of the trigger the content opens on. |
+| `trigger` (required) | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | - | Element that toggles the popover; receives trigger props automatically. |
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `Escape` | Closes the popover and returns focus to the trigger. |
+| `Tab` | Moves focus into the popover content, then back into the page flow. |
+
+- The trigger exposes aria-expanded and aria-controls for the popover content.
+- Focus is not trapped; popovers suit small control panels, not multi-step flows.
+- Placement flips automatically to stay inside the viewport.
+
+---
+
+# Toast
+
+Imperative, announced feedback with semantic tones, optional actions, and dismissal.
+
+## Usage
+
+```js
+import { Toaster, toast } from '@kryv/teal'
+```
+
+```jsx
+// Mount once near the app root
+<Toaster />
+
+// Call toast() from anywhere
+toast({ title: 'Changes saved', tone: 'success' })
+```
+
+## Examples
+
+### Saving feedback
+
+Call toast() from anywhere once a Toaster is mounted near the app root.
+
+```jsx
+import { Button, toast } from '@kryv/teal'
+
+export function ToastDemo() {
+  return (
+    <Button
+      onClick={() =>
+        toast({ title: 'Changes saved', description: 'Your settings are up to date.', tone: 'success' })
+      }
+    >
+      Show toast
+    </Button>
+  )
+}
+```
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `F8` | Moves focus to the toast viewport so toasts can be reviewed and dismissed. |
+| `Escape` | Dismisses the focused toast. |
+| `Swipe right` | Dismisses a toast on touch devices. |
+
+- Toasts are announced through a live region as they appear.
+- Actions render as real buttons with accessible labels.
+- Pass duration: Infinity for critical messages that must be dismissed manually.
+
+---
+
+# Empty State
+
+An explanatory empty result with an optional action and SVG icon.
+
+## Usage
+
+```js
+import { EmptyState, Button } from '@kryv/teal'
+```
+
+```jsx
+<EmptyState
+  title="No reports"
+  description="Create a report to begin tracking results."
+  action={<Button>Create report</Button>}
+/>
+```
+
+## Examples
+
+### First-run
+
+Pair a short explanation with a single primary action.
+
+```jsx
+import { Button, EmptyState } from '@kryv/teal'
+
+export function EmptyStateDemo() {
+  return (
+    <EmptyState
+      title="No reports"
+      description="Create a report to begin tracking results."
+      action={<Button>Create report</Button>}
+      className="w-full max-w-lg"
+    />
+  )
+}
+```
+
+## Interface
+
+### EmptyState
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `action` | `ReactNode` | - | Call to action rendered below the description. |
+| `description` | `ReactNode` | - | Supporting text that explains the empty state. |
+| `icon` | `ReactNode` | - | Icon rendered above the title. |
+| `title` (required) | `ReactNode` | - | Short heading for the empty state. |
+
+## Accessibility
+
+- The title renders as a heading so empty states appear in the page outline.
+- The action is a real button or link; keep to a single primary action.
+
+---
+
+# Loading
+
+Named progress and loading treatments for local, skeleton, and full-surface states.
+
+## Usage
+
+```js
+import { Spinner, Progress, Skeleton, LoadingState } from '@kryv/teal'
+```
+
+```jsx
+<Spinner label="Saving" />
+<Progress label="Import progress" value={64} />
+<Skeleton className="h-4 w-40" />
+<LoadingState label="Loading reports" />
+```
+
+## Examples
+
+### Loading treatments
+
+Spinner and Progress for active work, Skeleton for layout placeholders, LoadingState for regions.
+
+```jsx
+import { LoadingState, Progress, Skeleton, Spinner } from '@kryv/teal'
+
+export function LoadingDemo() {
+  return (
+    <div className="grid w-full max-w-lg gap-5">
+      <div className="flex items-center gap-5">
+        <Spinner label="Loading example" />
+        <Progress label="Import progress" value={64} />
+      </div>
+      <Skeleton className="h-20 w-full" />
+      <LoadingState label="Loading reports" className="min-h-32" />
+    </div>
+  )
+}
+```
+
+## Interface
+
+### LoadingState
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `string` | `Loading` | Accessible label announced by screen readers while the region is loading. |
+
+### Spinner
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `string` | `Loading` | Accessible label announced by screen readers. |
+| `size` | `enum` | `md` | Diameter of the spinner. |
+
+### Skeleton
+
+_This module forwards native element properties._
+
+### Progress
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `string` | `Loading` | Accessible label describing what the progress bar measures. |
+| `asChild` | `boolean` | - | Merges the component onto its child element instead of rendering the default element (Radix Slot). |
+| `value` | `number \| null` | `0` | Current progress, clamped between 0 and max. |
+| `max` | `number` | `100` | Maximum value used to compute the filled percentage. |
+
+## Accessibility
+
+- Spinner and LoadingState render role="status" with an accessible label, announced once to screen readers.
+- Progress exposes aria-valuenow, aria-valuemin, and aria-valuemax through the Radix progress primitive.
+- Skeleton is aria-hidden because it duplicates content that is about to load.
+- All motion respects prefers-reduced-motion.
+
+---
+
+# Tabs
+
+Keyboard-navigable content switching through a compact item interface.
+
+## Usage
+
+```js
+import { Tabs } from '@kryv/teal'
+```
+
+```jsx
+<Tabs
+  aria-label="Account sections"
+  defaultValue="profile"
+  items={[
+    { value: 'profile', label: 'Profile', content: <ProfilePanel /> },
+    { value: 'billing', label: 'Billing', content: <BillingPanel /> },
+  ]}
+/>
+```
+
+## Examples
+
+### Sections
+
+Tabs follow the ARIA authoring practices keyboard pattern out of the box.
+
+```jsx
+import { Tabs } from '@kryv/teal'
+
+export function TabsDemo() {
+  return (
+    <div className="w-full max-w-xl">
+      <Tabs
+        aria-label="Project details"
+        defaultValue="overview"
+        items={[
+          { value: 'overview', label: 'Overview', content: <p className="text-sm">Project overview content</p> },
+          { value: 'activity', label: 'Activity', content: <p className="text-sm">Recent project activity</p> },
+          { value: 'access', label: 'Access', content: <p className="text-sm">Workspace access settings</p> },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Tabs
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `aria-label` (required) | `string` | - | Accessible name for the tab list. |
+| `className` | `string` | - | Additional classes merged onto the tabs root. |
+| `defaultValue` | `string` | - | Initially active tab when uncontrolled. |
+| `items` (required) | `TabItem[]` | - | Tabs rendered by the component. |
+| `onValueChange` | `(value: string) => void` | - | Called with the new value when the active tab changes. |
+| `value` | `string` | - | Controlled active tab value. |
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `Arrow Left` + `Arrow Right` | Moves between tabs and activates them. |
+| `Home` + `End` | Activates the first or last tab. |
+| `Tab` | Moves focus from the active tab into its panel. |
+
+- Implements the ARIA tabs pattern with tablist, tab, and tabpanel roles.
+- aria-label on the tab list describes what the tabs switch between.
+- Disabled tabs are skipped during arrow-key navigation.
+
+---
+
+# Pagination
+
+A controlled page navigator with compact ranges and unavailable directions.
+
+## Usage
+
+```js
+import { Pagination } from '@kryv/teal'
+```
+
+```jsx
+const [page, setPage] = useState(1)
+
+<Pagination page={page} pageCount={12} onPageChange={setPage} />
+```
+
+## Examples
+
+### Controlled pages
+
+Pagination is fully controlled through page and onPageChange.
+
+```jsx
+import { useState } from 'react'
+import { Pagination } from '@kryv/teal'
+
+export function PaginationDemo() {
+  const [page, setPage] = useState(3)
+  return <Pagination page={page} pageCount={8} onPageChange={setPage} />
+}
+```
+
+## Interface
+
+### Pagination
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | - | Additional classes merged onto the nav element. |
+| `label` | `string` | `Pagination` | Accessible name for the navigation landmark. |
+| `onPageChange` (required) | `(page: number) => void` | - | Called with the next page when the user navigates. |
+| `page` (required) | `number` | - | Current page, one-based. |
+| `pageCount` (required) | `number` | - | Total number of pages. |
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `Tab` | Moves focus through the page controls. |
+| `Enter` + `Space` | Activates the focused page control. |
+
+- Renders a nav element with an accessible label.
+- The current page is marked with aria-current="page".
+- Unavailable directions render as disabled buttons rather than being hidden.
+
+---
+
+# Page Header
+
+A responsive page title, supporting text, and action area.
+
+## Usage
+
+```js
+import { PageHeader, Button } from '@kryv/teal'
+```
+
+```jsx
+<PageHeader
+  title="Workspace settings"
+  subtitle="Manage security and notifications"
+  actions={<Button>Save changes</Button>}
+/>
+```
+
+## Examples
+
+### Settings header
+
+Actions wrap below the title on narrow screens automatically.
+
+```jsx
+import { Button, PageHeader } from '@kryv/teal'
+
+export function PageHeaderDemo() {
+  return (
+    <div className="w-full">
+      <PageHeader
+        title="Workspace settings"
+        subtitle="Manage security and notifications"
+        actions={<Button>Save changes</Button>}
+      />
+    </div>
+  )
+}
+```
+
+## Interface
+
+### PageHeader
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `actions` | `ReactNode` | - | Actions rendered beside the title; wraps below on narrow screens. |
+| `subtitle` | `ReactNode` | - | Supporting text rendered under the title. |
+| `title` (required) | `ReactNode` | - | Page title rendered as the level-one heading. |
+
+## Accessibility
+
+- The title renders as an h1; keep one PageHeader per page.
+- Actions are regular buttons and links with standard focus order.
+
+---
+
+# Table
+
+Accessible data presentation driven by column definitions, density, loading, and empty state.
+
+## Usage
+
+```js
+import { Table } from '@kryv/teal'
+```
+
+```jsx
+<Table
+  caption="Team members"
+  columns={[{ key: 'name', header: 'Name', cell: (row) => row.name }]}
+  rows={rows}
+  getRowKey={(row) => row.id}
+/>
+```
+
+## Examples
+
+### Column definitions
+
+Columns declare their header and cell renderer; rows need a stable key.
+
+```jsx
+import { Badge, Table } from '@kryv/teal'
+
+const projectRows = [
+  { id: 'orion', name: 'Orion', owner: 'Avery', status: 'Ready' },
+  { id: 'atlas', name: 'Atlas', owner: 'Morgan', status: 'Review' },
+  { id: 'nova', name: 'Nova', owner: 'Riley', status: 'Ready' },
+]
+
+export function TableDemo() {
+  return (
+    <div className="w-full">
+      <Table
+        caption="Projects"
+        rows={projectRows}
+        getRowKey={(row) => row.id}
+        columns={[
+          { key: 'name', header: 'Project', cell: (row) => <strong>{row.name}</strong> },
+          { key: 'owner', header: 'Owner', cell: (row) => row.owner },
+          {
+            key: 'status',
+            header: 'Status',
+            cell: (row) => (
+              <Badge tone={row.status === 'Ready' ? 'success' : 'warning'}>{row.status}</Badge>
+            ),
+          },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Table
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `caption` (required) | `string` | - | Accessible caption describing the table, announced to screen readers. |
+| `className` | `string` | - | Extra classes applied to the scroll container wrapping the table. |
+| `columns` (required) | `TableColumn<Row>[]` | - | Column definitions rendered in header order. |
+| `density` | `enum` | `comfortable` | Vertical padding of cells. |
+| `empty` | `ReactNode` | `No results` | Content shown when `rows` is empty and the table is not loading. |
+| `getRowKey` (required) | `(row: Row) => string` | - | Returns a stable, unique key for each row. |
+| `loading` | `boolean` | `false` | Renders skeleton rows in place of data. |
+| `loadingLabel` | `string` | `Loading table data` | Accessible label announced while skeleton rows are shown. |
+| `rows` (required) | `Row[]` | - | Data rows rendered in the table body. |
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `Tab` | Moves focus to the scroll region so the table can be scrolled with arrow keys. |
+| `Arrow keys` | Scrolls the region horizontally when the table overflows. |
+
+- The caption is announced to screen readers and kept visually hidden.
+- Header cells use scope="col", and the table keeps real table semantics for screen reader navigation.
+- Skeleton rows are announced through loadingLabel while data loads.
+
+---
+
+# Separator
+
+A semantic or decorative divider for related content.
+
+## Usage
+
+```js
+import { Separator } from '@kryv/teal'
+```
+
+```jsx
+<Separator />
+```
+
+## Examples
+
+### Content divider
+
+Separator renders a horizontal rule that can be decorative or semantic.
+
+```jsx
+import { Separator } from '@kryv/teal'
+
+export function SeparatorDemo() {
+  return (
+    <div className="w-full max-w-md space-y-4">
+      <p>Account settings</p>
+      <Separator />
+      <p className="text-sm text-on-surface-variant">Security preferences</p>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Separator
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `asChild` | `boolean` | - | Merges the component onto its child element instead of rendering the default element (Radix Slot). |
+| `decorative` | `boolean` | - | Removes the separator role so screen readers ignore the element. |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Axis the separator runs along. |
+
+## Accessibility
+
+- Renders role="separator" with an orientation unless marked decorative.
+- Use decorative separators between visually obvious groups; keep semantic ones where the structure matters.
+
+---
+
+# Recipes
+
+Recipes demonstrate product composition without expanding the supported package interface prematurely.
+
+## Settings section
+
+Use this composition for related settings with one save action.
+
+```jsx
+import { useState } from 'react'
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Field,
+  Input,
+  Select,
+  Switch,
+} from '@kryv/teal'
+
+export function SettingsRecipe() {
+  const [alerts, setAlerts] = useState(true)
+  return (
+    <Card className="w-full max-w-2xl">
+      <CardHeader className="flex-col items-start justify-start gap-1.5">
+        <CardTitle>Account security</CardTitle>
+        <CardDescription>Manage sign-in alerts and session policy.</CardDescription>
+      </CardHeader>
+      <CardContent className="grid gap-5">
+        <Field label="Security contact" description="Receives account recovery messages">
+          <Input type="email" defaultValue="security@example.com" />
+        </Field>
+        <Field label="Session duration">
+          <Select
+            defaultValue="8"
+            options={[
+              { value: '4', label: '4 hours' },
+              { value: '8', label: '8 hours' },
+              { value: '24', label: '24 hours' },
+            ]}
+          />
+        </Field>
+        <Switch
+          label="Suspicious sign-in alerts"
+          description="Notify administrators when a sign-in looks unusual"
+          checked={alerts}
+          onCheckedChange={setAlerts}
+        />
+      </CardContent>
+      <CardFooter className="justify-end">
+        <Button>Save security settings</Button>
+      </CardFooter>
+    </Card>
+  )
+}
+```
+
+## Review queue
+
+Combine a structural card, semantic status, and a responsive table for operational review surfaces.
+
+```jsx
+import { Badge, Card, CardContent, CardDescription, CardHeader, CardTitle, Table } from '@kryv/teal'
+
+const reviewRows = [
+  { id: 'incident-1042', owner: 'Avery', priority: 'Critical', title: 'Suspicious sign-in cluster' },
+  { id: 'incident-1041', owner: 'Morgan', priority: 'Medium', title: 'New external integration' },
+]
+
+export function ReviewQueueRecipe() {
+  return (
+    <Card className="w-full max-w-3xl">
+      <CardHeader className="flex-col items-start justify-start gap-1.5">
+        <CardTitle>Review queue</CardTitle>
+        <CardDescription>
+          Prioritize work without embedding product-specific workflow in Teal.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Table
+          caption="Incidents awaiting review"
+          rows={reviewRows}
+          getRowKey={(row) => row.id}
+          columns={[
+            { key: 'title', header: 'Incident', cell: (row) => row.title },
+            { key: 'owner', header: 'Owner', cell: (row) => row.owner },
+            {
+              key: 'priority',
+              header: 'Priority',
+              cell: (row) => (
+                <Badge tone={row.priority === 'Critical' ? 'danger' : 'warning'}>{row.priority}</Badge>
+              ),
+            },
+          ]}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+```
+
+## Promotion rule
+
+A recipe becomes a published module only after at least two Kryv products need the same behavior. Product persistence, validation policy, queries, and domain language stay in the application.
+
+---
+
+# Changelog
+
+Versioned changes to @kryv/teal, generated from the changesets changelog. Current version: v0.2.0.
+
+_No published releases yet._
