@@ -8,11 +8,12 @@ const moduleIds = [
 ]
 
 test('every documentation module has no accessibility violations', async ({ page }) => {
+  test.slow() // Visits all 20 module pages in one test
   for (const moduleId of moduleIds) {
     await page.goto(`/modules/${moduleId}`)
 
-    if (moduleId === 'dialog') await page.getByRole('button', { name: 'Open dialog' }).click()
-    if (moduleId === 'tooltip') await page.getByRole('button', { name: 'Refresh results' }).hover()
+    if (moduleId === 'dialog') await page.locator('#examples').getByRole('button', { name: 'Open dialog' }).click()
+    if (moduleId === 'tooltip') await page.getByRole('button', { name: 'Open search' }).hover()
     if (moduleId === 'menu') await page.getByRole('button', { name: 'Project actions' }).click()
     if (moduleId === 'popover') await page.getByRole('button', { name: 'Filters' }).click()
     if (moduleId === 'toast') await page.getByRole('button', { name: 'Show toast' }).click()
@@ -30,7 +31,10 @@ test('mobile navigation reaches a module', async ({ page, isMobile }) => {
   test.skip(!isMobile, 'Mobile navigation behavior')
   await page.goto('/')
   await page.getByRole('button', { name: 'Open navigation' }).click()
-  await page.getByRole('link', { name: 'Select' }).click()
+  await page
+    .getByRole('navigation', { name: 'Documentation' })
+    .getByRole('link', { name: 'Select', exact: true })
+    .click()
   await expect(page.getByRole('heading', { level: 1, name: 'Select' })).toBeVisible()
 })
 
