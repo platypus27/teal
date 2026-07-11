@@ -3,7 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#006466" />
+    <script>
+      (function () {
+        try {
+          var stored = window.localStorage.getItem('teal-theme')
+          var dark = stored
+            ? stored === 'dark'
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+          if (dark) document.documentElement.classList.add('dark')
+        } catch (error) {}
+      })()
+    </script>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#f6fafa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0e1416" media="(prefers-color-scheme: dark)" />
+    <meta
+      name="description"
+      content="Teal is the Kryv design system - typed React modules, semantic design tokens, and tested interaction behavior for calm, accessible product work."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Teal design system" />
+    <meta property="og:title" content="Teal design system" />
+    <meta
+      property="og:description"
+      content="Typed React modules, semantic design tokens, and tested interaction behavior for Kryv applications."
+    />
+    <meta name="twitter:card" content="summary" />
     <title>Teal design system</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
