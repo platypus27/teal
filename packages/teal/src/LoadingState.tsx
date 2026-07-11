@@ -4,7 +4,9 @@ import * as ProgressPrimitive from '@radix-ui/react-progress'
 import { cn } from './cn'
 
 export interface SpinnerProps extends HTMLAttributes<HTMLSpanElement> {
+  /** Accessible label announced by screen readers. */
   label?: string
+  /** Diameter of the spinner. */
   size?: 'sm' | 'md' | 'lg'
 }
 
@@ -28,6 +30,7 @@ export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(function Spinne
 })
 
 export interface LoadingStateProps extends HTMLAttributes<HTMLDivElement> {
+  /** Accessible label announced by screen readers while the region is loading. */
   label?: string
 }
 
@@ -66,6 +69,7 @@ export const Skeleton = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement
 })
 
 export interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
+  /** Accessible label describing what the progress bar measures. */
   label: string
 }
 

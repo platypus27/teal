@@ -32,10 +32,15 @@ export const Label = forwardRef<React.ElementRef<typeof LabelPrimitive.Root>, La
 })
 
 export interface FieldProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
+  /** The form control this field labels and describes. */
   children: ReactNode
+  /** Help text rendered below the control and linked to it for assistive technology. */
   description?: ReactNode
+  /** Error message; marks the control as invalid and links the message to it. */
   error?: ReactNode
+  /** Visible label associated with the control. */
   label: ReactNode
+  /** Marks the control as required and renders a required indicator. */
   required?: boolean
 }
 

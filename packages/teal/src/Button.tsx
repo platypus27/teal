@@ -102,6 +102,7 @@ const iconButtonVariants = cva(
 export interface IconButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label'>,
     VariantProps<typeof iconButtonVariants> {
+  /** Accessible label applied as `aria-label`; also used as the default tooltip text. */
   label: string
 }
 

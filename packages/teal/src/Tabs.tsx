@@ -3,18 +3,27 @@ import * as TabsPrimitive from '@radix-ui/react-tabs'
 import { cn } from './cn'
 
 export interface TabItem {
+  /** Panel content rendered while the tab is active. */
   content: ReactNode
+  /** Prevents the tab from being selected. */
   disabled?: boolean
+  /** Label rendered inside the tab trigger. */
   label: ReactNode
+  /** Unique value identifying the tab. */
   value: string
 }
 
 export interface TabsProps {
+  /** Accessible name for the tab list. */
   'aria-label': string
   className?: string
+  /** Initially active tab when uncontrolled. */
   defaultValue?: string
+  /** Tabs rendered by the component. */
   items: TabItem[]
+  /** Called with the new value when the active tab changes. */
   onValueChange?: (value: string) => void
+  /** Controlled active tab value. */
   value?: string
 }
 

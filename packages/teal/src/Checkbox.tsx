@@ -5,8 +5,11 @@ import { cn } from './cn'
 
 export interface CheckboxProps
   extends Omit<React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>, 'children'> {
+  /** Supporting text rendered below the label. */
   description?: ReactNode
+  /** Visible label rendered next to the checkbox. */
   label: ReactNode
+  /** Hides the label visually while keeping it available to screen readers. */
   visuallyHiddenLabel?: boolean
 }
 

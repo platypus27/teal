@@ -6,24 +6,38 @@ import { fieldVariants } from './Input'
 import { mergeDescriptionIds, useFieldControl } from './Field'
 
 export interface SelectOption {
+  /** Prevents the option from being selected. */
   disabled?: boolean
+  /** Visible label of the option. */
   label: ReactNode
+  /** Text used for typeahead and screen readers when the label is not a string. */
   textValue?: string
+  /** Value reported when the option is selected. */
   value: string
 }
 
 export interface SelectProps {
   'aria-describedby'?: string
+  /** Accessible name when there is no visible label. */
   'aria-label'?: string
   className?: string
+  /** Initial value when uncontrolled. */
   defaultValue?: string
+  /** Prevents opening the select. */
   disabled?: boolean
+  /** Form field name submitted with the selected value. */
   name?: string
+  /** Called with the new value when selection changes. */
   onValueChange?: (value: string) => void
+  /** Options rendered in the listbox. */
   options: SelectOption[]
+  /** Text shown when no value is selected. */
   placeholder?: ReactNode
+  /** Marks the select as required for form validation. */
   required?: boolean
+  /** Size of the trigger button. */
   size?: 'sm' | 'md' | 'lg'
+  /** Controlled selected value. */
   value?: string
 }
 

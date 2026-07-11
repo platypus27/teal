@@ -5,15 +5,24 @@ import { IconButton } from './Button'
 import { cn } from './cn'
 
 export interface DialogProps {
+  /** Body content of the dialog. */
   children: ReactNode
   className?: string
+  /** Accessible label for the close button. */
   closeLabel?: string
+  /** Initial open state when uncontrolled. */
   defaultOpen?: boolean
+  /** Supporting text rendered under the title. */
   description?: ReactNode
+  /** Action area rendered at the bottom of the dialog. */
   footer?: ReactNode
+  /** Called when the dialog opens or closes. */
   onOpenChange?: (open: boolean) => void
+  /** Controlled open state. */
   open?: boolean
+  /** Width of the dialog surface. */
   size?: 'sm' | 'md' | 'lg'
+  /** Title rendered at the top; also the accessible name of the dialog. */
   title: ReactNode
 }
 

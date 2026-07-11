@@ -3,20 +3,31 @@ import * as MenuPrimitive from '@radix-ui/react-dropdown-menu'
 import { cn } from './cn'
 
 export interface MenuItem {
+  /** Prevents the item from being selected. */
   disabled?: boolean
+  /** Icon rendered before the label. */
   icon?: ReactNode
+  /** Unique identifier for the item. */
   id: string
+  /** Visible label of the item. */
   label: ReactNode
+  /** Called when the item is selected. */
   onSelect: () => void
+  /** Renders a separator above this item. */
   separatorBefore?: boolean
+  /** Use 'danger' for destructive actions. */
   tone?: 'default' | 'danger'
 }
 
 export interface MenuProps {
+  /** Horizontal alignment of the menu relative to the trigger. */
   align?: 'start' | 'center' | 'end'
   className?: string
+  /** Items rendered in the menu. */
   items: MenuItem[]
+  /** Accessible name for the menu. */
   label?: string
+  /** Element that opens the menu; receives trigger props automatically. */
   trigger: ReactElement
 }
 

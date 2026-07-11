@@ -4,8 +4,11 @@ import { cn } from './cn'
 
 export interface SwitchProps
   extends Omit<React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>, 'children'> {
+  /** Supporting text rendered below the label. */
   description?: ReactNode
+  /** Visible label describing the setting the switch controls. */
   label: ReactNode
+  /** Track and thumb size. */
   size?: 'sm' | 'md'
 }
 

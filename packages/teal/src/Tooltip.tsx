@@ -3,10 +3,14 @@ import * as TooltipPrimitive from '@radix-ui/react-tooltip'
 import { cn } from './cn'
 
 export interface TooltipProps {
+  /** Element the tooltip describes; receives trigger props automatically. */
   children: ReactElement
   className?: string
+  /** Text rendered inside the tooltip. */
   content: ReactNode
+  /** Delay in milliseconds before the tooltip opens. */
   delayDuration?: number
+  /** Preferred side of the trigger for the tooltip. */
   side?: 'top' | 'right' | 'bottom' | 'left'
 }
 

@@ -4,9 +4,13 @@ import { cn } from './cn'
 
 export interface PaginationProps {
   className?: string
+  /** Accessible name for the navigation landmark. */
   label?: string
+  /** Called with the next page when the user navigates. */
   onPageChange: (page: number) => void
+  /** Current page, one-based. */
   page: number
+  /** Total number of pages. */
   pageCount: number
 }
 

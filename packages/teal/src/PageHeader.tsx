@@ -2,8 +2,11 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from 'react'
 import { cn } from './cn'
 
 export interface PageHeaderProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
+  /** Actions rendered beside the title; wraps below on narrow screens. */
   actions?: ReactNode
+  /** Supporting text rendered under the title. */
   subtitle?: ReactNode
+  /** Page title rendered as the level-one heading. */
   title: ReactNode
 }
 

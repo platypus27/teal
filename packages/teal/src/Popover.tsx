@@ -3,13 +3,20 @@ import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { cn } from './cn'
 
 export interface PopoverProps {
+  /** Horizontal alignment of the content relative to the trigger. */
   align?: 'start' | 'center' | 'end'
+  /** Content rendered inside the popover surface. */
   children: ReactNode
   className?: string
+  /** Initial open state when uncontrolled. */
   defaultOpen?: boolean
+  /** Called when the popover opens or closes. */
   onOpenChange?: (open: boolean) => void
+  /** Controlled open state. */
   open?: boolean
+  /** Side of the trigger the content opens on. */
   side?: 'top' | 'right' | 'bottom' | 'left'
+  /** Element that toggles the popover; receives trigger props automatically. */
   trigger: ReactElement
 }
 

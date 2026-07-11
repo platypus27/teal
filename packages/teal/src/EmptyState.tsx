@@ -3,9 +3,13 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from 'react'
 import { cn } from './cn'
 
 export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
+  /** Call to action rendered below the description. */
   action?: ReactNode
+  /** Supporting text that explains the empty state. */
   description?: ReactNode
+  /** Icon rendered above the title. */
   icon?: ReactNode
+  /** Short heading for the empty state. */
   title: ReactNode
 }
 

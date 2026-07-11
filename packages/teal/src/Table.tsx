@@ -3,22 +3,36 @@ import { Skeleton } from './LoadingState'
 import { cn } from './cn'
 
 export interface TableColumn<Row> {
+  /** Renders the cell content for a given row. */
   cell: (row: Row) => ReactNode
+  /** Extra classes applied to every body cell in this column. */
   cellClassName?: string
+  /** Content rendered in the column header. */
   header: ReactNode
+  /** Extra classes applied to the column header cell. */
   headerClassName?: string
+  /** Stable key identifying the column. */
   key: string
 }
 
 export interface TableProps<Row> {
+  /** Accessible caption describing the table, announced to screen readers. */
   caption: string
+  /** Extra classes applied to the scroll container wrapping the table. */
   className?: string
+  /** Column definitions rendered in header order. */
   columns: Array<TableColumn<Row>>
+  /** Vertical padding of cells. */
   density?: 'compact' | 'comfortable'
+  /** Content shown when `rows` is empty and the table is not loading. */
   empty?: ReactNode
+  /** Returns a stable, unique key for each row. */
   getRowKey: (row: Row) => string
+  /** Renders skeleton rows in place of data. */
   loading?: boolean
+  /** Accessible label announced while skeleton rows are shown. */
   loadingLabel?: string
+  /** Data rows rendered in the table body. */
   rows: Row[]
 }
 

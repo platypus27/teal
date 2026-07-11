@@ -2,8 +2,11 @@ import { forwardRef, type ElementType, type HTMLAttributes } from 'react'
 import { cn } from './cn'
 
 export interface CardProps extends HTMLAttributes<HTMLElement> {
+  /** Element rendered by the card; use an interactive element for clickable cards. */
   as?: ElementType
+  /** Applies disabled styling and blocks interaction on interactive cards. */
   disabled?: boolean
+  /** Button type used when the card renders an interactive element. */
   type?: 'button' | 'submit' | 'reset'
 }
 
