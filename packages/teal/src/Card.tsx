@@ -1,9 +1,12 @@
 import { forwardRef, type ElementType, type HTMLAttributes } from 'react'
 import { cn } from './cn'
+import { glassSurface } from './glass'
 
 export interface CardProps extends HTMLAttributes<HTMLElement> {
   /** Element rendered by the card; use an interactive element for clickable cards. */
   as?: ElementType
+  /** Renders a translucent, blurred surface instead of an opaque card. */
+  glass?: boolean
   /** Applies disabled styling and blocks interaction on interactive cards. */
   disabled?: boolean
   /** Button type used when the card renders an interactive element. */
@@ -11,14 +14,15 @@ export interface CardProps extends HTMLAttributes<HTMLElement> {
 }
 
 export const Card = forwardRef<HTMLElement, CardProps>(function Card(
-  { as: Component = 'div', className, ...props },
+  { as: Component = 'div', className, glass = false, ...props },
   ref,
 ) {
   return (
     <Component
       ref={ref}
       className={cn(
-        'rounded-2xl border border-outline-variant/20 bg-surface-container p-6 shadow-[var(--teal-shadow-card)]',
+        'rounded-2xl border border-outline-variant/20 p-6 shadow-[var(--teal-shadow-card)]',
+        glass ? glassSurface : 'bg-surface-container',
         className,
       )}
       {...props}

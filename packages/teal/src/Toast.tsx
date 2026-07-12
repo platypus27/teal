@@ -3,6 +3,7 @@ import * as ToastPrimitive from '@radix-ui/react-toast'
 import { CheckCircle2, CircleAlert, Info, TriangleAlert, X } from 'lucide-react'
 import { IconButton } from './Button'
 import { cn } from './cn'
+import { glassSurface } from './glass'
 
 export type ToastTone = 'neutral' | 'info' | 'success' | 'warning' | 'danger'
 
@@ -10,6 +11,8 @@ export interface ToastInput {
   action?: { label: string; onClick: () => void }
   description?: ReactNode
   duration?: number
+  /** Renders a translucent, blurred surface instead of an opaque toast. */
+  glass?: boolean
   title: ReactNode
   tone?: ToastTone
 }
@@ -70,7 +73,10 @@ export function Toaster() {
             onOpenChange={(open) => {
               if (!open) dismissToast(item.id)
             }}
-            className="grid w-[min(22rem,calc(100vw-2rem))] grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-xl border border-outline-variant/40 bg-surface-container p-4 text-on-surface shadow-[var(--teal-shadow-overlay)]"
+            className={cn(
+              'grid w-[min(22rem,calc(100vw-2rem))] grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-xl border border-outline-variant/40 p-4 text-on-surface shadow-[var(--teal-shadow-overlay)]',
+              item.glass ? glassSurface : 'bg-surface-container',
+            )}
           >
             <ToneIcon aria-hidden="true" className={cn('mt-0.5 size-5', tone.className)} />
             <div className="min-w-0">

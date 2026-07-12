@@ -1,6 +1,7 @@
 import { type ReactNode } from 'react'
 import { Skeleton } from './LoadingState'
 import { cn } from './cn'
+import { glassSurface } from './glass'
 
 export interface TableColumn<Row> {
   /** Renders the cell content for a given row. */
@@ -18,7 +19,6 @@ export interface TableColumn<Row> {
 export interface TableProps<Row> {
   /** Accessible caption describing the table, announced to screen readers. */
   caption: string
-  /** Extra classes applied to the scroll container wrapping the table. */
   className?: string
   /** Column definitions rendered in header order. */
   columns: Array<TableColumn<Row>>
@@ -26,6 +26,8 @@ export interface TableProps<Row> {
   density?: 'compact' | 'comfortable'
   /** Content shown when `rows` is empty and the table is not loading. */
   empty?: ReactNode
+  /** Renders a translucent, blurred surface instead of an opaque table. */
+  glass?: boolean
   /** Returns a stable, unique key for each row. */
   getRowKey: (row: Row) => string
   /** Renders skeleton rows in place of data. */
@@ -42,6 +44,7 @@ export function Table<Row>({
   columns,
   density = 'comfortable',
   empty = 'No results',
+  glass = false,
   getRowKey,
   loading = false,
   loadingLabel = 'Loading table data',
@@ -52,11 +55,15 @@ export function Table<Row>({
       role="region"
       aria-label={`${caption} table`}
       tabIndex={0}
-      className={cn('overflow-x-auto rounded-2xl border border-outline-variant/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary', className)}
+      className={cn(
+        'overflow-x-auto rounded-2xl border border-outline-variant/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+        glass ? glassSurface : '',
+        className,
+      )}
     >
       <table className="w-full border-collapse text-left text-sm">
         <caption className="sr-only">{caption}</caption>
-        <thead className="bg-surface-container-high text-xs font-semibold uppercase tracking-wide text-on-surface-variant">
+        <thead className={cn('text-xs font-semibold uppercase tracking-wide text-on-surface-variant', glass ? 'bg-surface-container-high/80' : 'bg-surface-container-high')}>
           <tr>
             {columns.map((column) => (
               <th
@@ -69,7 +76,7 @@ export function Table<Row>({
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-outline-variant/25 bg-surface-container">
+        <tbody className={cn('divide-y divide-outline-variant/25', glass ? '' : 'bg-surface-container')}>
           {loading
             ? Array.from({ length: 3 }, (_, rowIndex) => (
                 <tr key={`loading-${rowIndex}`} aria-label={loadingLabel}>

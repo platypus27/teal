@@ -3,6 +3,7 @@ import * as SelectPrimitive from '@radix-ui/react-select'
 import { Check, ChevronDown } from 'lucide-react'
 import { cn } from './cn'
 import { fieldVariants } from './Input'
+import { glassSurface } from './glass'
 import { mergeDescriptionIds, useFieldControl } from './Field'
 
 export interface SelectOption {
@@ -25,6 +26,8 @@ export interface SelectProps {
   defaultValue?: string
   /** Prevents opening the select. */
   disabled?: boolean
+  /** Renders a translucent, blurred trigger and content surface. */
+  glass?: boolean
   /** Form field name submitted with the selected value. */
   name?: string
   /** Called with the new value when selection changes. */
@@ -48,6 +51,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
     className,
     defaultValue,
     disabled,
+    glass = false,
     name,
     onValueChange,
     options,
@@ -77,7 +81,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
         aria-invalid={field?.invalid || undefined}
         aria-describedby={mergeDescriptionIds(describedBy, field?.descriptionId, field?.errorId)}
         className={cn(
-          fieldVariants({ size }),
+          fieldVariants({ size, glass }),
           'flex items-center justify-between gap-2 text-left data-[placeholder]:text-on-surface-variant',
           className,
         )}
@@ -91,7 +95,10 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
         <SelectPrimitive.Content
           position="popper"
           sideOffset={6}
-          className="z-[var(--teal-z-popover)] max-h-[var(--radix-select-content-available-height)] min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-xl border border-outline-variant/50 bg-surface-container text-on-surface shadow-[var(--teal-shadow-overlay)]"
+          className={cn(
+            'z-[var(--teal-z-popover)] max-h-[var(--radix-select-content-available-height)] min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-xl border border-outline-variant/50 text-on-surface shadow-[var(--teal-shadow-overlay)]',
+            glass ? glassSurface : 'bg-surface-container',
+          )}
         >
           <SelectPrimitive.Viewport className="p-1">
             {options.map((option) => (

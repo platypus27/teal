@@ -1,6 +1,7 @@
 import { type ReactElement, type ReactNode } from 'react'
 import * as MenuPrimitive from '@radix-ui/react-dropdown-menu'
 import { cn } from './cn'
+import { glassSurface } from './glass'
 
 export interface MenuItem {
   /** Prevents the item from being selected. */
@@ -23,6 +24,8 @@ export interface MenuProps {
   /** Horizontal alignment of the menu relative to the trigger. */
   align?: 'start' | 'center' | 'end'
   className?: string
+  /** Renders a translucent, blurred surface instead of an opaque menu. */
+  glass?: boolean
   /** Items rendered in the menu. */
   items: MenuItem[]
   /** Accessible name for the menu. */
@@ -31,7 +34,7 @@ export interface MenuProps {
   trigger: ReactElement
 }
 
-export function Menu({ align = 'end', className, items, label, trigger }: MenuProps) {
+export function Menu({ align = 'end', className, glass = false, items, label, trigger }: MenuProps) {
   return (
     <MenuPrimitive.Root modal={false}>
       <MenuPrimitive.Trigger asChild>{trigger}</MenuPrimitive.Trigger>
@@ -41,7 +44,8 @@ export function Menu({ align = 'end', className, items, label, trigger }: MenuPr
           sideOffset={6}
           aria-label={label}
           className={cn(
-            'z-[var(--teal-z-popover)] min-w-44 rounded-xl border border-outline-variant/40 bg-surface-container p-1 text-on-surface shadow-[var(--teal-shadow-overlay)]',
+            'z-[var(--teal-z-popover)] min-w-44 rounded-xl border border-outline-variant/40 p-1 text-on-surface shadow-[var(--teal-shadow-overlay)]',
+            glass ? glassSurface : 'bg-surface-container',
             className,
           )}
         >

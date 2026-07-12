@@ -12,8 +12,12 @@ const fieldVariants = cva(
         md: 'min-h-10 px-4 py-2.5 text-sm',
         lg: 'min-h-12 px-4 py-3 text-base',
       },
+      glass: {
+        true: 'bg-surface-container/80 backdrop-blur-xl border-outline-variant/30',
+        false: '',
+      },
     },
-    defaultVariants: { size: 'md' },
+    defaultVariants: { size: 'md', glass: false },
   },
 )
 
@@ -22,7 +26,7 @@ export interface InputProps
     VariantProps<typeof fieldVariants> {}
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { 'aria-describedby': describedBy, 'aria-invalid': invalid, className, id, required, size, ...props },
+  { 'aria-describedby': describedBy, 'aria-invalid': invalid, className, glass, id, required, size, ...props },
   ref,
 ) {
   const field = useFieldControl()
@@ -33,7 +37,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       required={required ?? field?.required}
       aria-invalid={invalid ?? (field?.invalid || undefined)}
       aria-describedby={mergeDescriptionIds(describedBy, field?.descriptionId, field?.errorId)}
-      className={cn(fieldVariants({ size }), className)}
+      className={cn(fieldVariants({ size, glass }), className)}
       {...props}
     />
   )
@@ -44,7 +48,7 @@ export interface TextAreaProps
     VariantProps<typeof fieldVariants> {}
 
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function TextArea(
-  { 'aria-describedby': describedBy, 'aria-invalid': invalid, className, id, required, size, ...props },
+  { 'aria-describedby': describedBy, 'aria-invalid': invalid, className, glass, id, required, size, ...props },
   ref,
 ) {
   const field = useFieldControl()
@@ -55,7 +59,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function 
       required={required ?? field?.required}
       aria-invalid={invalid ?? (field?.invalid || undefined)}
       aria-describedby={mergeDescriptionIds(describedBy, field?.descriptionId, field?.errorId)}
-      className={cn(fieldVariants({ size }), 'min-h-28 resize-y leading-relaxed', className)}
+      className={cn(fieldVariants({ size, glass }), 'min-h-28 resize-y leading-relaxed', className)}
       {...props}
     />
   )

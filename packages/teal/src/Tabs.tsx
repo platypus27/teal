@@ -1,6 +1,7 @@
 import { type ReactNode } from 'react'
 import * as TabsPrimitive from '@radix-ui/react-tabs'
 import { cn } from './cn'
+import { glassSurface } from './glass'
 
 export interface TabItem {
   /** Panel content rendered while the tab is active. */
@@ -17,6 +18,8 @@ export interface TabsProps {
   /** Accessible name for the tab list. */
   'aria-label': string
   className?: string
+  /** Renders a translucent, blurred tab list instead of an opaque one. */
+  glass?: boolean
   /** Initially active tab when uncontrolled. */
   defaultValue?: string
   /** Tabs rendered by the component. */
@@ -27,7 +30,7 @@ export interface TabsProps {
   value?: string
 }
 
-export function Tabs({ 'aria-label': ariaLabel, className, defaultValue, items, onValueChange, value }: TabsProps) {
+export function Tabs({ 'aria-label': ariaLabel, className, glass = false, defaultValue, items, onValueChange, value }: TabsProps) {
   const initialValue = defaultValue ?? items.find((item) => !item.disabled)?.value
   return (
     <TabsPrimitive.Root
@@ -38,7 +41,10 @@ export function Tabs({ 'aria-label': ariaLabel, className, defaultValue, items, 
     >
       <TabsPrimitive.List
         aria-label={ariaLabel}
-        className="inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-xl bg-surface-container-high p-1 text-on-surface-variant"
+        className={cn(
+          'inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-xl p-1 text-on-surface-variant',
+          glass ? glassSurface : 'bg-surface-container-high',
+        )}
       >
         {items.map((item) => (
           <TabsPrimitive.Trigger
