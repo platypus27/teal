@@ -1,4 +1,5 @@
-import { Github, Palette, Search, Sun } from 'lucide-react'
+import { Palette, Search, Sun } from 'lucide-react'
+import { GitHubIcon } from '../components/GitHubIcon.jsx'
 import { IconButton, TopBar, TopBarActions, TopBarBrand, TopBarSearch } from '@kryv/teal'
 
 export function TopBarDemo() {
@@ -22,7 +23,7 @@ export function TopBarDemo() {
         </TopBarSearch>
         <TopBarActions>
           <IconButton label="GitHub">
-            <Github />
+            <GitHubIcon />
           </IconButton>
           <IconButton label="Switch theme">
             <Sun />
@@ -39,7 +40,7 @@ export function TopBarDemo() {
         </TopBarBrand>
         <TopBarActions>
           <IconButton label="GitHub">
-            <Github />
+            <GitHubIcon />
           </IconButton>
           <IconButton label="Switch theme">
             <Sun />

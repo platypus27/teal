@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { FlaskConical, Github, Menu as MenuIcon, Moon, Palette, Search, Sun, X } from 'lucide-react'
+import { FlaskConical, Menu as MenuIcon, Moon, Palette, Search, Sun, X } from 'lucide-react'
+import { GitHubIcon } from './GitHubIcon.jsx'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { IconButton, Toaster, TopBar, TopBarActions, TopBarBrand, TopBarSearch, VerticalNav, VerticalNavBrand, VerticalNavList, VerticalNavSection, iconButtonVariants } from '@kryv/teal'
 import { catalogGroups } from '../data/catalog.jsx'
@@ -77,7 +78,7 @@ function Header({ navOpen, setNavOpen }) {
           aria-label="GitHub repository"
           className={iconButtonVariants({ variant: 'ghost', size: 'md' })}
         >
-          <Github className="size-5" />
+          <GitHubIcon className="size-5" />
         </a>
         <IconButton
           label={navOpen ? 'Close navigation' : 'Open navigation'}
