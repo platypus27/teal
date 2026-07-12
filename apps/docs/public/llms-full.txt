@@ -179,7 +179,7 @@ export function ButtonDemo() {
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
-| `variant` | `"danger" \| "primary" \| "secondary" \| "ghost" \| null` | `"primary"` | Visual hierarchy of the action. |
+| `variant` | `"danger" \| "glass" \| "primary" \| "secondary" \| "ghost" \| null` | `"primary"` | Visual hierarchy of the action. "glass" renders a translucent, blurred surface. |
 | `size` | `"sm" \| "md" \| "lg" \| null` | `"md"` | Height and horizontal padding. |
 | `asChild` | `boolean` | `false` | Merges the component onto its child element instead of rendering the default element (Radix Slot). Cannot be combined with disabled or loading. |
 | `loading` | `boolean` | `false` | Disables the button, prepends a spinner, and sets aria-busy. |
@@ -189,7 +189,7 @@ export function ButtonDemo() {
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `label` (required) | `string` | - | Accessible label applied as `aria-label`; also used as the default tooltip text. |
-| `variant` | `"danger" \| "secondary" \| "ghost" \| null` | `"ghost"` | Visual treatment of the icon button. |
+| `variant` | `"danger" \| "glass" \| "secondary" \| "ghost" \| null` | `"ghost"` | Visual treatment of the icon button. "glass" renders a translucent, blurred surface. |
 | `size` | `"sm" \| "md" \| "lg" \| null` | `"md"` | Hit-target size; the icon scales with it. |
 
 ## Accessibility
@@ -313,12 +313,14 @@ export function InputDemo() {
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
+| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque input. |
 | `size` | `"sm" \| "md" \| "lg" \| null` | `"md"` | Height and text size of the control. |
 
 ### TextArea
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
+| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque textarea. |
 | `size` | `"sm" \| "md" \| "lg" \| null` | `"md"` | Text size of the control. |
 
 ## Accessibility
@@ -394,6 +396,7 @@ export function SelectDemo() {
 | `className` | `string` | - | Additional classes merged onto the trigger. |
 | `defaultValue` | `string` | - | Initial value when uncontrolled. |
 | `disabled` | `boolean` | - | Prevents opening the select. |
+| `glass` | `boolean` | `false` | Renders a translucent, blurred trigger and content surface. |
 | `name` | `string` | - | Form field name submitted with the selected value. |
 | `onValueChange` | `(value: string) => void` | - | Called with the new value when selection changes. |
 | `options` (required) | `SelectOption[]` | - | Options rendered in the listbox. |
@@ -606,6 +609,7 @@ export function CardDemo() {
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ElementType` | `div` | Element rendered by the card; use an interactive element for clickable cards. |
+| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque card. |
 | `disabled` | `boolean` | - | Applies disabled styling and blocks interaction on interactive cards. |
 | `type` | `enum` | - | Button type used when the card renders an interactive element. |
 
@@ -680,6 +684,7 @@ export function BadgeDemo() {
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `tone` | `"neutral" \| "info" \| "success" \| "warning" \| "danger" \| null` | `"neutral"` | Semantic color treatment. |
+| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of a solid tone background. |
 
 ## Accessibility
 
@@ -764,6 +769,7 @@ export function DialogDemo() {
 | `defaultOpen` | `boolean` | - | Initial open state when uncontrolled. |
 | `description` | `ReactNode` | - | Supporting text rendered under the title. |
 | `footer` | `ReactNode` | - | Action area rendered at the bottom of the dialog. |
+| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque dialog. |
 | `onOpenChange` | `(open: boolean) => void` | - | Called when the dialog opens or closes. |
 | `open` | `boolean` | - | Controlled open state. |
 | `size` | `enum` | `md` | Width of the dialog surface. |
@@ -865,6 +871,7 @@ export function TooltipDemo() {
 | `className` | `string` | - | Additional classes merged onto the tooltip content. |
 | `content` (required) | `ReactNode` | - | Text rendered inside the tooltip. |
 | `delayDuration` | `number` | `300` | Delay in milliseconds before the tooltip opens. |
+| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque tooltip. |
 | `side` | `enum` | `top` | Preferred side of the trigger for the tooltip. |
 
 ## Accessibility
@@ -941,6 +948,7 @@ export function MenuDemo() {
 | --- | --- | --- | --- |
 | `align` | `enum` | `end` | Horizontal alignment of the menu relative to the trigger. |
 | `className` | `string` | - | Additional classes merged onto the menu content. |
+| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque menu. |
 | `items` (required) | `MenuItem[]` | - | Items rendered in the menu. |
 | `label` | `string` | - | Accessible name for the menu. |
 | `trigger` (required) | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | - | Element that opens the menu; receives trigger props automatically. |
@@ -1021,6 +1029,7 @@ export function PopoverDemo() {
 | `children` (required) | `ReactNode` | - | Content rendered inside the popover surface. |
 | `className` | `string` | - | Additional classes merged onto the popover content. |
 | `defaultOpen` | `boolean` | - | Initial open state when uncontrolled. |
+| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque popover. |
 | `onOpenChange` | `(open: boolean) => void` | - | Called when the popover opens or closes. |
 | `open` | `boolean` | - | Controlled open state. |
 | `side` | `enum` | `bottom` | Side of the trigger the content opens on. |
@@ -1140,6 +1149,7 @@ export function EmptyStateDemo() {
 | --- | --- | --- | --- |
 | `action` | `ReactNode` | - | Call to action rendered below the description. |
 | `description` | `ReactNode` | - | Supporting text that explains the empty state. |
+| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque panel. |
 | `icon` | `ReactNode` | - | Icon rendered above the title. |
 | `title` (required) | `ReactNode` | - | Short heading for the empty state. |
 
@@ -1196,6 +1206,7 @@ export function LoadingDemo() {
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
+| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque panel. |
 | `label` | `string` | `Loading` | Accessible label announced by screen readers while the region is loading. |
 
 ### Spinner
@@ -1282,6 +1293,7 @@ export function TabsDemo() {
 | --- | --- | --- | --- |
 | `aria-label` (required) | `string` | - | Accessible name for the tab list. |
 | `className` | `string` | - | Additional classes merged onto the tabs root. |
+| `glass` | `boolean` | `false` | Renders a translucent, blurred tab list instead of an opaque one. |
 | `defaultValue` | `string` | - | Initially active tab when uncontrolled. |
 | `items` (required) | `TabItem[]` | - | Tabs rendered by the component. |
 | `onValueChange` | `(value: string) => void` | - | Called with the new value when the active tab changes. |
@@ -1415,6 +1427,256 @@ export function PageHeaderDemo() {
 
 ---
 
+# Vertical Nav
+
+A compound vertical navigation with icon-rail and full-text modes and glass or solid variants.
+
+## Usage
+
+```js
+import { VerticalNav, VerticalNavBrand, VerticalNavList, VerticalNavSection, VerticalNavItem, VerticalNavFooter } from '@kryv/teal'
+```
+
+```jsx
+<VerticalNav mode="rail" variant="glass">
+  <VerticalNavBrand>...</VerticalNavBrand>
+  <VerticalNavList>
+    <VerticalNavSection label="Workspace">
+      <VerticalNavItem active icon={<LayoutDashboard />}>Overview</VerticalNavItem>
+    </VerticalNavSection>
+  </VerticalNavList>
+  <VerticalNavFooter>...</VerticalNavFooter>
+</VerticalNav>
+```
+
+## Examples
+
+### Rail and full modes
+
+Rail mode collapses to an icon strip and expands on hover or keyboard focus. Full mode shows labels always.
+
+```jsx
+import { FolderKanban, LayoutDashboard, Settings, Users } from 'lucide-react'
+import { VerticalNav, VerticalNavBrand, VerticalNavFooter, VerticalNavItem, VerticalNavList, VerticalNavSection } from '@kryv/teal'
+
+export function VerticalNavDemo() {
+  return (
+    <div className="grid w-full gap-4 sm:grid-cols-2">
+      <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
+        <VerticalNav mode="rail" variant="glass" className="absolute">
+          <VerticalNavBrand>
+            <span className="flex w-16 items-center justify-center">
+              <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
+                <LayoutDashboard className="size-5" />
+              </span>
+            </span>
+          </VerticalNavBrand>
+          <VerticalNavList>
+            <VerticalNavSection label="Workspace">
+              <VerticalNavItem active icon={<LayoutDashboard className="size-5" />}>
+                Overview
+              </VerticalNavItem>
+              <VerticalNavItem icon={<FolderKanban className="size-5" />}>Projects</VerticalNavItem>
+              <VerticalNavItem icon={<Users className="size-5" />}>Team</VerticalNavItem>
+            </VerticalNavSection>
+          </VerticalNavList>
+          <VerticalNavFooter>
+            <VerticalNavItem icon={<Settings className="size-5" />}>Settings</VerticalNavItem>
+          </VerticalNavFooter>
+        </VerticalNav>
+      </div>
+
+      <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
+        <VerticalNav mode="full" variant="solid" className="absolute">
+          <VerticalNavBrand>
+            <span className="flex w-16 items-center justify-center">
+              <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
+                <LayoutDashboard className="size-5" />
+              </span>
+            </span>
+            <span className="font-headline text-lg font-extrabold leading-none">Teal</span>
+          </VerticalNavBrand>
+          <VerticalNavList>
+            <VerticalNavSection label="Workspace">
+              <VerticalNavItem active icon={<LayoutDashboard className="size-5" />}>
+                Overview
+              </VerticalNavItem>
+              <VerticalNavItem icon={<FolderKanban className="size-5" />}>Projects</VerticalNavItem>
+              <VerticalNavItem icon={<Users className="size-5" />}>Team</VerticalNavItem>
+            </VerticalNavSection>
+          </VerticalNavList>
+          <VerticalNavFooter>
+            <VerticalNavItem icon={<Settings className="size-5" />}>Settings</VerticalNavItem>
+          </VerticalNavFooter>
+        </VerticalNav>
+      </div>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### VerticalNav
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `as` | `ElementType` | `a` | Element rendered by the nav container; defaults to `<nav>`. |
+| `variant` | `"solid" \| "glass"` | `"solid"` | Solid renders an opaque bar with a border; glass floats with a translucent backdrop blur. |
+| `mode` | `"rail" \| "full"` | `"full"` | Rail collapses to an icon strip that expands on hover or keyboard focus. Full shows labels always. |
+| `side` | `"left" \| "right"` | `"left"` | Which edge the nav anchors to. Solid variants draw a border on the inner side. |
+
+### VerticalNavBrand
+
+_This module forwards native element properties._
+
+### VerticalNavList
+
+_This module forwards native element properties._
+
+### VerticalNavSection
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `string` | - | Uppercase heading shown above the items. Hidden in rail mode until the nav expands. |
+
+### VerticalNavItem
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `as` | `ElementType` | `a` | Element rendered by the item; defaults to `<a>`. Use `as={Link}` for router integration. |
+| `active` | `boolean` | `false` | Marks the item as the current page and sets aria-current="page". |
+| `icon` | `ReactNode` | - | Icon element shown before the label. Always visible, even in rail mode. |
+
+### VerticalNavFooter
+
+_This module forwards native element properties._
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `Tab` | Moves focus between nav items. In rail mode, focusing an item expands the nav. |
+| `Enter` | Activates the focused item link. |
+
+- Rail mode expands on hover and on focus-within, so keyboard users can read labels that are hidden from mouse users until hover.
+- The active item sets aria-current="page" to mark the current location for screen readers.
+- Use the icon prop for the leading icon so it stays visible in rail mode; only the label fades.
+
+---
+
+# Top Bar
+
+A sticky top bar with glass and solid variants and brand, search, and action slots.
+
+## Usage
+
+```js
+import { TopBar, TopBarBrand, TopBarSearch, TopBarActions } from '@kryv/teal'
+```
+
+```jsx
+<TopBar variant="solid" sticky>
+  <TopBarBrand>...</TopBarBrand>
+  <TopBarSearch>...</TopBarSearch>
+  <TopBarActions>...</TopBarActions>
+</TopBar>
+```
+
+## Examples
+
+### Solid and glass
+
+Solid renders an opaque bar; glass adds a translucent backdrop blur.
+
+```jsx
+import { Github, Palette, Search, Sun } from 'lucide-react'
+import { IconButton, TopBar, TopBarActions, TopBarBrand, TopBarSearch } from '@kryv/teal'
+
+export function TopBarDemo() {
+  return (
+    <div className="w-full space-y-4">
+      <TopBar variant="solid" sticky={false}>
+        <TopBarBrand>
+          <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
+            <Palette className="size-4" />
+          </span>
+          <span className="font-headline font-extrabold">Teal</span>
+        </TopBarBrand>
+        <TopBarSearch>
+          <button
+            type="button"
+            className="flex h-10 w-full max-w-sm items-center gap-2 rounded-xl border border-outline-variant/40 bg-surface px-3 text-sm text-on-surface-variant"
+          >
+            <Search className="size-4" />
+            Search the docs...
+          </button>
+        </TopBarSearch>
+        <TopBarActions>
+          <IconButton label="GitHub">
+            <Github />
+          </IconButton>
+          <IconButton label="Switch theme">
+            <Sun />
+          </IconButton>
+        </TopBarActions>
+      </TopBar>
+
+      <TopBar variant="glass" sticky={false} className="rounded-xl">
+        <TopBarBrand>
+          <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
+            <Palette className="size-4" />
+          </span>
+          <span className="font-headline font-extrabold">Teal</span>
+        </TopBarBrand>
+        <TopBarActions>
+          <IconButton label="GitHub">
+            <Github />
+          </IconButton>
+          <IconButton label="Switch theme">
+            <Sun />
+          </IconButton>
+        </TopBarActions>
+      </TopBar>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### TopBar
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `as` | `ElementType` | `header` | Element rendered by the top bar; defaults to `<header>`. |
+| `variant` | `"solid" \| "glass"` | `"solid"` | Solid renders an opaque background; glass adds a translucent backdrop blur. |
+| `sticky` | `boolean` | `true` | When true, the bar sticks to the top of the scrolling container. |
+
+### TopBarBrand
+
+_This module forwards native element properties._
+
+### TopBarSearch
+
+_This module forwards native element properties._
+
+### TopBarActions
+
+_This module forwards native element properties._
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `Tab` | Moves focus through the brand, search trigger, and action buttons in order. |
+
+- Renders a <header> element by default; use the as prop to change the element if needed.
+- Keep action buttons labeled with aria-label when they contain only icons.
+- The sticky variant keeps the bar in view during scrolling; use sticky={false} for an inline bar.
+
+---
+
 # Table
 
 Accessible data presentation driven by column definitions, density, loading, and empty state.
@@ -1480,10 +1742,11 @@ export function TableDemo() {
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `caption` (required) | `string` | - | Accessible caption describing the table, announced to screen readers. |
-| `className` | `string` | - | Extra classes applied to the scroll container wrapping the table. |
+| `className` | `string` | - | - |
 | `columns` (required) | `TableColumn<Row>[]` | - | Column definitions rendered in header order. |
 | `density` | `enum` | `comfortable` | Vertical padding of cells. |
 | `empty` | `ReactNode` | `No results` | Content shown when `rows` is empty and the table is not loading. |
+| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque table. |
 | `getRowKey` (required) | `(row: Row) => string` | - | Returns a stable, unique key for each row. |
 | `loading` | `boolean` | `false` | Renders skeleton rows in place of data. |
 | `loadingLabel` | `string` | `Loading table data` | Accessible label announced while skeleton rows are shown. |

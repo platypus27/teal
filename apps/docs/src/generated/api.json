@@ -9,6 +9,13 @@
         "name": "tone",
         "required": false,
         "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\" | null"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "glass",
+        "required": false,
+        "type": "boolean | null"
       }
     ]
   },
@@ -21,7 +28,7 @@
         "description": "",
         "name": "variant",
         "required": false,
-        "type": "\"danger\" | \"primary\" | \"secondary\" | \"ghost\" | null"
+        "type": "\"danger\" | \"glass\" | \"primary\" | \"secondary\" | \"ghost\" | null"
       },
       {
         "defaultValue": "",
@@ -62,7 +69,7 @@
         "description": "",
         "name": "variant",
         "required": false,
-        "type": "\"danger\" | \"secondary\" | \"ghost\" | null"
+        "type": "\"danger\" | \"glass\" | \"secondary\" | \"ghost\" | null"
       },
       {
         "defaultValue": "",
@@ -83,6 +90,13 @@
         "name": "as",
         "required": false,
         "type": "ElementType"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Renders a translucent, blurred surface instead of an opaque card.",
+        "name": "glass",
+        "required": false,
+        "type": "boolean"
       },
       {
         "defaultValue": "",
@@ -206,6 +220,13 @@
         "type": "ReactNode"
       },
       {
+        "defaultValue": "false",
+        "description": "Renders a translucent, blurred surface instead of an opaque dialog.",
+        "name": "glass",
+        "required": false,
+        "type": "boolean"
+      },
+      {
         "defaultValue": "",
         "description": "Called when the dialog opens or closes.",
         "name": "onOpenChange",
@@ -252,6 +273,13 @@
         "name": "description",
         "required": false,
         "type": "ReactNode"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Renders a translucent, blurred surface instead of an opaque panel.",
+        "name": "glass",
+        "required": false,
+        "type": "boolean"
       },
       {
         "defaultValue": "",
@@ -335,6 +363,13 @@
       {
         "defaultValue": "",
         "description": "",
+        "name": "glass",
+        "required": false,
+        "type": "boolean | null"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
         "name": "size",
         "required": false,
         "type": "\"sm\" | \"md\" | \"lg\" | null"
@@ -345,6 +380,13 @@
     "description": "",
     "displayName": "TextArea",
     "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "glass",
+        "required": false,
+        "type": "boolean | null"
+      },
       {
         "defaultValue": "",
         "description": "",
@@ -378,6 +420,13 @@
     "description": "",
     "displayName": "LoadingState",
     "props": [
+      {
+        "defaultValue": "false",
+        "description": "Renders a translucent, blurred surface instead of an opaque panel.",
+        "name": "glass",
+        "required": false,
+        "type": "boolean"
+      },
       {
         "defaultValue": "Loading",
         "description": "Accessible label announced by screen readers while the region is loading.",
@@ -429,6 +478,13 @@
         "name": "className",
         "required": false,
         "type": "string"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Renders a translucent, blurred surface instead of an opaque menu.",
+        "name": "glass",
+        "required": false,
+        "type": "boolean"
       },
       {
         "defaultValue": "",
@@ -554,6 +610,13 @@
         "type": "boolean"
       },
       {
+        "defaultValue": "false",
+        "description": "Renders a translucent, blurred surface instead of an opaque popover.",
+        "name": "glass",
+        "required": false,
+        "type": "boolean"
+      },
+      {
         "defaultValue": "",
         "description": "Called when the popover opens or closes.",
         "name": "onOpenChange",
@@ -619,6 +682,13 @@
         "defaultValue": "",
         "description": "Prevents opening the select.",
         "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Renders a translucent, blurred trigger and content surface.",
+        "name": "glass",
         "required": false,
         "type": "boolean"
       },
@@ -733,7 +803,7 @@
       },
       {
         "defaultValue": "",
-        "description": "Extra classes applied to the scroll container wrapping the table.",
+        "description": "",
         "name": "className",
         "required": false,
         "type": "string"
@@ -758,6 +828,13 @@
         "name": "empty",
         "required": false,
         "type": "ReactNode"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Renders a translucent, blurred surface instead of an opaque table.",
+        "name": "glass",
+        "required": false,
+        "type": "boolean"
       },
       {
         "defaultValue": "",
@@ -806,6 +883,13 @@
         "name": "className",
         "required": false,
         "type": "string"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Renders a translucent, blurred tab list instead of an opaque one.",
+        "name": "glass",
+        "required": false,
+        "type": "boolean"
       },
       {
         "defaultValue": "",
@@ -864,6 +948,13 @@
       },
       {
         "defaultValue": "",
+        "description": "Renders a translucent, blurred surface instead of an opaque toast.",
+        "name": "glass",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
         "description": "",
         "name": "title",
         "required": true,
@@ -916,6 +1007,13 @@
         "type": "number"
       },
       {
+        "defaultValue": "false",
+        "description": "Renders a translucent, blurred surface instead of an opaque tooltip.",
+        "name": "glass",
+        "required": false,
+        "type": "boolean"
+      },
+      {
         "defaultValue": "top",
         "description": "Preferred side of the trigger for the tooltip.",
         "name": "side",
@@ -923,5 +1021,136 @@
         "type": "enum"
       }
     ]
+  },
+  {
+    "description": "",
+    "displayName": "TopBar",
+    "props": [
+      {
+        "defaultValue": "header",
+        "description": "Element rendered by the top bar; defaults to `<header>`.",
+        "name": "as",
+        "required": false,
+        "type": "ElementType"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "variant",
+        "required": false,
+        "type": "\"glass\" | \"solid\" | null"
+      },
+      {
+        "defaultValue": "true",
+        "description": "",
+        "name": "sticky",
+        "required": false,
+        "type": "boolean | null"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "TopBarBrand",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "TopBarSearch",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "TopBarActions",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "VerticalNav",
+    "props": [
+      {
+        "defaultValue": "a",
+        "description": "Element rendered by the nav container; defaults to `<nav>`.",
+        "name": "as",
+        "required": false,
+        "type": "ElementType"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "variant",
+        "required": false,
+        "type": "\"glass\" | \"solid\" | null"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "mode",
+        "required": false,
+        "type": "\"rail\" | \"full\" | null"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "side",
+        "required": false,
+        "type": "\"right\" | \"left\" | null"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "VerticalNavBrand",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "VerticalNavList",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "VerticalNavSection",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Uppercase heading shown above the items. Hidden in rail mode until the nav expands.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "VerticalNavItem",
+    "props": [
+      {
+        "defaultValue": "a",
+        "description": "Element rendered by the item; defaults to `<a>`. Use `as={Link}` for router integration.",
+        "name": "as",
+        "required": false,
+        "type": "ElementType"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Marks the item as the current page; sets `aria-current=\"page\"`.",
+        "name": "active",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Icon element shown before the label. Always visible, even in rail mode.",
+        "name": "icon",
+        "required": false,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "VerticalNavFooter",
+    "props": []
   }
 ]
