@@ -1,3 +1,4 @@
+export { glassSurface } from './glass'
 export { Button, IconButton, buttonVariants, iconButtonVariants } from './Button'
 export type { ButtonProps, IconButtonProps } from './Button'
 export { Field, Label } from './Field'
@@ -38,3 +39,9 @@ export { Table } from './Table'
 export type { TableColumn, TableProps } from './Table'
 export { Pagination } from './Pagination'
 export type { PaginationProps } from './Pagination'
+
+export { VerticalNav, VerticalNavBrand, VerticalNavList, VerticalNavSection, VerticalNavItem, VerticalNavFooter, verticalNavVariants } from './VerticalNav'
+export type { VerticalNavProps, VerticalNavSectionProps, VerticalNavItemProps } from './VerticalNav'
+
+export { TopBar, TopBarBrand, TopBarSearch, TopBarActions, topBarVariants } from './TopBar'
+export type { TopBarProps } from './TopBar'
