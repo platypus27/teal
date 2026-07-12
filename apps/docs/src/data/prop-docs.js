@@ -13,23 +13,45 @@ const asChildDescription =
 /** @type {Record<string, Record<string, { description?: string, type?: string, defaultValue?: string, required?: boolean }>>} */
 export const propDocs = {
   Button: {
-    variant: { description: 'Visual hierarchy of the action.', defaultValue: '"primary"' },
+    variant: {
+      description:
+        'Visual hierarchy of the action. "glass" renders a translucent, blurred surface.',
+      defaultValue: '"primary"',
+    },
     size: { description: 'Height and horizontal padding.', defaultValue: '"md"' },
     loading: { description: 'Disables the button, prepends a spinner, and sets aria-busy.' },
     asChild: { description: `${asChildDescription} Cannot be combined with disabled or loading.` },
   },
   IconButton: {
-    variant: { description: 'Visual treatment of the icon button.', defaultValue: '"ghost"' },
+    variant: {
+      description: 'Visual treatment of the icon button. "glass" renders a translucent, blurred surface.',
+      defaultValue: '"ghost"',
+    },
     size: { description: 'Hit-target size; the icon scales with it.', defaultValue: '"md"' },
   },
   Badge: {
     tone: { description: 'Semantic color treatment.', defaultValue: '"neutral"' },
+    glass: {
+      type: 'boolean',
+      defaultValue: 'false',
+      description: 'Renders a translucent, blurred surface instead of a solid tone background.',
+    },
   },
   Input: {
     size: { description: 'Height and text size of the control.', defaultValue: '"md"' },
+    glass: {
+      type: 'boolean',
+      defaultValue: 'false',
+      description: 'Renders a translucent, blurred surface instead of an opaque input.',
+    },
   },
   TextArea: {
     size: { description: 'Text size of the control.', defaultValue: '"md"' },
+    glass: {
+      type: 'boolean',
+      defaultValue: 'false',
+      description: 'Renders a translucent, blurred surface instead of an opaque textarea.',
+    },
   },
   Label: {
     asChild: { description: asChildDescription },
@@ -98,6 +120,42 @@ export const propDocs = {
   },
   Tooltip: {
     className: { description: 'Additional classes merged onto the tooltip content.' },
+  },
+  VerticalNav: {
+    variant: {
+      type: '"solid" | "glass"',
+      defaultValue: '"solid"',
+      description: 'Solid renders an opaque bar with a border; glass floats with a translucent backdrop blur.',
+    },
+    mode: {
+      type: '"rail" | "full"',
+      defaultValue: '"full"',
+      description: 'Rail collapses to an icon strip that expands on hover or keyboard focus. Full shows labels always.',
+    },
+    side: {
+      type: '"left" | "right"',
+      defaultValue: '"left"',
+      description: 'Which edge the nav anchors to. Solid variants draw a border on the inner side.',
+    },
+  },
+  VerticalNavItem: {
+    active: { type: 'boolean', description: 'Marks the item as the current page and sets aria-current="page".' },
+    icon: {
+      type: 'ReactNode',
+      description: 'Icon element shown before the label. Always visible, even in rail mode.',
+    },
+  },
+  TopBar: {
+    variant: {
+      type: '"solid" | "glass"',
+      defaultValue: '"solid"',
+      description: 'Solid renders an opaque background; glass adds a translucent backdrop blur.',
+    },
+    sticky: {
+      type: 'boolean',
+      defaultValue: 'true',
+      description: 'When true, the bar sticks to the top of the scrolling container.',
+    },
   },
 }
 

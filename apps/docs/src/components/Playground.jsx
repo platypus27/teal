@@ -4,8 +4,10 @@ import { RotateCcw } from 'lucide-react'
 import {
   Badge,
   Button,
+  Card,
   Checkbox,
   Dialog,
+  EmptyState,
   IconButton,
   Input,
   Pagination,
@@ -17,7 +19,7 @@ import {
 import { CodeBlock } from './CodeBlock.jsx'
 import { coerceValue, generateJsx, resolveControls } from '../lib/playground.js'
 
-const registry = { Badge, Button, Checkbox, Dialog, Input, Pagination, Progress, Select, Separator, Switch }
+const registry = { Badge, Button, Card, Checkbox, Dialog, EmptyState, Input, Pagination, Progress, Select, Separator, Switch }
 
 function PlaygroundControl({ control, value, onChange }) {
   if (control.kind === 'boolean') {

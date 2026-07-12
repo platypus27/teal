@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Dialog, Progress, Separator } from '@kryv/teal'
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Dialog, Progress, Separator } from '@kryv/teal'
 import { BadgeDemo } from '../demos/BadgeDemo.jsx'
 import badgeSource from '../demos/BadgeDemo.jsx?raw'
 import { ButtonDemo } from '../demos/ButtonDemo.jsx'
@@ -40,9 +40,13 @@ import { ToastDemo } from '../demos/ToastDemo.jsx'
 import toastSource from '../demos/ToastDemo.jsx?raw'
 import { TooltipDemo } from '../demos/TooltipDemo.jsx'
 import tooltipSource from '../demos/TooltipDemo.jsx?raw'
+import { TopBarDemo } from '../demos/TopBarDemo.jsx'
+import topBarSource from '../demos/TopBarDemo.jsx?raw'
+import { VerticalNavDemo } from '../demos/VerticalNavDemo.jsx'
+import verticalNavSource from '../demos/VerticalNavDemo.jsx?raw'
 import { moduleGroups } from './module-meta.js'
 
-function DialogPlayground({ description, size, title }) {
+function DialogPlayground({ description, glass, size, title }) {
   const [open, setOpen] = useState(false)
   return (
     <>
@@ -53,6 +57,7 @@ function DialogPlayground({ description, size, title }) {
         title={title}
         description={description || undefined}
         size={size}
+        glass={glass}
       >
         <p>Project Orion will leave the active workspace and its reports will be archived.</p>
       </Dialog>
@@ -64,6 +69,7 @@ function dialogCode(values) {
   const props = ['open={open}', 'onOpenChange={setOpen}', `title="${values.title}"`]
   if (values.description) props.push(`description="${values.description}"`)
   if (values.size !== 'md') props.push(`size="${values.size}"`)
+  if (values.glass) props.push('glass')
   return [
     'const [open, setOpen] = useState(false)',
     '',
@@ -159,6 +165,22 @@ const extras = {
     examples: [{ Demo: SwitchDemo, source: switchSource }],
   },
   card: {
+    playground: {
+      component: 'Card',
+      controls: [{ name: 'glass', kind: 'boolean' }],
+      render: (props) => (
+        <Card {...props} className="w-72">
+          <CardHeader>
+            <CardTitle>Project Orion</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CardDescription>Incident response workspace with 4 active reports.</CardDescription>
+          </CardContent>
+        </Card>
+      ),
+      code: (values) =>
+        `<Card${values.glass ? ' glass' : ''}>\n  <CardHeader>\n    <CardTitle>Project Orion</CardTitle>\n  </CardHeader>\n  <CardContent>\n    <CardDescription>Incident response workspace with 4 active reports.</CardDescription>\n  </CardContent>\n</Card>`,
+    },
     examples: [{ Demo: CardDemo, source: cardSource }],
   },
   badge: {
@@ -166,6 +188,7 @@ const extras = {
       component: 'Badge',
       controls: [
         { name: 'tone' },
+        { name: 'glass', kind: 'boolean' },
         { name: 'children', kind: 'text', defaultValue: 'Deployed', required: true },
       ],
     },
@@ -176,6 +199,7 @@ const extras = {
       component: 'Dialog',
       controls: [
         { name: 'size', kind: 'select', options: ['sm', 'md', 'lg'], defaultValue: 'md' },
+        { name: 'glass', kind: 'boolean' },
         { name: 'title', kind: 'text', defaultValue: 'Archive project?', required: true },
         { name: 'description', kind: 'text', defaultValue: 'The project can be restored later.' },
       ],
@@ -197,6 +221,13 @@ const extras = {
     examples: [{ Demo: ToastDemo, source: toastSource }],
   },
   'empty-state': {
+    playground: {
+      component: 'EmptyState',
+      staticProps: { title: 'No results found', description: 'Try adjusting your search terms.' },
+      controls: [{ name: 'glass', kind: 'boolean' }],
+      code: (values) =>
+        `<EmptyState${values.glass ? ' glass' : ''} title="No results found" description="Try adjusting your search terms." />`,
+    },
     examples: [{ Demo: EmptyStateDemo, source: emptyStateSource }],
   },
   loading: {
@@ -231,6 +262,12 @@ const extras = {
   },
   'page-header': {
     examples: [{ Demo: PageHeaderDemo, source: pageHeaderSource }],
+  },
+  'vertical-nav': {
+    examples: [{ Demo: VerticalNavDemo, source: verticalNavSource }],
+  },
+  'top-bar': {
+    examples: [{ Demo: TopBarDemo, source: topBarSource }],
   },
   table: {
     examples: [{ Demo: TableDemo, source: tableSource }],

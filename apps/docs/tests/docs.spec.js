@@ -4,11 +4,11 @@ import AxeBuilder from '@axe-core/playwright'
 const moduleIds = [
   'button', 'field', 'input', 'select', 'checkbox', 'switch', 'card', 'badge',
   'dialog', 'tooltip', 'menu', 'popover', 'toast', 'empty-state', 'loading',
-  'tabs', 'pagination', 'page-header', 'table', 'separator',
+  'tabs', 'pagination', 'page-header', 'vertical-nav', 'top-bar', 'table', 'separator',
 ]
 
 test('every documentation module has no accessibility violations', async ({ page }) => {
-  test.slow() // Visits all 20 module pages in one test
+  test.slow() // Visits all 22 module pages in one test
   for (const moduleId of moduleIds) {
     await page.goto(`/modules/${moduleId}`)
 

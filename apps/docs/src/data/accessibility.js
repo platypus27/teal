@@ -200,4 +200,25 @@ export const accessibility = {
       'Use decorative separators between visually obvious groups; keep semantic ones where the structure matters.',
     ],
   },
+  'vertical-nav': {
+    keyboard: [
+      { keys: ['Tab'], action: 'Moves focus between nav items. In rail mode, focusing an item expands the nav.' },
+      { keys: ['Enter'], action: 'Activates the focused item link.' },
+    ],
+    notes: [
+      'Rail mode expands on hover and on focus-within, so keyboard users can read labels that are hidden from mouse users until hover.',
+      'The active item sets aria-current="page" to mark the current location for screen readers.',
+      'Use the icon prop for the leading icon so it stays visible in rail mode; only the label fades.',
+    ],
+  },
+  'top-bar': {
+    keyboard: [
+      { keys: ['Tab'], action: 'Moves focus through the brand, search trigger, and action buttons in order.' },
+    ],
+    notes: [
+      'Renders a <header> element by default; use the as prop to change the element if needed.',
+      'Keep action buttons labeled with aria-label when they contain only icons.',
+      'The sticky variant keeps the bar in view during scrolling; use sticky={false} for an inline bar.',
+    ],
+  },
 }

@@ -33,6 +33,8 @@ const files = [
   'Tabs.tsx',
   'Toast.tsx',
   'Tooltip.tsx',
+  'TopBar.tsx',
+  'VerticalNav.tsx',
 ].map((file) => resolve(source, file))
 
 const docs = parser.parse(files).map((doc) => ({

@@ -351,6 +351,48 @@ toast({ title: 'Changes saved', tone: 'success' })`,
           },
         ],
       },
+      {
+        id: 'vertical-nav',
+        name: 'Vertical Nav',
+        apiNames: ['VerticalNav', 'VerticalNavBrand', 'VerticalNavList', 'VerticalNavSection', 'VerticalNavItem', 'VerticalNavFooter'],
+        imports: ['VerticalNav', 'VerticalNavBrand', 'VerticalNavList', 'VerticalNavSection', 'VerticalNavItem', 'VerticalNavFooter'],
+        description:
+          'A compound vertical navigation with icon-rail and full-text modes and glass or solid variants.',
+        usage: `<VerticalNav mode="rail" variant="glass">
+  <VerticalNavBrand>...</VerticalNavBrand>
+  <VerticalNavList>
+    <VerticalNavSection label="Workspace">
+      <VerticalNavItem active icon={<LayoutDashboard />}>Overview</VerticalNavItem>
+    </VerticalNavSection>
+  </VerticalNavList>
+  <VerticalNavFooter>...</VerticalNavFooter>
+</VerticalNav>`,
+        examples: [
+          {
+            title: 'Rail and full modes',
+            description:
+              'Rail mode collapses to an icon strip and expands on hover or keyboard focus. Full mode shows labels always.',
+          },
+        ],
+      },
+      {
+        id: 'top-bar',
+        name: 'Top Bar',
+        apiNames: ['TopBar', 'TopBarBrand', 'TopBarSearch', 'TopBarActions'],
+        imports: ['TopBar', 'TopBarBrand', 'TopBarSearch', 'TopBarActions'],
+        description: 'A sticky top bar with glass and solid variants and brand, search, and action slots.',
+        usage: `<TopBar variant="solid" sticky>
+  <TopBarBrand>...</TopBarBrand>
+  <TopBarSearch>...</TopBarSearch>
+  <TopBarActions>...</TopBarActions>
+</TopBar>`,
+        examples: [
+          {
+            title: 'Solid and glass',
+            description: 'Solid renders an opaque bar; glass adds a translucent backdrop blur.',
+          },
+        ],
+      },
     ],
   },
   {
