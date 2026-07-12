@@ -24,6 +24,26 @@ describe('Field', () => {
     )
     expect(screen.getByRole('textbox', { name: 'Notes' })).toBeInTheDocument()
   })
+
+  it('keeps generated ids unique and merges caller descriptions', () => {
+    render(
+      <div>
+        <Field label="First" description="First help">
+          <Input aria-describedby="caller-description" />
+        </Field>
+        <Field label="Second" description="Second help" invalid>
+          <Input />
+        </Field>
+        <p id="caller-description">Caller help</p>
+      </div>,
+    )
+
+    const first = screen.getByRole('textbox', { name: 'First' })
+    const second = screen.getByRole('textbox', { name: 'Second' })
+    expect(first.id).not.toBe(second.id)
+    expect(first).toHaveAccessibleDescription('Caller help First help')
+    expect(second).toHaveAttribute('aria-invalid', 'true')
+  })
 })
 
 describe('Select', () => {
@@ -86,5 +106,23 @@ describe('selection controls', () => {
     expect(control).toHaveAccessibleDescription('Receive security alerts')
     await user.click(control)
     expect(onCheckedChange).toHaveBeenCalledWith(true)
+  })
+
+  it('submits named native and Radix controls through a form', async () => {
+    const user = userEvent.setup()
+    const submit = vi.fn((event: React.FormEvent<HTMLFormElement>) => event.preventDefault())
+    render(
+      <form onSubmit={submit}>
+        <Field label="Email"><Input name="email" defaultValue="person@example.com" /></Field>
+        <Checkbox name="archived" label="Include archived" value="yes" defaultChecked />
+        <button type="submit">Submit</button>
+      </form>,
+    )
+
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
+    expect(submit).toHaveBeenCalledOnce()
+    const form = screen.getByRole('button', { name: 'Submit' }).closest('form') as HTMLFormElement
+    expect(new FormData(form).get('email')).toBe('person@example.com')
+    expect(new FormData(form).get('archived')).toBe('yes')
   })
 })

@@ -1,5 +1,6 @@
 services:
   docs:
+    image: ${TEAL_DOCS_IMAGE:-ghcr.io/platypus27/teal-docs:local}
     build:
       context: .
       dockerfile: apps/docs/Dockerfile

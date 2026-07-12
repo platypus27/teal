@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { useNavigate } from 'react-router-dom'
 import { ArrowRight, FileText, Search } from 'lucide-react'
 import { Dialog, Input } from '@kryv/teal'
-import { catalogGroups } from '../data/catalog.jsx'
+import { catalogGroups } from '../data/docs-module-registry.js'
 
 const RECENTS_KEY = 'teal-docs-recent-pages'
 const MAX_RESULTS = 8

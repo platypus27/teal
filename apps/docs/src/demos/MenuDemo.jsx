@@ -1,11 +1,11 @@
 import { IconButton, Menu } from '@kryv/teal'
 import { Archive, MoreVertical, Settings } from 'lucide-react'
 
-export function MenuDemo() {
+export function MenuDemo({ exampleIndex = 0 }) {
   return (
     <Menu
       trigger={
-        <IconButton label="Project actions">
+        <IconButton label={exampleIndex ? 'Additional actions' : 'Project actions'}>
           <MoreVertical />
         </IconButton>
       }

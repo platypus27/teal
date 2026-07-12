@@ -3,7 +3,7 @@ import * as SelectPrimitive from '@radix-ui/react-select'
 import { Check, ChevronDown } from 'lucide-react'
 import { cn } from './cn'
 import { fieldVariants } from './Input'
-import { mergeDescriptionIds, useFieldControl } from './Field'
+import { isAriaTrue, mergeDescriptionIds, useFormSemantics } from './form-semantics'
 
 export interface SelectOption {
   /** Prevents the option from being selected. */
@@ -20,6 +20,10 @@ export interface SelectProps {
   'aria-describedby'?: string
   /** Accessible name when there is no visible label. */
   'aria-label'?: string
+  /** Explicit id; otherwise Field or an internal id is used. */
+  id?: string
+  /** Marks the trigger invalid for form validation and screen readers. */
+  'aria-invalid'?: boolean | 'false' | 'true'
   className?: string
   /** Initial value when uncontrolled. */
   defaultValue?: string
@@ -45,9 +49,11 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
   {
     'aria-describedby': describedBy,
     'aria-label': ariaLabel,
+    'aria-invalid': invalid,
     className,
     defaultValue,
     disabled,
+    id,
     name,
     onValueChange,
     options,
@@ -58,11 +64,11 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
   },
   ref,
 ) {
-  const field = useFieldControl()
+  const semantics = useFormSemantics({ id, invalid: isAriaTrue(invalid), prefix: 'teal-select' })
   return (
     <SelectPrimitive.Root
-      {...(required !== undefined || field?.required !== undefined
-        ? { required: required ?? field?.required ?? false }
+      {...(required !== undefined || semantics.required
+        ? { required: semantics.required }
         : {})}
       {...(value !== undefined ? { value } : {})}
       {...(defaultValue !== undefined ? { defaultValue } : {})}
@@ -72,10 +78,10 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
     >
       <SelectPrimitive.Trigger
         ref={ref}
-        id={field?.controlId}
+        id={semantics.controlId}
         aria-label={ariaLabel}
-        aria-invalid={field?.invalid || undefined}
-        aria-describedby={mergeDescriptionIds(describedBy, field?.descriptionId, field?.errorId)}
+        aria-invalid={invalid ?? (semantics.invalid || undefined)}
+        aria-describedby={mergeDescriptionIds(describedBy, semantics.descriptionId, semantics.errorId)}
         className={cn(
           fieldVariants({ size }),
           'flex items-center justify-between gap-2 text-left data-[placeholder]:text-on-surface-variant',

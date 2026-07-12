@@ -12,9 +12,9 @@ npm install
 npm run verify
 ```
 
-`npm run verify` runs lint, typecheck, unit and browser tests, both workspace
-builds, and a pack dry-run of the published artifact. It must pass before a
-change is merged.
+`npm run verify` runs lint, typecheck, unit tests, generated-output checks, both
+workspace builds, and packed React consumer verification. Pull requests also
+run the four Playwright projects in the CI browser matrix.
 
 ## Workspace layout
 

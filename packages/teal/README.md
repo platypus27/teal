@@ -78,7 +78,7 @@ document.documentElement.classList.toggle('dark')
 
 ## Modules
 
-Twenty typed modules across seven groups:
+Twenty-two typed modules across seven groups:
 
 - **Actions** - Button, IconButton
 - **Forms** - Field, Input, TextArea, Select, Checkbox, Switch

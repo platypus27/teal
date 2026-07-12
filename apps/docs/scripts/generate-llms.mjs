@@ -36,7 +36,10 @@ const modules = moduleGroups.flatMap((group) => group.modules)
 
 const modulePages = modules.map((module) => ({
   ...module,
-  examples: module.examples.map((example) => ({ ...example, source: readDemo(module.id) })),
+  examples: module.examples.map((example) => ({
+    ...example,
+    source: readDemo(example.demo ?? module.id),
+  })),
 }))
 
 const recipePages = recipes.map((recipe) => ({
@@ -89,8 +92,23 @@ const fullSections = [
 
 const publicDir = join(root, 'public')
 mkdirSync(publicDir, { recursive: true })
-writeFileSync(join(publicDir, 'llms.txt'), indexLines.join('\n'))
-writeFileSync(join(publicDir, 'llms-full.txt'), fullSections.join('\n---\n\n'))
+const outputs = new Map([
+  [join(publicDir, 'llms.txt'), indexLines.join('\n')],
+  [join(publicDir, 'llms-full.txt'), fullSections.join('\n---\n\n')],
+])
+if (process.argv.includes('--check')) {
+  for (const [path, contents] of outputs) {
+    let current = ''
+    try {
+      current = readFileSync(path, 'utf8')
+    } catch {
+      // The comparison below reports a missing generated output as stale.
+    }
+    if (current !== contents) throw new Error(`${path.replace(`${root}/`, '')} is stale - run npm run generate:llms`)
+  }
+} else {
+  for (const [path, contents] of outputs) writeFileSync(path, contents)
+}
 
 console.log(`llms.txt: ${modules.length} modules indexed`)
 console.log(`llms-full.txt: ${fullSections.length} sections`)

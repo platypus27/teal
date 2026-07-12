@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { withCustomConfig } from 'react-docgen-typescript'
 
@@ -45,9 +45,15 @@ const docs = parser.parse(files).map((doc) => ({
     description: prop.description,
     name: prop.name,
     required: prop.required,
-    type: prop.type.name,
+    type: prop.name === 'as' ? 'ElementType' : prop.type.name,
   })),
 }))
 
 await mkdir(resolve(output, '..'), { recursive: true })
-await writeFile(output, `${JSON.stringify(docs, null, 2)}\n`)
+const contents = `${JSON.stringify(docs, null, 2)}\n`
+if (process.argv.includes('--check')) {
+  const current = await readFile(output, 'utf8').catch(() => '')
+  if (current !== contents) throw new Error('generated/api.json is stale - run npm run generate:api')
+} else {
+  await writeFile(output, contents)
+}

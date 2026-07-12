@@ -1,4 +1,18 @@
 {
   "version": "0.2.0",
-  "entries": []
+  "entries": [
+    {
+      "version": "0.2.0",
+      "groups": [
+        {
+          "label": "Historical baseline",
+          "items": [
+            "Public ESM package with React 18 and React 19 peer support.",
+            "22 typed modules with compiled styles, semantic tokens, and TypeScript declarations.",
+            "Responsive documentation with examples, playgrounds, recipes, and accessibility coverage."
+          ]
+        }
+      ]
+    }
+  ]
 }

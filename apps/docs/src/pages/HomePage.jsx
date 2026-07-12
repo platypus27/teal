@@ -1,9 +1,10 @@
+import { useState } from 'react'
 import { ArrowRight, Blocks, Keyboard, PackageCheck, Palette } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { Button, Card, CardDescription, CardTitle, Tabs } from '@kryv/teal'
+import { Badge, Button, Card, CardDescription, CardTitle, Dialog, Field, Input, Switch, Table, Tabs, toast } from '@kryv/teal'
 import { CodeBlock } from '../components/CodeBlock.jsx'
 import { Page, Section } from '../components/Page.jsx'
-import { catalogGroups } from '../data/catalog.jsx'
+import { catalogGroups } from '../data/docs-module-registry.js'
 import { installSteps, packageManagers, principles } from '../data/getting-started.js'
 import { gettingStartedMarkdown } from '../lib/markdown.js'
 
@@ -26,6 +27,18 @@ function Step({ number, title, description = undefined, children }) {
       {description ? <p className="text-sm leading-relaxed text-on-surface-variant">{description}</p> : null}
       {children}
     </div>
+  )
+}
+
+function PreviewDialog() {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>Preview dialog</Button>
+      <Dialog open={open} onOpenChange={setOpen} title="Unsaved changes" description="Review the values before leaving this workspace.">
+        <p className="text-sm text-on-surface-variant">The dialog owns focus, dismissal, and the close action.</p>
+      </Dialog>
+    </>
   )
 }
 
@@ -67,6 +80,50 @@ export function HomePage() {
       </Section>
 
       <Section
+        title="A real product surface"
+        description="Teal primitives are designed to compose into calm, information-dense workflows without hiding product behavior."
+      >
+        <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+          <Card className="p-0">
+            <div className="flex items-center justify-between border-b border-outline-variant/30 px-5 py-4">
+              <div>
+                <CardTitle>Review queue</CardTitle>
+                <CardDescription className="mt-1">Three items need a decision today.</CardDescription>
+              </div>
+              <Badge tone="warning">Needs review</Badge>
+            </div>
+            <Table
+              caption="Review queue"
+              rows={[
+                { id: 'orion', title: 'Suspicious sign-in cluster', owner: 'Avery', priority: 'Critical' },
+                { id: 'atlas', title: 'External integration request', owner: 'Morgan', priority: 'Medium' },
+              ]}
+              getRowKey={(row) => row.id}
+              columns={[
+                { key: 'title', header: 'Item', cell: (row) => <span className="font-medium">{row.title}</span> },
+                { key: 'owner', header: 'Owner', cell: (row) => row.owner },
+                { key: 'priority', header: 'Priority', cell: (row) => <Badge tone={row.priority === 'Critical' ? 'danger' : 'warning'}>{row.priority}</Badge> },
+              ]}
+            />
+          </Card>
+          <Card>
+            <CardTitle>Workspace settings</CardTitle>
+            <CardDescription className="mt-2">A form seam keeps labels, help text, and state together.</CardDescription>
+            <div className="mt-5 grid gap-4">
+              <Field label="Workspace name" description="Shown in the global navigation">
+                <Input defaultValue="Project Orion" />
+              </Field>
+              <Switch label="Review reminders" description="Send a daily summary to owners" defaultChecked />
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={() => toast({ title: 'Settings saved', tone: 'success' })}>Save settings</Button>
+                <PreviewDialog />
+              </div>
+            </div>
+          </Card>
+        </div>
+      </Section>
+
+      <Section
         title="Installation"
         description="Teal ships as a single package with compiled styles and a Tailwind preset. It works in any React 18 or 19 app with Tailwind CSS 3.4."
       >
@@ -92,7 +149,7 @@ export function HomePage() {
 
       <Section
         title="Modules"
-        description="Twenty typed modules across seven groups. Each page ships live examples, a playground, a generated interface reference, and keyboard documentation."
+        description="Twenty-two typed modules across seven groups. Each page ships live examples, a playground, a generated interface reference, and keyboard documentation."
       >
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {catalogGroups.flatMap((group) =>

@@ -36,7 +36,7 @@ export function propsTableMarkdown(name, props) {
 }
 
 /**
- * @param {{ id: string, name: string, description: string, usage: string, apiNames: string[], imports?: string[], examples?: Array<{ title: string, description?: string, source?: string }> }} module
+ * @param {{ id: string, name: string, description: string, usage: string, apiNames: string[], imports?: string[], guidance?: { useWhen: string, avoidWhen: string, behavior: string, responsive: string }, examples?: Array<{ title: string, description?: string, source?: string }> }} module
  * @param {Array<{ displayName: string, props: Array<object> }>} apiEntries
  */
 export function moduleMarkdown(module, apiEntries) {
@@ -45,6 +45,18 @@ export function moduleMarkdown(module, apiEntries) {
   lines.push(fence(`import { ${imports.join(', ')} } from '@kryv/teal'`, 'js'))
   lines.push('')
   lines.push(fence(module.usage))
+
+  if (module.guidance) {
+    lines.push('', '## Design guidance', '')
+    for (const [label, value] of [
+      ['Use when', module.guidance.useWhen],
+      ['Avoid when', module.guidance.avoidWhen],
+      ['Behavior', module.guidance.behavior],
+      ['Responsive', module.guidance.responsive],
+    ]) {
+      lines.push(`### ${label}`, '', value)
+    }
+  }
 
   if (module.examples?.length) {
     lines.push('', '## Examples')

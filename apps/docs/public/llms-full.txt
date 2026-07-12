@@ -146,11 +146,51 @@ import { Button, IconButton } from '@kryv/teal'
 <IconButton label="More options"><MoreHorizontal /></IconButton>
 ```
 
+## Design guidance
+
+### Use when
+
+A user needs to take an explicit action.
+### Avoid when
+
+The control is only communicating status or navigation.
+### Behavior
+
+Loading disables the native button until the action completes.
+### Responsive
+
+Let actions wrap in narrow toolbars instead of shrinking their labels.
+
 ## Examples
 
 ### Variants and sizes
 
 Primary, secondary, ghost, and danger variants with a dedicated IconButton for icon-only actions.
+
+```jsx
+import { Button, IconButton } from '@kryv/teal'
+import { Search } from 'lucide-react'
+
+export function ButtonDemo() {
+  return (
+    <>
+      <Button size="sm">Small</Button>
+      <Button>Primary</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="danger">Danger</Button>
+      <Button loading>Saving</Button>
+      <IconButton label="Search">
+        <Search />
+      </IconButton>
+    </>
+  )
+}
+```
+
+### Disabled actions
+
+Use disabled state when the action cannot be completed yet, and explain why nearby.
 
 ```jsx
 import { Button, IconButton } from '@kryv/teal'
@@ -221,11 +261,47 @@ import { Field, Input } from '@kryv/teal'
 </Field>
 ```
 
+## Design guidance
+
+### Use when
+
+A control needs a visible label, help text, or validation message.
+### Avoid when
+
+The control already owns an equivalent form-label composition.
+### Behavior
+
+Field provides the id and ARIA relationships consumed by its child control.
+### Responsive
+
+Keep labels readable and let long error messages wrap.
+
 ## Examples
 
 ### Label, description, and error
 
 Field wires the label, help text, and error message to the control inside it automatically.
+
+```jsx
+import { Field, Input, TextArea } from '@kryv/teal'
+
+export function FieldDemo() {
+  return (
+    <div className="grid w-full max-w-md gap-5">
+      <Field label="Display name" description="Shown to other workspace members" required>
+        <Input defaultValue="Avery Chen" />
+      </Field>
+      <Field label="Notes" error="Keep notes under 240 characters">
+        <TextArea defaultValue="Notify the incident team before changing this account." />
+      </Field>
+    </div>
+  )
+}
+```
+
+### Account profile
+
+Pair a required profile value with a clear validation message.
 
 ```jsx
 import { Field, Input, TextArea } from '@kryv/teal'
@@ -255,6 +331,7 @@ export function FieldDemo() {
 | `error` | `ReactNode` | - | Error message; marks the control as invalid and links the message to it. |
 | `label` (required) | `ReactNode` | - | Visible label associated with the control. |
 | `required` | `boolean` | `false` | Marks the control as required and renders a required indicator. |
+| `invalid` | `boolean` | - | Marks the control invalid without requiring a visible error message. |
 
 ### Label
 
@@ -286,11 +363,45 @@ import { Input, TextArea } from '@kryv/teal'
 <TextArea placeholder="Notes" rows={4} />
 ```
 
+## Design guidance
+
+### Use when
+
+Users enter or search for short text.
+### Avoid when
+
+A constrained set of choices or a long-form editor is clearer.
+### Behavior
+
+Native input behavior is preserved, including browser validation and refs.
+### Responsive
+
+Use full width on small screens and constrain width at larger sizes.
+
 ## Examples
 
 ### States
 
 Default, invalid, and disabled inputs share the same sizing and focus treatment.
+
+```jsx
+import { Input, TextArea } from '@kryv/teal'
+
+export function InputDemo() {
+  return (
+    <div className="grid w-full max-w-md gap-4">
+      <Input aria-label="Search projects" placeholder="Search projects" />
+      <Input aria-label="Email address" defaultValue="not-an-email" aria-invalid="true" />
+      <Input aria-label="Disabled input" placeholder="Disabled input" disabled />
+      <TextArea aria-label="Team update" placeholder="Write a short update for the team" />
+    </div>
+  )
+}
+```
+
+### Search and inline validation
+
+Use a compact search control alongside an input that reports its invalid state.
 
 ```jsx
 import { Input, TextArea } from '@kryv/teal'
@@ -354,11 +465,80 @@ import { Select } from '@kryv/teal'
 />
 ```
 
+## Design guidance
+
+### Use when
+
+Users choose one value from a known list.
+### Avoid when
+
+There are only two choices or users need to compare all options at once.
+### Behavior
+
+Radix manages keyboard navigation, typeahead, focus, and collision handling.
+### Responsive
+
+The trigger fills its parent width and the menu follows its measured width.
+
 ## Examples
 
 ### Controlled selection
 
 Select is controlled through value and onValueChange with an options array.
+
+```jsx
+import { useState } from 'react'
+import { Select } from '@kryv/teal'
+
+export function SelectDemo() {
+  const [role, setRole] = useState('viewer')
+  return (
+    <div className="w-full max-w-xs">
+      <Select
+        aria-label="Project role"
+        value={role}
+        onValueChange={setRole}
+        options={[
+          { value: 'admin', label: 'Administrator' },
+          { value: 'editor', label: 'Editor' },
+          { value: 'viewer', label: 'Viewer' },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+### Role assignment
+
+Use a labeled picker when a person must choose one role.
+
+```jsx
+import { useState } from 'react'
+import { Select } from '@kryv/teal'
+
+export function SelectDemo() {
+  const [role, setRole] = useState('viewer')
+  return (
+    <div className="w-full max-w-xs">
+      <Select
+        aria-label="Project role"
+        value={role}
+        onValueChange={setRole}
+        options={[
+          { value: 'admin', label: 'Administrator' },
+          { value: 'editor', label: 'Editor' },
+          { value: 'viewer', label: 'Viewer' },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+### Keyboard selection
+
+Typeahead and arrow-key navigation keep long option lists efficient.
 
 ```jsx
 import { useState } from 'react'
@@ -391,6 +571,8 @@ export function SelectDemo() {
 | --- | --- | --- | --- |
 | `aria-describedby` | `string` | - | Id of an element that describes the select, forwarded to the trigger. |
 | `aria-label` | `string` | - | Accessible name when there is no visible label. |
+| `id` | `string` | - | Explicit id; otherwise Field or an internal id is used. |
+| `aria-invalid` | `boolean \| "true" \| "false"` | - | Marks the trigger invalid for form validation and screen readers. |
 | `className` | `string` | - | Additional classes merged onto the trigger. |
 | `defaultValue` | `string` | - | Initial value when uncontrolled. |
 | `disabled` | `boolean` | - | Prevents opening the select. |
@@ -432,11 +614,89 @@ import { Checkbox } from '@kryv/teal'
 <Checkbox label="Include archived projects" defaultChecked />
 ```
 
+## Design guidance
+
+### Use when
+
+Users can select independent items or a tri-state group.
+### Avoid when
+
+Changing the value should take effect immediately as a setting.
+### Behavior
+
+Checked, unchecked, and indeterminate states remain native and form-friendly.
+### Responsive
+
+Allow supporting text to wrap beside the control.
+
 ## Examples
 
 ### Checked, indeterminate, and disabled
 
 Checkbox supports a tri-state checked prop for select-all patterns.
+
+```jsx
+import { Checkbox } from '@kryv/teal'
+
+export function CheckboxDemo() {
+  return (
+    <div className="grid w-full max-w-sm gap-4">
+      <Checkbox
+        label="Include archived projects"
+        description="Show projects that have been archived"
+        defaultChecked
+      />
+      <Checkbox label="Select all reports" defaultChecked="indeterminate" />
+      <Checkbox label="Share with external reviewers" />
+      <Checkbox label="Billing locked" description="Managed by your administrator" disabled />
+    </div>
+  )
+}
+```
+
+### Bulk selection
+
+Use indeterminate state when a table selection contains both checked and unchecked rows.
+
+```jsx
+import { useState } from 'react'
+import { Checkbox } from '@kryv/teal'
+
+const rows = [
+  { id: 'orion', name: 'Project Orion', owner: 'Avery Chen' },
+  { id: 'atlas', name: 'Project Atlas', owner: 'Morgan Lee' },
+  { id: 'nova', name: 'Project Nova', owner: 'Riley Singh' },
+]
+
+export function CheckboxBulkDemo() {
+  const [selected, setSelected] = useState(['orion'])
+  const allSelected = selected.length === rows.length
+  const partiallySelected = selected.length > 0 && !allSelected
+  function toggle(id) {
+    setSelected((current) => current.includes(id) ? current.filter((value) => value !== id) : [...current, id])
+  }
+  return (
+    <div className="w-full max-w-xl overflow-hidden rounded-2xl border border-outline-variant/30">
+      <div className="flex items-center gap-3 border-b border-outline-variant/30 bg-surface-container-high px-4 py-3">
+        <Checkbox label="Select all projects" visuallyHiddenLabel checked={allSelected ? true : partiallySelected ? 'indeterminate' : false} onCheckedChange={(value) => setSelected(value ? rows.map((row) => row.id) : [])} />
+        <span className="text-xs font-semibold uppercase tracking-wide text-on-surface-variant">Project</span>
+        <span className="ml-auto text-xs font-semibold uppercase tracking-wide text-on-surface-variant">Owner</span>
+      </div>
+      {rows.map((row) => (
+        <div key={row.id} className="flex items-center gap-3 border-b border-outline-variant/20 bg-surface-container px-4 py-3 last:border-b-0">
+          <Checkbox label={row.name} visuallyHiddenLabel checked={selected.includes(row.id)} onCheckedChange={() => toggle(row.id)} />
+          <span className="text-sm text-on-surface">{row.name}</span>
+          <span className="ml-auto text-sm text-on-surface-variant">{row.owner}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+### Permission groups
+
+Group independent permissions under one clear label and description.
 
 ```jsx
 import { Checkbox } from '@kryv/teal'
@@ -498,11 +758,72 @@ import { Switch } from '@kryv/teal'
 <Switch label="Security notifications" description="High-risk account activity" defaultChecked />
 ```
 
+## Design guidance
+
+### Use when
+
+A boolean setting takes effect immediately.
+### Avoid when
+
+The user must submit several values together as a form.
+### Behavior
+
+The label and description remain associated with the switch control.
+### Responsive
+
+Keep the control at a fixed size while the setting copy takes available width.
+
 ## Examples
 
 ### Settings
 
 Switches apply immediately, so label them as settings rather than form fields.
+
+```jsx
+import { Switch } from '@kryv/teal'
+
+export function SwitchDemo() {
+  return (
+    <div className="grid w-full max-w-sm gap-5">
+      <Switch
+        label="Security notifications"
+        description="Receive alerts for high-risk account activity"
+        defaultChecked
+      />
+      <Switch label="Weekly digest" />
+      <Switch label="Auto-deploy previews" size="sm" defaultChecked />
+      <Switch label="Billing alerts" description="Managed by your administrator" disabled />
+    </div>
+  )
+}
+```
+
+### Application settings
+
+Use switches in a settings list for changes that apply immediately.
+
+```jsx
+import { Switch } from '@kryv/teal'
+
+export function SwitchDemo() {
+  return (
+    <div className="grid w-full max-w-sm gap-5">
+      <Switch
+        label="Security notifications"
+        description="Receive alerts for high-risk account activity"
+        defaultChecked
+      />
+      <Switch label="Weekly digest" />
+      <Switch label="Auto-deploy previews" size="sm" defaultChecked />
+      <Switch label="Billing alerts" description="Managed by your administrator" disabled />
+    </div>
+  )
+}
+```
+
+### Compact settings
+
+The small size keeps dense preference lists scannable without losing the accessible label.
 
 ```jsx
 import { Switch } from '@kryv/teal'
@@ -570,11 +891,53 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 </Card>
 ```
 
+## Design guidance
+
+### Use when
+
+Related content needs a structural surface.
+### Avoid when
+
+A card is being used only to decorate every section or hide a primary action.
+### Behavior
+
+Card is non-interactive by default and accepts an explicit polymorphic element.
+### Responsive
+
+Use compact padding and let card content define its width.
+
 ## Examples
 
 ### Composition
 
 Cards compose header, content, and footer regions with consistent rhythm.
+
+```jsx
+import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@kryv/teal'
+
+export function CardDemo() {
+  return (
+    <Card className="w-full max-w-md">
+      <CardHeader className="flex-col items-start justify-start gap-1.5">
+        <CardTitle>Security report</CardTitle>
+        <CardDescription>Updated five minutes ago</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm text-on-surface">No critical findings were detected.</p>
+      </CardContent>
+      <CardFooter>
+        <Button size="sm" variant="secondary">
+          View report
+        </Button>
+      </CardFooter>
+    </Card>
+  )
+}
+```
+
+### Report summary
+
+Use a card to group a short summary and one related action.
 
 ```jsx
 import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@kryv/teal'
@@ -608,6 +971,7 @@ export function CardDemo() {
 | `as` | `ElementType` | `div` | Element rendered by the card; use an interactive element for clickable cards. |
 | `disabled` | `boolean` | - | Applies disabled styling and blocks interaction on interactive cards. |
 | `type` | `enum` | - | Button type used when the card renders an interactive element. |
+| `ref` | `any` | - | - |
 
 ### CardHeader
 
@@ -651,11 +1015,46 @@ import { Badge } from '@kryv/teal'
 <Badge tone="success">Deployed</Badge>
 ```
 
+## Design guidance
+
+### Use when
+
+A short status or category needs quick visual scanning.
+### Avoid when
+
+The content needs an action or a sentence of explanation.
+### Behavior
+
+Tone changes meaning without changing the content semantics.
+### Responsive
+
+Keep labels short so badges do not dominate dense rows.
+
 ## Examples
 
 ### Tones
 
 Five tones cover neutral, informational, success, warning, and danger statuses.
+
+```jsx
+import { Badge } from '@kryv/teal'
+
+export function BadgeDemo() {
+  return (
+    <>
+      <Badge>Neutral</Badge>
+      <Badge tone="info">Information</Badge>
+      <Badge tone="success">Ready</Badge>
+      <Badge tone="warning">Attention</Badge>
+      <Badge tone="danger">Action required</Badge>
+    </>
+  )
+}
+```
+
+### Table statuses
+
+Keep status text explicit when badges appear in dense data rows.
 
 ```jsx
 import { Badge } from '@kryv/teal'
@@ -712,6 +1111,21 @@ const [open, setOpen] = useState(false)
 </Dialog>
 ```
 
+## Design guidance
+
+### Use when
+
+A decision or focused task must temporarily block the page.
+### Avoid when
+
+The content can be inline or handled by a popover.
+### Behavior
+
+Focus is trapped, Escape dismisses, and focus returns to the trigger.
+### Responsive
+
+Use the built-in size and allow the body to scroll inside the panel.
+
 ## Examples
 
 ### Confirmation
@@ -722,11 +1136,87 @@ Dialog traps focus, restores it on close, and dismisses with Escape or the scrim
 import { useState } from 'react'
 import { Button, Dialog } from '@kryv/teal'
 
-export function DialogDemo() {
+export function DialogDemo({ exampleIndex = 0 }) {
   const [open, setOpen] = useState(false)
   return (
     <>
-      <Button onClick={() => setOpen(true)}>Open dialog</Button>
+      <Button onClick={() => setOpen(true)}>{exampleIndex ? 'Open confirmation dialog' : 'Open dialog'}</Button>
+      <Dialog
+        open={open}
+        onOpenChange={setOpen}
+        title="Archive project?"
+        description="The project can be restored later."
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="danger" onClick={() => setOpen(false)}>
+              Archive
+            </Button>
+          </>
+        }
+      >
+        <p className="text-sm text-on-surface-variant">
+          Project Orion and its reports will leave the active workspace.
+        </p>
+      </Dialog>
+    </>
+  )
+}
+```
+
+### Destructive confirmation
+
+Use a danger action only when the consequence is clear and reversible where possible.
+
+```jsx
+import { useState } from 'react'
+import { Button, Dialog } from '@kryv/teal'
+
+export function DialogDemo({ exampleIndex = 0 }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>{exampleIndex ? 'Open confirmation dialog' : 'Open dialog'}</Button>
+      <Dialog
+        open={open}
+        onOpenChange={setOpen}
+        title="Archive project?"
+        description="The project can be restored later."
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="danger" onClick={() => setOpen(false)}>
+              Archive
+            </Button>
+          </>
+        }
+      >
+        <p className="text-sm text-on-surface-variant">
+          Project Orion and its reports will leave the active workspace.
+        </p>
+      </Dialog>
+    </>
+  )
+}
+```
+
+### Long-form task
+
+For focused tasks, keep the title visible and let the dialog body own its scroll.
+
+```jsx
+import { useState } from 'react'
+import { Button, Dialog } from '@kryv/teal'
+
+export function DialogDemo({ exampleIndex = 0 }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>{exampleIndex ? 'Open confirmation dialog' : 'Open dialog'}</Button>
       <Dialog
         open={open}
         onOpenChange={setOpen}
@@ -800,6 +1290,21 @@ import { Tooltip, IconButton } from '@kryv/teal'
 </Tooltip>
 ```
 
+## Design guidance
+
+### Use when
+
+An unfamiliar icon or abbreviated label needs a brief hint.
+### Avoid when
+
+The user must read or interact with the content.
+### Behavior
+
+Hover and focus reveal a short non-interactive description.
+### Responsive
+
+Never rely on hover alone; provide a visible label on touch layouts.
+
 ## Examples
 
 ### Icon button hint
@@ -855,6 +1360,45 @@ export function TooltipDemo() {
 }
 ```
 
+### Pure hover and focus hint
+
+Use Tooltip for short, non-interactive context around an unfamiliar icon.
+
+```jsx
+import { IconButton, Tooltip } from '@kryv/teal'
+import { Info } from 'lucide-react'
+
+export function TooltipPureDemo() {
+  return (
+    <Tooltip content="Only visible context, never an action" delayDuration={0}>
+      <IconButton label="More information">
+        <Info />
+      </IconButton>
+    </Tooltip>
+  )
+}
+```
+
+### Action context
+
+Keep the hint short when it sits beside an unfamiliar product action.
+
+```jsx
+import { IconButton, Tooltip } from '@kryv/teal'
+import { CircleHelp } from 'lucide-react'
+
+export function TooltipActionsDemo() {
+  return (
+    <div className="flex items-center gap-3">
+      <Tooltip content="Changes apply to everyone in this workspace" delayDuration={0}>
+        <IconButton label="Workspace sharing help"><CircleHelp /></IconButton>
+      </Tooltip>
+      <span className="text-sm text-on-surface-variant">Workspace sharing</span>
+    </div>
+  )
+}
+```
+
 ## Interface
 
 ### Tooltip
@@ -899,6 +1443,21 @@ import { Menu, IconButton } from '@kryv/teal'
 />
 ```
 
+## Design guidance
+
+### Use when
+
+Several related actions belong behind one trigger.
+### Avoid when
+
+The actions should remain visible for frequent workflows.
+### Behavior
+
+Keyboard navigation and dismissal are managed by Radix.
+### Responsive
+
+Keep destructive actions separated and easy to reach on touch.
+
 ## Examples
 
 ### Project actions
@@ -909,11 +1468,75 @@ Items support icons, separators, and a danger tone for destructive actions.
 import { IconButton, Menu } from '@kryv/teal'
 import { Archive, MoreVertical, Settings } from 'lucide-react'
 
-export function MenuDemo() {
+export function MenuDemo({ exampleIndex = 0 }) {
   return (
     <Menu
       trigger={
-        <IconButton label="Project actions">
+        <IconButton label={exampleIndex ? 'Additional actions' : 'Project actions'}>
+          <MoreVertical />
+        </IconButton>
+      }
+      items={[
+        { id: 'settings', label: 'Settings', icon: <Settings />, onSelect: () => undefined },
+        {
+          id: 'archive',
+          label: 'Archive',
+          icon: <Archive />,
+          tone: 'danger',
+          separatorBefore: true,
+          onSelect: () => undefined,
+        },
+      ]}
+    />
+  )
+}
+```
+
+### Separated destructive action
+
+Keep destructive actions at the end of the menu behind a separator.
+
+```jsx
+import { IconButton, Menu } from '@kryv/teal'
+import { Archive, MoreVertical, Settings } from 'lucide-react'
+
+export function MenuDemo({ exampleIndex = 0 }) {
+  return (
+    <Menu
+      trigger={
+        <IconButton label={exampleIndex ? 'Additional actions' : 'Project actions'}>
+          <MoreVertical />
+        </IconButton>
+      }
+      items={[
+        { id: 'settings', label: 'Settings', icon: <Settings />, onSelect: () => undefined },
+        {
+          id: 'archive',
+          label: 'Archive',
+          icon: <Archive />,
+          tone: 'danger',
+          separatorBefore: true,
+          onSelect: () => undefined,
+        },
+      ]}
+    />
+  )
+}
+```
+
+### Keyboard action menu
+
+Menus preserve arrow-key navigation and Escape dismissal.
+
+```jsx
+import { IconButton, Menu } from '@kryv/teal'
+import { Archive, MoreVertical, Settings } from 'lucide-react'
+
+export function MenuDemo({ exampleIndex = 0 }) {
+  return (
+    <Menu
+      trigger={
+        <IconButton label={exampleIndex ? 'Additional actions' : 'Project actions'}>
           <MoreVertical />
         </IconButton>
       }
@@ -981,6 +1604,21 @@ import { Popover, Button, Checkbox } from '@kryv/teal'
 </Popover>
 ```
 
+## Design guidance
+
+### Use when
+
+Supplemental controls should stay anchored to a trigger.
+### Avoid when
+
+The content is a blocking task or a simple one-line hint.
+### Behavior
+
+Focus returns to the trigger after dismissal.
+### Responsive
+
+Keep panels within the viewport and avoid overly wide forms.
+
 ## Examples
 
 ### Filter panel
@@ -991,12 +1629,68 @@ Popover anchors interactive content to a trigger with collision-aware placement.
 import { Button, Checkbox, Popover } from '@kryv/teal'
 import { Filter } from 'lucide-react'
 
-export function PopoverDemo() {
+export function PopoverDemo({ exampleIndex = 0 }) {
   return (
     <Popover
       trigger={
         <Button variant="secondary">
-          <Filter /> Filters
+          <Filter /> {exampleIndex ? 'Refine projects' : 'Filters'}
+        </Button>
+      }
+      align="start"
+    >
+      <div className="grid gap-3">
+        <h3 className="font-headline font-bold">Filter projects</h3>
+        <Checkbox label="Active only" defaultChecked />
+        <Button size="sm">Apply filters</Button>
+      </div>
+    </Popover>
+  )
+}
+```
+
+### Inline filters
+
+Keep a small set of filters anchored to the toolbar that owns them.
+
+```jsx
+import { Button, Checkbox, Popover } from '@kryv/teal'
+import { Filter } from 'lucide-react'
+
+export function PopoverDemo({ exampleIndex = 0 }) {
+  return (
+    <Popover
+      trigger={
+        <Button variant="secondary">
+          <Filter /> {exampleIndex ? 'Refine projects' : 'Filters'}
+        </Button>
+      }
+      align="start"
+    >
+      <div className="grid gap-3">
+        <h3 className="font-headline font-bold">Filter projects</h3>
+        <Checkbox label="Active only" defaultChecked />
+        <Button size="sm">Apply filters</Button>
+      </div>
+    </Popover>
+  )
+}
+```
+
+### Supplemental controls
+
+Use a popover for controls that do not deserve a full route or dialog.
+
+```jsx
+import { Button, Checkbox, Popover } from '@kryv/teal'
+import { Filter } from 'lucide-react'
+
+export function PopoverDemo({ exampleIndex = 0 }) {
+  return (
+    <Popover
+      trigger={
+        <Button variant="secondary">
+          <Filter /> {exampleIndex ? 'Refine projects' : 'Filters'}
         </Button>
       }
       align="start"
@@ -1057,6 +1751,21 @@ import { Toaster, toast } from '@kryv/teal'
 toast({ title: 'Changes saved', tone: 'success' })
 ```
 
+## Design guidance
+
+### Use when
+
+A completed or failed action needs brief asynchronous feedback.
+### Avoid when
+
+The message is required to continue or must be read in context.
+### Behavior
+
+Toaster announces messages and supports timed or manual dismissal.
+### Responsive
+
+Position toasts away from mobile browser controls and safe areas.
+
 ## Examples
 
 ### Saving feedback
@@ -1066,14 +1775,54 @@ Call toast() from anywhere once a Toaster is mounted near the app root.
 ```jsx
 import { Button, toast } from '@kryv/teal'
 
-export function ToastDemo() {
+export function ToastDemo({ exampleIndex = 0 }) {
   return (
     <Button
       onClick={() =>
-        toast({ title: 'Changes saved', description: 'Your settings are up to date.', tone: 'success' })
+      toast({ title: exampleIndex ? 'Review saved' : 'Changes saved', description: 'Your settings are up to date.', tone: 'success' })
       }
     >
-      Show toast
+      {exampleIndex ? 'Show review toast' : 'Show toast'}
+    </Button>
+  )
+}
+```
+
+### Failure feedback
+
+Use a danger tone for a failed action and keep the recovery path in context.
+
+```jsx
+import { Button, toast } from '@kryv/teal'
+
+export function ToastDemo({ exampleIndex = 0 }) {
+  return (
+    <Button
+      onClick={() =>
+      toast({ title: exampleIndex ? 'Review saved' : 'Changes saved', description: 'Your settings are up to date.', tone: 'success' })
+      }
+    >
+      {exampleIndex ? 'Show review toast' : 'Show toast'}
+    </Button>
+  )
+}
+```
+
+### Undo feedback
+
+Offer a short action when users may want to reverse a completed operation.
+
+```jsx
+import { Button, toast } from '@kryv/teal'
+
+export function ToastDemo({ exampleIndex = 0 }) {
+  return (
+    <Button
+      onClick={() =>
+      toast({ title: exampleIndex ? 'Review saved' : 'Changes saved', description: 'Your settings are up to date.', tone: 'success' })
+      }
+    >
+      {exampleIndex ? 'Show review toast' : 'Show toast'}
     </Button>
   )
 }
@@ -1111,11 +1860,45 @@ import { EmptyState, Button } from '@kryv/teal'
 />
 ```
 
+## Design guidance
+
+### Use when
+
+A product surface has no results or has not been configured.
+### Avoid when
+
+Content is merely loading or filtered temporarily.
+### Behavior
+
+Explain what happened and give one clear next action when useful.
+### Responsive
+
+Keep the message readable and center the action beneath it.
+
 ## Examples
 
 ### First-run
 
 Pair a short explanation with a single primary action.
+
+```jsx
+import { Button, EmptyState } from '@kryv/teal'
+
+export function EmptyStateDemo() {
+  return (
+    <EmptyState
+      title="No reports"
+      description="Create a report to begin tracking results."
+      action={<Button>Create report</Button>}
+      className="w-full max-w-lg"
+    />
+  )
+}
+```
+
+### Filtered empty result
+
+Explain that filters produced no results and offer a way to adjust them.
 
 ```jsx
 import { Button, EmptyState } from '@kryv/teal'
@@ -1167,11 +1950,47 @@ import { Spinner, Progress, Skeleton, LoadingState } from '@kryv/teal'
 <LoadingState label="Loading reports" />
 ```
 
+## Design guidance
+
+### Use when
+
+Users need feedback while content or work is in progress.
+### Avoid when
+
+The operation is instant or no meaningful progress exists.
+### Behavior
+
+Use Spinner for local work, Skeleton for layout, and Progress for measurable work.
+### Responsive
+
+Prefer local indicators so small screens retain useful content.
+
 ## Examples
 
 ### Loading treatments
 
 Spinner and Progress for active work, Skeleton for layout placeholders, LoadingState for regions.
+
+```jsx
+import { LoadingState, Progress, Skeleton, Spinner } from '@kryv/teal'
+
+export function LoadingDemo() {
+  return (
+    <div className="grid w-full max-w-lg gap-5">
+      <div className="flex items-center gap-5">
+        <Spinner label="Loading example" />
+        <Progress label="Import progress" value={64} />
+      </div>
+      <Skeleton className="h-20 w-full" />
+      <LoadingState label="Loading reports" className="min-h-32" />
+    </div>
+  )
+}
+```
+
+### Skeleton region
+
+Reserve the eventual layout with Skeleton when content shape is known.
 
 ```jsx
 import { LoadingState, Progress, Skeleton, Spinner } from '@kryv/teal'
@@ -1248,6 +2067,21 @@ import { Tabs } from '@kryv/teal'
 />
 ```
 
+## Design guidance
+
+### Use when
+
+Related views share a context and users switch between them.
+### Avoid when
+
+Views need independent URLs or a long sequence of steps.
+### Behavior
+
+Arrow keys move between tabs and the active panel is announced.
+### Responsive
+
+Allow tab labels to scroll rather than wrap into ambiguous rows.
+
 ## Examples
 
 ### Sections
@@ -1267,6 +2101,54 @@ export function TabsDemo() {
           { value: 'overview', label: 'Overview', content: <p className="text-sm">Project overview content</p> },
           { value: 'activity', label: 'Activity', content: <p className="text-sm">Recent project activity</p> },
           { value: 'access', label: 'Access', content: <p className="text-sm">Workspace access settings</p> },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+### Profile sections
+
+Use tabs for peer views that share the same route context.
+
+```jsx
+import { Tabs } from '@kryv/teal'
+
+export function TabsDemo() {
+  return (
+    <div className="w-full max-w-xl">
+      <Tabs
+        aria-label="Project details"
+        defaultValue="overview"
+        items={[
+          { value: 'overview', label: 'Overview', content: <p className="text-sm">Project overview content</p> },
+          { value: 'activity', label: 'Activity', content: <p className="text-sm">Recent project activity</p> },
+          { value: 'access', label: 'Access', content: <p className="text-sm">Workspace access settings</p> },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+### Responsive tab list
+
+Long tab labels remain reachable through horizontal scrolling.
+
+```jsx
+import { Tabs } from '@kryv/teal'
+
+export function TabsResponsiveDemo() {
+  return (
+    <div className="w-full max-w-xl">
+      <Tabs
+        aria-label="Report sections"
+        defaultValue="summary"
+        items={[
+          { value: 'summary', label: 'Executive summary', content: <p className="text-sm">A concise summary stays visible first.</p> },
+          { value: 'evidence', label: 'Evidence and activity', content: <p className="text-sm">Detailed evidence is available without changing route context.</p> },
+          { value: 'access', label: 'Access policy', content: <p className="text-sm">Permissions remain a peer view of this report.</p> },
         ]}
       />
     </div>
@@ -1317,11 +2199,40 @@ const [page, setPage] = useState(1)
 <Pagination page={page} pageCount={12} onPageChange={setPage} />
 ```
 
+## Design guidance
+
+### Use when
+
+A large collection is split into stable pages.
+### Avoid when
+
+Users need continuous search, sorting, or infinite history.
+### Behavior
+
+The page is controlled by the consumer and unavailable directions are disabled.
+### Responsive
+
+Keep controls large enough for touch and preserve the current page label.
+
 ## Examples
 
 ### Controlled pages
 
 Pagination is fully controlled through page and onPageChange.
+
+```jsx
+import { useState } from 'react'
+import { Pagination } from '@kryv/teal'
+
+export function PaginationDemo() {
+  const [page, setPage] = useState(3)
+  return <Pagination page={page} pageCount={8} onPageChange={setPage} />
+}
+```
+
+### Boundary pages
+
+Disable previous and next controls at the collection boundaries.
 
 ```jsx
 import { useState } from 'react'
@@ -1376,11 +2287,46 @@ import { PageHeader, Button } from '@kryv/teal'
 />
 ```
 
+## Design guidance
+
+### Use when
+
+A route needs a consistent title, context, and primary actions.
+### Avoid when
+
+The content is a small inline section without route-level actions.
+### Behavior
+
+Actions remain aligned with the title and wrap below it when needed.
+### Responsive
+
+Let actions wrap naturally below the heading at narrow widths.
+
 ## Examples
 
 ### Settings header
 
 Actions wrap below the title on narrow screens automatically.
+
+```jsx
+import { Button, PageHeader } from '@kryv/teal'
+
+export function PageHeaderDemo() {
+  return (
+    <div className="w-full">
+      <PageHeader
+        title="Workspace settings"
+        subtitle="Manage security and notifications"
+        actions={<Button>Save changes</Button>}
+      />
+    </div>
+  )
+}
+```
+
+### Responsive actions
+
+Let actions wrap beneath the title on narrow screens.
 
 ```jsx
 import { Button, PageHeader } from '@kryv/teal'
@@ -1437,11 +2383,154 @@ import { VerticalNav, VerticalNavBrand, VerticalNavList, VerticalNavSection, Ver
 </VerticalNav>
 ```
 
+## Design guidance
+
+### Use when
+
+An application needs persistent section navigation.
+### Avoid when
+
+There are only a few inline links or a short wizard.
+### Behavior
+
+Rail mode expands on hover or focus and item active state sets aria-current.
+### Responsive
+
+Use full navigation in a drawer on mobile and close it after route changes.
+
 ## Examples
 
 ### Rail and full modes
 
 Rail mode collapses to an icon strip and expands on hover or keyboard focus. Full mode shows labels always.
+
+```jsx
+import { FolderKanban, LayoutDashboard, Settings, Users } from 'lucide-react'
+import { VerticalNav, VerticalNavBrand, VerticalNavFooter, VerticalNavItem, VerticalNavList, VerticalNavSection } from '@kryv/teal'
+
+export function VerticalNavDemo() {
+  return (
+    <div className="grid w-full gap-4 sm:grid-cols-2">
+      <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
+        <VerticalNav mode="rail" variant="solid" className="absolute">
+          <VerticalNavBrand>
+            <span className="flex w-16 items-center justify-center">
+              <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
+                <LayoutDashboard className="size-5" />
+              </span>
+            </span>
+          </VerticalNavBrand>
+          <VerticalNavList>
+            <VerticalNavSection label="Workspace">
+              <VerticalNavItem active icon={<LayoutDashboard className="size-5" />}>
+                Overview
+              </VerticalNavItem>
+              <VerticalNavItem icon={<FolderKanban className="size-5" />}>Projects</VerticalNavItem>
+              <VerticalNavItem icon={<Users className="size-5" />}>Team</VerticalNavItem>
+            </VerticalNavSection>
+          </VerticalNavList>
+          <VerticalNavFooter>
+            <VerticalNavItem icon={<Settings className="size-5" />}>Settings</VerticalNavItem>
+          </VerticalNavFooter>
+        </VerticalNav>
+      </div>
+
+      <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
+        <VerticalNav mode="full" variant="solid" className="absolute">
+          <VerticalNavBrand>
+            <span className="flex w-16 items-center justify-center">
+              <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
+                <LayoutDashboard className="size-5" />
+              </span>
+            </span>
+            <span className="font-headline text-lg font-extrabold leading-none">Teal</span>
+          </VerticalNavBrand>
+          <VerticalNavList>
+            <VerticalNavSection label="Workspace">
+              <VerticalNavItem active icon={<LayoutDashboard className="size-5" />}>
+                Overview
+              </VerticalNavItem>
+              <VerticalNavItem icon={<FolderKanban className="size-5" />}>Projects</VerticalNavItem>
+              <VerticalNavItem icon={<Users className="size-5" />}>Team</VerticalNavItem>
+            </VerticalNavSection>
+          </VerticalNavList>
+          <VerticalNavFooter>
+            <VerticalNavItem icon={<Settings className="size-5" />}>Settings</VerticalNavItem>
+          </VerticalNavFooter>
+        </VerticalNav>
+      </div>
+    </div>
+  )
+}
+```
+
+### Application shell
+
+Compose a persistent rail with a full navigation drawer for responsive products.
+
+```jsx
+import { FolderKanban, LayoutDashboard, Settings, Users } from 'lucide-react'
+import { VerticalNav, VerticalNavBrand, VerticalNavFooter, VerticalNavItem, VerticalNavList, VerticalNavSection } from '@kryv/teal'
+
+export function VerticalNavDemo() {
+  return (
+    <div className="grid w-full gap-4 sm:grid-cols-2">
+      <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
+        <VerticalNav mode="rail" variant="solid" className="absolute">
+          <VerticalNavBrand>
+            <span className="flex w-16 items-center justify-center">
+              <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
+                <LayoutDashboard className="size-5" />
+              </span>
+            </span>
+          </VerticalNavBrand>
+          <VerticalNavList>
+            <VerticalNavSection label="Workspace">
+              <VerticalNavItem active icon={<LayoutDashboard className="size-5" />}>
+                Overview
+              </VerticalNavItem>
+              <VerticalNavItem icon={<FolderKanban className="size-5" />}>Projects</VerticalNavItem>
+              <VerticalNavItem icon={<Users className="size-5" />}>Team</VerticalNavItem>
+            </VerticalNavSection>
+          </VerticalNavList>
+          <VerticalNavFooter>
+            <VerticalNavItem icon={<Settings className="size-5" />}>Settings</VerticalNavItem>
+          </VerticalNavFooter>
+        </VerticalNav>
+      </div>
+
+      <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
+        <VerticalNav mode="full" variant="solid" className="absolute">
+          <VerticalNavBrand>
+            <span className="flex w-16 items-center justify-center">
+              <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
+                <LayoutDashboard className="size-5" />
+              </span>
+            </span>
+            <span className="font-headline text-lg font-extrabold leading-none">Teal</span>
+          </VerticalNavBrand>
+          <VerticalNavList>
+            <VerticalNavSection label="Workspace">
+              <VerticalNavItem active icon={<LayoutDashboard className="size-5" />}>
+                Overview
+              </VerticalNavItem>
+              <VerticalNavItem icon={<FolderKanban className="size-5" />}>Projects</VerticalNavItem>
+              <VerticalNavItem icon={<Users className="size-5" />}>Team</VerticalNavItem>
+            </VerticalNavSection>
+          </VerticalNavList>
+          <VerticalNavFooter>
+            <VerticalNavItem icon={<Settings className="size-5" />}>Settings</VerticalNavItem>
+          </VerticalNavFooter>
+        </VerticalNav>
+      </div>
+    </div>
+  )
+}
+```
+
+### Router integration
+
+Use VerticalNavItem with a router link and pass active state from the route.
 
 ```jsx
 import { FolderKanban, LayoutDashboard, Settings, Users } from 'lucide-react'
@@ -1513,6 +2602,7 @@ export function VerticalNavDemo() {
 | `variant` | `"solid"` | `"solid"` | Solid renders an opaque bar with a border. |
 | `mode` | `"rail" \| "full"` | `"full"` | Rail collapses to an icon strip that expands on hover or keyboard focus. Full shows labels always. |
 | `side` | `"left" \| "right"` | `"left"` | Which edge the nav anchors to. Solid variants draw a border on the inner side. |
+| `ref` | `any` | - | - |
 
 ### VerticalNavBrand
 
@@ -1535,6 +2625,7 @@ _This module forwards native element properties._
 | `as` | `ElementType` | `a` | Element rendered by the item; defaults to `<a>`. Use `as={Link}` for router integration. |
 | `active` | `boolean` | `false` | Marks the item as the current page and sets aria-current="page". |
 | `icon` | `ReactNode` | - | Icon element shown before the label. Always visible, even in rail mode. |
+| `ref` | `any` | - | - |
 
 ### VerticalNavFooter
 
@@ -1570,6 +2661,21 @@ import { TopBar, TopBarBrand, TopBarSearch, TopBarActions } from '@kryv/teal'
   <TopBarActions>...</TopBarActions>
 </TopBar>
 ```
+
+## Design guidance
+
+### Use when
+
+An application needs a consistent global header and action slots.
+### Avoid when
+
+A page has only local controls that belong in its header.
+### Behavior
+
+Sticky mode keeps the bar visible while its slots remain composable.
+### Responsive
+
+Collapse secondary actions and move search to a dedicated mobile trigger.
 
 ## Examples
 
@@ -1632,6 +2738,91 @@ export function TopBarDemo() {
 }
 ```
 
+### Application shell header
+
+Combine brand, global search, and account actions in one persistent header.
+
+```jsx
+import { Palette, Search, Sun } from 'lucide-react'
+import { GitHubIcon } from '../components/GitHubIcon.jsx'
+import { IconButton, TopBar, TopBarActions, TopBarBrand, TopBarSearch } from '@kryv/teal'
+
+export function TopBarDemo() {
+  return (
+    <div className="w-full space-y-4">
+      <TopBar variant="solid" sticky={false}>
+        <TopBarBrand>
+          <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
+            <Palette className="size-4" />
+          </span>
+          <span className="font-headline font-extrabold">Teal</span>
+        </TopBarBrand>
+        <TopBarSearch>
+          <button
+            type="button"
+            className="flex h-10 w-full max-w-sm items-center gap-2 rounded-xl border border-outline-variant/40 bg-surface px-3 text-sm text-on-surface-variant"
+          >
+            <Search className="size-4" />
+            Search the docs...
+          </button>
+        </TopBarSearch>
+        <TopBarActions>
+          <IconButton label="GitHub">
+            <GitHubIcon />
+          </IconButton>
+          <IconButton label="Switch theme">
+            <Sun />
+          </IconButton>
+        </TopBarActions>
+      </TopBar>
+
+      <TopBar variant="solid" sticky={false} className="rounded-xl">
+        <TopBarBrand>
+          <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
+            <Palette className="size-4" />
+          </span>
+          <span className="font-headline font-extrabold">Teal</span>
+        </TopBarBrand>
+        <TopBarActions>
+          <IconButton label="GitHub">
+            <GitHubIcon />
+          </IconButton>
+          <IconButton label="Switch theme">
+            <Sun />
+          </IconButton>
+        </TopBarActions>
+      </TopBar>
+    </div>
+  )
+}
+```
+
+### Compact shell
+
+Use the same slots for a focused route header with fewer global actions.
+
+```jsx
+import { Bell, Palette, Search } from 'lucide-react'
+import { IconButton, TopBar, TopBarActions, TopBarBrand, TopBarSearch } from '@kryv/teal'
+
+export function TopBarShellDemo() {
+  return (
+    <div className="w-full rounded-xl border border-outline-variant/30">
+      <TopBar sticky={false} className="px-4">
+        <TopBarBrand>
+          <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary"><Palette className="size-4" /></span>
+          <span className="font-headline font-bold">Project Orion</span>
+        </TopBarBrand>
+        <TopBarSearch>
+          <button type="button" className="flex h-9 w-full max-w-xs items-center gap-2 rounded-lg border border-outline-variant/40 px-3 text-xs text-on-surface-variant"><Search className="size-4" />Search workspace</button>
+        </TopBarSearch>
+        <TopBarActions><IconButton label="Notifications" size="sm"><Bell /></IconButton></TopBarActions>
+      </TopBar>
+    </div>
+  )
+}
+```
+
 ## Interface
 
 ### TopBar
@@ -1641,6 +2832,7 @@ export function TopBarDemo() {
 | `as` | `ElementType` | `header` | Element rendered by the top bar; defaults to `<header>`. |
 | `variant` | `"solid"` | `"solid"` | Solid renders an opaque background. |
 | `sticky` | `boolean` | `true` | When true, the bar sticks to the top of the scrolling container. |
+| `ref` | `any` | - | - |
 
 ### TopBarBrand
 
@@ -1685,11 +2877,63 @@ import { Table } from '@kryv/teal'
 />
 ```
 
+## Design guidance
+
+### Use when
+
+Rows and columns are the clearest way to compare records.
+### Avoid when
+
+The content is a single object or needs a narrative layout.
+### Behavior
+
+Columns own rendering and rows require stable keys.
+### Responsive
+
+Keep the table readable with horizontal scrolling or a deliberate compact projection.
+
 ## Examples
 
 ### Column definitions
 
 Columns declare their header and cell renderer; rows need a stable key.
+
+```jsx
+import { Badge, Table } from '@kryv/teal'
+
+const projectRows = [
+  { id: 'orion', name: 'Orion', owner: 'Avery', status: 'Ready' },
+  { id: 'atlas', name: 'Atlas', owner: 'Morgan', status: 'Review' },
+  { id: 'nova', name: 'Nova', owner: 'Riley', status: 'Ready' },
+]
+
+export function TableDemo() {
+  return (
+    <div className="w-full">
+      <Table
+        caption="Projects"
+        rows={projectRows}
+        getRowKey={(row) => row.id}
+        columns={[
+          { key: 'name', header: 'Project', cell: (row) => <strong>{row.name}</strong> },
+          { key: 'owner', header: 'Owner', cell: (row) => row.owner },
+          {
+            key: 'status',
+            header: 'Status',
+            cell: (row) => (
+              <Badge tone={row.status === 'Ready' ? 'success' : 'warning'}>{row.status}</Badge>
+            ),
+          },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+### Review queue
+
+Use status badges and stable row keys in an operational table.
 
 ```jsx
 import { Badge, Table } from '@kryv/teal'
@@ -1767,11 +3011,44 @@ import { Separator } from '@kryv/teal'
 <Separator />
 ```
 
+## Design guidance
+
+### Use when
+
+Related groups need a clear visual or semantic boundary.
+### Avoid when
+
+Spacing alone communicates hierarchy.
+### Behavior
+
+Use decorative mode when the divider carries no document meaning.
+### Responsive
+
+Prefer horizontal separators in stacked mobile layouts.
+
 ## Examples
 
 ### Content divider
 
 Separator renders a horizontal rule that can be decorative or semantic.
+
+```jsx
+import { Separator } from '@kryv/teal'
+
+export function SeparatorDemo() {
+  return (
+    <div className="w-full max-w-md space-y-4">
+      <p>Account settings</p>
+      <Separator />
+      <p className="text-sm text-on-surface-variant">Security preferences</p>
+    </div>
+  )
+}
+```
+
+### Vertical grouping
+
+Use a vertical separator only when adjacent controls form one horizontal group.
 
 ```jsx
 import { Separator } from '@kryv/teal'
@@ -1909,6 +3186,121 @@ export function ReviewQueueRecipe() {
 }
 ```
 
+## Filter toolbar
+
+Keep search, scope, and reset actions together above a dense result surface.
+
+```jsx
+import { Button, Card, Input, Select } from '@kryv/teal'
+import { Filter, RotateCcw, Search } from 'lucide-react'
+
+export function FilterToolbarRecipe() {
+  return (
+    <Card className="w-full max-w-3xl p-4">
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="relative min-w-48 flex-1">
+          <Search aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-on-surface-variant" />
+          <Input aria-label="Search projects" placeholder="Search projects" className="pl-9" />
+        </div>
+        <Select aria-label="Project status" placeholder="Status" options={[{ value: 'all', label: 'All statuses' }, { value: 'ready', label: 'Ready' }, { value: 'review', label: 'In review' }]} />
+        <Button variant="secondary" size="sm"><Filter /> Filter</Button>
+        <Button variant="ghost" size="sm"><RotateCcw /> Reset</Button>
+      </div>
+    </Card>
+  )
+}
+```
+
+## Confirmation flow
+
+Use a focused dialog for destructive work with an explicit recovery path.
+
+```jsx
+import { useState } from 'react'
+import { Button, Dialog } from '@kryv/teal'
+
+export function ConfirmationFlowRecipe() {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <Button variant="danger" onClick={() => setOpen(true)}>Delete project</Button>
+      <Dialog open={open} onOpenChange={setOpen} title="Delete project?" description="This removes the project from the active workspace." footer={<><Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button><Button variant="danger" onClick={() => setOpen(false)}>Delete project</Button></>}>
+        <p className="text-sm text-on-surface-variant">Export the project first if another team still needs the reports.</p>
+      </Dialog>
+    </>
+  )
+}
+```
+
+## Empty table
+
+Explain an empty collection in the same structural space where rows will appear.
+
+```jsx
+import { Button, Card, EmptyState, Table } from '@kryv/teal'
+
+export function EmptyTableRecipe() {
+  return (
+    <Card className="w-full max-w-3xl">
+      <Table caption="Projects" rows={[]} columns={[{ key: 'name', header: 'Project', cell: (row) => row.name }]} getRowKey={(row) => row.id} empty={<EmptyState title="No projects yet" description="Create a project to start tracking work." action={<Button size="sm">Create project</Button>} />} />
+    </Card>
+  )
+}
+```
+
+## Responsive application shell
+
+Compose TopBar and VerticalNav into a desktop shell that can become a mobile drawer.
+
+```jsx
+import { useState } from 'react'
+import { Bell, LayoutDashboard, Menu, Settings, X } from 'lucide-react'
+import { IconButton, TopBar, TopBarActions, TopBarBrand, VerticalNav, VerticalNavBrand, VerticalNavItem, VerticalNavList, VerticalNavSection } from '@kryv/teal'
+
+export function ResponsiveShellRecipe() {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="flex h-80 w-full max-w-3xl overflow-hidden rounded-2xl border border-outline-variant/30">
+      {open ? <button type="button" aria-label="Close navigation" className="fixed inset-0 z-30 bg-black/40 sm:hidden" onClick={() => setOpen(false)} /> : null}
+      <VerticalNav mode="rail" className={`${open ? 'fixed inset-y-0 left-0 z-40 flex' : 'hidden'} shrink-0 sm:flex`}>
+        <VerticalNavBrand><span className="flex w-16 justify-center text-primary"><LayoutDashboard /></span></VerticalNavBrand>
+        <VerticalNavList><VerticalNavSection label="Workspace"><VerticalNavItem active icon={<LayoutDashboard />} onClick={() => setOpen(false)}>Overview</VerticalNavItem><VerticalNavItem icon={<Settings />} onClick={() => setOpen(false)}>Settings</VerticalNavItem></VerticalNavSection></VerticalNavList>
+      </VerticalNav>
+      <div className="min-w-0 flex-1">
+        <TopBar sticky={false} className="px-4">
+          <TopBarBrand><IconButton label={open ? 'Close navigation' : 'Open navigation'} size="sm" className="sm:hidden" onClick={() => setOpen((value) => !value)}>{open ? <X /> : <Menu />}</IconButton><span className="font-headline font-bold">Overview</span></TopBarBrand>
+          <TopBarActions><IconButton label="Notifications" size="sm"><Bell /></IconButton></TopBarActions>
+        </TopBar>
+        <div className="p-5 text-sm text-on-surface-variant">Content remains readable while navigation changes shape at the shell boundary.</div>
+      </div>
+    </div>
+  )
+}
+```
+
+## Disclosed search
+
+Keep a calm toolbar until search is requested, then transfer focus into the field.
+
+```jsx
+import { useEffect, useRef, useState } from 'react'
+import { IconButton, Input } from '@kryv/teal'
+import { Search, X } from 'lucide-react'
+
+export function DisclosedSearchRecipe() {
+  const [open, setOpen] = useState(false)
+  const inputRef = useRef(null)
+  useEffect(() => { if (open) requestAnimationFrame(() => inputRef.current?.focus()) }, [open])
+  return open ? (
+    <div className="flex w-full max-w-sm items-center gap-2 rounded-xl border border-outline-variant/40 bg-surface px-3">
+      <Search aria-hidden="true" className="size-4 text-on-surface-variant" />
+      <Input ref={inputRef} aria-label="Search projects" placeholder="Search projects" className="min-h-10 flex-1 rounded-none border-0 bg-transparent px-0 shadow-none focus-visible:ring-0" onKeyDown={(event) => { if (event.key === 'Escape') setOpen(false) }} />
+      <IconButton label="Close search" size="sm" onClick={() => setOpen(false)}><X /></IconButton>
+    </div>
+  ) : <IconButton label="Open project search" onClick={() => setOpen(true)}><Search /></IconButton>
+}
+```
+
 ## Promotion rule
 
 A recipe becomes a published module only after at least two Kryv products need the same behavior. Product persistence, validation policy, queries, and domain language stay in the application.
@@ -1919,4 +3311,10 @@ A recipe becomes a published module only after at least two Kryv products need t
 
 Versioned changes to @kryv/teal, generated from the changesets changelog. Current version: v0.2.0.
 
-_No published releases yet._
+## v0.2.0
+
+### Historical baseline
+
+- Public ESM package with React 18 and React 19 peer support.
+- 22 typed modules with compiled styles, semantic tokens, and TypeScript declarations.
+- Responsive documentation with examples, playgrounds, recipes, and accessibility coverage.

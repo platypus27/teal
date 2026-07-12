@@ -1,6 +1,7 @@
 import { forwardRef, type ElementType, type HTMLAttributes } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './cn'
+import type { PolymorphicComponent, PolymorphicProps } from './polymorphic'
 
 const topBarVariants = cva(
   'flex h-16 items-center gap-3 px-4 sm:px-8 lg:px-12',
@@ -24,12 +25,18 @@ const topBarVariants = cva(
   },
 )
 
-export interface TopBarProps extends HTMLAttributes<HTMLElement>, VariantProps<typeof topBarVariants> {
+export interface TopBarOwnProps extends VariantProps<typeof topBarVariants> {
   /** Element rendered by the top bar; defaults to `<header>`. */
   as?: ElementType
+  /** Visual treatment of the bar. */
+  variant?: VariantProps<typeof topBarVariants>['variant']
+  /** Keeps the bar at the top of its scrolling container. */
+  sticky?: VariantProps<typeof topBarVariants>['sticky']
 }
 
-export const TopBar = forwardRef<HTMLElement, TopBarProps>(function TopBar(
+export type TopBarProps<C extends ElementType = 'header'> = PolymorphicProps<C, TopBarOwnProps>
+
+const TopBarImpl = forwardRef<HTMLElement, TopBarProps>(function TopBar(
   { as: Component = 'header', className, variant, sticky = true, ...props },
   ref,
 ) {
@@ -41,6 +48,8 @@ export const TopBar = forwardRef<HTMLElement, TopBarProps>(function TopBar(
     />
   )
 })
+
+export const TopBar = TopBarImpl as PolymorphicComponent<'header', TopBarOwnProps>
 
 export const TopBarBrand = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   function TopBarBrand({ className, ...props }, ref) {

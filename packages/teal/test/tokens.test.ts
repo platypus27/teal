@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
+import { contrastPairs } from './tokens.generated'
 
 function channel(value: number) {
   const normalized = value / 255
@@ -35,6 +36,13 @@ describe('semantic color tokens', () => {
   const css = readFileSync(resolve(import.meta.dirname, '../src/tokens.css'), 'utf8')
   const light = variables(css.match(/:root\s*{([\s\S]*?)\n}/)?.[1] ?? '')
   const dark = variables(css.match(/html\.dark\s*{([\s\S]*?)\n}/)?.[1] ?? '')
+
+  it.each(contrastPairs)('%s and %s are defined in both themes', (foreground, background) => {
+    expect(light[foreground]).toBeDefined()
+    expect(light[background]).toBeDefined()
+    expect(dark[foreground]).toBeDefined()
+    expect(dark[background]).toBeDefined()
+  })
 
   it.each([
     ['light secondary text', light['color-on-surface-variant'], light['color-background']],

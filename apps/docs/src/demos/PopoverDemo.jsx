@@ -1,12 +1,12 @@
 import { Button, Checkbox, Popover } from '@kryv/teal'
 import { Filter } from 'lucide-react'
 
-export function PopoverDemo() {
+export function PopoverDemo({ exampleIndex = 0 }) {
   return (
     <Popover
       trigger={
         <Button variant="secondary">
-          <Filter /> Filters
+          <Filter /> {exampleIndex ? 'Refine projects' : 'Filters'}
         </Button>
       }
       align="start"

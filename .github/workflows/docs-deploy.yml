@@ -1,0 +1,79 @@
+name: Documentation image and deploy
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [master]
+
+concurrency:
+  group: docs-deploy-master
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  image:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.image.outputs.name }}
+      sha: ${{ github.event.workflow_run.head_sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: image
+        run: echo "name=ghcr.io/${GITHUB_REPOSITORY,,}/teal-docs:${{ github.event.workflow_run.head_sha }}" >> "$GITHUB_OUTPUT"
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/docs/Dockerfile
+          push: true
+          tags: ${{ steps.image.outputs.name }}
+          labels: |
+            org.opencontainers.image.revision=${{ github.event.workflow_run.head_sha }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+
+  deploy:
+    needs: image
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure SSH
+        env:
+          DEPLOY_KEY: ${{ secrets.DOCS_DEPLOY_SSH_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "${{ secrets.DOCS_DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+      - name: Pull immutable image and roll out
+        env:
+          IMAGE: ${{ needs.image.outputs.image }}
+          DEPLOY_HOST: ${{ secrets.DOCS_DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DOCS_DEPLOY_USER }}
+          DEPLOY_PATH: ${{ secrets.DOCS_DEPLOY_PATH }}
+        run: |
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "IMAGE='$IMAGE' DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'REMOTE'
+          set -euo pipefail
+          cd "$DEPLOY_PATH"
+          previous="$(docker inspect --format '{{.Config.Image}}' "$(docker compose ps -q docs)" 2>/dev/null || true)"
+          export TEAL_DOCS_IMAGE="$IMAGE"
+          docker compose pull docs
+          docker compose up -d --no-build docs
+          if ! curl --fail --retry 12 --retry-delay 2 --silent http://127.0.0.1:8087/ >/dev/null; then
+            if [ -n "$previous" ]; then
+              export TEAL_DOCS_IMAGE="$previous"
+              docker compose up -d --no-build docs
+            fi
+            exit 1
+          fi
+          REMOTE

@@ -1,50 +1,45 @@
 import { useState } from 'react'
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Dialog, Progress, Separator } from '@kryv/teal'
-import { BadgeDemo } from '../demos/BadgeDemo.jsx'
-import badgeSource from '../demos/BadgeDemo.jsx?raw'
-import { ButtonDemo } from '../demos/ButtonDemo.jsx'
-import buttonSource from '../demos/ButtonDemo.jsx?raw'
-import { CardDemo } from '../demos/CardDemo.jsx'
-import cardSource from '../demos/CardDemo.jsx?raw'
-import { CheckboxDemo } from '../demos/CheckboxDemo.jsx'
-import checkboxSource from '../demos/CheckboxDemo.jsx?raw'
-import { DialogDemo } from '../demos/DialogDemo.jsx'
-import dialogSource from '../demos/DialogDemo.jsx?raw'
-import { EmptyStateDemo } from '../demos/EmptyStateDemo.jsx'
-import emptyStateSource from '../demos/EmptyStateDemo.jsx?raw'
-import { FieldDemo } from '../demos/FieldDemo.jsx'
-import fieldSource from '../demos/FieldDemo.jsx?raw'
-import { InputDemo } from '../demos/InputDemo.jsx'
-import inputSource from '../demos/InputDemo.jsx?raw'
-import { LoadingDemo } from '../demos/LoadingDemo.jsx'
-import loadingSource from '../demos/LoadingDemo.jsx?raw'
-import { MenuDemo } from '../demos/MenuDemo.jsx'
-import menuSource from '../demos/MenuDemo.jsx?raw'
-import { PageHeaderDemo } from '../demos/PageHeaderDemo.jsx'
-import pageHeaderSource from '../demos/PageHeaderDemo.jsx?raw'
-import { PaginationDemo } from '../demos/PaginationDemo.jsx'
-import paginationSource from '../demos/PaginationDemo.jsx?raw'
-import { PopoverDemo } from '../demos/PopoverDemo.jsx'
-import popoverSource from '../demos/PopoverDemo.jsx?raw'
-import { SelectDemo } from '../demos/SelectDemo.jsx'
-import selectSource from '../demos/SelectDemo.jsx?raw'
-import { SeparatorDemo } from '../demos/SeparatorDemo.jsx'
-import separatorSource from '../demos/SeparatorDemo.jsx?raw'
-import { SwitchDemo } from '../demos/SwitchDemo.jsx'
-import switchSource from '../demos/SwitchDemo.jsx?raw'
-import { TableDemo } from '../demos/TableDemo.jsx'
-import tableSource from '../demos/TableDemo.jsx?raw'
-import { TabsDemo } from '../demos/TabsDemo.jsx'
-import tabsSource from '../demos/TabsDemo.jsx?raw'
-import { ToastDemo } from '../demos/ToastDemo.jsx'
-import toastSource from '../demos/ToastDemo.jsx?raw'
-import { TooltipDemo } from '../demos/TooltipDemo.jsx'
-import tooltipSource from '../demos/TooltipDemo.jsx?raw'
-import { TopBarDemo } from '../demos/TopBarDemo.jsx'
-import topBarSource from '../demos/TopBarDemo.jsx?raw'
-import { VerticalNavDemo } from '../demos/VerticalNavDemo.jsx'
-import verticalNavSource from '../demos/VerticalNavDemo.jsx?raw'
-import { moduleGroups } from './module-meta.js'
+import { catalogGroups as metadataGroups } from './docs-module-registry.js'
+
+const demoLoaders = import.meta.glob('../demos/*Demo.jsx')
+const sourceLoaders = import.meta.glob('../demos/*Demo.jsx', { query: '?raw', import: 'default' })
+
+function pascalCase(id) {
+  return id
+    .split('-')
+    .map((part) => part[0].toUpperCase() + part.slice(1))
+    .join('')
+}
+
+/** Load a module's demo and source only when its route is opened. */
+export async function loadModuleRecord(id) {
+  const module = catalog.find((entry) => entry.id === id)
+  if (!module) return null
+  const files = [...new Set(module.examples.map((example) => `../demos/${pascalCase(example.demo ?? id)}Demo.jsx`))]
+  const loaded = await Promise.all(files.map(async (file) => {
+    const demoLoader = demoLoaders[file]
+    const sourceLoader = sourceLoaders[file]
+    if (!demoLoader || !sourceLoader) throw new Error(`Missing documentation demo for ${file}`)
+    const [demoModule, source] = await Promise.all([demoLoader(), sourceLoader()])
+    return /** @type {[string, Record<string, any>, string]} */ ([file, demoModule, source])
+  }))
+  const records = new Map(
+    loaded.map(([file, demoModule, source]) => [file, { demoModule, source }]),
+  )
+  return {
+    ...module,
+    examples: module.examples.map((example, index) => {
+      const file = `../demos/${pascalCase(example.demo ?? id)}Demo.jsx`
+      const record = records.get(file)
+      const demoModule = record.demoModule
+      const source = record.source
+      const DemoComponent = demoModule[`${pascalCase(example.demo ?? id)}Demo`] ?? demoModule.default
+      const Demo = (props) => <DemoComponent {...props} exampleIndex={index} />
+      return { ...example, Demo, source }
+    }),
+  }
+}
 
 function DialogPlayground({ description, size, title }) {
   const [open, setOpen] = useState(false)
@@ -94,10 +89,6 @@ const extras = {
         { name: 'children', kind: 'text', defaultValue: 'Save changes', required: true },
       ],
     },
-    examples: [{ Demo: ButtonDemo, source: buttonSource }],
-  },
-  field: {
-    examples: [{ Demo: FieldDemo, source: fieldSource }],
   },
   input: {
     playground: {
@@ -110,7 +101,6 @@ const extras = {
         { name: 'placeholder', kind: 'text', defaultValue: 'Project name' },
       ],
     },
-    examples: [{ Demo: InputDemo, source: inputSource }],
   },
   select: {
     playground: {
@@ -129,7 +119,6 @@ const extras = {
         { name: 'disabled' },
       ],
     },
-    examples: [{ Demo: SelectDemo, source: selectSource }],
   },
   checkbox: {
     playground: {
@@ -147,7 +136,6 @@ const extras = {
         { name: 'description', kind: 'text', defaultValue: '' },
       ],
     },
-    examples: [{ Demo: CheckboxDemo, source: checkboxSource }],
   },
   switch: {
     playground: {
@@ -160,7 +148,6 @@ const extras = {
         { name: 'description', kind: 'text', defaultValue: 'High-risk account activity', required: true },
       ],
     },
-    examples: [{ Demo: SwitchDemo, source: switchSource }],
   },
   card: {
     playground: {
@@ -179,7 +166,6 @@ const extras = {
       code: () =>
         `<Card>\n  <CardHeader>\n    <CardTitle>Project Orion</CardTitle>\n  </CardHeader>\n  <CardContent>\n    <CardDescription>Incident response workspace with 4 active reports.</CardDescription>\n  </CardContent>\n</Card>`,
     },
-    examples: [{ Demo: CardDemo, source: cardSource }],
   },
   badge: {
     playground: {
@@ -189,7 +175,6 @@ const extras = {
         { name: 'children', kind: 'text', defaultValue: 'Deployed', required: true },
       ],
     },
-    examples: [{ Demo: BadgeDemo, source: badgeSource }],
   },
   dialog: {
     playground: {
@@ -202,19 +187,14 @@ const extras = {
       render: (props) => <DialogPlayground {...props} />,
       code: dialogCode,
     },
-    examples: [{ Demo: DialogDemo, source: dialogSource }],
   },
   tooltip: {
-    examples: [{ Demo: TooltipDemo, source: tooltipSource }],
   },
   menu: {
-    examples: [{ Demo: MenuDemo, source: menuSource }],
   },
   popover: {
-    examples: [{ Demo: PopoverDemo, source: popoverSource }],
   },
   toast: {
-    examples: [{ Demo: ToastDemo, source: toastSource }],
   },
   'empty-state': {
     playground: {
@@ -224,7 +204,6 @@ const extras = {
       code: () =>
         `<EmptyState title="No results found" description="Try adjusting your search terms." />`,
     },
-    examples: [{ Demo: EmptyStateDemo, source: emptyStateSource }],
   },
   loading: {
     playground: {
@@ -239,10 +218,8 @@ const extras = {
         </div>
       ),
     },
-    examples: [{ Demo: LoadingDemo, source: loadingSource }],
   },
   tabs: {
-    examples: [{ Demo: TabsDemo, source: tabsSource }],
   },
   pagination: {
     playground: {
@@ -254,19 +231,14 @@ const extras = {
       code: (values) =>
         `const [page, setPage] = useState(${values.page})\n\n<Pagination page={page} pageCount={${values.pageCount}} onPageChange={setPage} />`,
     },
-    examples: [{ Demo: PaginationDemo, source: paginationSource }],
   },
   'page-header': {
-    examples: [{ Demo: PageHeaderDemo, source: pageHeaderSource }],
   },
   'vertical-nav': {
-    examples: [{ Demo: VerticalNavDemo, source: verticalNavSource }],
   },
   'top-bar': {
-    examples: [{ Demo: TopBarDemo, source: topBarSource }],
   },
   table: {
-    examples: [{ Demo: TableDemo, source: tableSource }],
   },
   separator: {
     playground: {
@@ -281,20 +253,15 @@ const extras = {
         </div>
       ),
     },
-    examples: [{ Demo: SeparatorDemo, source: separatorSource }],
   },
 }
 
-export const catalogGroups = moduleGroups.map((group) => ({
+export const catalogGroups = metadataGroups.map((group) => ({
   name: group.name,
-  modules: group.modules.map((module) => {
-    const { examples: extraExamples = [], ...rest } = extras[module.id] ?? {}
-    return {
-      ...module,
-      ...rest,
-      examples: module.examples.map((example, index) => ({ ...example, ...extraExamples[index] })),
-    }
-  }),
+  modules: group.modules.map((module) => ({
+    ...module,
+    ...(extras[module.id] ?? {}),
+  })),
 }))
 
 export const catalog = catalogGroups.flatMap((group) => group.modules)

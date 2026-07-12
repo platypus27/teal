@@ -1,6 +1,7 @@
 import { createContext, forwardRef, useContext, type ElementType, type HTMLAttributes, type ReactNode } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './cn'
+import type { PolymorphicComponent, PolymorphicProps } from './polymorphic'
 
 const verticalNavVariants = cva(
   'group flex flex-col overflow-hidden transition-[width] duration-300 ease-out motion-reduce:transition-none',
@@ -33,14 +34,20 @@ const verticalNavVariants = cva(
 const VerticalNavContext = createContext<{ mode: 'rail' | 'full' }>({ mode: 'full' })
 const useVerticalNavMode = () => useContext(VerticalNavContext)
 
-export interface VerticalNavProps
-  extends HTMLAttributes<HTMLElement>,
-    VariantProps<typeof verticalNavVariants> {
+export interface VerticalNavOwnProps extends VariantProps<typeof verticalNavVariants> {
   /** Element rendered by the nav container; defaults to `<nav>`. */
   as?: ElementType
+  /** Visual treatment of the navigation surface. */
+  variant?: VariantProps<typeof verticalNavVariants>['variant']
+  /** Rail collapses labels until hover or focus; full keeps labels visible. */
+  mode?: VariantProps<typeof verticalNavVariants>['mode']
+  /** Edge where the navigation is attached. */
+  side?: VariantProps<typeof verticalNavVariants>['side']
 }
 
-export const VerticalNav = forwardRef<HTMLElement, VerticalNavProps>(function VerticalNav(
+export type VerticalNavProps<C extends ElementType = 'nav'> = PolymorphicProps<C, VerticalNavOwnProps>
+
+const VerticalNavImpl = forwardRef<HTMLElement, VerticalNavProps>(function VerticalNav(
   { as: Component = 'nav', className, variant, mode, side, ...props },
   ref,
 ) {
@@ -48,13 +55,15 @@ export const VerticalNav = forwardRef<HTMLElement, VerticalNavProps>(function Ve
   return (
     <VerticalNavContext.Provider value={{ mode: resolvedMode }}>
       <Component
-        ref={ref}
+        ref={ref as never}
         className={cn(verticalNavVariants({ variant, mode, side }), className)}
         {...props}
       />
     </VerticalNavContext.Provider>
   )
 })
+
+export const VerticalNav = VerticalNavImpl as PolymorphicComponent<'nav', VerticalNavOwnProps>
 
 export const VerticalNavBrand = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   function VerticalNavBrand({ className, ...props }, ref) {
@@ -108,7 +117,7 @@ export const VerticalNavSection = forwardRef<HTMLDivElement, VerticalNavSectionP
   },
 )
 
-export interface VerticalNavItemProps extends HTMLAttributes<HTMLElement> {
+export interface VerticalNavItemOwnProps {
   /** Element rendered by the item; defaults to `<a>`. Use `as={Link}` for router integration. */
   as?: ElementType
   /** Marks the item as the current page; sets `aria-current="page"`. */
@@ -117,7 +126,9 @@ export interface VerticalNavItemProps extends HTMLAttributes<HTMLElement> {
   icon?: ReactNode
 }
 
-export const VerticalNavItem = forwardRef<HTMLElement, VerticalNavItemProps>(function VerticalNavItem(
+export type VerticalNavItemProps<C extends ElementType = 'a'> = PolymorphicProps<C, VerticalNavItemOwnProps>
+
+const VerticalNavItemImpl = forwardRef<HTMLElement, VerticalNavItemProps>(function VerticalNavItem(
   { as: Component = 'a', active = false, icon, className, children, ...props },
   ref,
 ) {
@@ -132,7 +143,7 @@ export const VerticalNavItem = forwardRef<HTMLElement, VerticalNavItemProps>(fun
 
   return (
     <Component
-      ref={ref}
+      ref={ref as never}
       className={cn(
         'group/item flex items-center py-1.5 text-sm transition-colors focus-visible:outline-none',
         className,
@@ -163,6 +174,8 @@ export const VerticalNavItem = forwardRef<HTMLElement, VerticalNavItemProps>(fun
     </Component>
   )
 })
+
+export const VerticalNavItem = VerticalNavItemImpl as PolymorphicComponent<'a', VerticalNavItemOwnProps>
 
 export const VerticalNavFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   function VerticalNavFooter({ className, ...props }, ref) {

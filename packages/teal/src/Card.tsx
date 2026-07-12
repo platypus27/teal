@@ -1,7 +1,8 @@
 import { forwardRef, type ElementType, type HTMLAttributes } from 'react'
 import { cn } from './cn'
+import type { PolymorphicComponent, PolymorphicProps } from './polymorphic'
 
-export interface CardProps extends HTMLAttributes<HTMLElement> {
+export interface CardOwnProps {
   /** Element rendered by the card; use an interactive element for clickable cards. */
   as?: ElementType
   /** Applies disabled styling and blocks interaction on interactive cards. */
@@ -10,13 +11,15 @@ export interface CardProps extends HTMLAttributes<HTMLElement> {
   type?: 'button' | 'submit' | 'reset'
 }
 
-export const Card = forwardRef<HTMLElement, CardProps>(function Card(
+export type CardProps<C extends ElementType = 'div'> = PolymorphicProps<C, CardOwnProps>
+
+const CardImpl = forwardRef<HTMLElement, CardProps>(function Card(
   { as: Component = 'div', className, ...props },
   ref,
 ) {
   return (
     <Component
-      ref={ref}
+      ref={ref as never}
       className={cn(
         'rounded-2xl border border-outline-variant/20 bg-surface-container p-6 shadow-[var(--teal-shadow-card)]',
         className,
@@ -25,6 +28,8 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(
     />
   )
 })
+
+export const Card = CardImpl as PolymorphicComponent<'div', CardOwnProps>
 
 export const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(function CardHeader(
   { className, ...props },

@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FlaskConical, Menu as MenuIcon, Moon, Palette, Search, Sun, X } from 'lucide-react'
 import { GitHubIcon } from './GitHubIcon.jsx'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { IconButton, Toaster, TopBar, TopBarActions, TopBarBrand, TopBarSearch, VerticalNav, VerticalNavBrand, VerticalNavList, VerticalNavSection, iconButtonVariants } from '@kryv/teal'
-import { catalogGroups } from '../data/catalog.jsx'
+import { IconButton, Toaster, TopBar, TopBarActions, TopBarBrand, TopBarSearch, VerticalNav, VerticalNavBrand, VerticalNavItem, VerticalNavList, VerticalNavSection, iconButtonVariants } from '@kryv/teal'
+import { catalogGroups } from '../data/docs-module-registry.js'
 import changelog from '../generated/changelog.json'
 import { CommandPalette, CommandPaletteProvider, useCommandPalette } from './CommandPalette.jsx'
 import { PrevNext } from './PrevNext.jsx'
@@ -28,14 +28,6 @@ function ThemeToggle() {
       {dark ? <Sun /> : <Moon />}
     </IconButton>
   )
-}
-
-function linkClass({ isActive }) {
-  return `block rounded-lg px-3 py-2 text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-    isActive
-      ? 'bg-primary/10 font-semibold text-primary'
-      : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
-  }`
 }
 
 function Header({ navOpen, setNavOpen }) {
@@ -93,6 +85,14 @@ function Header({ navOpen, setNavOpen }) {
 }
 
 function Sidebar({ navOpen, setNavOpen }) {
+  const { pathname } = useLocation()
+  const firstLinkRef = useRef(null)
+  const active = (to, end = false) => (end ? pathname === to : pathname.startsWith(to))
+
+  useEffect(() => {
+    if (navOpen) firstLinkRef.current?.focus()
+  }, [navOpen])
+
   return (
     <>
       {navOpen ? (
@@ -129,37 +129,38 @@ function Sidebar({ navOpen, setNavOpen }) {
 
         <VerticalNavList>
           <VerticalNavSection label="Start">
-            <NavLink end to="/" className={linkClass} onClick={() => setNavOpen(false)}>
+            <VerticalNavItem ref={firstLinkRef} as={NavLink} end to="/" active={active('/', true)} onClick={() => setNavOpen(false)}>
               Getting started
-            </NavLink>
-            <NavLink to="/foundations" className={linkClass} onClick={() => setNavOpen(false)}>
+            </VerticalNavItem>
+            <VerticalNavItem as={NavLink} to="/foundations" active={active('/foundations')} onClick={() => setNavOpen(false)}>
               Foundations
-            </NavLink>
-            <NavLink to="/changelog" className={linkClass} onClick={() => setNavOpen(false)}>
+            </VerticalNavItem>
+            <VerticalNavItem as={NavLink} to="/changelog" active={active('/changelog')} onClick={() => setNavOpen(false)}>
               Changelog
-            </NavLink>
+            </VerticalNavItem>
           </VerticalNavSection>
           {catalogGroups.map((group) => (
             <VerticalNavSection key={group.name} label={group.name}>
               {group.modules.map((module) => (
-                <NavLink
+                <VerticalNavItem
                   key={module.id}
+                  as={NavLink}
                   to={`/modules/${module.id}`}
-                  className={(state) => `${linkClass(state)} flex items-center gap-2`}
+                  active={active(`/modules/${module.id}`)}
                   onClick={() => setNavOpen(false)}
                 >
                   {module.name}
-                  {module.playground ? (
+                  {module.hasPlayground ? (
                     <FlaskConical aria-hidden="true" className="ml-auto size-3.5 text-primary/70" />
                   ) : null}
-                </NavLink>
+                </VerticalNavItem>
               ))}
             </VerticalNavSection>
           ))}
           <VerticalNavSection label="Patterns">
-            <NavLink to="/recipes" className={linkClass} onClick={() => setNavOpen(false)}>
+            <VerticalNavItem as={NavLink} to="/recipes" active={active('/recipes')} onClick={() => setNavOpen(false)}>
               Recipes
-            </NavLink>
+            </VerticalNavItem>
           </VerticalNavSection>
         </VerticalNavList>
       </VerticalNav>
@@ -170,6 +171,15 @@ function Sidebar({ navOpen, setNavOpen }) {
 export function Layout() {
   const [navOpen, setNavOpen] = useState(false)
   const { pathname } = useLocation()
+
+  useEffect(() => {
+    if (!navOpen) return undefined
+    function onKeyDown(event) {
+      if (event.key === 'Escape') setNavOpen(false)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [navOpen])
 
   useEffect(() => {
     window.scrollTo({ top: 0 })

@@ -8,7 +8,7 @@
 - Lucide SVG icon system with no global icon-font dependency
 - Radix-backed Select, Checkbox, Switch, Dialog, Tooltip, Toast, Tabs, Menu, Popover, Progress, and Separator
 - typed Button, IconButton, Field, Input, TextArea, Card, Badge, PageHeader, EmptyState, loading, Table, and Pagination modules
-- responsive routed documentation with live examples, interactive playgrounds, generated interface tables, keyboard documentation, recipes, command palette, and `llms.txt` support
+- responsive routed documentation with live examples, interactive playgrounds, generated interface tables, keyboard documentation, recipes, command palette, and `llms.txt` support for all 22 module pages
 - interface, SSR, accessibility, browser, and visual-regression test foundations
 
 ## Consumer rollout

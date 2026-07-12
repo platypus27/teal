@@ -1,19 +1,10 @@
-import { createContext, forwardRef, useContext, useId, type HTMLAttributes, type ReactNode } from 'react'
+import { forwardRef, type HTMLAttributes, type ReactNode } from 'react'
 import * as LabelPrimitive from '@radix-ui/react-label'
 import { cn } from './cn'
-
-interface FieldContextValue {
-  controlId: string
-  descriptionId: string | undefined
-  errorId: string | undefined
-  invalid: boolean
-  required: boolean
-}
-
-const FieldContext = createContext<FieldContextValue | null>(null)
+import { FormSemanticsContext, hasFormContent, mergeDescriptionIds, useFormSemantics, useFormSemanticsContext } from './form-semantics'
 
 export function useFieldControl() {
-  return useContext(FieldContext)
+  return useFormSemanticsContext()
 }
 
 export type LabelProps = React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
@@ -42,40 +33,51 @@ export interface FieldProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childr
   label: ReactNode
   /** Marks the control as required and renders a required indicator. */
   required?: boolean
+  /** Marks the control invalid without requiring a visible error message. */
+  invalid?: boolean
 }
 
-export function Field({ children, className, description, error, id, label, required = false, ...props }: FieldProps) {
-  const generatedId = useId()
-  const controlId = id ?? `teal-field-${generatedId.replaceAll(':', '')}`
-  const descriptionId = description ? `${controlId}-description` : undefined
-  const errorId = error ? `${controlId}-error` : undefined
+export function Field({
+  children,
+  className,
+  description,
+  error,
+  id,
+  invalid,
+  label,
+  required = false,
+  ...props
+}: FieldProps) {
+  const semantics = useFormSemantics({
+    description,
+    error,
+    id,
+    invalid,
+    prefix: 'teal-field',
+    required,
+  })
 
   return (
-    <FieldContext.Provider
-      value={{ controlId, descriptionId, errorId, invalid: Boolean(error), required }}
-    >
+    <FormSemanticsContext.Provider value={semantics}>
       <div className={cn('grid gap-1.5', className)} {...props}>
-        <Label htmlFor={controlId}>
+        <Label htmlFor={semantics.controlId}>
           {label}
           {required ? <span className="ml-1 text-error" aria-hidden="true">*</span> : null}
         </Label>
         {children}
-        {description ? (
-          <p id={descriptionId} className="text-xs leading-relaxed text-on-surface-variant">
+        {hasFormContent(description) ? (
+          <p id={semantics.descriptionId} className="text-xs leading-relaxed text-on-surface-variant">
             {description}
           </p>
         ) : null}
-        {error ? (
-          <p id={errorId} className="text-xs font-medium leading-relaxed text-error">
+        {hasFormContent(error) ? (
+          <p id={semantics.errorId} className="text-xs font-medium leading-relaxed text-error">
             {error}
           </p>
         ) : null}
       </div>
-    </FieldContext.Provider>
+    </FormSemanticsContext.Provider>
   )
 }
 
-export function mergeDescriptionIds(...ids: Array<string | undefined>) {
-  const value = ids.filter(Boolean).join(' ')
-  return value || undefined
-}
+export { mergeDescriptionIds }

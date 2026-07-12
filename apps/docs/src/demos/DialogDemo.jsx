@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Button, Dialog } from '@kryv/teal'
 
-export function DialogDemo() {
+export function DialogDemo({ exampleIndex = 0 }) {
   const [open, setOpen] = useState(false)
   return (
     <>
-      <Button onClick={() => setOpen(true)}>Open dialog</Button>
+      <Button onClick={() => setOpen(true)}>{exampleIndex ? 'Open confirmation dialog' : 'Open dialog'}</Button>
       <Dialog
         open={open}
         onOpenChange={setOpen}

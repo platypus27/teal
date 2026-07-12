@@ -1,11 +1,8 @@
 import { expect, test } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
+import { modules } from '../src/data/module-meta.js'
 
-const moduleIds = [
-  'button', 'field', 'input', 'select', 'checkbox', 'switch', 'card', 'badge',
-  'dialog', 'tooltip', 'menu', 'popover', 'toast', 'empty-state', 'loading',
-  'tabs', 'pagination', 'page-header', 'vertical-nav', 'top-bar', 'table', 'separator',
-]
+const moduleIds = modules.map((module) => module.id)
 
 test('every documentation module has no accessibility violations', async ({ page }) => {
   test.slow() // Visits all 22 module pages in one test
@@ -31,11 +28,40 @@ test('mobile navigation reaches a module', async ({ page, isMobile }) => {
   test.skip(!isMobile, 'Mobile navigation behavior')
   await page.goto('/')
   await page.getByRole('button', { name: 'Open navigation' }).click()
+  await expect(page.getByRole('link', { name: 'Getting started' })).toBeFocused()
   await page
     .getByRole('navigation', { name: 'Documentation' })
     .getByRole('link', { name: 'Select', exact: true })
     .click()
   await expect(page.getByRole('heading', { level: 1, name: 'Select' })).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(page.getByRole('button', { name: 'Open navigation' })).toBeVisible()
+})
+
+test('command search is keyboard navigable and transfers focus', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: /Search the docs/ }).first().click()
+  const input = page.getByRole('textbox', { name: 'Search the docs' })
+  await expect(input).toBeFocused()
+  await input.fill('Select')
+  await input.press('Enter')
+  await expect(page.getByRole('heading', { level: 1, name: 'Select' })).toBeVisible()
+})
+
+test('disclosed search uses focus transfer and Escape dismissal', async ({ page }) => {
+  await page.goto('/modules/tooltip')
+  await page.getByRole('button', { name: 'Open search' }).click()
+  const input = page.getByRole('textbox', { name: 'Search' })
+  await expect(input).toBeFocused()
+  await page.keyboard.press('Escape')
+  await expect(page.getByRole('button', { name: 'Open search' })).toBeVisible()
+})
+
+test('documentation has no horizontal overflow on a narrow viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 })
+  await page.goto('/modules/field')
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
+  expect(overflow).toBeLessThanOrEqual(0)
 })
 
 test('module pages match the approved desktop visual baseline', async ({ page, browserName, isMobile }) => {

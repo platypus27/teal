@@ -3,6 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "packageManager": "npm@11.5.1",
+  "engines": {
+    "node": ">=24 <25",
+    "npm": ">=11.5.1"
+  },
   "workspaces": [
     "packages/*",
     "apps/*"
@@ -11,9 +16,17 @@
     "build": "npm run build --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
+    "test:unit": "npm run test --workspace @kryv/teal",
+    "test:e2e": "npm run test:e2e --workspace @kryv/teal-docs",
     "lint": "npm run lint --workspaces --if-present",
+    "generate:tokens": "node packages/teal/scripts/generate-tokens.mjs",
+    "check:generated": "node packages/teal/scripts/generate-tokens.mjs --check && npm run check:generated --workspace @kryv/teal-docs",
     "pack:check": "npm pack --workspace @kryv/teal --dry-run --cache /tmp/teal-npm-cache",
-    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run pack:check"
+    "pack:verify": "npm run pack:check && npm run verify:package",
+    "verify:package": "node packages/teal/scripts/verify-package.mjs",
+    "release:version": "npx changeset version && npm run generate --workspace @kryv/teal-docs && npm install --package-lock-only --ignore-scripts --no-audit --no-fund",
+    "publish:package": "npm publish --workspace @kryv/teal --access public --provenance",
+    "verify": "npm run lint && npm run typecheck && npm run test:unit && npm run check:generated && npm run validate:registry --workspace @kryv/teal-docs && npm run build && npm run pack:verify"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.7"

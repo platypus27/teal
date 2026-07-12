@@ -48,7 +48,7 @@ icons. Radix is not part of the public interface.
 
 ## Modules
 
-Twenty typed modules across seven groups: Button and IconButton; Field, Input,
+Twenty-two typed modules across seven groups: Button and IconButton; Field, Input,
 TextArea, Select, Checkbox, Switch; Card and Badge; Dialog, Tooltip, Menu,
 Popover; Toast, EmptyState, Spinner, Progress, Skeleton, LoadingState; Tabs,
 Pagination, PageHeader; Table and Separator.
@@ -65,8 +65,9 @@ npm install
 npm run verify
 ```
 
-`npm run verify` runs lint, typecheck, tests, both workspace builds, and a
-pack dry-run of the published artifact.
+`npm run verify` runs lint, typecheck, unit tests, generated-output checks, both
+workspace builds, and packed React consumer verification. Pull requests also
+run the four Playwright projects and Lighthouse in CI.
 
 Run the documentation site locally:
 

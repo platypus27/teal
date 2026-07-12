@@ -17,6 +17,36 @@ export const recipes = [
       'Combine a structural card, semantic status, and a responsive table for operational review surfaces.',
     file: 'recipe-review-queue.jsx',
   },
+  {
+    id: 'filter-toolbar',
+    title: 'Filter toolbar',
+    description: 'Keep search, scope, and reset actions together above a dense result surface.',
+    file: 'recipe-filter-toolbar.jsx',
+  },
+  {
+    id: 'confirmation-flow',
+    title: 'Confirmation flow',
+    description: 'Use a focused dialog for destructive work with an explicit recovery path.',
+    file: 'recipe-confirmation-flow.jsx',
+  },
+  {
+    id: 'empty-table',
+    title: 'Empty table',
+    description: 'Explain an empty collection in the same structural space where rows will appear.',
+    file: 'recipe-empty-table.jsx',
+  },
+  {
+    id: 'responsive-shell',
+    title: 'Responsive application shell',
+    description: 'Compose TopBar and VerticalNav into a desktop shell that can become a mobile drawer.',
+    file: 'recipe-responsive-shell.jsx',
+  },
+  {
+    id: 'disclosed-search',
+    title: 'Disclosed search',
+    description: 'Keep a calm toolbar until search is requested, then transfer focus into the field.',
+    file: 'recipe-disclosed-search.jsx',
+  },
 ]
 
 export const promotionRule =

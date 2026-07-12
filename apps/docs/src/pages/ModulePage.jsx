@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import api from '../generated/api.json'
 import { CodeBlock } from '../components/CodeBlock.jsx'
@@ -6,32 +7,56 @@ import { Page, Section } from '../components/Page.jsx'
 import { Playground } from '../components/Playground.jsx'
 import { PropsTable } from '../components/PropsTable.jsx'
 import { accessibility } from '../data/accessibility.js'
-import { catalog } from '../data/catalog.jsx'
+import { catalog, loadModuleRecord } from '../data/catalog.jsx'
 import { moduleMarkdown } from '../lib/markdown.js'
 import { NotFoundPage } from './NotFoundPage.jsx'
 
 export function ModulePage() {
   const { moduleId } = useParams()
   const module = catalog.find((item) => item.id === moduleId)
+  const [loaded, setLoaded] = useState({ id: null, record: null })
+
+  useEffect(() => {
+    let active = true
+    loadModuleRecord(moduleId ?? '').then((next) => {
+      if (active) setLoaded({ id: moduleId ?? null, record: next })
+    })
+    return () => {
+      active = false
+    }
+  }, [moduleId])
+
   if (!module) return <NotFoundPage />
-  const docs = module.apiNames.flatMap((name) => api.filter((entry) => entry.displayName === name))
-  const imports = module.imports ?? module.apiNames
-  const guide = accessibility[module.id]
-  const usageSource = `import { ${imports.join(', ')} } from '@kryv/teal'\n\n${module.usage}`
+  const record = loaded.id === moduleId ? loaded.record : null
+  if (!record) {
+    return (
+      <Page title={module.name} eyebrow="Module" description={module.description}>
+        <div role="status" className="rounded-2xl border border-outline-variant/30 bg-surface-container p-6 text-sm text-on-surface-variant">
+          Loading module examples...
+        </div>
+      </Page>
+    )
+  }
+
+  const docs = record.apiNames.flatMap((name) => api.filter((entry) => entry.displayName === name))
+  const imports = record.imports ?? record.apiNames
+  const guide = accessibility[record.id]
+  const usageSource = `import { ${imports.join(', ')} } from '@kryv/teal'\n\n${record.usage}`
+  const guidance = record.guidance
 
   return (
     <Page
-      title={module.name}
+      title={record.name}
       eyebrow="Module"
-      description={module.description}
-      markdown={moduleMarkdown(module, api)}
+      description={record.description}
+      markdown={moduleMarkdown(record, api)}
     >
       <Section title="Usage">
         <CodeBlock code={usageSource} lang="jsx" />
       </Section>
       <Section title="Examples">
         <div className="space-y-8">
-          {module.examples.map((example) => {
+          {record.examples.map((example) => {
             const Demo = example.Demo
             return (
               <ExampleBlock
@@ -46,12 +71,29 @@ export function ModulePage() {
           })}
         </div>
       </Section>
-      {module.playground ? (
+      {record.playground ? (
         <Section
           title="Playground"
           description="Tweak props, watch the preview, and copy the generated code. Your choices persist in the URL."
         >
-          <Playground config={module.playground} />
+          <Playground config={record.playground} />
+        </Section>
+      ) : null}
+      {guidance ? (
+        <Section title="Design guidance">
+          <div className="grid gap-4 sm:grid-cols-2">
+            {[
+              ['Use when', guidance.useWhen],
+              ['Avoid when', guidance.avoidWhen],
+              ['Behavior', guidance.behavior],
+              ['Responsive', guidance.responsive],
+            ].map(([title, text]) => (
+              <div key={title} className="rounded-2xl border border-outline-variant/30 bg-surface-container p-5">
+                <h3 className="font-headline font-bold text-on-surface">{title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-on-surface-variant">{text}</p>
+              </div>
+            ))}
+          </div>
         </Section>
       ) : null}
       <Section title="Interface" description="Generated from the published TypeScript source.">

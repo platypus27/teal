@@ -45,14 +45,38 @@ function parseChangelog(markdown) {
   return entries
 }
 
+const historicalBaseline = {
+  version: '0.2.0',
+  groups: [{
+    label: 'Historical baseline',
+    items: [
+      'Public ESM package with React 18 and React 19 peer support.',
+      '22 typed modules with compiled styles, semantic tokens, and TypeScript declarations.',
+      'Responsive documentation with examples, playgrounds, recipes, and accessibility coverage.',
+    ],
+  }],
+}
+
 let entries = []
 try {
   const markdown = await readFile(changelogPath, 'utf8')
   entries = parseChangelog(markdown)
 } catch {
-  // No CHANGELOG.md yet - changesets creates it on the first release.
+  // The shipped 0.2.0 roadmap is the historical baseline. Changesets owns
+  // every release entry after this point, so no changelog is edited here.
+  entries = [historicalBaseline]
+}
+
+if (!entries.some((entry) => entry.version === historicalBaseline.version)) {
+  entries = [historicalBaseline, ...entries]
 }
 
 await mkdir(resolve(output, '..'), { recursive: true })
-await writeFile(output, `${JSON.stringify({ version: pkg.version, entries }, null, 2)}\n`)
+const contents = `${JSON.stringify({ version: pkg.version, entries }, null, 2)}\n`
+if (process.argv.includes('--check')) {
+  const current = await readFile(output, 'utf8').catch(() => '')
+  if (current !== contents) throw new Error('generated/changelog.json is stale - run npm run generate:changelog')
+} else {
+  await writeFile(output, contents)
+}
 console.log(`changelog.json: version ${pkg.version}, ${entries.length} release(s)`)
