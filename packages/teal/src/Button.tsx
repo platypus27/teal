@@ -3,7 +3,6 @@ import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { LoaderCircle } from 'lucide-react'
 import { cn } from './cn'
-import { glassSurface } from './glass'
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98] disabled:pointer-events-none disabled:opacity-55 motion-reduce:transform-none',
@@ -15,7 +14,6 @@ const buttonVariants = cva(
           'border border-outline-variant/50 bg-surface-container text-on-surface hover:bg-surface-container-high',
         ghost: 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface',
         danger: 'bg-error text-on-error hover:bg-error-dim',
-        glass: cn(glassSurface, 'border-outline-variant/20 text-on-surface hover:bg-surface-container/90'),
       },
       size: {
         sm: 'h-8 px-3 text-xs',
@@ -87,7 +85,6 @@ const iconButtonVariants = cva(
         ghost: 'hover:bg-surface-container-high hover:text-on-surface',
         secondary: 'border border-outline-variant/50 bg-surface-container hover:bg-surface-container-high',
         danger: 'text-error hover:bg-error/10',
-        glass: cn(glassSurface, 'border-outline-variant/20 hover:bg-surface-container/90'),
       },
       size: {
         sm: 'size-8 [&_svg]:size-4',

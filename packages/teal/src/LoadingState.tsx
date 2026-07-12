@@ -2,7 +2,6 @@ import { LoaderCircle } from 'lucide-react'
 import { forwardRef, type HTMLAttributes } from 'react'
 import * as ProgressPrimitive from '@radix-ui/react-progress'
 import { cn } from './cn'
-import { glassSurface } from './glass'
 
 export interface SpinnerProps extends HTMLAttributes<HTMLSpanElement> {
   /** Accessible label announced by screen readers. */
@@ -31,14 +30,12 @@ export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(function Spinne
 })
 
 export interface LoadingStateProps extends HTMLAttributes<HTMLDivElement> {
-  /** Renders a translucent, blurred surface instead of an opaque panel. */
-  glass?: boolean
   /** Accessible label announced by screen readers while the region is loading. */
   label?: string
 }
 
 export const LoadingState = forwardRef<HTMLDivElement, LoadingStateProps>(function LoadingState(
-  { className, glass = false, label = 'Loading', ...props },
+  { className, label = 'Loading', ...props },
   ref,
 ) {
   return (
@@ -47,8 +44,7 @@ export const LoadingState = forwardRef<HTMLDivElement, LoadingStateProps>(functi
       role="status"
       aria-label={label}
       className={cn(
-        'flex min-h-60 items-center justify-center rounded-2xl border border-outline-variant/20',
-        glass ? glassSurface : 'bg-surface-container',
+        'flex min-h-60 items-center justify-center rounded-2xl border border-outline-variant/20 bg-surface-container',
         className,
       )}
       {...props}

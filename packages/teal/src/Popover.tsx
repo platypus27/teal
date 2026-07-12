@@ -1,7 +1,6 @@
 import { type ReactElement, type ReactNode } from 'react'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { cn } from './cn'
-import { glassSurface } from './glass'
 
 export interface PopoverProps {
   /** Horizontal alignment of the content relative to the trigger. */
@@ -11,8 +10,6 @@ export interface PopoverProps {
   className?: string
   /** Initial open state when uncontrolled. */
   defaultOpen?: boolean
-  /** Renders a translucent, blurred surface instead of an opaque popover. */
-  glass?: boolean
   /** Called when the popover opens or closes. */
   onOpenChange?: (open: boolean) => void
   /** Controlled open state. */
@@ -28,7 +25,6 @@ export function Popover({
   children,
   className,
   defaultOpen,
-  glass = false,
   onOpenChange,
   open,
   side = 'bottom',
@@ -48,7 +44,7 @@ export function Popover({
           sideOffset={6}
           className={cn(
             'z-[var(--teal-z-popover)] w-[min(24rem,calc(100vw-2rem))] rounded-xl border border-outline-variant/40 p-4 text-on-surface shadow-[var(--teal-shadow-overlay)] outline-none',
-            glass ? glassSurface : 'bg-surface-container',
+            'bg-surface-container',
             className,
           )}
         >

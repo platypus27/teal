@@ -28,8 +28,8 @@
 - [Tabs](/modules/tabs) (Navigation): Keyboard-navigable content switching through a compact item interface.
 - [Pagination](/modules/pagination) (Navigation): A controlled page navigator with compact ranges and unavailable directions.
 - [Page Header](/modules/page-header) (Navigation): A responsive page title, supporting text, and action area.
-- [Vertical Nav](/modules/vertical-nav) (Navigation): A compound vertical navigation with icon-rail and full-text modes and glass or solid variants.
-- [Top Bar](/modules/top-bar) (Navigation): A sticky top bar with glass and solid variants and brand, search, and action slots.
+- [Vertical Nav](/modules/vertical-nav) (Navigation): A compound vertical navigation with icon-rail and full-text modes and a solid variant.
+- [Top Bar](/modules/top-bar) (Navigation): A sticky top bar with a solid variant and brand, search, and action slots.
 - [Table](/modules/table) (Data): Accessible data presentation driven by column definitions, density, loading, and empty state.
 - [Separator](/modules/separator) (Data): A semantic or decorative divider for related content.
 

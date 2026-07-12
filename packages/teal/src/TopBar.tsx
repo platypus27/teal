@@ -1,7 +1,6 @@
 import { forwardRef, type ElementType, type HTMLAttributes } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './cn'
-import { glassSurface } from './glass'
 
 const topBarVariants = cva(
   'flex h-16 items-center gap-3 px-4 sm:px-8 lg:px-12',
@@ -9,7 +8,6 @@ const topBarVariants = cva(
     variants: {
       variant: {
         solid: 'bg-surface-container',
-        glass: cn(glassSurface, 'border-outline-variant/20'),
       },
       sticky: {
         true: 'sticky top-0 z-30',
@@ -18,7 +16,6 @@ const topBarVariants = cva(
     },
     compoundVariants: [
       { sticky: true, variant: 'solid', className: 'border-b border-outline-variant/30' },
-      { sticky: true, variant: 'glass', className: 'border-b border-outline-variant/20' },
     ],
     defaultVariants: {
       variant: 'solid',

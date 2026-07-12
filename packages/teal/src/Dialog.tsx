@@ -3,7 +3,6 @@ import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 import { IconButton } from './Button'
 import { cn } from './cn'
-import { glassSurface } from './glass'
 
 export interface DialogProps {
   /** Body content of the dialog. */
@@ -17,8 +16,6 @@ export interface DialogProps {
   description?: ReactNode
   /** Action area rendered at the bottom of the dialog. */
   footer?: ReactNode
-  /** Renders a translucent, blurred surface instead of an opaque dialog. */
-  glass?: boolean
   /** Called when the dialog opens or closes. */
   onOpenChange?: (open: boolean) => void
   /** Controlled open state. */
@@ -37,7 +34,6 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
     defaultOpen,
     description,
     footer,
-    glass = false,
     onOpenChange,
     open,
     size = 'md',
@@ -56,8 +52,7 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
         <DialogPrimitive.Content
           ref={ref}
           className={cn(
-            'teal-dialog-content fixed left-1/2 top-1/2 z-[var(--teal-z-dialog)] max-h-[calc(100vh-2rem)] w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-2xl border border-outline-variant/40 p-6 text-on-surface shadow-[var(--teal-shadow-overlay)] outline-none',
-            glass ? glassSurface : 'bg-surface-container',
+            'teal-dialog-content fixed left-1/2 top-1/2 z-[var(--teal-z-dialog)] max-h-[calc(100vh-2rem)] w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-2xl border border-outline-variant/40 bg-surface-container p-6 text-on-surface shadow-[var(--teal-shadow-overlay)] outline-none',
             size === 'sm' && 'max-w-sm',
             size === 'md' && 'max-w-lg',
             size === 'lg' && 'max-w-2xl',

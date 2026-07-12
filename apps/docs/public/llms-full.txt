@@ -179,7 +179,7 @@ export function ButtonDemo() {
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
-| `variant` | `"danger" \| "glass" \| "primary" \| "secondary" \| "ghost" \| null` | `"primary"` | Visual hierarchy of the action. "glass" renders a translucent, blurred surface. |
+| `variant` | `"danger" \| "primary" \| "secondary" \| "ghost" \| null` | `"primary"` | Visual hierarchy of the action. |
 | `size` | `"sm" \| "md" \| "lg" \| null` | `"md"` | Height and horizontal padding. |
 | `asChild` | `boolean` | `false` | Merges the component onto its child element instead of rendering the default element (Radix Slot). Cannot be combined with disabled or loading. |
 | `loading` | `boolean` | `false` | Disables the button, prepends a spinner, and sets aria-busy. |
@@ -189,7 +189,7 @@ export function ButtonDemo() {
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `label` (required) | `string` | - | Accessible label applied as `aria-label`; also used as the default tooltip text. |
-| `variant` | `"danger" \| "glass" \| "secondary" \| "ghost" \| null` | `"ghost"` | Visual treatment of the icon button. "glass" renders a translucent, blurred surface. |
+| `variant` | `"danger" \| "secondary" \| "ghost" \| null` | `"ghost"` | Visual treatment of the icon button. |
 | `size` | `"sm" \| "md" \| "lg" \| null` | `"md"` | Hit-target size; the icon scales with it. |
 
 ## Accessibility
@@ -313,14 +313,12 @@ export function InputDemo() {
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
-| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque input. |
 | `size` | `"sm" \| "md" \| "lg" \| null` | `"md"` | Height and text size of the control. |
 
 ### TextArea
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
-| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque textarea. |
 | `size` | `"sm" \| "md" \| "lg" \| null` | `"md"` | Text size of the control. |
 
 ## Accessibility
@@ -396,7 +394,6 @@ export function SelectDemo() {
 | `className` | `string` | - | Additional classes merged onto the trigger. |
 | `defaultValue` | `string` | - | Initial value when uncontrolled. |
 | `disabled` | `boolean` | - | Prevents opening the select. |
-| `glass` | `boolean` | `false` | Renders a translucent, blurred trigger and content surface. |
 | `name` | `string` | - | Form field name submitted with the selected value. |
 | `onValueChange` | `(value: string) => void` | - | Called with the new value when selection changes. |
 | `options` (required) | `SelectOption[]` | - | Options rendered in the listbox. |
@@ -609,7 +606,6 @@ export function CardDemo() {
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ElementType` | `div` | Element rendered by the card; use an interactive element for clickable cards. |
-| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque card. |
 | `disabled` | `boolean` | - | Applies disabled styling and blocks interaction on interactive cards. |
 | `type` | `enum` | - | Button type used when the card renders an interactive element. |
 
@@ -684,7 +680,6 @@ export function BadgeDemo() {
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `tone` | `"neutral" \| "info" \| "success" \| "warning" \| "danger" \| null` | `"neutral"` | Semantic color treatment. |
-| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of a solid tone background. |
 
 ## Accessibility
 
@@ -769,7 +764,6 @@ export function DialogDemo() {
 | `defaultOpen` | `boolean` | - | Initial open state when uncontrolled. |
 | `description` | `ReactNode` | - | Supporting text rendered under the title. |
 | `footer` | `ReactNode` | - | Action area rendered at the bottom of the dialog. |
-| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque dialog. |
 | `onOpenChange` | `(open: boolean) => void` | - | Called when the dialog opens or closes. |
 | `open` | `boolean` | - | Controlled open state. |
 | `size` | `enum` | `md` | Width of the dialog surface. |
@@ -871,7 +865,6 @@ export function TooltipDemo() {
 | `className` | `string` | - | Additional classes merged onto the tooltip content. |
 | `content` (required) | `ReactNode` | - | Text rendered inside the tooltip. |
 | `delayDuration` | `number` | `300` | Delay in milliseconds before the tooltip opens. |
-| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque tooltip. |
 | `side` | `enum` | `top` | Preferred side of the trigger for the tooltip. |
 
 ## Accessibility
@@ -948,7 +941,6 @@ export function MenuDemo() {
 | --- | --- | --- | --- |
 | `align` | `enum` | `end` | Horizontal alignment of the menu relative to the trigger. |
 | `className` | `string` | - | Additional classes merged onto the menu content. |
-| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque menu. |
 | `items` (required) | `MenuItem[]` | - | Items rendered in the menu. |
 | `label` | `string` | - | Accessible name for the menu. |
 | `trigger` (required) | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | - | Element that opens the menu; receives trigger props automatically. |
@@ -1029,7 +1021,6 @@ export function PopoverDemo() {
 | `children` (required) | `ReactNode` | - | Content rendered inside the popover surface. |
 | `className` | `string` | - | Additional classes merged onto the popover content. |
 | `defaultOpen` | `boolean` | - | Initial open state when uncontrolled. |
-| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque popover. |
 | `onOpenChange` | `(open: boolean) => void` | - | Called when the popover opens or closes. |
 | `open` | `boolean` | - | Controlled open state. |
 | `side` | `enum` | `bottom` | Side of the trigger the content opens on. |
@@ -1149,7 +1140,6 @@ export function EmptyStateDemo() {
 | --- | --- | --- | --- |
 | `action` | `ReactNode` | - | Call to action rendered below the description. |
 | `description` | `ReactNode` | - | Supporting text that explains the empty state. |
-| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque panel. |
 | `icon` | `ReactNode` | - | Icon rendered above the title. |
 | `title` (required) | `ReactNode` | - | Short heading for the empty state. |
 
@@ -1206,7 +1196,6 @@ export function LoadingDemo() {
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
-| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque panel. |
 | `label` | `string` | `Loading` | Accessible label announced by screen readers while the region is loading. |
 
 ### Spinner
@@ -1293,7 +1282,6 @@ export function TabsDemo() {
 | --- | --- | --- | --- |
 | `aria-label` (required) | `string` | - | Accessible name for the tab list. |
 | `className` | `string` | - | Additional classes merged onto the tabs root. |
-| `glass` | `boolean` | `false` | Renders a translucent, blurred tab list instead of an opaque one. |
 | `defaultValue` | `string` | - | Initially active tab when uncontrolled. |
 | `items` (required) | `TabItem[]` | - | Tabs rendered by the component. |
 | `onValueChange` | `(value: string) => void` | - | Called with the new value when the active tab changes. |
@@ -1429,7 +1417,7 @@ export function PageHeaderDemo() {
 
 # Vertical Nav
 
-A compound vertical navigation with icon-rail and full-text modes and glass or solid variants.
+A compound vertical navigation with icon-rail and full-text modes and a solid variant.
 
 ## Usage
 
@@ -1438,7 +1426,7 @@ import { VerticalNav, VerticalNavBrand, VerticalNavList, VerticalNavSection, Ver
 ```
 
 ```jsx
-<VerticalNav mode="rail" variant="glass">
+<VerticalNav mode="rail" variant="solid">
   <VerticalNavBrand>...</VerticalNavBrand>
   <VerticalNavList>
     <VerticalNavSection label="Workspace">
@@ -1463,7 +1451,7 @@ export function VerticalNavDemo() {
   return (
     <div className="grid w-full gap-4 sm:grid-cols-2">
       <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
-        <VerticalNav mode="rail" variant="glass" className="absolute">
+        <VerticalNav mode="rail" variant="solid" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
               <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
@@ -1522,7 +1510,7 @@ export function VerticalNavDemo() {
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ElementType` | `a` | Element rendered by the nav container; defaults to `<nav>`. |
-| `variant` | `"solid" \| "glass"` | `"solid"` | Solid renders an opaque bar with a border; glass floats with a translucent backdrop blur. |
+| `variant` | `"solid"` | `"solid"` | Solid renders an opaque bar with a border. |
 | `mode` | `"rail" \| "full"` | `"full"` | Rail collapses to an icon strip that expands on hover or keyboard focus. Full shows labels always. |
 | `side` | `"left" \| "right"` | `"left"` | Which edge the nav anchors to. Solid variants draw a border on the inner side. |
 
@@ -1567,7 +1555,7 @@ _This module forwards native element properties._
 
 # Top Bar
 
-A sticky top bar with glass and solid variants and brand, search, and action slots.
+A sticky top bar with a solid variant and brand, search, and action slots.
 
 ## Usage
 
@@ -1585,9 +1573,9 @@ import { TopBar, TopBarBrand, TopBarSearch, TopBarActions } from '@kryv/teal'
 
 ## Examples
 
-### Solid and glass
+### Solid variant
 
-Solid renders an opaque bar; glass adds a translucent backdrop blur.
+Solid renders an opaque bar with a border.
 
 ```jsx
 import { Github, Palette, Search, Sun } from 'lucide-react'
@@ -1622,7 +1610,7 @@ export function TopBarDemo() {
         </TopBarActions>
       </TopBar>
 
-      <TopBar variant="glass" sticky={false} className="rounded-xl">
+      <TopBar variant="solid" sticky={false} className="rounded-xl">
         <TopBarBrand>
           <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
             <Palette className="size-4" />
@@ -1650,7 +1638,7 @@ export function TopBarDemo() {
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `as` | `ElementType` | `header` | Element rendered by the top bar; defaults to `<header>`. |
-| `variant` | `"solid" \| "glass"` | `"solid"` | Solid renders an opaque background; glass adds a translucent backdrop blur. |
+| `variant` | `"solid"` | `"solid"` | Solid renders an opaque background. |
 | `sticky` | `boolean` | `true` | When true, the bar sticks to the top of the scrolling container. |
 
 ### TopBarBrand
@@ -1746,7 +1734,6 @@ export function TableDemo() {
 | `columns` (required) | `TableColumn<Row>[]` | - | Column definitions rendered in header order. |
 | `density` | `enum` | `comfortable` | Vertical padding of cells. |
 | `empty` | `ReactNode` | `No results` | Content shown when `rows` is empty and the table is not loading. |
-| `glass` | `boolean` | `false` | Renders a translucent, blurred surface instead of an opaque table. |
 | `getRowKey` (required) | `(row: Row) => string` | - | Returns a stable, unique key for each row. |
 | `loading` | `boolean` | `false` | Renders skeleton rows in place of data. |
 | `loadingLabel` | `string` | `Loading table data` | Accessible label announced while skeleton rows are shown. |

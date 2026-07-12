@@ -357,8 +357,8 @@ toast({ title: 'Changes saved', tone: 'success' })`,
         apiNames: ['VerticalNav', 'VerticalNavBrand', 'VerticalNavList', 'VerticalNavSection', 'VerticalNavItem', 'VerticalNavFooter'],
         imports: ['VerticalNav', 'VerticalNavBrand', 'VerticalNavList', 'VerticalNavSection', 'VerticalNavItem', 'VerticalNavFooter'],
         description:
-          'A compound vertical navigation with icon-rail and full-text modes and glass or solid variants.',
-        usage: `<VerticalNav mode="rail" variant="glass">
+          'A compound vertical navigation with icon-rail and full-text modes and a solid variant.',
+        usage: `<VerticalNav mode="rail" variant="solid">
   <VerticalNavBrand>...</VerticalNavBrand>
   <VerticalNavList>
     <VerticalNavSection label="Workspace">
@@ -380,7 +380,7 @@ toast({ title: 'Changes saved', tone: 'success' })`,
         name: 'Top Bar',
         apiNames: ['TopBar', 'TopBarBrand', 'TopBarSearch', 'TopBarActions'],
         imports: ['TopBar', 'TopBarBrand', 'TopBarSearch', 'TopBarActions'],
-        description: 'A sticky top bar with glass and solid variants and brand, search, and action slots.',
+        description: 'A sticky top bar with a solid variant and brand, search, and action slots.',
         usage: `<TopBar variant="solid" sticky>
   <TopBarBrand>...</TopBarBrand>
   <TopBarSearch>...</TopBarSearch>
@@ -388,8 +388,8 @@ toast({ title: 'Changes saved', tone: 'success' })`,
 </TopBar>`,
         examples: [
           {
-            title: 'Solid and glass',
-            description: 'Solid renders an opaque bar; glass adds a translucent backdrop blur.',
+            title: 'Solid variant',
+            description: 'Solid renders an opaque bar with a border.',
           },
         ],
       },

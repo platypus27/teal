@@ -15,7 +15,7 @@ export const propDocs = {
   Button: {
     variant: {
       description:
-        'Visual hierarchy of the action. "glass" renders a translucent, blurred surface.',
+        'Visual hierarchy of the action.',
       defaultValue: '"primary"',
     },
     size: { description: 'Height and horizontal padding.', defaultValue: '"md"' },
@@ -24,34 +24,19 @@ export const propDocs = {
   },
   IconButton: {
     variant: {
-      description: 'Visual treatment of the icon button. "glass" renders a translucent, blurred surface.',
+      description: 'Visual treatment of the icon button.',
       defaultValue: '"ghost"',
     },
     size: { description: 'Hit-target size; the icon scales with it.', defaultValue: '"md"' },
   },
   Badge: {
     tone: { description: 'Semantic color treatment.', defaultValue: '"neutral"' },
-    glass: {
-      type: 'boolean',
-      defaultValue: 'false',
-      description: 'Renders a translucent, blurred surface instead of a solid tone background.',
-    },
   },
   Input: {
     size: { description: 'Height and text size of the control.', defaultValue: '"md"' },
-    glass: {
-      type: 'boolean',
-      defaultValue: 'false',
-      description: 'Renders a translucent, blurred surface instead of an opaque input.',
-    },
   },
   TextArea: {
     size: { description: 'Text size of the control.', defaultValue: '"md"' },
-    glass: {
-      type: 'boolean',
-      defaultValue: 'false',
-      description: 'Renders a translucent, blurred surface instead of an opaque textarea.',
-    },
   },
   Label: {
     asChild: { description: asChildDescription },
@@ -123,9 +108,9 @@ export const propDocs = {
   },
   VerticalNav: {
     variant: {
-      type: '"solid" | "glass"',
+      type: '"solid"',
       defaultValue: '"solid"',
-      description: 'Solid renders an opaque bar with a border; glass floats with a translucent backdrop blur.',
+      description: 'Solid renders an opaque bar with a border.',
     },
     mode: {
       type: '"rail" | "full"',
@@ -147,9 +132,9 @@ export const propDocs = {
   },
   TopBar: {
     variant: {
-      type: '"solid" | "glass"',
+      type: '"solid"',
       defaultValue: '"solid"',
-      description: 'Solid renders an opaque background; glass adds a translucent backdrop blur.',
+      description: 'Solid renders an opaque background.',
     },
     sticky: {
       type: 'boolean',

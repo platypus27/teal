@@ -1,4 +1,3 @@
-export { glassSurface } from './glass'
 export { Button, IconButton, buttonVariants, iconButtonVariants } from './Button'
 export type { ButtonProps, IconButtonProps } from './Button'
 export { Field, Label } from './Field'

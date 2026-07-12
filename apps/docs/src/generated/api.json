@@ -9,13 +9,6 @@
         "name": "tone",
         "required": false,
         "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\" | null"
-      },
-      {
-        "defaultValue": "",
-        "description": "",
-        "name": "glass",
-        "required": false,
-        "type": "boolean | null"
       }
     ]
   },
@@ -28,7 +21,7 @@
         "description": "",
         "name": "variant",
         "required": false,
-        "type": "\"danger\" | \"glass\" | \"primary\" | \"secondary\" | \"ghost\" | null"
+        "type": "\"danger\" | \"primary\" | \"secondary\" | \"ghost\" | null"
       },
       {
         "defaultValue": "",
@@ -69,7 +62,7 @@
         "description": "",
         "name": "variant",
         "required": false,
-        "type": "\"danger\" | \"glass\" | \"secondary\" | \"ghost\" | null"
+        "type": "\"danger\" | \"secondary\" | \"ghost\" | null"
       },
       {
         "defaultValue": "",
@@ -90,13 +83,6 @@
         "name": "as",
         "required": false,
         "type": "ElementType"
-      },
-      {
-        "defaultValue": "false",
-        "description": "Renders a translucent, blurred surface instead of an opaque card.",
-        "name": "glass",
-        "required": false,
-        "type": "boolean"
       },
       {
         "defaultValue": "",
@@ -220,13 +206,6 @@
         "type": "ReactNode"
       },
       {
-        "defaultValue": "false",
-        "description": "Renders a translucent, blurred surface instead of an opaque dialog.",
-        "name": "glass",
-        "required": false,
-        "type": "boolean"
-      },
-      {
         "defaultValue": "",
         "description": "Called when the dialog opens or closes.",
         "name": "onOpenChange",
@@ -273,13 +252,6 @@
         "name": "description",
         "required": false,
         "type": "ReactNode"
-      },
-      {
-        "defaultValue": "false",
-        "description": "Renders a translucent, blurred surface instead of an opaque panel.",
-        "name": "glass",
-        "required": false,
-        "type": "boolean"
       },
       {
         "defaultValue": "",
@@ -363,13 +335,6 @@
       {
         "defaultValue": "",
         "description": "",
-        "name": "glass",
-        "required": false,
-        "type": "boolean | null"
-      },
-      {
-        "defaultValue": "",
-        "description": "",
         "name": "size",
         "required": false,
         "type": "\"sm\" | \"md\" | \"lg\" | null"
@@ -380,13 +345,6 @@
     "description": "",
     "displayName": "TextArea",
     "props": [
-      {
-        "defaultValue": "",
-        "description": "",
-        "name": "glass",
-        "required": false,
-        "type": "boolean | null"
-      },
       {
         "defaultValue": "",
         "description": "",
@@ -420,13 +378,6 @@
     "description": "",
     "displayName": "LoadingState",
     "props": [
-      {
-        "defaultValue": "false",
-        "description": "Renders a translucent, blurred surface instead of an opaque panel.",
-        "name": "glass",
-        "required": false,
-        "type": "boolean"
-      },
       {
         "defaultValue": "Loading",
         "description": "Accessible label announced by screen readers while the region is loading.",
@@ -478,13 +429,6 @@
         "name": "className",
         "required": false,
         "type": "string"
-      },
-      {
-        "defaultValue": "false",
-        "description": "Renders a translucent, blurred surface instead of an opaque menu.",
-        "name": "glass",
-        "required": false,
-        "type": "boolean"
       },
       {
         "defaultValue": "",
@@ -610,13 +554,6 @@
         "type": "boolean"
       },
       {
-        "defaultValue": "false",
-        "description": "Renders a translucent, blurred surface instead of an opaque popover.",
-        "name": "glass",
-        "required": false,
-        "type": "boolean"
-      },
-      {
         "defaultValue": "",
         "description": "Called when the popover opens or closes.",
         "name": "onOpenChange",
@@ -682,13 +619,6 @@
         "defaultValue": "",
         "description": "Prevents opening the select.",
         "name": "disabled",
-        "required": false,
-        "type": "boolean"
-      },
-      {
-        "defaultValue": "false",
-        "description": "Renders a translucent, blurred trigger and content surface.",
-        "name": "glass",
         "required": false,
         "type": "boolean"
       },
@@ -830,13 +760,6 @@
         "type": "ReactNode"
       },
       {
-        "defaultValue": "false",
-        "description": "Renders a translucent, blurred surface instead of an opaque table.",
-        "name": "glass",
-        "required": false,
-        "type": "boolean"
-      },
-      {
         "defaultValue": "",
         "description": "Returns a stable, unique key for each row.",
         "name": "getRowKey",
@@ -883,13 +806,6 @@
         "name": "className",
         "required": false,
         "type": "string"
-      },
-      {
-        "defaultValue": "false",
-        "description": "Renders a translucent, blurred tab list instead of an opaque one.",
-        "name": "glass",
-        "required": false,
-        "type": "boolean"
       },
       {
         "defaultValue": "",
@@ -948,13 +864,6 @@
       },
       {
         "defaultValue": "",
-        "description": "Renders a translucent, blurred surface instead of an opaque toast.",
-        "name": "glass",
-        "required": false,
-        "type": "boolean"
-      },
-      {
-        "defaultValue": "",
         "description": "",
         "name": "title",
         "required": true,
@@ -1007,13 +916,6 @@
         "type": "number"
       },
       {
-        "defaultValue": "false",
-        "description": "Renders a translucent, blurred surface instead of an opaque tooltip.",
-        "name": "glass",
-        "required": false,
-        "type": "boolean"
-      },
-      {
         "defaultValue": "top",
         "description": "Preferred side of the trigger for the tooltip.",
         "name": "side",
@@ -1038,7 +940,7 @@
         "description": "",
         "name": "variant",
         "required": false,
-        "type": "\"glass\" | \"solid\" | null"
+        "type": "\"solid\" | null"
       },
       {
         "defaultValue": "true",
@@ -1080,7 +982,7 @@
         "description": "",
         "name": "variant",
         "required": false,
-        "type": "\"glass\" | \"solid\" | null"
+        "type": "\"solid\" | null"
       },
       {
         "defaultValue": "",

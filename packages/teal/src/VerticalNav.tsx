@@ -1,7 +1,6 @@
 import { createContext, forwardRef, useContext, type ElementType, type HTMLAttributes, type ReactNode } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './cn'
-import { glassSurface } from './glass'
 
 const verticalNavVariants = cva(
   'group flex flex-col overflow-hidden transition-[width] duration-300 ease-out motion-reduce:transition-none',
@@ -9,7 +8,6 @@ const verticalNavVariants = cva(
     variants: {
       variant: {
         solid: 'border-outline-variant/30 bg-surface-container',
-        glass: cn(glassSurface, 'border-outline-variant/20'),
       },
       mode: {
         rail: 'w-20 hover:w-72 focus-within:w-72',
@@ -23,7 +21,6 @@ const verticalNavVariants = cva(
     compoundVariants: [
       { variant: 'solid', side: 'left', className: 'border-r' },
       { variant: 'solid', side: 'right', className: 'border-l' },
-      { variant: 'glass', className: 'rounded-[2rem]' },
     ],
     defaultVariants: {
       variant: 'solid',

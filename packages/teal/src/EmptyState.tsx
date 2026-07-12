@@ -1,15 +1,12 @@
 import { Inbox } from 'lucide-react'
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react'
 import { cn } from './cn'
-import { glassSurface } from './glass'
 
 export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Call to action rendered below the description. */
   action?: ReactNode
   /** Supporting text that explains the empty state. */
   description?: ReactNode
-  /** Renders a translucent, blurred surface instead of an opaque panel. */
-  glass?: boolean
   /** Icon rendered above the title. */
   icon?: ReactNode
   /** Short heading for the empty state. */
@@ -17,15 +14,14 @@ export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, 't
 }
 
 export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function EmptyState(
-  { action, className, description, glass = false, icon, title, ...props },
+  { action, className, description, icon, title, ...props },
   ref,
 ) {
   return (
     <div
       ref={ref}
       className={cn(
-        'flex flex-col items-center justify-center rounded-2xl border border-dashed border-outline-variant/40 p-10 text-center',
-        glass ? glassSurface : 'bg-surface-container',
+        'flex flex-col items-center justify-center rounded-2xl border border-dashed border-outline-variant/40 bg-surface-container p-10 text-center',
         className,
       )}
       {...props}

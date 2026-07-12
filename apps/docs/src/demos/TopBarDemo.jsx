@@ -30,7 +30,7 @@ export function TopBarDemo() {
         </TopBarActions>
       </TopBar>
 
-      <TopBar variant="glass" sticky={false} className="rounded-xl">
+      <TopBar variant="solid" sticky={false} className="rounded-xl">
         <TopBarBrand>
           <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
             <Palette className="size-4" />

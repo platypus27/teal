@@ -1,39 +1,27 @@
 import { forwardRef, type HTMLAttributes } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './cn'
-import { glassSurface } from './glass'
 
 const badgeVariants = cva(
   'inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold leading-none',
   {
     variants: {
       tone: {
-        neutral: 'text-on-surface-variant',
-        info: 'text-primary',
-        success: 'text-tertiary',
-        warning: 'text-warning',
-        danger: 'text-error',
-      },
-      glass: {
-        true: glassSurface,
-        false: '',
+        neutral: 'bg-surface-container-high text-on-surface-variant',
+        info: 'bg-primary/10 text-primary',
+        success: 'bg-tertiary/10 text-tertiary',
+        warning: 'bg-warning/10 text-warning',
+        danger: 'bg-error/10 text-error',
       },
     },
-    compoundVariants: [
-      { glass: false, tone: 'neutral', className: 'bg-surface-container-high' },
-      { glass: false, tone: 'info', className: 'bg-primary/10' },
-      { glass: false, tone: 'success', className: 'bg-tertiary/10' },
-      { glass: false, tone: 'warning', className: 'bg-warning/10' },
-      { glass: false, tone: 'danger', className: 'bg-error/10' },
-    ],
-    defaultVariants: { tone: 'neutral', glass: false },
+    defaultVariants: { tone: 'neutral' },
   },
 )
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement>, VariantProps<typeof badgeVariants> {}
 
-export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge({ className, glass, tone, ...props }, ref) {
-  return <span ref={ref} className={cn(badgeVariants({ tone, glass }), className)} {...props} />
+export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge({ className, tone, ...props }, ref) {
+  return <span ref={ref} className={cn(badgeVariants({ tone }), className)} {...props} />
 })
 
 export { badgeVariants }
