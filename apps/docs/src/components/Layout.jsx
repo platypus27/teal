@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { FlaskConical, Menu as MenuIcon, Moon, Palette, Search, Sun, X } from 'lucide-react'
+import { FlaskConical, Github, Menu as MenuIcon, Moon, Palette, Search, Sun, X } from 'lucide-react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { IconButton, Toaster } from '@kryv/teal'
+import { IconButton, Toaster, TopBar, TopBarActions, TopBarBrand, TopBarSearch, VerticalNav, VerticalNavBrand, VerticalNavList, VerticalNavSection, iconButtonVariants } from '@kryv/teal'
 import { catalogGroups } from '../data/catalog.jsx'
 import changelog from '../generated/changelog.json'
 import { CommandPalette, CommandPaletteProvider, useCommandPalette } from './CommandPalette.jsx'
@@ -43,29 +43,42 @@ function Header({ navOpen, setNavOpen }) {
     typeof navigator !== 'undefined' && /mac/i.test(navigator.userAgent) ? '⌘K' : 'Ctrl K',
   )
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-outline-variant/30 bg-surface-container/95 px-4 backdrop-blur sm:px-8 lg:px-12">
-      <NavLink to="/" className="flex items-center gap-2 font-headline font-extrabold lg:hidden">
-        <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
-          <Palette className="size-4" />
-        </span>
-        Teal
-      </NavLink>
-      <button
-        type="button"
-        onClick={() => setPaletteOpen(true)}
-        className="hidden h-10 w-full max-w-sm items-center gap-2 rounded-xl border border-outline-variant/40 bg-surface px-3 text-sm text-on-surface-variant transition hover:border-outline hover:text-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary lg:flex"
-      >
-        <Search aria-hidden="true" className="size-4" />
-        <span>Search the docs...</span>
-        <kbd className="ml-auto rounded border border-outline-variant/50 bg-surface-container px-1.5 py-0.5 font-mono text-[10px] font-semibold">
-          {modifier}
-        </kbd>
-      </button>
-      <div className="ml-auto flex items-center gap-1">
+    <TopBar variant="solid" sticky>
+      <TopBarBrand>
+        <NavLink to="/" className="flex items-center gap-2 font-headline font-extrabold lg:hidden">
+          <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
+            <Palette className="size-4" />
+          </span>
+          Teal
+        </NavLink>
+      </TopBarBrand>
+      <TopBarSearch>
+        <button
+          type="button"
+          onClick={() => setPaletteOpen(true)}
+          className="hidden h-10 w-full max-w-sm items-center gap-2 rounded-xl border border-outline-variant/40 bg-surface px-3 text-sm text-on-surface-variant transition hover:border-outline hover:text-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary lg:flex"
+        >
+          <Search aria-hidden="true" className="size-4" />
+          <span>Search the docs...</span>
+          <kbd className="ml-auto rounded border border-outline-variant/50 bg-surface-container px-1.5 py-0.5 font-mono text-[10px] font-semibold">
+            {modifier}
+          </kbd>
+        </button>
+      </TopBarSearch>
+      <TopBarActions>
         <IconButton label="Search the docs" className="lg:hidden" onClick={() => setPaletteOpen(true)}>
           <Search />
         </IconButton>
         <ThemeToggle />
+        <a
+          href="https://github.com/platypus27/teal"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="GitHub repository"
+          className={iconButtonVariants({ variant: 'ghost', size: 'md' })}
+        >
+          <Github className="size-5" />
+        </a>
         <IconButton
           label={navOpen ? 'Close navigation' : 'Open navigation'}
           className="lg:hidden"
@@ -73,8 +86,8 @@ function Header({ navOpen, setNavOpen }) {
         >
           {navOpen ? <X /> : <MenuIcon />}
         </IconButton>
-      </div>
-    </header>
+      </TopBarActions>
+    </TopBar>
   )
 }
 
@@ -89,29 +102,32 @@ function Sidebar({ navOpen, setNavOpen }) {
           onClick={() => setNavOpen(false)}
         />
       ) : null}
-      <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-72 flex-col border-r border-outline-variant/30 bg-surface-container transition-transform lg:translate-x-0 ${
-          navOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+      <VerticalNav
+        mode="full"
+        variant="solid"
+        side="left"
+        aria-label="Documentation"
+        className={`fixed inset-y-0 left-0 z-40 transition-transform lg:translate-x-0 ${navOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
-        <NavLink to="/" className="flex items-center gap-3 px-5 py-5" onClick={() => setNavOpen(false)}>
-          <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
-            <Palette className="size-5" />
-          </span>
-          <span>
-            <span className="flex items-center gap-2 font-headline text-lg font-extrabold leading-none">
-              Teal
-              <span className="rounded-full bg-primary/10 px-1.5 py-0.5 font-mono text-[10px] font-bold text-primary">
-                v{changelog.version}
-              </span>
+        <VerticalNavBrand>
+          <NavLink to="/" className="flex items-center gap-3" onClick={() => setNavOpen(false)}>
+            <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
+              <Palette className="size-5" />
             </span>
-            <span className="mt-1 block text-xs text-on-surface-variant">Kryv design system</span>
-          </span>
-        </NavLink>
+            <span>
+              <span className="flex items-center gap-2 font-headline text-lg font-extrabold leading-none">
+                Teal
+                <span className="rounded-full bg-primary/10 px-1.5 py-0.5 font-mono text-[10px] font-bold text-primary">
+                  v{changelog.version}
+                </span>
+              </span>
+              <span className="mt-1 block text-xs text-on-surface-variant">Kryv design system</span>
+            </span>
+          </NavLink>
+        </VerticalNavBrand>
 
-        <nav aria-label="Documentation" className="flex-1 space-y-6 overflow-y-auto px-3 py-2">
-          <div>
-            <div className="px-3 pb-2 text-xs font-bold uppercase tracking-wider text-on-surface-variant">Start</div>
+        <VerticalNavList>
+          <VerticalNavSection label="Start">
             <NavLink end to="/" className={linkClass} onClick={() => setNavOpen(false)}>
               Getting started
             </NavLink>
@@ -121,40 +137,31 @@ function Sidebar({ navOpen, setNavOpen }) {
             <NavLink to="/changelog" className={linkClass} onClick={() => setNavOpen(false)}>
               Changelog
             </NavLink>
-          </div>
+          </VerticalNavSection>
           {catalogGroups.map((group) => (
-            <div key={group.name}>
-              <div className="px-3 pb-2 text-xs font-bold uppercase tracking-wider text-on-surface-variant">
-                {group.name}
-              </div>
-              <ul className="space-y-0.5">
-                {group.modules.map((module) => (
-                  <li key={module.id}>
-                    <NavLink
-                      to={`/modules/${module.id}`}
-                      className={(state) => `${linkClass(state)} flex items-center gap-2`}
-                      onClick={() => setNavOpen(false)}
-                    >
-                      {module.name}
-                      {module.playground ? (
-                        <FlaskConical aria-hidden="true" className="ml-auto size-3.5 text-primary/70" />
-                      ) : null}
-                    </NavLink>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <VerticalNavSection key={group.name} label={group.name}>
+              {group.modules.map((module) => (
+                <NavLink
+                  key={module.id}
+                  to={`/modules/${module.id}`}
+                  className={(state) => `${linkClass(state)} flex items-center gap-2`}
+                  onClick={() => setNavOpen(false)}
+                >
+                  {module.name}
+                  {module.playground ? (
+                    <FlaskConical aria-hidden="true" className="ml-auto size-3.5 text-primary/70" />
+                  ) : null}
+                </NavLink>
+              ))}
+            </VerticalNavSection>
           ))}
-          <div>
-            <div className="px-3 pb-2 text-xs font-bold uppercase tracking-wider text-on-surface-variant">
-              Patterns
-            </div>
+          <VerticalNavSection label="Patterns">
             <NavLink to="/recipes" className={linkClass} onClick={() => setNavOpen(false)}>
               Recipes
             </NavLink>
-          </div>
-        </nav>
-      </aside>
+          </VerticalNavSection>
+        </VerticalNavList>
+      </VerticalNav>
     </>
   )
 }
