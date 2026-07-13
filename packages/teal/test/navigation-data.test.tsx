@@ -47,6 +47,22 @@ describe('navigation modules', () => {
     await user.click(screen.getByRole('button', { name: 'Filters' }))
     expect(await screen.findByText('Filter controls')).toBeVisible()
   })
+
+  it('gives rich popover dialogs an accessible name', async () => {
+    const user = userEvent.setup()
+    render(
+      <Popover
+        label="Workspace navigation"
+        trigger={<button type="button">Open workspace</button>}
+      >
+        <nav>Planning tools</nav>
+      </Popover>,
+    )
+    await user.click(screen.getByRole('button', { name: 'Open workspace' }))
+    expect(
+      await screen.findByRole('dialog', { name: 'Workspace navigation' }),
+    ).toBeVisible()
+  })
 })
 
 describe('data modules', () => {

@@ -10,6 +10,8 @@ export interface PopoverProps {
   className?: string
   /** Initial open state when uncontrolled. */
   defaultOpen?: boolean
+  /** Accessible name for the dialog-like popover surface. */
+  label?: string
   /** Called when the popover opens or closes. */
   onOpenChange?: (open: boolean) => void
   /** Controlled open state. */
@@ -25,6 +27,7 @@ export function Popover({
   children,
   className,
   defaultOpen,
+  label,
   onOpenChange,
   open,
   side = 'bottom',
@@ -39,6 +42,7 @@ export function Popover({
       <PopoverPrimitive.Trigger asChild>{trigger}</PopoverPrimitive.Trigger>
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
+          aria-label={label}
           align={align}
           side={side}
           sideOffset={6}
