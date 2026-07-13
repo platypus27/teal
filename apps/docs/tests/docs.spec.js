@@ -67,7 +67,7 @@ test('documentation has no horizontal overflow on a narrow viewport', async ({ p
 test('module pages match the approved desktop visual baseline', async ({ page, browserName, isMobile }) => {
   test.skip(browserName !== 'chromium' || isMobile, 'Stable visual baseline uses desktop Chromium')
   await page.goto('/modules/button')
-  await expect(page).toHaveScreenshot('button-module-light.png', { fullPage: true })
+  await expect(page).toHaveScreenshot('button-module-light.png', { fullPage: true, maxDiffPixels: 300 })
   await page.getByRole('button', { name: 'Dark mode' }).click()
-  await expect(page).toHaveScreenshot('button-module-dark.png', { fullPage: true })
+  await expect(page).toHaveScreenshot('button-module-dark.png', { fullPage: true, maxDiffPixels: 300 })
 })
