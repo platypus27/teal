@@ -12,6 +12,7 @@
     "generate": "npm run generate:api && npm run generate:changelog && npm run validate:registry && npm run generate:llms",
     "dev": "npm run generate && vite",
     "build": "npm run generate && vite build",
+    "preview": "vite preview",
     "typecheck": "tsc --noEmit --allowJs --checkJs --jsx react-jsx --moduleResolution bundler --module esnext --target es2022 src/vite-env.d.ts src/**/*.jsx vite.config.js",
     "lint": "eslint src scripts --max-warnings 0",
     "test:e2e": "playwright test",
