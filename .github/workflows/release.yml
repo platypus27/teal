@@ -27,6 +27,7 @@ jobs:
           cache: npm
       - run: npm install --global npm@11.5.1
       - run: npm ci
+      - run: npm run build --workspace @kryv/teal
       - run: npm run verify
       - uses: changesets/action@v1
         with:
