@@ -92,6 +92,7 @@ export const propDocs = {
   },
   Popover: {
     className: { description: 'Additional classes merged onto the popover content.' },
+    label: { description: 'Accessible name for the dialog-like popover surface.' },
   },
   Tabs: {
     className: { description: 'Additional classes merged onto the tabs root.' },

@@ -1256,6 +1256,7 @@ export function DialogDemo({ exampleIndex = 0 }) {
 | `footer` | `ReactNode` | - | Action area rendered at the bottom of the dialog. |
 | `onOpenChange` | `(open: boolean) => void` | - | Called when the dialog opens or closes. |
 | `open` | `boolean` | - | Controlled open state. |
+| `restoreFocusRef` | `RefObject<HTMLElement \| null>` | - | Element that receives focus after a controlled dialog closes. |
 | `size` | `enum` | `md` | Width of the dialog surface. |
 | `title` (required) | `ReactNode` | - | Title rendered at the top; also the accessible name of the dialog. |
 
@@ -1596,7 +1597,7 @@ import { Popover, Button, Checkbox } from '@kryv/teal'
 ```
 
 ```jsx
-<Popover trigger={<Button variant="secondary">Filters</Button>}>
+<Popover label="Filter projects" trigger={<Button variant="secondary">Filters</Button>}>
   <div className="grid gap-3">
     <Checkbox label="Active only" defaultChecked />
     <Button size="sm">Apply filters</Button>
@@ -1632,6 +1633,7 @@ import { Filter } from 'lucide-react'
 export function PopoverDemo({ exampleIndex = 0 }) {
   return (
     <Popover
+      label="Filter projects"
       trigger={
         <Button variant="secondary">
           <Filter /> {exampleIndex ? 'Refine projects' : 'Filters'}
@@ -1660,6 +1662,7 @@ import { Filter } from 'lucide-react'
 export function PopoverDemo({ exampleIndex = 0 }) {
   return (
     <Popover
+      label="Filter projects"
       trigger={
         <Button variant="secondary">
           <Filter /> {exampleIndex ? 'Refine projects' : 'Filters'}
@@ -1688,6 +1691,7 @@ import { Filter } from 'lucide-react'
 export function PopoverDemo({ exampleIndex = 0 }) {
   return (
     <Popover
+      label="Filter projects"
       trigger={
         <Button variant="secondary">
           <Filter /> {exampleIndex ? 'Refine projects' : 'Filters'}
@@ -1715,6 +1719,7 @@ export function PopoverDemo({ exampleIndex = 0 }) {
 | `children` (required) | `ReactNode` | - | Content rendered inside the popover surface. |
 | `className` | `string` | - | Additional classes merged onto the popover content. |
 | `defaultOpen` | `boolean` | - | Initial open state when uncontrolled. |
+| `label` (required) | `string` | - | Accessible name for the dialog-like popover surface. |
 | `onOpenChange` | `(open: boolean) => void` | - | Called when the popover opens or closes. |
 | `open` | `boolean` | - | Controlled open state. |
 | `side` | `enum` | `bottom` | Side of the trigger the content opens on. |

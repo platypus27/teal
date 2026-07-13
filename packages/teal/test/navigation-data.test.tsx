@@ -40,7 +40,7 @@ describe('navigation modules', () => {
   it('anchors arbitrary popover content to a trigger', async () => {
     const user = userEvent.setup()
     render(
-      <Popover trigger={<button type="button">Filters</button>}>
+      <Popover label="Filters" trigger={<button type="button">Filters</button>}>
         <p>Filter controls</p>
       </Popover>,
     )

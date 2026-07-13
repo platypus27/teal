@@ -4,6 +4,7 @@ import { Filter } from 'lucide-react'
 export function PopoverDemo({ exampleIndex = 0 }) {
   return (
     <Popover
+      label="Filter projects"
       trigger={
         <Button variant="secondary">
           <Filter /> {exampleIndex ? 'Refine projects' : 'Filters'}

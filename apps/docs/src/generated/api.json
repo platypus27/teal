@@ -227,6 +227,13 @@
         "type": "boolean"
       },
       {
+        "defaultValue": "",
+        "description": "Element that receives focus after a controlled dialog closes.",
+        "name": "restoreFocusRef",
+        "required": false,
+        "type": "RefObject<HTMLElement | null>"
+      },
+      {
         "defaultValue": "md",
         "description": "Width of the dialog surface.",
         "name": "size",
@@ -566,6 +573,13 @@
         "name": "defaultOpen",
         "required": false,
         "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name for the dialog-like popover surface.",
+        "name": "label",
+        "required": true,
+        "type": "string"
       },
       {
         "defaultValue": "",

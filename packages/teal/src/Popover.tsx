@@ -11,7 +11,7 @@ export interface PopoverProps {
   /** Initial open state when uncontrolled. */
   defaultOpen?: boolean
   /** Accessible name for the dialog-like popover surface. */
-  label?: string
+  label: string
   /** Called when the popover opens or closes. */
   onOpenChange?: (open: boolean) => void
   /** Controlled open state. */

@@ -222,7 +222,7 @@ export const moduleGroups = [
         apiNames: ['Popover'],
         imports: ['Popover', 'Button', 'Checkbox'],
         description: 'An anchored surface for arbitrary controls and supplemental content.',
-        usage: `<Popover trigger={<Button variant="secondary">Filters</Button>}>
+        usage: `<Popover label="Filter projects" trigger={<Button variant="secondary">Filters</Button>}>
   <div className="grid gap-3">
     <Checkbox label="Active only" defaultChecked />
     <Button size="sm">Apply filters</Button>

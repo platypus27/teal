@@ -8,7 +8,7 @@ describe('portal-backed modules are SSR safe', () => {
         <Dialog title="Archive" description="The project can be restored."><p>Content</p></Dialog>
         <Tooltip content="Help"><Button>Help</Button></Tooltip>
         <Menu trigger={<Button>Actions</Button>} items={[{ id: 'settings', label: 'Settings', onSelect: () => undefined }]} />
-        <Popover trigger={<Button>Filters</Button>}><p>Filter content</p></Popover>
+        <Popover label="Filters" trigger={<Button>Filters</Button>}><p>Filter content</p></Popover>
         <Select aria-label="Role" options={[{ value: 'viewer', label: 'Viewer' }]} />
         <Toaster />
       </>,
