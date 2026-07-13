@@ -1,4 +1,4 @@
-import { forwardRef, type ReactNode } from 'react'
+import { forwardRef, type ReactNode, type RefObject } from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 import { IconButton } from './Button'
@@ -20,6 +20,8 @@ export interface DialogProps {
   onOpenChange?: (open: boolean) => void
   /** Controlled open state. */
   open?: boolean
+  /** Element that receives focus after a controlled dialog closes. */
+  restoreFocusRef?: RefObject<HTMLElement | null>
   /** Width of the dialog surface. */
   size?: 'sm' | 'md' | 'lg'
   /** Title rendered at the top; also the accessible name of the dialog. */
@@ -36,6 +38,7 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
     footer,
     onOpenChange,
     open,
+    restoreFocusRef,
     size = 'md',
     title,
   },
@@ -51,6 +54,10 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
         <DialogPrimitive.Overlay className="teal-dialog-overlay fixed inset-0 z-[var(--teal-z-overlay)] bg-black/50 backdrop-blur-sm" />
         <DialogPrimitive.Content
           ref={ref}
+          onCloseAutoFocus={restoreFocusRef ? (event) => {
+            event.preventDefault()
+            restoreFocusRef.current?.focus()
+          } : undefined}
           className={cn(
             'teal-dialog-content fixed left-1/2 top-1/2 z-[var(--teal-z-dialog)] max-h-[calc(100vh-2rem)] w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-2xl border border-outline-variant/40 bg-surface-container p-6 text-on-surface shadow-[var(--teal-shadow-overlay)] outline-none',
             size === 'sm' && 'max-w-sm',

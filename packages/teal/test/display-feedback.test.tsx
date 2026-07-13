@@ -1,6 +1,7 @@
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderToString } from 'react-dom/server'
+import { useRef, useState } from 'react'
 import {
   Badge,
   Button,
@@ -53,6 +54,29 @@ describe('display modules', () => {
 })
 
 describe('overlays and feedback', () => {
+  it('restores focus to an external trigger after a controlled dialog closes', async () => {
+    const user = userEvent.setup()
+
+    function ControlledDialog() {
+      const [open, setOpen] = useState(false)
+      const triggerRef = useRef<HTMLButtonElement>(null)
+      return (
+        <>
+          <button ref={triggerRef} type="button" onClick={() => setOpen(true)}>Archive route</button>
+          <Dialog open={open} onOpenChange={setOpen} restoreFocusRef={triggerRef} title="Archive route?">
+            Route details
+          </Dialog>
+        </>
+      )
+    }
+
+    render(<ControlledDialog />)
+    const trigger = screen.getByRole('button', { name: 'Archive route' })
+    await user.click(trigger)
+    await user.keyboard('{Escape}')
+    expect(trigger).toHaveFocus()
+  })
+
   it('gives dialogs their title and restores controlled close intent', async () => {
     const user = userEvent.setup()
     const onOpenChange = vi.fn()
