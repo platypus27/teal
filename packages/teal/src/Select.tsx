@@ -1,4 +1,4 @@
-import { forwardRef, type ReactNode } from 'react'
+import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react'
 import * as SelectPrimitive from '@radix-ui/react-select'
 import { Check, ChevronDown } from 'lucide-react'
 import { cn } from './cn'
@@ -16,33 +16,21 @@ export interface SelectOption {
   value: string
 }
 
-export interface SelectProps {
+export interface SelectProps extends Omit<ComponentPropsWithoutRef<typeof SelectPrimitive.Root>, 'children'> {
   'aria-describedby'?: string
   /** Accessible name when there is no visible label. */
   'aria-label'?: string
-  /** Explicit id; otherwise Field or an internal id is used. */
-  id?: string
   /** Marks the trigger invalid for form validation and screen readers. */
   'aria-invalid'?: boolean | 'false' | 'true'
+  /** Explicit id; otherwise Field or an internal id is used. */
+  id?: string
   className?: string
-  /** Initial value when uncontrolled. */
-  defaultValue?: string
-  /** Prevents opening the select. */
-  disabled?: boolean
-  /** Form field name submitted with the selected value. */
-  name?: string
-  /** Called with the new value when selection changes. */
-  onValueChange?: (value: string) => void
   /** Options rendered in the listbox. */
   options: SelectOption[]
   /** Text shown when no value is selected. */
   placeholder?: ReactNode
-  /** Marks the select as required for form validation. */
-  required?: boolean
   /** Size of the trigger button. */
   size?: 'sm' | 'md' | 'lg'
-  /** Controlled selected value. */
-  value?: string
 }
 
 export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select(
@@ -50,12 +38,17 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
     'aria-describedby': describedBy,
     'aria-label': ariaLabel,
     'aria-invalid': invalid,
+    autoComplete,
     className,
+    defaultOpen,
     defaultValue,
+    dir,
     disabled,
     id,
     name,
+    onOpenChange,
     onValueChange,
+    open,
     options,
     placeholder = 'Select an option',
     required,
@@ -73,8 +66,13 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
       {...(value !== undefined ? { value } : {})}
       {...(defaultValue !== undefined ? { defaultValue } : {})}
       {...(onValueChange ? { onValueChange } : {})}
+      {...(open !== undefined ? { open } : {})}
+      {...(defaultOpen !== undefined ? { defaultOpen } : {})}
+      {...(onOpenChange ? { onOpenChange } : {})}
       {...(disabled !== undefined ? { disabled } : {})}
       {...(name !== undefined ? { name } : {})}
+      {...(dir !== undefined ? { dir } : {})}
+      {...(autoComplete !== undefined ? { autoComplete } : {})}
     >
       <SelectPrimitive.Trigger
         ref={ref}

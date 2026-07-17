@@ -1,4 +1,4 @@
-import { forwardRef, type ComponentRef, type HTMLAttributes, type ReactNode } from 'react'
+import { forwardRef, type ElementRef, type HTMLAttributes, type ReactNode } from 'react'
 import * as LabelPrimitive from '@radix-ui/react-label'
 import { cn } from './cn'
 import { FormSemanticsContext, hasFormContent, mergeDescriptionIds, useFormSemantics, useFormSemanticsContext } from './form-semantics'
@@ -9,7 +9,7 @@ export function useFieldControl() {
 
 export type LabelProps = React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
 
-export const Label = forwardRef<ComponentRef<typeof LabelPrimitive.Root>, LabelProps>(function Label(
+export const Label = forwardRef<ElementRef<typeof LabelPrimitive.Root>, LabelProps>(function Label(
   { className, ...props },
   ref,
 ) {

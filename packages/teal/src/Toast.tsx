@@ -1,4 +1,4 @@
-import { forwardRef, useSyncExternalStore, type ComponentRef, type ReactNode } from 'react'
+import { forwardRef, useSyncExternalStore, type ElementRef, type ReactNode } from 'react'
 import * as ToastPrimitive from '@radix-ui/react-toast'
 import { CheckCircle2, CircleAlert, Info, TriangleAlert, X } from 'lucide-react'
 import { IconButton } from './Button'
@@ -55,7 +55,7 @@ const variantStyles: Record<ToastVariant, { icon: typeof Info; className: string
   danger: { icon: CircleAlert, className: 'text-error' },
 }
 
-export const Toaster = forwardRef<ComponentRef<typeof ToastPrimitive.Viewport>>(function Toaster(_props, ref) {
+export const Toaster = forwardRef<ElementRef<typeof ToastPrimitive.Viewport>>(function Toaster(_props, ref) {
   const toasts = useSyncExternalStore(subscribe, () => records, () => emptyRecords)
 
   return (
