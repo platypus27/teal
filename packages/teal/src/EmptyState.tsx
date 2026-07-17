@@ -11,10 +11,12 @@ export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, 't
   icon?: ReactNode
   /** Short heading for the empty state. */
   title: ReactNode
+  /** Heading element used for the title; defaults to 'h3'. Adjust to fit the page outline. */
+  titleAs?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 }
 
 export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function EmptyState(
-  { action, className, description, icon, title, ...props },
+  { action, className, description, icon, title, titleAs: TitleTag = 'h3', ...props },
   ref,
 ) {
   return (
@@ -32,7 +34,7 @@ export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function E
       >
         {icon ?? <Inbox />}
       </div>
-      <h3 className="mt-4 font-headline text-lg font-bold text-on-surface">{title}</h3>
+      <TitleTag className="mt-4 font-headline text-lg font-bold text-on-surface">{title}</TitleTag>
       {description ? <p className="mt-1 max-w-sm text-sm leading-relaxed text-on-surface-variant">{description}</p> : null}
       {action ? <div className="mt-5">{action}</div> : null}
     </div>

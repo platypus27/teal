@@ -41,11 +41,16 @@ export const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivEleme
   return <div ref={ref} className={cn('mb-4 flex items-center justify-between', className)} {...props} />
 })
 
-export const CardTitle = forwardRef<HTMLHeadingElement, HTMLAttributes<HTMLHeadingElement>>(function CardTitle(
-  { className, ...props },
+export interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+  /** Heading element used for the title; defaults to 'h2'. Adjust to fit the page outline. */
+  titleAs?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+}
+
+export const CardTitle = forwardRef<HTMLHeadingElement, CardTitleProps>(function CardTitle(
+  { className, titleAs: TitleTag = 'h2', ...props },
   ref,
 ) {
-  return <h2 ref={ref} className={cn('font-headline text-lg font-bold text-on-surface', className)} {...props} />
+  return <TitleTag ref={ref} className={cn('font-headline text-lg font-bold text-on-surface', className)} {...props} />
 })
 
 export const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLParagraphElement>>(
