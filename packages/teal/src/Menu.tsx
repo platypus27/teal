@@ -27,13 +27,15 @@ export interface MenuProps {
   items: MenuItem[]
   /** Accessible name for the menu. */
   label?: string
+  /** Traps focus and blocks outside interaction while open. Defaults to false. */
+  modal?: boolean
   /** Element that opens the menu; receives trigger props automatically. */
   trigger: ReactElement
 }
 
-export function Menu({ align = 'end', className, items, label, trigger }: MenuProps) {
+export function Menu({ align = 'end', className, items, label, modal = false, trigger }: MenuProps) {
   return (
-    <MenuPrimitive.Root modal={false}>
+    <MenuPrimitive.Root modal={modal}>
       <MenuPrimitive.Trigger asChild>{trigger}</MenuPrimitive.Trigger>
       <MenuPrimitive.Portal>
         <MenuPrimitive.Content
