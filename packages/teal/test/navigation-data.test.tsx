@@ -38,6 +38,19 @@ describe('navigation modules', () => {
     expect(onSelect).toHaveBeenCalledOnce()
   })
 
+  it('supports modal menus', async () => {
+    const user = userEvent.setup()
+    render(
+      <Menu
+        modal
+        trigger={<button type="button">Actions</button>}
+        items={[{ id: 'archive', label: 'Archive', onSelect: () => {} }]}
+      />,
+    )
+    await user.click(screen.getByRole('button', { name: 'Actions' }))
+    expect(await screen.findByRole('menu')).toBeInTheDocument()
+  })
+
   it('anchors arbitrary popover content to a trigger', async () => {
     const user = userEvent.setup()
     render(
@@ -100,6 +113,22 @@ describe('data modules', () => {
       />,
     )
     expect(screen.getByText('No projects found')).toBeInTheDocument()
+  })
+
+  it('only makes the table region focusable when the content scrolls', () => {
+    const columns = [{ key: 'name', header: 'Project', cell: (row: { id: string }) => row.id }]
+    const { unmount } = render(
+      <Table caption="Projects" rows={rows} getRowKey={(row) => row.id} columns={columns} />,
+    )
+    expect(screen.getByRole('region', { name: 'Projects table' })).not.toHaveAttribute('tabindex')
+    unmount()
+
+    const scrollWidth = vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(500)
+    const clientWidth = vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(300)
+    render(<Table caption="Projects" rows={rows} getRowKey={(row) => row.id} columns={columns} />)
+    expect(screen.getByRole('region', { name: 'Projects table' })).toHaveAttribute('tabindex', '0')
+    scrollWidth.mockRestore()
+    clientWidth.mockRestore()
   })
 
   it('marks the region busy and announces loading without naming rows', () => {

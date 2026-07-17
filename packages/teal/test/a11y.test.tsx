@@ -30,6 +30,7 @@ import {
   TextArea,
   Toaster,
   Tooltip,
+  TooltipProvider,
   TopBar,
   TopBarActions,
   TopBarBrand,
@@ -318,5 +319,68 @@ describe('axe: overlays and feedback', () => {
     await screen.findByText('Changes saved')
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
     act(() => dismissToast(id))
+  })
+})
+
+
+describe('axe: hardening regressions', () => {
+  it('default heading outline (page header, card title, empty state) has no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <PageHeader title="Settings" subtitle="Manage your account" />
+        <Card>
+          <CardHeader>
+            <CardTitle>Profile</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <EmptyState title="No aliases" description="Aliases appear here." />
+          </CardContent>
+        </Card>
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('field-wrapped checkbox and switch have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <Field label="Include archived" description="Shows completed projects">
+          <Checkbox defaultChecked />
+        </Field>
+        <Field label="Enable alerts">
+          <Switch />
+        </Field>
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('modal menu has no violations when open', async () => {
+    const user = userEvent.setup()
+    const { baseElement } = render(
+      <Menu
+        modal
+        label="Project actions"
+        trigger={<button type="button">Open menu</button>}
+        items={[{ id: 'rename', label: 'Rename', onSelect: () => {} }]}
+      />,
+    )
+    await user.click(screen.getByRole('button', { name: 'Open menu' }))
+    await screen.findByRole('menu')
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('tooltips under a shared provider have no violations', async () => {
+    const user = userEvent.setup()
+    const { baseElement } = render(
+      <TooltipProvider>
+        <Tooltip content="Refresh results" delayDuration={0}>
+          <button type="button">Refresh</button>
+        </Tooltip>
+      </TooltipProvider>,
+    )
+    await user.hover(screen.getByRole('button', { name: 'Refresh' }))
+    await screen.findByRole('tooltip')
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
   })
 })

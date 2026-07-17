@@ -36,6 +36,22 @@ describe('Field', () => {
     expect(ref.current).toContainElement(screen.getByRole('textbox', { name: 'Email' }))
   })
 
+  it('uses the Field label as the single label for checkboxes and switches', () => {
+    const { container } = render(
+      <>
+        <Field label="Include archived">
+          <Checkbox defaultChecked />
+        </Field>
+        <Field label="Enable alerts">
+          <Switch />
+        </Field>
+      </>,
+    )
+    expect(screen.getByRole('checkbox', { name: 'Include archived' })).toBeInTheDocument()
+    expect(screen.getByRole('switch', { name: 'Enable alerts' })).toBeInTheDocument()
+    expect(container.querySelectorAll('label')).toHaveLength(2)
+  })
+
   it('keeps generated ids unique and merges caller descriptions', () => {
     render(
       <div>

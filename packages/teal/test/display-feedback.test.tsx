@@ -16,6 +16,7 @@ import {
   PageHeader,
   Toaster,
   Tooltip,
+  TooltipProvider,
   dismissToast,
   toast,
 } from '../src/index'
@@ -55,6 +56,23 @@ describe('display modules', () => {
   it('hides custom empty-state icons from assistive technology', () => {
     render(<EmptyState title="No reports" icon={<svg data-testid="custom-icon" />} />)
     expect(screen.getByTestId('custom-icon').parentElement).toHaveAttribute('aria-hidden', 'true')
+  })
+
+  it('adjusts heading levels to the page outline with titleAs', () => {
+    render(
+      <>
+        <PageHeader title="Reports" titleAs="h2" />
+        <Card>
+          <CardHeader>
+            <CardTitle titleAs="h3">Usage</CardTitle>
+          </CardHeader>
+        </Card>
+        <EmptyState title="No data" titleAs="h4" />
+      </>,
+    )
+    expect(screen.getByRole('heading', { level: 2, name: 'Reports' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 3, name: 'Usage' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 4, name: 'No data' })).toBeInTheDocument()
   })
 
   it('applies disabled semantics to interactive cards', () => {
@@ -131,6 +149,24 @@ describe('overlays and feedback', () => {
     )
     await user.hover(screen.getByRole('button', { name: 'Refresh' }))
     expect(await screen.findByRole('tooltip')).toHaveTextContent('Refresh results')
+  })
+
+  it('groups tooltips under a shared TooltipProvider', async () => {
+    const user = userEvent.setup()
+    render(
+      <TooltipProvider delayDuration={0} disableHoverableContent>
+        <Tooltip content="First tip">
+          <button type="button">First</button>
+        </Tooltip>
+        <Tooltip content="Second tip">
+          <button type="button">Second</button>
+        </Tooltip>
+      </TooltipProvider>,
+    )
+    await user.hover(screen.getByRole('button', { name: 'First' }))
+    expect(await screen.findByRole('tooltip', { name: 'First tip' })).toBeInTheDocument()
+    await user.hover(screen.getByRole('button', { name: 'Second' }))
+    expect(await screen.findByRole('tooltip', { name: 'Second tip' })).toBeInTheDocument()
   })
 
   it('announces and dismisses imperative toast messages', () => {
