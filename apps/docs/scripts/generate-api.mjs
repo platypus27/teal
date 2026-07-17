@@ -16,7 +16,11 @@ const parser = withCustomConfig(resolve(root, 'packages/teal/tsconfig.json'), {
 })
 
 const files = [
+  'Accordion.tsx',
+  'Alert.tsx',
+  'Avatar.tsx',
   'Badge.tsx',
+  'Breadcrumb.tsx',
   'Button.tsx',
   'Card.tsx',
   'Checkbox.tsx',

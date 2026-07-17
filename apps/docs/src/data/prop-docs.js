@@ -35,6 +35,16 @@ export const propDocs = {
   CardTitle: {
     titleAs: { defaultValue: '"h2"' },
   },
+  Accordion: {
+    items: { description: 'Items rendered by the accordion ({ value, title, content, disabled? }).' },
+    multiple: {
+      defaultValue: 'false',
+      description: 'Multi-open mode. value, defaultValue, and onValueChange are typed string in single mode and string[] when multiple is true.',
+    },
+  },
+  Avatar: {
+    size: { description: 'Diameter of the avatar.', defaultValue: '"md"' },
+  },
   Input: {
     size: { description: 'Height and text size of the control.', defaultValue: '"md"' },
   },
@@ -90,6 +100,9 @@ export const propDocs = {
   EmptyState: {
     titleAs: { defaultValue: '"h3"' },
   },
+  Alert: {
+    variant: { description: 'Semantic treatment of the banner.', defaultValue: '"info"' },
+  },
   Dialog: {
     className: { description: 'Additional classes merged onto the dialog panel.' },
   },
@@ -108,6 +121,11 @@ export const propDocs = {
   },
   PageHeader: {
     titleAs: { defaultValue: '"h1"' },
+  },
+  Breadcrumb: {
+    items: { description: 'Items in hierarchy order ({ label, href?, as?, onSelect? }); the last item is the current page.' },
+    collapseAfter: { type: 'number', defaultValue: '5', description: 'Maximum items shown before middle items collapse into a menu.' },
+    label: { defaultValue: '"Breadcrumb"' },
   },
   Select: {
     className: { description: 'Additional classes merged onto the trigger.' },

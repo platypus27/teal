@@ -12,7 +12,7 @@ function pascalCase(value) {
 }
 
 if (new Set(modules.map((module) => module.id)).size !== modules.length) errors.push('module ids must be unique')
-if (modules.length !== 22) errors.push(`expected 22 module pages, found ${modules.length}`)
+if (modules.length !== 26) errors.push(`expected 26 module pages, found ${modules.length}`)
 
 for (const module of modules) {
   if (module.examples.length < 2) errors.push(`${module.id} needs at least two examples`)
@@ -38,6 +38,8 @@ const intentionallyUndocumented = new Set([
   'iconButtonVariants',
   'fieldVariants',
   'badgeVariants',
+  'alertVariants',
+  'avatarVariants',
   'topBarVariants',
   'verticalNavVariants',
   // Function and hook exports are documented in module usage snippets, not in

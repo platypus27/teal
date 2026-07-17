@@ -149,7 +149,7 @@ export function HomePage() {
 
       <Section
         title="Modules"
-        description="Twenty-two typed modules across seven groups. Each page ships live examples, a playground, a generated interface reference, and keyboard documentation."
+        description="Twenty-six typed modules across seven groups. Each page ships live examples, a playground, a generated interface reference, and keyboard documentation."
       >
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {catalogGroups.flatMap((group) =>

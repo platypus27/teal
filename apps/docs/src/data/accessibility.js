@@ -87,6 +87,18 @@ export const accessibility = {
       'Always pair a variant with meaningful text; never rely on color alone to carry the status.',
     ],
   },
+  accordion: {
+    keyboard: [
+      { keys: ['Enter', 'Space'], action: 'Toggles the focused item.' },
+      { keys: ['Arrow Up', 'Arrow Down'], action: 'Moves focus between item triggers.' },
+      { keys: ['Home', 'End'], action: 'Focuses the first or last trigger.' },
+    ],
+    notes: [
+      'Implements the ARIA accordion pattern through the Radix primitive, with state exposed as aria-expanded on each trigger.',
+      'Disabled items are skipped and cannot be toggled.',
+      'The chevron is decorative and hidden from assistive technology.',
+    ],
+  },
   dialog: {
     keyboard: [
       { keys: ['Escape'], action: 'Closes the dialog and returns focus to the trigger.' },
@@ -162,6 +174,13 @@ export const accessibility = {
       'All motion respects prefers-reduced-motion.',
     ],
   },
+  alert: {
+    notes: [
+      'Danger renders role="alert" so the message is announced immediately; other variants render role="status".',
+      'The variant icon is decorative and hidden from assistive technology; meaning is carried by the text.',
+      'The dismiss control is a labeled button in the normal tab order.',
+    ],
+  },
   tabs: {
     keyboard: [
       { keys: ['Arrow Left', 'Arrow Right'], action: 'Moves between tabs and activates them.' },
@@ -209,6 +228,12 @@ export const accessibility = {
       'Use decorative separators between visually obvious groups; keep semantic ones where the structure matters.',
     ],
   },
+  avatar: {
+    notes: [
+      'Image alt text defaults to the name; pass an empty alt for decorative avatars.',
+      'Initials and icon fallbacks render role="img" with the name as the accessible label.',
+    ],
+  },
   'vertical-nav': {
     keyboard: [
       { keys: ['Tab'], action: 'Moves focus between nav items. In rail mode, focusing an item expands the nav.' },
@@ -227,7 +252,18 @@ export const accessibility = {
     notes: [
       'Renders a <header> element by default; use the as prop to change the element if needed.',
       'Keep action buttons labeled with aria-label when they contain only icons.',
-      'The sticky variant keeps the bar in view during scrolling; use sticky={false} for an inline bar.',
+      'Sticky keeps the bar in view during scrolling; use sticky={false} for an inline bar.',
+    ],
+  },
+  breadcrumb: {
+    keyboard: [
+      { keys: ['Tab'], action: 'Moves focus through the trail links and the collapsed-items menu trigger.' },
+    ],
+    notes: [
+      'Renders a nav landmark with an ordered list; the landmark label defaults to "Breadcrumb".',
+      'The current page is a span with aria-current="page", not a link.',
+      'Middle items beyond collapseAfter move into a labeled menu.',
+      'Pass a router link component through an item\'s as prop, mirroring VerticalNavItem.',
     ],
   },
 }

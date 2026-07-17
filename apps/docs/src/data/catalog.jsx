@@ -176,6 +176,8 @@ const extras = {
       ],
     },
   },
+  accordion: {
+  },
   dialog: {
     playground: {
       component: 'Dialog',
@@ -219,6 +221,8 @@ const extras = {
       ),
     },
   },
+  alert: {
+  },
   tabs: {
   },
   pagination: {
@@ -238,6 +242,8 @@ const extras = {
   },
   'top-bar': {
   },
+  breadcrumb: {
+  },
   table: {
   },
   separator: {
@@ -253,6 +259,8 @@ const extras = {
         </div>
       ),
     },
+  },
+  avatar: {
   },
 }
 
