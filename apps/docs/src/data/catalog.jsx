@@ -116,7 +116,7 @@ const extras = {
       },
       controls: [
         { name: 'size', kind: 'select', options: ['sm', 'md', 'lg'], defaultValue: 'md' },
-        { name: 'disabled' },
+        { name: 'disabled', kind: 'boolean' },
       ],
     },
   },

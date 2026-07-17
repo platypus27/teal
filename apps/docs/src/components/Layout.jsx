@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { FlaskConical, Menu as MenuIcon, Moon, Palette, Search, Sun, X } from 'lucide-react'
 import { GitHubIcon } from './GitHubIcon.jsx'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { IconButton, Toaster, TopBar, TopBarActions, TopBarBrand, TopBarSearch, VerticalNav, VerticalNavBrand, VerticalNavItem, VerticalNavList, VerticalNavSection, iconButtonVariants } from '@kryv/teal'
+import { IconButton, Toaster, TooltipProvider, TopBar, TopBarActions, TopBarBrand, TopBarSearch, VerticalNav, VerticalNavBrand, VerticalNavItem, VerticalNavList, VerticalNavSection, iconButtonVariants } from '@kryv/teal'
 import { catalogGroups } from '../data/docs-module-registry.js'
 import changelog from '../generated/changelog.json'
 import { CommandPalette, CommandPaletteProvider, useCommandPalette } from './CommandPalette.jsx'
@@ -105,7 +105,6 @@ function Sidebar({ navOpen, setNavOpen }) {
       ) : null}
       <VerticalNav
         mode="full"
-        variant="solid"
         side="left"
         aria-label="Documentation"
         className={`fixed inset-y-0 left-0 z-40 transition-transform lg:translate-x-0 ${navOpen ? 'translate-x-0' : '-translate-x-full'}`}
@@ -187,27 +186,29 @@ export function Layout() {
 
   return (
     <CommandPaletteProvider>
-      <div className="min-h-screen bg-background text-on-surface">
-        <a
-          href="#main-content"
-          className="fixed left-3 top-3 z-[100] -translate-y-20 rounded-lg bg-primary px-4 py-2 font-semibold text-on-primary focus:translate-y-0"
-        >
-          Skip to content
-        </a>
-        <Sidebar navOpen={navOpen} setNavOpen={setNavOpen} />
-        <div className="lg:ml-72">
-          <Header navOpen={navOpen} setNavOpen={setNavOpen} />
-          <div className="flex min-h-[calc(100vh-4rem)]">
-            <main id="main-content" className="min-w-0 flex-1 scroll-mt-16">
-              <Outlet />
-              <PrevNext />
-            </main>
-            <TableOfContents />
+      <TooltipProvider>
+        <div className="min-h-screen bg-background text-on-surface">
+          <a
+            href="#main-content"
+            className="fixed left-3 top-3 z-[100] -translate-y-20 rounded-lg bg-primary px-4 py-2 font-semibold text-on-primary focus:translate-y-0"
+          >
+            Skip to content
+          </a>
+          <Sidebar navOpen={navOpen} setNavOpen={setNavOpen} />
+          <div className="lg:ml-72">
+            <Header navOpen={navOpen} setNavOpen={setNavOpen} />
+            <div className="flex min-h-[calc(100vh-4rem)]">
+              <main id="main-content" className="min-w-0 flex-1 scroll-mt-16">
+                <Outlet />
+                <PrevNext />
+              </main>
+              <TableOfContents />
+            </div>
           </div>
+          <CommandPalette />
+          <Toaster />
         </div>
-        <CommandPalette />
-        <Toaster />
-      </div>
+      </TooltipProvider>
     </CommandPaletteProvider>
   )
 }

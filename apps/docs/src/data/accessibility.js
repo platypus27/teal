@@ -58,6 +58,7 @@ export const accessibility = {
     notes: [
       'Supports a tri-state checked value for select-all patterns, announced as "mixed" by screen readers.',
       'The label is clickable and the description is linked through aria-describedby.',
+      'Inside a Field, the Field label is the only rendered label; pass label only for standalone use.',
     ],
   },
   switch: {
@@ -68,6 +69,7 @@ export const accessibility = {
     notes: [
       'Renders role="switch" with aria-checked, so assistive technology announces it as an on/off setting.',
       'The label and description are wired to the control automatically.',
+      'Inside a Field, the Field label is the only rendered label; pass label only for standalone use.',
     ],
   },
   card: {
@@ -76,6 +78,7 @@ export const accessibility = {
       'Render real links and buttons inside a card rather than making the card itself clickable.',
       'The as prop lets you render the card as a section, article, or list item to fit the page outline.',
       'Disabled cards are dimmed, skip pointer events, and set aria-disabled.',
+      'CardTitle renders an h2 by default; set titleAs so card headings fit the surrounding page outline.',
     ],
   },
   badge: {
@@ -103,6 +106,7 @@ export const accessibility = {
     notes: [
       'The trigger is described by the tooltip through aria-describedby.',
       'Tooltips are for short hints only; never place interactive content inside them.',
+      'Wrap the app in TooltipProvider once so tooltips share open-delay grouping; moving between triggers then skips the delay.',
     ],
   },
   menu: {
@@ -118,6 +122,7 @@ export const accessibility = {
     notes: [
       'Renders the ARIA menu pattern with menuitem roles and roving highlight.',
       'Icons are decorative; every item keeps a text label.',
+      'Set modal to trap focus and block outside interaction while the menu is open.',
     ],
   },
   popover: {
@@ -145,7 +150,7 @@ export const accessibility = {
   },
   'empty-state': {
     notes: [
-      'The title renders as a heading so empty states appear in the page outline.',
+      'The title renders as an h3 by default; adjust titleAs so the empty state fits the page outline.',
       'The action is a real button or link; keep to a single primary action.',
     ],
   },
@@ -182,19 +187,20 @@ export const accessibility = {
   },
   'page-header': {
     notes: [
-      'The title renders as an h1; keep one PageHeader per page.',
+      'The title renders as an h1 by default; set titleAs to fit the page outline and keep one h1 per page.',
       'Actions are regular buttons and links with standard focus order.',
     ],
   },
   table: {
     keyboard: [
-      { keys: ['Tab'], action: 'Moves focus to the scroll region so the table can be scrolled with arrow keys.' },
+      { keys: ['Tab'], action: 'Moves focus to the scroll region when the table overflows horizontally.' },
       { keys: ['Arrow keys'], action: 'Scrolls the region horizontally when the table overflows.' },
     ],
     notes: [
       'The caption is announced to screen readers and kept visually hidden.',
       'Header cells use scope="col", and the table keeps real table semantics for screen reader navigation.',
       'Skeleton rows are announced through loadingLabel while data loads.',
+      'The scroll region is a tab stop only while the table overflows; tables that fit their container are skipped.',
     ],
   },
   separator: {

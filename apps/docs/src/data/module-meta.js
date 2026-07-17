@@ -179,10 +179,16 @@ export const moduleGroups = [
       {
         id: 'tooltip',
         name: 'Tooltip',
-        apiNames: ['Tooltip'],
-        imports: ['Tooltip', 'IconButton'],
+        apiNames: ['Tooltip', 'TooltipProvider'],
+        imports: ['Tooltip', 'TooltipProvider', 'IconButton'],
         description: 'A short contextual hint with accessible trigger association and collision handling.',
-        usage: `<Tooltip content="Refresh search results">
+        usage: `// Mount once near the app root so tooltips share open-delay grouping
+<TooltipProvider>
+  <App />
+</TooltipProvider>
+
+// Per-instance delayDuration overrides the provider when needed
+<Tooltip content="Refresh search results">
   <IconButton label="Refresh results">
     <Search />
   </IconButton>

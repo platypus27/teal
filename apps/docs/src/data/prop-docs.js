@@ -32,6 +32,9 @@ export const propDocs = {
   Badge: {
     variant: { description: 'Semantic color treatment.', defaultValue: '"neutral"' },
   },
+  CardTitle: {
+    titleAs: { defaultValue: '"h2"' },
+  },
   Input: {
     size: { description: 'Height and text size of the control.', defaultValue: '"md"' },
   },
@@ -84,6 +87,9 @@ export const propDocs = {
     value: { type: 'number | null', defaultValue: '0', description: 'Current progress, clamped between 0 and max.' },
     max: { type: 'number', defaultValue: '100', description: 'Maximum value used to compute the filled percentage.' },
   },
+  EmptyState: {
+    titleAs: { defaultValue: '"h3"' },
+  },
   Dialog: {
     className: { description: 'Additional classes merged onto the dialog panel.' },
   },
@@ -100,6 +106,9 @@ export const propDocs = {
   Pagination: {
     className: { description: 'Additional classes merged onto the nav element.' },
   },
+  PageHeader: {
+    titleAs: { defaultValue: '"h1"' },
+  },
   Select: {
     className: { description: 'Additional classes merged onto the trigger.' },
     'aria-describedby': { description: 'Id of an element that describes the select, forwarded to the trigger.' },
@@ -107,12 +116,14 @@ export const propDocs = {
   Tooltip: {
     className: { description: 'Additional classes merged onto the tooltip content.' },
   },
-  VerticalNav: {
-    variant: {
-      type: '"solid"',
-      defaultValue: '"solid"',
-      description: 'Solid renders an opaque bar with a border.',
+  TooltipProvider: {
+    delayDuration: {
+      type: 'number',
+      defaultValue: '300',
+      description: 'Open delay in milliseconds shared by the grouped tooltips; moving between triggers skips the delay.',
     },
+  },
+  VerticalNav: {
     mode: {
       type: '"rail" | "full"',
       defaultValue: '"full"',
@@ -121,7 +132,7 @@ export const propDocs = {
     side: {
       type: '"left" | "right"',
       defaultValue: '"left"',
-      description: 'Which edge the nav anchors to. Solid variants draw a border on the inner side.',
+      description: 'Which edge the nav anchors to. A border is drawn on the inner side.',
     },
   },
   VerticalNavItem: {
@@ -132,11 +143,6 @@ export const propDocs = {
     },
   },
   TopBar: {
-    variant: {
-      type: '"solid"',
-      defaultValue: '"solid"',
-      description: 'Solid renders an opaque background.',
-    },
     sticky: {
       type: 'boolean',
       defaultValue: 'true',
