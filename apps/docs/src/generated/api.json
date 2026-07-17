@@ -6,7 +6,7 @@
       {
         "defaultValue": "",
         "description": "",
-        "name": "tone",
+        "name": "variant",
         "required": false,
         "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\" | null"
       }
@@ -58,6 +58,13 @@
         "type": "string"
       },
       {
+        "defaultValue": "false",
+        "description": "Replaces the icon with a spinner and disables the button while true.",
+        "name": "loading",
+        "required": false,
+        "type": "boolean"
+      },
+      {
         "defaultValue": "",
         "description": "",
         "name": "variant",
@@ -78,14 +85,7 @@
     "displayName": "Card",
     "props": [
       {
-        "defaultValue": "div",
-        "description": "Element rendered by the card; use an interactive element for clickable cards.",
-        "name": "as",
-        "required": false,
-        "type": "ElementType"
-      },
-      {
-        "defaultValue": "",
+        "defaultValue": "false",
         "description": "Applies disabled styling and blocks interaction on interactive cards.",
         "name": "disabled",
         "required": false,
@@ -99,11 +99,11 @@
         "type": "enum"
       },
       {
-        "defaultValue": "",
+        "defaultValue": "div",
         "description": "",
-        "name": "ref",
+        "name": "as",
         "required": false,
-        "type": "any"
+        "type": "ElementType"
       }
     ]
   },
@@ -115,7 +115,15 @@
   {
     "description": "",
     "displayName": "CardTitle",
-    "props": []
+    "props": [
+      {
+        "defaultValue": "h2",
+        "description": "Heading element used for the title; defaults to 'h2'. Adjust to fit the page outline.",
+        "name": "titleAs",
+        "required": false,
+        "type": "enum"
+      }
+    ]
   },
   {
     "description": "",
@@ -145,9 +153,9 @@
       },
       {
         "defaultValue": "",
-        "description": "Visible label rendered next to the checkbox.",
+        "description": "Visible label rendered next to the checkbox. Required outside a Field; inside a Field the Field's label is used.",
         "name": "label",
-        "required": true,
+        "required": false,
         "type": "ReactNode"
       },
       {
@@ -280,6 +288,26 @@
         "name": "title",
         "required": true,
         "type": "ReactNode"
+      },
+      {
+        "defaultValue": "h3",
+        "description": "Heading element used for the title; defaults to 'h3'. Adjust to fit the page outline.",
+        "name": "titleAs",
+        "required": false,
+        "type": "enum"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Label",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "asChild",
+        "required": false,
+        "type": "boolean"
       }
     ]
   },
@@ -330,24 +358,6 @@
         "type": "boolean"
       }
     ]
-  },
-  {
-    "description": "",
-    "displayName": "Label",
-    "props": [
-      {
-        "defaultValue": "",
-        "description": "",
-        "name": "asChild",
-        "required": false,
-        "type": "boolean"
-      }
-    ]
-  },
-  {
-    "description": "",
-    "displayName": "mergeDescriptionIds",
-    "props": []
   },
   {
     "description": "",
@@ -466,6 +476,13 @@
         "type": "string"
       },
       {
+        "defaultValue": "false",
+        "description": "Traps focus and blocks outside interaction while open. Defaults to false.",
+        "name": "modal",
+        "required": false,
+        "type": "boolean"
+      },
+      {
         "defaultValue": "",
         "description": "Element that opens the menu; receives trigger props automatically.",
         "name": "trigger",
@@ -494,10 +511,17 @@
       },
       {
         "defaultValue": "",
-        "description": "Page title rendered as the level-one heading.",
+        "description": "Page title rendered as a heading.",
         "name": "title",
         "required": true,
         "type": "ReactNode"
+      },
+      {
+        "defaultValue": "h1",
+        "description": "Heading element used for the title; defaults to 'h1'. Adjust to fit the page outline.",
+        "name": "titleAs",
+        "required": false,
+        "type": "enum"
       }
     ]
   },
@@ -631,13 +655,6 @@
       },
       {
         "defaultValue": "",
-        "description": "Explicit id; otherwise Field or an internal id is used.",
-        "name": "id",
-        "required": false,
-        "type": "string"
-      },
-      {
-        "defaultValue": "",
         "description": "Marks the trigger invalid for form validation and screen readers.",
         "name": "aria-invalid",
         "required": false,
@@ -645,38 +662,17 @@
       },
       {
         "defaultValue": "",
+        "description": "Explicit id; otherwise Field or an internal id is used.",
+        "name": "id",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
         "description": "",
         "name": "className",
         "required": false,
         "type": "string"
-      },
-      {
-        "defaultValue": "",
-        "description": "Initial value when uncontrolled.",
-        "name": "defaultValue",
-        "required": false,
-        "type": "string"
-      },
-      {
-        "defaultValue": "",
-        "description": "Prevents opening the select.",
-        "name": "disabled",
-        "required": false,
-        "type": "boolean"
-      },
-      {
-        "defaultValue": "",
-        "description": "Form field name submitted with the selected value.",
-        "name": "name",
-        "required": false,
-        "type": "string"
-      },
-      {
-        "defaultValue": "",
-        "description": "Called with the new value when selection changes.",
-        "name": "onValueChange",
-        "required": false,
-        "type": "(value: string) => void"
       },
       {
         "defaultValue": "",
@@ -694,13 +690,6 @@
       },
       {
         "defaultValue": "",
-        "description": "Marks the select as required for form validation.",
-        "name": "required",
-        "required": false,
-        "type": "boolean"
-      },
-      {
-        "defaultValue": "",
         "description": "Size of the trigger button.",
         "name": "size",
         "required": false,
@@ -708,10 +697,24 @@
       },
       {
         "defaultValue": "",
-        "description": "Controlled selected value.",
+        "description": "",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
         "name": "value",
         "required": false,
         "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "onValueChange",
+        "required": false,
+        "type": "(value: string) => void"
       }
     ]
   },
@@ -741,9 +744,9 @@
       },
       {
         "defaultValue": "",
-        "description": "Visible label describing the setting the switch controls.",
+        "description": "Visible label describing the setting the switch controls. Required outside a Field; inside a Field the Field's label is used.",
         "name": "label",
-        "required": true,
+        "required": false,
         "type": "ReactNode"
       },
       {
@@ -788,14 +791,14 @@
         "type": "TableColumn<Row>[]"
       },
       {
-        "defaultValue": "comfortable",
+        "defaultValue": "",
         "description": "Vertical padding of cells.",
         "name": "density",
         "required": false,
         "type": "enum"
       },
       {
-        "defaultValue": "No results",
+        "defaultValue": "",
         "description": "Content shown when `rows` is empty and the table is not loading.",
         "name": "empty",
         "required": false,
@@ -809,14 +812,14 @@
         "type": "(row: Row) => string"
       },
       {
-        "defaultValue": "false",
-        "description": "Renders skeleton rows in place of data.",
+        "defaultValue": "",
+        "description": "Renders skeleton rows in place of data and marks the region busy.",
         "name": "loading",
         "required": false,
         "type": "boolean"
       },
       {
-        "defaultValue": "Loading table data",
+        "defaultValue": "",
         "description": "Accessible label announced while skeleton rows are shown.",
         "name": "loadingLabel",
         "required": false,
@@ -881,48 +884,12 @@
   },
   {
     "description": "",
-    "displayName": "toast",
-    "props": [
-      {
-        "defaultValue": "",
-        "description": "",
-        "name": "action",
-        "required": false,
-        "type": "{ label: string; onClick: () => void; }"
-      },
-      {
-        "defaultValue": "",
-        "description": "",
-        "name": "description",
-        "required": false,
-        "type": "ReactNode"
-      },
-      {
-        "defaultValue": "",
-        "description": "",
-        "name": "duration",
-        "required": false,
-        "type": "number"
-      },
-      {
-        "defaultValue": "",
-        "description": "",
-        "name": "title",
-        "required": true,
-        "type": "ReactNode"
-      },
-      {
-        "defaultValue": "",
-        "description": "",
-        "name": "tone",
-        "required": false,
-        "type": "enum"
-      }
-    ]
+    "displayName": "Toaster",
+    "props": []
   },
   {
-    "description": "",
-    "displayName": "dismissToast",
+    "description": "Rendered once near the app root so tooltips share open-delay grouping.",
+    "displayName": "TooltipProvider",
     "props": []
   },
   {
@@ -951,8 +918,8 @@
         "type": "ReactNode"
       },
       {
-        "defaultValue": "300",
-        "description": "Delay in milliseconds before the tooltip opens.",
+        "defaultValue": "",
+        "description": "Per-instance open delay in milliseconds; overrides the nearest TooltipProvider.",
         "name": "delayDuration",
         "required": false,
         "type": "number"
@@ -971,20 +938,6 @@
     "displayName": "TopBar",
     "props": [
       {
-        "defaultValue": "header",
-        "description": "Element rendered by the top bar; defaults to `<header>`.",
-        "name": "as",
-        "required": false,
-        "type": "ElementType"
-      },
-      {
-        "defaultValue": "",
-        "description": "Visual treatment of the bar.",
-        "name": "variant",
-        "required": false,
-        "type": "\"solid\" | null"
-      },
-      {
         "defaultValue": "true",
         "description": "Keeps the bar at the top of its scrolling container.",
         "name": "sticky",
@@ -992,11 +945,11 @@
         "type": "boolean | null"
       },
       {
-        "defaultValue": "",
+        "defaultValue": "header",
         "description": "",
-        "name": "ref",
+        "name": "as",
         "required": false,
-        "type": "any"
+        "type": "ElementType"
       }
     ]
   },
@@ -1020,20 +973,6 @@
     "displayName": "VerticalNav",
     "props": [
       {
-        "defaultValue": "a",
-        "description": "Element rendered by the nav container; defaults to `<nav>`.",
-        "name": "as",
-        "required": false,
-        "type": "ElementType"
-      },
-      {
-        "defaultValue": "",
-        "description": "Visual treatment of the navigation surface.",
-        "name": "variant",
-        "required": false,
-        "type": "\"solid\" | null"
-      },
-      {
         "defaultValue": "",
         "description": "Rail collapses labels until hover or focus; full keeps labels visible.",
         "name": "mode",
@@ -1048,11 +987,11 @@
         "type": "\"right\" | \"left\" | null"
       },
       {
-        "defaultValue": "",
+        "defaultValue": "a",
         "description": "",
-        "name": "ref",
+        "name": "as",
         "required": false,
-        "type": "any"
+        "type": "ElementType"
       }
     ]
   },
@@ -1084,13 +1023,6 @@
     "displayName": "VerticalNavItem",
     "props": [
       {
-        "defaultValue": "a",
-        "description": "Element rendered by the item; defaults to `<a>`. Use `as={Link}` for router integration.",
-        "name": "as",
-        "required": false,
-        "type": "ElementType"
-      },
-      {
         "defaultValue": "false",
         "description": "Marks the item as the current page; sets `aria-current=\"page\"`.",
         "name": "active",
@@ -1105,11 +1037,11 @@
         "type": "ReactNode"
       },
       {
-        "defaultValue": "",
+        "defaultValue": "a",
         "description": "",
-        "name": "ref",
+        "name": "as",
         "required": false,
-        "type": "any"
+        "type": "ElementType"
       }
     ]
   },

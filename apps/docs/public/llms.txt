@@ -17,19 +17,19 @@
 - [Checkbox](/modules/checkbox) (Forms): Boolean and indeterminate selection with an integrated label and description.
 - [Switch](/modules/switch) (Forms): An immediate boolean setting with explicit labeling and controlled or uncontrolled state.
 - [Card](/modules/card) (Surfaces): A structural surface for related content without ambiguous interactive behavior.
-- [Badge](/modules/badge) (Surfaces): A compact semantic status indicator using canonical information tones.
+- [Badge](/modules/badge) (Surfaces): A compact semantic status indicator using canonical information variants.
 - [Dialog](/modules/dialog) (Overlays): A modal surface that owns focus management, naming, dismissal, and scroll locking.
 - [Tooltip](/modules/tooltip) (Overlays): A short contextual hint with accessible trigger association and collision handling.
 - [Menu](/modules/menu) (Overlays): A structured action menu with keyboard navigation, disabled items, icons, and danger styling.
 - [Popover](/modules/popover) (Overlays): An anchored surface for arbitrary controls and supplemental content.
-- [Toast](/modules/toast) (Feedback): Imperative, announced feedback with semantic tones, optional actions, and dismissal.
+- [Toast](/modules/toast) (Feedback): Imperative, announced feedback with semantic variants, optional actions, and dismissal.
 - [Empty State](/modules/empty-state) (Feedback): An explanatory empty result with an optional action and SVG icon.
 - [Loading](/modules/loading) (Feedback): Named progress and loading treatments for local, skeleton, and full-surface states.
 - [Tabs](/modules/tabs) (Navigation): Keyboard-navigable content switching through a compact item interface.
 - [Pagination](/modules/pagination) (Navigation): A controlled page navigator with compact ranges and unavailable directions.
 - [Page Header](/modules/page-header) (Navigation): A responsive page title, supporting text, and action area.
-- [Vertical Nav](/modules/vertical-nav) (Navigation): A compound vertical navigation with icon-rail and full-text modes and a solid variant.
-- [Top Bar](/modules/top-bar) (Navigation): A sticky top bar with a solid variant and brand, search, and action slots.
+- [Vertical Nav](/modules/vertical-nav) (Navigation): A compound vertical navigation with icon-rail and full-text modes.
+- [Top Bar](/modules/top-bar) (Navigation): A sticky top bar with brand, search, and action slots.
 - [Table](/modules/table) (Data): Accessible data presentation driven by column definitions, density, loading, and empty state.
 - [Separator](/modules/separator) (Data): A semantic or decorative divider for related content.
 

@@ -229,6 +229,7 @@ export function ButtonDemo() {
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `label` (required) | `string` | - | Accessible label applied as `aria-label`; also used as the default tooltip text. |
+| `loading` | `boolean` | `false` | Replaces the icon with a spinner and disables the button while true. |
 | `variant` | `"danger" \| "secondary" \| "ghost" \| null` | `"ghost"` | Visual treatment of the icon button. |
 | `size` | `"sm" \| "md" \| "lg" \| null` | `"md"` | Hit-target size; the icon scales with it. |
 
@@ -241,6 +242,7 @@ export function ButtonDemo() {
 
 - Icon-only actions use IconButton, which requires a label applied as aria-label and mirrored in the title tooltip.
 - Loading buttons set aria-busy and are disabled so they cannot be activated twice.
+- A loading IconButton replaces its icon with a spinner while keeping the accessible label.
 - The danger variant carries meaning through its label as well as its color.
 
 ---
@@ -345,6 +347,7 @@ export function FieldDemo() {
 - Description and error text are linked to Input and TextArea children through aria-describedby automatically.
 - Setting error marks the control aria-invalid and renders the message in error color.
 - The required indicator is decorative; the underlying control keeps the native required attribute.
+- Custom controls can join the same wiring through the exported useFieldControl hook and mergeDescriptionIds helper.
 
 ---
 
@@ -571,18 +574,15 @@ export function SelectDemo() {
 | --- | --- | --- | --- |
 | `aria-describedby` | `string` | - | Id of an element that describes the select, forwarded to the trigger. |
 | `aria-label` | `string` | - | Accessible name when there is no visible label. |
-| `id` | `string` | - | Explicit id; otherwise Field or an internal id is used. |
 | `aria-invalid` | `boolean \| "true" \| "false"` | - | Marks the trigger invalid for form validation and screen readers. |
+| `id` | `string` | - | Explicit id; otherwise Field or an internal id is used. |
 | `className` | `string` | - | Additional classes merged onto the trigger. |
-| `defaultValue` | `string` | - | Initial value when uncontrolled. |
-| `disabled` | `boolean` | - | Prevents opening the select. |
-| `name` | `string` | - | Form field name submitted with the selected value. |
-| `onValueChange` | `(value: string) => void` | - | Called with the new value when selection changes. |
 | `options` (required) | `SelectOption[]` | - | Options rendered in the listbox. |
 | `placeholder` | `ReactNode` | `Select an option` | Text shown when no value is selected. |
-| `required` | `boolean` | - | Marks the select as required for form validation. |
 | `size` | `enum` | - | Size of the trigger button. |
-| `value` | `string` | - | Controlled selected value. |
+| `defaultValue` | `string` | - | - |
+| `value` | `string` | - | - |
+| `onValueChange` | `(value: string) => void` | - | - |
 
 ## Accessibility
 
@@ -724,7 +724,7 @@ export function CheckboxDemo() {
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `description` | `ReactNode` | - | Supporting text rendered below the label. |
-| `label` (required) | `ReactNode` | - | Visible label rendered next to the checkbox. |
+| `label` | `ReactNode` | - | Visible label rendered next to the checkbox. Required outside a Field; inside a Field the Field's label is used. |
 | `visuallyHiddenLabel` | `boolean` | `false` | Hides the label visually while keeping it available to screen readers. |
 | `asChild` | `boolean` | - | Merges the component onto its child element instead of rendering the default element (Radix Slot). |
 | `checked` | `boolean \| "indeterminate"` | - | Controlled checked state. Use "indeterminate" for select-all patterns. |
@@ -741,6 +741,7 @@ export function CheckboxDemo() {
 
 - Supports a tri-state checked value for select-all patterns, announced as "mixed" by screen readers.
 - The label is clickable and the description is linked through aria-describedby.
+- Inside a Field, the Field label is the only rendered label; pass label only for standalone use.
 
 ---
 
@@ -851,7 +852,7 @@ export function SwitchDemo() {
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `description` | `ReactNode` | - | Supporting text rendered below the label. |
-| `label` (required) | `ReactNode` | - | Visible label describing the setting the switch controls. |
+| `label` | `ReactNode` | - | Visible label describing the setting the switch controls. Required outside a Field; inside a Field the Field's label is used. |
 | `size` | `enum` | `md` | Track and thumb size. |
 | `asChild` | `boolean` | - | Merges the component onto its child element instead of rendering the default element (Radix Slot). |
 | `checked` | `boolean` | - | Controlled on/off state. |
@@ -868,6 +869,7 @@ export function SwitchDemo() {
 
 - Renders role="switch" with aria-checked, so assistive technology announces it as an on/off setting.
 - The label and description are wired to the control automatically.
+- Inside a Field, the Field label is the only rendered label; pass label only for standalone use.
 
 ---
 
@@ -968,10 +970,9 @@ export function CardDemo() {
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
-| `as` | `ElementType` | `div` | Element rendered by the card; use an interactive element for clickable cards. |
-| `disabled` | `boolean` | - | Applies disabled styling and blocks interaction on interactive cards. |
+| `disabled` | `boolean` | `false` | Applies disabled styling and blocks interaction on interactive cards. |
 | `type` | `enum` | - | Button type used when the card renders an interactive element. |
-| `ref` | `any` | - | - |
+| `as` | `ElementType` | `div` | - |
 
 ### CardHeader
 
@@ -979,7 +980,9 @@ _This module forwards native element properties._
 
 ### CardTitle
 
-_This module forwards native element properties._
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `titleAs` | `enum` | `"h2"` | Heading element used for the title; defaults to 'h2'. Adjust to fit the page outline. |
 
 ### CardDescription
 
@@ -998,12 +1001,14 @@ _This module forwards native element properties._
 - Cards are passive surfaces with no keyboard behavior of their own.
 - Render real links and buttons inside a card rather than making the card itself clickable.
 - The as prop lets you render the card as a section, article, or list item to fit the page outline.
+- Disabled cards are dimmed, skip pointer events, and set aria-disabled.
+- CardTitle renders an h2 by default; set titleAs so card headings fit the surrounding page outline.
 
 ---
 
 # Badge
 
-A compact semantic status indicator using canonical information tones.
+A compact semantic status indicator using canonical information variants.
 
 ## Usage
 
@@ -1012,7 +1017,7 @@ import { Badge } from '@kryv/teal'
 ```
 
 ```jsx
-<Badge tone="success">Deployed</Badge>
+<Badge variant="success">Deployed</Badge>
 ```
 
 ## Design guidance
@@ -1025,16 +1030,16 @@ A short status or category needs quick visual scanning.
 The content needs an action or a sentence of explanation.
 ### Behavior
 
-Tone changes meaning without changing the content semantics.
+Variant changes meaning without changing the content semantics.
 ### Responsive
 
 Keep labels short so badges do not dominate dense rows.
 
 ## Examples
 
-### Tones
+### Variants
 
-Five tones cover neutral, informational, success, warning, and danger statuses.
+Five variants cover neutral, informational, success, warning, and danger statuses.
 
 ```jsx
 import { Badge } from '@kryv/teal'
@@ -1043,10 +1048,10 @@ export function BadgeDemo() {
   return (
     <>
       <Badge>Neutral</Badge>
-      <Badge tone="info">Information</Badge>
-      <Badge tone="success">Ready</Badge>
-      <Badge tone="warning">Attention</Badge>
-      <Badge tone="danger">Action required</Badge>
+      <Badge variant="info">Information</Badge>
+      <Badge variant="success">Ready</Badge>
+      <Badge variant="warning">Attention</Badge>
+      <Badge variant="danger">Action required</Badge>
     </>
   )
 }
@@ -1063,10 +1068,10 @@ export function BadgeDemo() {
   return (
     <>
       <Badge>Neutral</Badge>
-      <Badge tone="info">Information</Badge>
-      <Badge tone="success">Ready</Badge>
-      <Badge tone="warning">Attention</Badge>
-      <Badge tone="danger">Action required</Badge>
+      <Badge variant="info">Information</Badge>
+      <Badge variant="success">Ready</Badge>
+      <Badge variant="warning">Attention</Badge>
+      <Badge variant="danger">Action required</Badge>
     </>
   )
 }
@@ -1078,12 +1083,12 @@ export function BadgeDemo() {
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
-| `tone` | `"neutral" \| "info" \| "success" \| "warning" \| "danger" \| null` | `"neutral"` | Semantic color treatment. |
+| `variant` | `"neutral" \| "info" \| "success" \| "warning" \| "danger" \| null` | `"neutral"` | Semantic color treatment. |
 
 ## Accessibility
 
 - Badges are plain text, so their status is announced verbatim by screen readers.
-- Always pair a tone with meaningful text; never rely on color alone to carry the status.
+- Always pair a variant with meaningful text; never rely on color alone to carry the status.
 
 ---
 
@@ -1280,10 +1285,16 @@ A short contextual hint with accessible trigger association and collision handli
 ## Usage
 
 ```js
-import { Tooltip, IconButton } from '@kryv/teal'
+import { Tooltip, TooltipProvider, IconButton } from '@kryv/teal'
 ```
 
 ```jsx
+// Mount once near the app root so tooltips share open-delay grouping
+<TooltipProvider>
+  <App />
+</TooltipProvider>
+
+// Per-instance delayDuration overrides the provider when needed
 <Tooltip content="Refresh search results">
   <IconButton label="Refresh results">
     <Search />
@@ -1409,8 +1420,14 @@ export function TooltipActionsDemo() {
 | `children` (required) | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | - | Element the tooltip describes; receives trigger props automatically. |
 | `className` | `string` | - | Additional classes merged onto the tooltip content. |
 | `content` (required) | `ReactNode` | - | Text rendered inside the tooltip. |
-| `delayDuration` | `number` | `300` | Delay in milliseconds before the tooltip opens. |
+| `delayDuration` | `number` | - | Per-instance open delay in milliseconds; overrides the nearest TooltipProvider. |
 | `side` | `enum` | `top` | Preferred side of the trigger for the tooltip. |
+
+### TooltipProvider
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `delayDuration` | `number` | `300` | Open delay in milliseconds shared by the grouped tooltips; moving between triggers skips the delay. |
 
 ## Accessibility
 
@@ -1421,6 +1438,7 @@ export function TooltipActionsDemo() {
 
 - The trigger is described by the tooltip through aria-describedby.
 - Tooltips are for short hints only; never place interactive content inside them.
+- Wrap the app in TooltipProvider once so tooltips share open-delay grouping; moving between triggers then skips the delay.
 
 ---
 
@@ -1439,7 +1457,7 @@ import { Menu, IconButton } from '@kryv/teal'
   trigger={<IconButton label="Project actions"><MoreVertical /></IconButton>}
   items={[
     { id: 'settings', label: 'Settings', onSelect: () => undefined },
-    { id: 'archive', label: 'Archive', tone: 'danger', onSelect: () => undefined },
+    { id: 'archive', label: 'Archive', variant: 'danger', onSelect: () => undefined },
   ]}
 />
 ```
@@ -1463,7 +1481,7 @@ Keep destructive actions separated and easy to reach on touch.
 
 ### Project actions
 
-Items support icons, separators, and a danger tone for destructive actions.
+Items support icons, separators, and a danger variant for destructive actions.
 
 ```jsx
 import { IconButton, Menu } from '@kryv/teal'
@@ -1483,7 +1501,7 @@ export function MenuDemo({ exampleIndex = 0 }) {
           id: 'archive',
           label: 'Archive',
           icon: <Archive />,
-          tone: 'danger',
+          variant: 'danger',
           separatorBefore: true,
           onSelect: () => undefined,
         },
@@ -1515,7 +1533,7 @@ export function MenuDemo({ exampleIndex = 0 }) {
           id: 'archive',
           label: 'Archive',
           icon: <Archive />,
-          tone: 'danger',
+          variant: 'danger',
           separatorBefore: true,
           onSelect: () => undefined,
         },
@@ -1547,7 +1565,7 @@ export function MenuDemo({ exampleIndex = 0 }) {
           id: 'archive',
           label: 'Archive',
           icon: <Archive />,
-          tone: 'danger',
+          variant: 'danger',
           separatorBefore: true,
           onSelect: () => undefined,
         },
@@ -1567,6 +1585,7 @@ export function MenuDemo({ exampleIndex = 0 }) {
 | `className` | `string` | - | Additional classes merged onto the menu content. |
 | `items` (required) | `MenuItem[]` | - | Items rendered in the menu. |
 | `label` | `string` | - | Accessible name for the menu. |
+| `modal` | `boolean` | `false` | Traps focus and blocks outside interaction while open. Defaults to false. |
 | `trigger` (required) | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | - | Element that opens the menu; receives trigger props automatically. |
 
 ## Accessibility
@@ -1583,6 +1602,7 @@ export function MenuDemo({ exampleIndex = 0 }) {
 
 - Renders the ARIA menu pattern with menuitem roles and roving highlight.
 - Icons are decorative; every item keeps a text label.
+- Set modal to trap focus and block outside interaction while the menu is open.
 
 ---
 
@@ -1740,7 +1760,7 @@ export function PopoverDemo({ exampleIndex = 0 }) {
 
 # Toast
 
-Imperative, announced feedback with semantic tones, optional actions, and dismissal.
+Imperative, announced feedback with semantic variants, optional actions, and dismissal.
 
 ## Usage
 
@@ -1753,7 +1773,7 @@ import { Toaster, toast } from '@kryv/teal'
 <Toaster />
 
 // Call toast() from anywhere
-toast({ title: 'Changes saved', tone: 'success' })
+toast({ title: 'Changes saved', variant: 'success' })
 ```
 
 ## Design guidance
@@ -1784,7 +1804,7 @@ export function ToastDemo({ exampleIndex = 0 }) {
   return (
     <Button
       onClick={() =>
-      toast({ title: exampleIndex ? 'Review saved' : 'Changes saved', description: 'Your settings are up to date.', tone: 'success' })
+      toast({ title: exampleIndex ? 'Review saved' : 'Changes saved', description: 'Your settings are up to date.', variant: 'success' })
       }
     >
       {exampleIndex ? 'Show review toast' : 'Show toast'}
@@ -1795,7 +1815,7 @@ export function ToastDemo({ exampleIndex = 0 }) {
 
 ### Failure feedback
 
-Use a danger tone for a failed action and keep the recovery path in context.
+Use a danger variant for a failed action and keep the recovery path in context.
 
 ```jsx
 import { Button, toast } from '@kryv/teal'
@@ -1804,7 +1824,7 @@ export function ToastDemo({ exampleIndex = 0 }) {
   return (
     <Button
       onClick={() =>
-      toast({ title: exampleIndex ? 'Review saved' : 'Changes saved', description: 'Your settings are up to date.', tone: 'success' })
+      toast({ title: exampleIndex ? 'Review saved' : 'Changes saved', description: 'Your settings are up to date.', variant: 'success' })
       }
     >
       {exampleIndex ? 'Show review toast' : 'Show toast'}
@@ -1824,7 +1844,7 @@ export function ToastDemo({ exampleIndex = 0 }) {
   return (
     <Button
       onClick={() =>
-      toast({ title: exampleIndex ? 'Review saved' : 'Changes saved', description: 'Your settings are up to date.', tone: 'success' })
+      toast({ title: exampleIndex ? 'Review saved' : 'Changes saved', description: 'Your settings are up to date.', variant: 'success' })
       }
     >
       {exampleIndex ? 'Show review toast' : 'Show toast'}
@@ -1832,6 +1852,12 @@ export function ToastDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### Toaster
+
+_This module forwards native element properties._
 
 ## Accessibility
 
@@ -1930,10 +1956,11 @@ export function EmptyStateDemo() {
 | `description` | `ReactNode` | - | Supporting text that explains the empty state. |
 | `icon` | `ReactNode` | - | Icon rendered above the title. |
 | `title` (required) | `ReactNode` | - | Short heading for the empty state. |
+| `titleAs` | `enum` | `"h3"` | Heading element used for the title; defaults to 'h3'. Adjust to fit the page outline. |
 
 ## Accessibility
 
-- The title renders as a heading so empty states appear in the page outline.
+- The title renders as an h3 by default; adjust titleAs so the empty state fits the page outline.
 - The action is a real button or link; keep to a single primary action.
 
 ---
@@ -2357,18 +2384,19 @@ export function PageHeaderDemo() {
 | --- | --- | --- | --- |
 | `actions` | `ReactNode` | - | Actions rendered beside the title; wraps below on narrow screens. |
 | `subtitle` | `ReactNode` | - | Supporting text rendered under the title. |
-| `title` (required) | `ReactNode` | - | Page title rendered as the level-one heading. |
+| `title` (required) | `ReactNode` | - | Page title rendered as a heading. |
+| `titleAs` | `enum` | `"h1"` | Heading element used for the title; defaults to 'h1'. Adjust to fit the page outline. |
 
 ## Accessibility
 
-- The title renders as an h1; keep one PageHeader per page.
+- The title renders as an h1 by default; set titleAs to fit the page outline and keep one h1 per page.
 - Actions are regular buttons and links with standard focus order.
 
 ---
 
 # Vertical Nav
 
-A compound vertical navigation with icon-rail and full-text modes and a solid variant.
+A compound vertical navigation with icon-rail and full-text modes.
 
 ## Usage
 
@@ -2377,7 +2405,7 @@ import { VerticalNav, VerticalNavBrand, VerticalNavList, VerticalNavSection, Ver
 ```
 
 ```jsx
-<VerticalNav mode="rail" variant="solid">
+<VerticalNav mode="rail">
   <VerticalNavBrand>...</VerticalNavBrand>
   <VerticalNavList>
     <VerticalNavSection label="Workspace">
@@ -2417,7 +2445,7 @@ export function VerticalNavDemo() {
   return (
     <div className="grid w-full gap-4 sm:grid-cols-2">
       <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
-        <VerticalNav mode="rail" variant="solid" className="absolute">
+        <VerticalNav mode="rail" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
               <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
@@ -2441,7 +2469,7 @@ export function VerticalNavDemo() {
       </div>
 
       <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
-        <VerticalNav mode="full" variant="solid" className="absolute">
+        <VerticalNav mode="full" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
               <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
@@ -2481,7 +2509,7 @@ export function VerticalNavDemo() {
   return (
     <div className="grid w-full gap-4 sm:grid-cols-2">
       <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
-        <VerticalNav mode="rail" variant="solid" className="absolute">
+        <VerticalNav mode="rail" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
               <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
@@ -2505,7 +2533,7 @@ export function VerticalNavDemo() {
       </div>
 
       <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
-        <VerticalNav mode="full" variant="solid" className="absolute">
+        <VerticalNav mode="full" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
               <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
@@ -2545,7 +2573,7 @@ export function VerticalNavDemo() {
   return (
     <div className="grid w-full gap-4 sm:grid-cols-2">
       <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
-        <VerticalNav mode="rail" variant="solid" className="absolute">
+        <VerticalNav mode="rail" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
               <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
@@ -2569,7 +2597,7 @@ export function VerticalNavDemo() {
       </div>
 
       <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
-        <VerticalNav mode="full" variant="solid" className="absolute">
+        <VerticalNav mode="full" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
               <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
@@ -2603,11 +2631,9 @@ export function VerticalNavDemo() {
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
-| `as` | `ElementType` | `a` | Element rendered by the nav container; defaults to `<nav>`. |
-| `variant` | `"solid"` | `"solid"` | Solid renders an opaque bar with a border. |
 | `mode` | `"rail" \| "full"` | `"full"` | Rail collapses to an icon strip that expands on hover or keyboard focus. Full shows labels always. |
-| `side` | `"left" \| "right"` | `"left"` | Which edge the nav anchors to. Solid variants draw a border on the inner side. |
-| `ref` | `any` | - | - |
+| `side` | `"left" \| "right"` | `"left"` | Which edge the nav anchors to. A border is drawn on the inner side. |
+| `as` | `ElementType` | `a` | - |
 
 ### VerticalNavBrand
 
@@ -2627,10 +2653,9 @@ _This module forwards native element properties._
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
-| `as` | `ElementType` | `a` | Element rendered by the item; defaults to `<a>`. Use `as={Link}` for router integration. |
 | `active` | `boolean` | `false` | Marks the item as the current page and sets aria-current="page". |
 | `icon` | `ReactNode` | - | Icon element shown before the label. Always visible, even in rail mode. |
-| `ref` | `any` | - | - |
+| `as` | `ElementType` | `a` | - |
 
 ### VerticalNavFooter
 
@@ -2651,7 +2676,7 @@ _This module forwards native element properties._
 
 # Top Bar
 
-A sticky top bar with a solid variant and brand, search, and action slots.
+A sticky top bar with brand, search, and action slots.
 
 ## Usage
 
@@ -2660,7 +2685,7 @@ import { TopBar, TopBarBrand, TopBarSearch, TopBarActions } from '@kryv/teal'
 ```
 
 ```jsx
-<TopBar variant="solid" sticky>
+<TopBar sticky>
   <TopBarBrand>...</TopBarBrand>
   <TopBarSearch>...</TopBarSearch>
   <TopBarActions>...</TopBarActions>
@@ -2696,7 +2721,7 @@ import { IconButton, TopBar, TopBarActions, TopBarBrand, TopBarSearch } from '@k
 export function TopBarDemo() {
   return (
     <div className="w-full space-y-4">
-      <TopBar variant="solid" sticky={false}>
+      <TopBar sticky={false}>
         <TopBarBrand>
           <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
             <Palette className="size-4" />
@@ -2722,7 +2747,7 @@ export function TopBarDemo() {
         </TopBarActions>
       </TopBar>
 
-      <TopBar variant="solid" sticky={false} className="rounded-xl">
+      <TopBar sticky={false} className="rounded-xl">
         <TopBarBrand>
           <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
             <Palette className="size-4" />
@@ -2755,7 +2780,7 @@ import { IconButton, TopBar, TopBarActions, TopBarBrand, TopBarSearch } from '@k
 export function TopBarDemo() {
   return (
     <div className="w-full space-y-4">
-      <TopBar variant="solid" sticky={false}>
+      <TopBar sticky={false}>
         <TopBarBrand>
           <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
             <Palette className="size-4" />
@@ -2781,7 +2806,7 @@ export function TopBarDemo() {
         </TopBarActions>
       </TopBar>
 
-      <TopBar variant="solid" sticky={false} className="rounded-xl">
+      <TopBar sticky={false} className="rounded-xl">
         <TopBarBrand>
           <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
             <Palette className="size-4" />
@@ -2834,10 +2859,8 @@ export function TopBarShellDemo() {
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
-| `as` | `ElementType` | `header` | Element rendered by the top bar; defaults to `<header>`. |
-| `variant` | `"solid"` | `"solid"` | Solid renders an opaque background. |
 | `sticky` | `boolean` | `true` | When true, the bar sticks to the top of the scrolling container. |
-| `ref` | `any` | - | - |
+| `as` | `ElementType` | `header` | - |
 
 ### TopBarBrand
 
@@ -2912,33 +2935,49 @@ const projectRows = [
   { id: 'nova', name: 'Nova', owner: 'Riley', status: 'Ready' },
 ]
 
-export function TableDemo() {
+const projectColumns = [
+  { key: 'name', header: 'Project', cell: (row) => <strong>{row.name}</strong> },
+  { key: 'owner', header: 'Owner', cell: (row) => row.owner },
+  {
+    key: 'status',
+    header: 'Status',
+    cell: (row) => (
+      <Badge variant={row.status === 'Ready' ? 'success' : 'warning'}>{row.status}</Badge>
+    ),
+  },
+]
+
+export function TableDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full">
+        <Table
+          caption="Projects"
+          loading
+          loadingLabel="Loading projects"
+          rows={projectRows}
+          getRowKey={(row) => row.id}
+          columns={projectColumns}
+        />
+      </div>
+    )
+  }
   return (
     <div className="w-full">
       <Table
         caption="Projects"
         rows={projectRows}
         getRowKey={(row) => row.id}
-        columns={[
-          { key: 'name', header: 'Project', cell: (row) => <strong>{row.name}</strong> },
-          { key: 'owner', header: 'Owner', cell: (row) => row.owner },
-          {
-            key: 'status',
-            header: 'Status',
-            cell: (row) => (
-              <Badge tone={row.status === 'Ready' ? 'success' : 'warning'}>{row.status}</Badge>
-            ),
-          },
-        ]}
+        columns={projectColumns}
       />
     </div>
   )
 }
 ```
 
-### Review queue
+### Loading rows
 
-Use status badges and stable row keys in an operational table.
+Skeleton rows stand in for data while loading; the region is marked busy and announced through loadingLabel.
 
 ```jsx
 import { Badge, Table } from '@kryv/teal'
@@ -2949,24 +2988,40 @@ const projectRows = [
   { id: 'nova', name: 'Nova', owner: 'Riley', status: 'Ready' },
 ]
 
-export function TableDemo() {
+const projectColumns = [
+  { key: 'name', header: 'Project', cell: (row) => <strong>{row.name}</strong> },
+  { key: 'owner', header: 'Owner', cell: (row) => row.owner },
+  {
+    key: 'status',
+    header: 'Status',
+    cell: (row) => (
+      <Badge variant={row.status === 'Ready' ? 'success' : 'warning'}>{row.status}</Badge>
+    ),
+  },
+]
+
+export function TableDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full">
+        <Table
+          caption="Projects"
+          loading
+          loadingLabel="Loading projects"
+          rows={projectRows}
+          getRowKey={(row) => row.id}
+          columns={projectColumns}
+        />
+      </div>
+    )
+  }
   return (
     <div className="w-full">
       <Table
         caption="Projects"
         rows={projectRows}
         getRowKey={(row) => row.id}
-        columns={[
-          { key: 'name', header: 'Project', cell: (row) => <strong>{row.name}</strong> },
-          { key: 'owner', header: 'Owner', cell: (row) => row.owner },
-          {
-            key: 'status',
-            header: 'Status',
-            cell: (row) => (
-              <Badge tone={row.status === 'Ready' ? 'success' : 'warning'}>{row.status}</Badge>
-            ),
-          },
-        ]}
+        columns={projectColumns}
       />
     </div>
   )
@@ -2982,23 +3037,24 @@ export function TableDemo() {
 | `caption` (required) | `string` | - | Accessible caption describing the table, announced to screen readers. |
 | `className` | `string` | - | - |
 | `columns` (required) | `TableColumn<Row>[]` | - | Column definitions rendered in header order. |
-| `density` | `enum` | `comfortable` | Vertical padding of cells. |
-| `empty` | `ReactNode` | `No results` | Content shown when `rows` is empty and the table is not loading. |
+| `density` | `enum` | - | Vertical padding of cells. |
+| `empty` | `ReactNode` | - | Content shown when `rows` is empty and the table is not loading. |
 | `getRowKey` (required) | `(row: Row) => string` | - | Returns a stable, unique key for each row. |
-| `loading` | `boolean` | `false` | Renders skeleton rows in place of data. |
-| `loadingLabel` | `string` | `Loading table data` | Accessible label announced while skeleton rows are shown. |
+| `loading` | `boolean` | - | Renders skeleton rows in place of data and marks the region busy. |
+| `loadingLabel` | `string` | - | Accessible label announced while skeleton rows are shown. |
 | `rows` (required) | `Row[]` | - | Data rows rendered in the table body. |
 
 ## Accessibility
 
 | Keys | Action |
 | --- | --- |
-| `Tab` | Moves focus to the scroll region so the table can be scrolled with arrow keys. |
+| `Tab` | Moves focus to the scroll region when the table overflows horizontally. |
 | `Arrow keys` | Scrolls the region horizontally when the table overflows. |
 
 - The caption is announced to screen readers and kept visually hidden.
 - Header cells use scope="col", and the table keeps real table semantics for screen reader navigation.
 - Skeleton rows are announced through loadingLabel while data loads.
+- The scroll region is a tab stop only while the table overflows; tables that fit their container are skipped.
 
 ---
 
@@ -3180,7 +3236,7 @@ export function ReviewQueueRecipe() {
               key: 'priority',
               header: 'Priority',
               cell: (row) => (
-                <Badge tone={row.priority === 'Critical' ? 'danger' : 'warning'}>{row.priority}</Badge>
+                <Badge variant={row.priority === 'Critical' ? 'danger' : 'warning'}>{row.priority}</Badge>
               ),
             },
           ]}
