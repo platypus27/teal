@@ -47,4 +47,12 @@ describe('IconButton', () => {
     render(<IconButton label="Search">icon</IconButton>)
     expect(screen.getByRole('button', { name: 'Search' })).toHaveAttribute('type', 'button')
   })
+
+  it('swaps the icon for a spinner and disables the button while loading', () => {
+    render(<IconButton label="Refreshing" loading>icon</IconButton>)
+    const button = screen.getByRole('button', { name: 'Refreshing' })
+    expect(button).toBeDisabled()
+    expect(button).toHaveAttribute('aria-busy', 'true')
+    expect(button).not.toHaveTextContent('icon')
+  })
 })

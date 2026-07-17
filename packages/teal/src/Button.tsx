@@ -56,7 +56,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 
   if (asChild) {
     return (
-      <Slot ref={ref} className={classes} aria-busy={loading || undefined} {...props}>
+      <Slot ref={ref} className={classes} {...props}>
         {children}
       </Slot>
     )
@@ -104,10 +104,12 @@ export interface IconButtonProps
     VariantProps<typeof iconButtonVariants> {
   /** Accessible label applied as `aria-label`; also used as the default tooltip text. */
   label: string
+  /** Replaces the icon with a spinner and disables the button while true. */
+  loading?: boolean
 }
 
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { children, className, label, size, title, type = 'button', variant, ...props },
+  { children, className, disabled, label, loading = false, size, title, type = 'button', variant, ...props },
   ref,
 ) {
   return (
@@ -115,11 +117,17 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
       ref={ref}
       type={type}
       aria-label={label}
+      aria-busy={loading || undefined}
+      disabled={disabled || loading}
       title={title ?? label}
       className={cn(iconButtonVariants({ variant, size }), className)}
       {...props}
     >
-      {children}
+      {loading ? (
+        <LoaderCircle aria-hidden="true" className="animate-spin motion-reduce:animate-none" />
+      ) : (
+        children
+      )}
     </button>
   )
 })
