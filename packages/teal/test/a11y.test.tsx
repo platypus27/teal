@@ -2,7 +2,11 @@ import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe, type JestAxeConfigureOptions } from 'jest-axe'
 import {
+  Accordion,
+  Alert,
+  Avatar,
   Badge,
+  Breadcrumb,
   Button,
   Card,
   CardContent,
@@ -381,6 +385,73 @@ describe('axe: hardening regressions', () => {
     )
     await user.hover(screen.getByRole('button', { name: 'Refresh' }))
     await screen.findByRole('tooltip')
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+})
+
+
+describe('axe: catalog expansion', () => {
+  it('alerts have no violations in every variant', async () => {
+    const { baseElement } = render(
+      <>
+        <Alert variant="neutral" title="Neutral">Neutral body</Alert>
+        <Alert variant="info" title="Info">Info body</Alert>
+        <Alert variant="success" title="Success">Success body</Alert>
+        <Alert variant="warning" title="Warning" onDismiss={() => {}}>Warning body</Alert>
+        <Alert variant="danger" title="Danger">Danger body</Alert>
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('avatars have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <Avatar name="Ada Lovelace" src="/ada.png" />
+        <Avatar name="Grace Hopper" />
+        <Avatar />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('breadcrumbs have no violations flat and collapsed', async () => {
+    const { baseElement } = render(
+      <>
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Projects', href: '/projects' },
+            { label: 'Orion' },
+          ]}
+        />
+        <Breadcrumb
+          label="Project hierarchy"
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Alpha', href: '/alpha' },
+            { label: 'Beta', href: '/beta' },
+            { label: 'Gamma', href: '/gamma' },
+            { label: 'Delta', href: '/delta' },
+            { label: 'Current' },
+          ]}
+        />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('accordions have no violations open and closed', async () => {
+    const { baseElement } = render(
+      <Accordion
+        defaultValue="one"
+        items={[
+          { value: 'one', title: 'First', content: 'First panel' },
+          { value: 'two', title: 'Second', content: 'Second panel' },
+          { value: 'three', title: 'Locked', content: 'Hidden panel', disabled: true },
+        ]}
+      />,
+    )
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
   })
 })

@@ -1,8 +1,10 @@
-import { act, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderToString } from 'react-dom/server'
 import { useRef, useState, createRef } from 'react'
 import {
+  Alert,
+  Avatar,
   Badge,
   Button,
   Card,
@@ -189,5 +191,52 @@ describe('overlays and feedback', () => {
   it('renders portal-backed roots safely during SSR', () => {
     expect(() => renderToString(<Toaster />)).not.toThrow()
     expect(() => renderToString(<Dialog open title="Server dialog">Content</Dialog>)).not.toThrow()
+  })
+})
+
+
+describe('alert and avatar', () => {
+  it('announces alerts with roles matching their urgency', () => {
+    render(
+      <>
+        <Alert variant="info" title="Heads up">
+          Info body
+        </Alert>
+        <Alert variant="danger" title="Save failed">
+          Danger body
+        </Alert>
+      </>,
+    )
+    expect(screen.getAllByRole('status')).toHaveLength(1)
+    expect(screen.getByRole('alert')).toHaveTextContent('Danger body')
+  })
+
+  it('dismisses alerts through the close button', async () => {
+    const user = userEvent.setup()
+    const onDismiss = vi.fn()
+    render(
+      <Alert variant="warning" title="Careful" onDismiss={onDismiss}>
+        Body
+      </Alert>,
+    )
+    await user.click(screen.getByRole('button', { name: 'Dismiss' }))
+    expect(onDismiss).toHaveBeenCalledOnce()
+  })
+
+  it('falls back to initials and names the avatar', () => {
+    render(<Avatar name="Ada Lovelace" />)
+    expect(screen.getByRole('img', { name: 'Ada Lovelace' })).toHaveTextContent('AL')
+  })
+
+  it('renders the image with alt text and falls back on load error', () => {
+    render(<Avatar name="Ada Lovelace" src="/ada.png" />)
+    fireEvent.error(screen.getByRole('img', { name: 'Ada Lovelace' }))
+    expect(screen.getByRole('img', { name: 'Ada Lovelace' })).toHaveTextContent('AL')
+  })
+
+  it('stays decorative without a name', () => {
+    const { container } = render(<Avatar />)
+    expect(screen.queryByRole('img')).not.toBeInTheDocument()
+    expect(container.querySelector('svg')).toBeInTheDocument()
   })
 })

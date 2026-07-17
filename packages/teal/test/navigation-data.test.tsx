@@ -1,7 +1,7 @@
 import { createRef } from 'react'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Menu, Pagination, Popover, Table, Tabs } from '../src/index'
+import { Accordion, Breadcrumb, Menu, Pagination, Popover, Table, Tabs } from '../src/index'
 
 describe('navigation modules', () => {
   it('moves between tabs with the keyboard and exposes the active panel', async () => {
@@ -180,5 +180,90 @@ describe('data modules', () => {
     expect(screen.getByRole('button', { name: 'Previous page' })).toBeDisabled()
     await user.click(screen.getByRole('button', { name: 'Next page' }))
     expect(onPageChange).toHaveBeenCalledWith(2)
+  })
+})
+
+
+describe('breadcrumb and accordion', () => {
+  it('marks the last breadcrumb item as the current page', () => {
+    render(
+      <Breadcrumb
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Projects', href: '/projects' },
+          { label: 'Orion' },
+        ]}
+      />,
+    )
+    expect(screen.getByRole('navigation', { name: 'Breadcrumb' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Projects' })).toHaveAttribute('href', '/projects')
+    const current = screen.getByText('Orion')
+    expect(current).toHaveAttribute('aria-current', 'page')
+    expect(current.closest('a')).toBeNull()
+  })
+
+  it('collapses long breadcrumbs into an overflow menu', async () => {
+    const user = userEvent.setup()
+    render(
+      <Breadcrumb
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Alpha', href: '/alpha' },
+          { label: 'Beta', href: '/beta' },
+          { label: 'Gamma', href: '/gamma' },
+          { label: 'Delta', href: '/delta' },
+          { label: 'Current' },
+        ]}
+      />,
+    )
+    expect(screen.getByRole('link', { name: 'Home' })).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Beta' })).not.toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Show hidden breadcrumb items' }))
+    expect(await screen.findByRole('menuitem', { name: 'Beta' })).toBeInTheDocument()
+  })
+
+  it('expands one accordion item at a time by default', async () => {
+    const user = userEvent.setup()
+    render(
+      <Accordion
+        items={[
+          { value: 'one', title: 'First', content: 'First panel' },
+          { value: 'two', title: 'Second', content: 'Second panel' },
+        ]}
+      />,
+    )
+    await user.click(screen.getByRole('button', { name: 'First' }))
+    expect(screen.getByRole('button', { name: 'First' })).toHaveAttribute('aria-expanded', 'true')
+    await user.click(screen.getByRole('button', { name: 'Second' }))
+    expect(screen.getByRole('button', { name: 'First' })).toHaveAttribute('aria-expanded', 'false')
+    expect(screen.getByRole('button', { name: 'Second' })).toHaveAttribute('aria-expanded', 'true')
+  })
+
+  it('keeps multiple accordion items open in multiple mode', async () => {
+    const user = userEvent.setup()
+    render(
+      <Accordion
+        multiple
+        items={[
+          { value: 'one', title: 'First', content: 'First panel' },
+          { value: 'two', title: 'Second', content: 'Second panel' },
+        ]}
+      />,
+    )
+    await user.click(screen.getByRole('button', { name: 'First' }))
+    await user.click(screen.getByRole('button', { name: 'Second' }))
+    expect(screen.getByRole('button', { name: 'First' })).toHaveAttribute('aria-expanded', 'true')
+    expect(screen.getByRole('button', { name: 'Second' })).toHaveAttribute('aria-expanded', 'true')
+  })
+
+  it('does not open disabled accordion items', async () => {
+    const user = userEvent.setup()
+    render(
+      <Accordion
+        items={[{ value: 'one', title: 'Locked', content: 'Hidden panel', disabled: true }]}
+      />,
+    )
+    await user.click(screen.getByRole('button', { name: 'Locked' }))
+    expect(screen.getByRole('button', { name: 'Locked' })).toHaveAttribute('aria-expanded', 'false')
   })
 })
