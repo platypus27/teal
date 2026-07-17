@@ -47,3 +47,5 @@ export type { TopBarProps } from './TopBar'
 
 export { Alert, alertVariants } from './Alert'
 export type { AlertProps } from './Alert'
+export { Avatar, avatarVariants } from './Avatar'
+export type { AvatarProps } from './Avatar'
