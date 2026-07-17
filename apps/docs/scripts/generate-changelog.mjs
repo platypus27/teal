@@ -68,7 +68,8 @@ try {
 }
 
 if (!entries.some((entry) => entry.version === historicalBaseline.version)) {
-  entries = [historicalBaseline, ...entries]
+  // CHANGELOG.md is newest-first; the baseline is the oldest release, so it goes last.
+  entries = [...entries, historicalBaseline]
 }
 
 await mkdir(resolve(output, '..'), { recursive: true })
