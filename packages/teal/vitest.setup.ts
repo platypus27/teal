@@ -1,7 +1,17 @@
 import '@testing-library/jest-dom'
 import { toHaveNoViolations } from 'jest-axe'
+import { expect } from 'vitest'
 
 expect.extend(toHaveNoViolations)
+
+declare module 'vitest' {
+  interface Assertion {
+    toHaveNoViolations(): void
+  }
+  interface AsymmetricMatchersContaining {
+    toHaveNoViolations(): void
+  }
+}
 
 class ResizeObserverMock {
   observe() {}
