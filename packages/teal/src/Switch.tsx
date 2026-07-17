@@ -7,13 +7,13 @@ export interface SwitchProps
   extends Omit<React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>, 'children'> {
   /** Supporting text rendered below the label. */
   description?: ReactNode
-  /** Visible label describing the setting the switch controls. */
-  label: ReactNode
+  /** Visible label describing the setting the switch controls. Required outside a Field; inside a Field the Field's label is used. */
+  label?: ReactNode
   /** Track and thumb size. */
   size?: 'sm' | 'md'
 }
 
-export const Switch = forwardRef<React.ElementRef<typeof SwitchPrimitive.Root>, SwitchProps>(function Switch(
+export const Switch = forwardRef<React.ComponentRef<typeof SwitchPrimitive.Root>, SwitchProps>(function Switch(
   { 'aria-describedby': describedBy, 'aria-invalid': invalid, className, description, id, label, required, size = 'md', ...props },
   ref,
 ) {
@@ -24,19 +24,25 @@ export const Switch = forwardRef<React.ElementRef<typeof SwitchPrimitive.Root>, 
     prefix: 'teal-switch',
     required,
   })
+  const showLabel = hasFormContent(label) && !semantics.labeledByField
+  const showDescription = hasFormContent(description)
 
   return (
     <div className="flex items-start justify-between gap-4">
-      <div className="grid gap-0.5">
-        <label htmlFor={semantics.controlId} className="cursor-pointer text-sm font-medium text-on-surface">
-          {label}
-        </label>
-        {hasFormContent(description) ? (
-          <p id={semantics.descriptionId} className="text-xs leading-relaxed text-on-surface-variant">
-            {description}
-          </p>
-        ) : null}
-      </div>
+      {showLabel || showDescription ? (
+        <div className="grid gap-0.5">
+          {showLabel ? (
+            <label htmlFor={semantics.controlId} className="cursor-pointer text-sm font-medium text-on-surface">
+              {label}
+            </label>
+          ) : null}
+          {showDescription ? (
+            <p id={semantics.descriptionId} className="text-xs leading-relaxed text-on-surface-variant">
+              {description}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
       <SwitchPrimitive.Root
         ref={ref}
         id={semantics.controlId}

@@ -51,7 +51,7 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(function Field(
   })
 
   return (
-    <FormSemanticsContext.Provider value={semantics}>
+    <FormSemanticsContext.Provider value={{ ...semantics, labeledByField: true }}>
       <div ref={ref} className={cn('grid gap-1.5', className)} {...props}>
         <Label htmlFor={semantics.controlId}>
           {label}

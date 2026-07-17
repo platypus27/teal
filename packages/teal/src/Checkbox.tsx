@@ -8,13 +8,13 @@ export interface CheckboxProps
   extends Omit<React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>, 'children'> {
   /** Supporting text rendered below the label. */
   description?: ReactNode
-  /** Visible label rendered next to the checkbox. */
-  label: ReactNode
+  /** Visible label rendered next to the checkbox. Required outside a Field; inside a Field the Field's label is used. */
+  label?: ReactNode
   /** Hides the label visually while keeping it available to screen readers. */
   visuallyHiddenLabel?: boolean
 }
 
-export const Checkbox = forwardRef<React.ElementRef<typeof CheckboxPrimitive.Root>, CheckboxProps>(
+export const Checkbox = forwardRef<React.ComponentRef<typeof CheckboxPrimitive.Root>, CheckboxProps>(
   function Checkbox({
     'aria-describedby': describedBy,
     'aria-invalid': invalid,
@@ -33,6 +33,8 @@ export const Checkbox = forwardRef<React.ElementRef<typeof CheckboxPrimitive.Roo
       prefix: 'teal-checkbox',
       required,
     })
+    const showLabel = hasFormContent(label) && !semantics.labeledByField
+    const showDescription = hasFormContent(description)
 
     return (
       <div className="flex items-start gap-2.5">
@@ -61,19 +63,23 @@ export const Checkbox = forwardRef<React.ElementRef<typeof CheckboxPrimitive.Roo
             />
           </CheckboxPrimitive.Indicator>
         </CheckboxPrimitive.Root>
-        <div className="grid gap-0.5">
-          <label
-            htmlFor={semantics.controlId}
-            className={cn('cursor-pointer text-sm font-medium text-on-surface', visuallyHiddenLabel && 'sr-only')}
-          >
-            {label}
-          </label>
-          {hasFormContent(description) ? (
-            <p id={semantics.descriptionId} className="text-xs leading-relaxed text-on-surface-variant">
-              {description}
-            </p>
-          ) : null}
-        </div>
+        {showLabel || showDescription ? (
+          <div className="grid gap-0.5">
+            {showLabel ? (
+              <label
+                htmlFor={semantics.controlId}
+                className={cn('cursor-pointer text-sm font-medium text-on-surface', visuallyHiddenLabel && 'sr-only')}
+              >
+                {label}
+              </label>
+            ) : null}
+            {showDescription ? (
+              <p id={semantics.descriptionId} className="text-xs leading-relaxed text-on-surface-variant">
+                {description}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
       </div>
     )
   },

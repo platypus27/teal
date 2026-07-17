@@ -5,6 +5,8 @@ export interface FormSemantics {
   descriptionId: string | undefined
   errorId: string | undefined
   invalid: boolean
+  /** True when an enclosing Field renders the control's visible label. */
+  labeledByField: boolean
   required: boolean
 }
 
@@ -64,6 +66,7 @@ export function useFormSemantics({
     descriptionId,
     errorId,
     invalid: invalid ?? parent?.invalid ?? hasOwnError,
+    labeledByField: parent?.labeledByField ?? false,
     required: required ?? parent?.required ?? false,
   }
 }
