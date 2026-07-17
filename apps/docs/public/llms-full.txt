@@ -581,8 +581,8 @@ export function SelectDemo() {
 | `placeholder` | `ReactNode` | `Select an option` | Text shown when no value is selected. |
 | `size` | `enum` | - | Size of the trigger button. |
 | `defaultValue` | `string` | - | - |
-| `value` | `string` | - | - |
 | `onValueChange` | `(value: string) => void` | - | - |
+| `value` | `string` | - | - |
 
 ## Accessibility
 
@@ -1089,6 +1089,138 @@ export function BadgeDemo() {
 
 - Badges are plain text, so their status is announced verbatim by screen readers.
 - Always pair a variant with meaningful text; never rely on color alone to carry the status.
+
+---
+
+# Accordion
+
+A stacked disclosure list with single and multi-open modes driven by a compact item interface.
+
+## Usage
+
+```js
+import { Accordion } from '@kryv/teal'
+```
+
+```jsx
+<Accordion
+  defaultValue="sign-in"
+  items={[
+    { value: 'sign-in', title: 'Sign-in notifications', content: 'Get alerted when a new device signs in.' },
+    { value: 'sessions', title: 'Active sessions', content: 'Review and revoke sessions.' },
+  ]}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+Sections of related content should be progressively disclosed.
+### Avoid when
+
+All content must be visible at once or sections are compared side by side.
+### Behavior
+
+Single mode keeps at most one item open and is collapsible; multiple mode opens any number.
+### Responsive
+
+Keep titles short so triggers stay on one line.
+
+## Examples
+
+### Single-open
+
+At most one item is open, and the open item can be collapsed again.
+
+```jsx
+import { Accordion } from '@kryv/teal'
+
+const securityItems = [
+  {
+    value: 'sign-in',
+    title: 'Sign-in notifications',
+    content: 'Get alerted when a new device signs in to your account.',
+  },
+  {
+    value: 'sessions',
+    title: 'Active sessions',
+    content: 'Review and revoke sessions from the security page.',
+  },
+  {
+    value: 'recovery',
+    title: 'Recovery keys',
+    content: 'Store recovery keys somewhere safe; each key bypasses two-factor sign-in once.',
+    disabled: true,
+  },
+]
+
+export function AccordionDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return <Accordion multiple defaultValue={['sign-in']} items={securityItems} className="w-full max-w-lg" />
+  }
+  return <Accordion defaultValue="sign-in" items={securityItems} className="w-full max-w-lg" />
+}
+```
+
+### Multi-open and disabled
+
+multiple allows any number of open items; disabled items cannot be toggled.
+
+```jsx
+import { Accordion } from '@kryv/teal'
+
+const securityItems = [
+  {
+    value: 'sign-in',
+    title: 'Sign-in notifications',
+    content: 'Get alerted when a new device signs in to your account.',
+  },
+  {
+    value: 'sessions',
+    title: 'Active sessions',
+    content: 'Review and revoke sessions from the security page.',
+  },
+  {
+    value: 'recovery',
+    title: 'Recovery keys',
+    content: 'Store recovery keys somewhere safe; each key bypasses two-factor sign-in once.',
+    disabled: true,
+  },
+]
+
+export function AccordionDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return <Accordion multiple defaultValue={['sign-in']} items={securityItems} className="w-full max-w-lg" />
+  }
+  return <Accordion defaultValue="sign-in" items={securityItems} className="w-full max-w-lg" />
+}
+```
+
+## Interface
+
+### Accordion
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | - | - |
+| `items` (required) | `AccordionItem[]` | - | Items rendered by the accordion ({ value, title, content, disabled? }). |
+| `multiple` | `boolean` | `false` | Multi-open mode. value, defaultValue, and onValueChange are typed string in single mode and string[] when multiple is true. |
+| `defaultValue` | `string \| string[]` | - | - |
+| `onValueChange` | `((value: string) => void) \| ((value: string[]) => void)` | - | - |
+| `value` | `string \| string[]` | - | - |
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `Enter` + `Space` | Toggles the focused item. |
+| `Arrow Up` + `Arrow Down` | Moves focus between item triggers. |
+| `Home` + `End` | Focuses the first or last trigger. |
+
+- Implements the ARIA accordion pattern through the Radix primitive, with state exposed as aria-expanded on each trigger.
+- Disabled items are skipped and cannot be toggled.
+- The chevron is decorative and hidden from assistive technology.
 
 ---
 
@@ -2078,6 +2210,124 @@ _This module forwards native element properties._
 
 ---
 
+# Alert
+
+An inline feedback banner with semantic variants, an optional title, and dismissal.
+
+## Usage
+
+```js
+import { Alert } from '@kryv/teal'
+```
+
+```jsx
+<Alert variant="warning" title="Payment method expiring">
+  The workspace card ends in 04/25. Update billing details to avoid interruption.
+</Alert>
+```
+
+## Design guidance
+
+### Use when
+
+Feedback must stay visible in context until it is read or dismissed.
+### Avoid when
+
+A brief confirmation is enough; use a toast for transient feedback.
+### Behavior
+
+Danger renders role="alert" for immediate announcement; other variants render role="status".
+### Responsive
+
+Let the body text wrap and keep the title to a short phrase.
+
+## Examples
+
+### Variants
+
+Semantic variants pair a standard icon with a matching surface treatment.
+
+```jsx
+import { Alert } from '@kryv/teal'
+
+export function AlertDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Alert
+        variant="warning"
+        title="Payment method expiring"
+        onDismiss={() => undefined}
+        className="w-full max-w-lg"
+      >
+        The workspace card ends in 04/25. Update billing details to avoid interruption.
+      </Alert>
+    )
+  }
+  return (
+    <div className="grid w-full max-w-lg gap-3">
+      <Alert variant="success" title="Report published">
+        The quarterly security report is now available to all workspace members.
+      </Alert>
+      <Alert variant="danger" title="Sign-in blocked">
+        We stopped a sign-in attempt from an unrecognized device.
+      </Alert>
+    </div>
+  )
+}
+```
+
+### Dismissible
+
+Pass onDismiss to render a close button for feedback the user can clear.
+
+```jsx
+import { Alert } from '@kryv/teal'
+
+export function AlertDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Alert
+        variant="warning"
+        title="Payment method expiring"
+        onDismiss={() => undefined}
+        className="w-full max-w-lg"
+      >
+        The workspace card ends in 04/25. Update billing details to avoid interruption.
+      </Alert>
+    )
+  }
+  return (
+    <div className="grid w-full max-w-lg gap-3">
+      <Alert variant="success" title="Report published">
+        The quarterly security report is now available to all workspace members.
+      </Alert>
+      <Alert variant="danger" title="Sign-in blocked">
+        We stopped a sign-in attempt from an unrecognized device.
+      </Alert>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Alert
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `icon` | `ReactNode` | - | Icon override; defaults to the variant's standard icon. Always hidden from assistive technology. |
+| `onDismiss` | `() => void` | - | Renders a dismiss button and calls this when it is pressed. |
+| `title` | `ReactNode` | - | Bold leading text of the alert. |
+| `variant` | `"neutral" \| "info" \| "success" \| "warning" \| "danger" \| null` | `"info"` | Semantic treatment of the banner. |
+
+## Accessibility
+
+- Danger renders role="alert" so the message is announced immediately; other variants render role="status".
+- The variant icon is decorative and hidden from assistive technology; meaning is carried by the text.
+- The dismiss control is a labeled button in the normal tab order.
+
+---
+
 # Tabs
 
 Keyboard-navigable content switching through a compact item interface.
@@ -2709,9 +2959,9 @@ Collapse secondary actions and move search to a dedicated mobile trigger.
 
 ## Examples
 
-### Solid variant
+### Brand, search, and actions
 
-Solid renders an opaque bar with a border.
+Slots compose into full and compact headers; sticky keeps the bar visible while scrolling.
 
 ```jsx
 import { Palette, Search, Sun } from 'lucide-react'
@@ -2882,7 +3132,136 @@ _This module forwards native element properties._
 
 - Renders a <header> element by default; use the as prop to change the element if needed.
 - Keep action buttons labeled with aria-label when they contain only icons.
-- The sticky variant keeps the bar in view during scrolling; use sticky={false} for an inline bar.
+- Sticky keeps the bar in view during scrolling; use sticky={false} for an inline bar.
+
+---
+
+# Breadcrumb
+
+A hierarchical trail with router-ready items and automatic middle-item collapse.
+
+## Usage
+
+```js
+import { Breadcrumb } from '@kryv/teal'
+```
+
+```jsx
+<Breadcrumb
+  items={[
+    { label: 'Workspace', href: '/' },
+    { label: 'Projects', href: '/projects' },
+    { label: 'Orion' },
+  ]}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+Users need to see and move within a deep page hierarchy.
+### Avoid when
+
+The structure is flat or the trail would duplicate primary navigation.
+### Behavior
+
+The last item is the current page; middle items collapse into a menu past collapseAfter.
+### Responsive
+
+Let items wrap and prefer collapsing over shrinking labels.
+
+## Examples
+
+### Hierarchy
+
+Items render in order; the last item is the current page.
+
+```jsx
+import { Breadcrumb } from '@kryv/teal'
+
+export function BreadcrumbDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Breadcrumb
+        collapseAfter={3}
+        items={[
+          { label: 'Workspace', href: '#' },
+          { label: 'Projects', href: '#' },
+          { label: 'Orion', href: '#' },
+          { label: 'Reports', href: '#' },
+          { label: 'Quarterly review' },
+        ]}
+      />
+    )
+  }
+  return (
+    <Breadcrumb
+      items={[
+        { label: 'Workspace', href: '#' },
+        { label: 'Projects', href: '#' },
+        { label: 'Orion' },
+      ]}
+    />
+  )
+}
+```
+
+### Collapsed middle items
+
+Trails longer than collapseAfter move middle items into a labeled menu.
+
+```jsx
+import { Breadcrumb } from '@kryv/teal'
+
+export function BreadcrumbDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Breadcrumb
+        collapseAfter={3}
+        items={[
+          { label: 'Workspace', href: '#' },
+          { label: 'Projects', href: '#' },
+          { label: 'Orion', href: '#' },
+          { label: 'Reports', href: '#' },
+          { label: 'Quarterly review' },
+        ]}
+      />
+    )
+  }
+  return (
+    <Breadcrumb
+      items={[
+        { label: 'Workspace', href: '#' },
+        { label: 'Projects', href: '#' },
+        { label: 'Orion' },
+      ]}
+    />
+  )
+}
+```
+
+## Interface
+
+### Breadcrumb
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | - | - |
+| `collapseAfter` | `number` | `5` | Maximum items shown before middle items collapse into a menu. |
+| `items` (required) | `BreadcrumbItem[]` | - | Items in hierarchy order ({ label, href?, as?, onSelect? }); the last item is the current page. |
+| `label` | `string` | `"Breadcrumb"` | Accessible name for the navigation landmark. |
+
+## Accessibility
+
+| Keys | Action |
+| --- | --- |
+| `Tab` | Moves focus through the trail links and the collapsed-items menu trigger. |
+
+- Renders a nav landmark with an ordered list; the landmark label defaults to "Breadcrumb".
+- The current page is a span with aria-current="page", not a link.
+- Middle items beyond collapseAfter move into a labeled menu.
+- Pass a router link component through an item's as prop, mirroring VerticalNavItem.
 
 ---
 
@@ -3139,6 +3518,110 @@ export function SeparatorDemo() {
 
 - Renders role="separator" with an orientation unless marked decorative.
 - Use decorative separators between visually obvious groups; keep semantic ones where the structure matters.
+
+---
+
+# Avatar
+
+A compact identity image with initials and icon fallbacks.
+
+## Usage
+
+```js
+import { Avatar } from '@kryv/teal'
+```
+
+```jsx
+<Avatar src="/users/avery.png" name="Avery Chen" />
+<Avatar name="Morgan" size="sm" />
+```
+
+## Design guidance
+
+### Use when
+
+A person or entity needs a compact visual identity.
+### Avoid when
+
+The image carries information beyond identity and needs a caption.
+### Behavior
+
+Falls back from image to initials to a generic icon; alt text defaults to the name.
+### Responsive
+
+Pick one size per context and keep it fixed across breakpoints.
+
+## Examples
+
+### Sizes
+
+Three sizes share the same image and initials fallback behavior.
+
+```jsx
+import { Avatar } from '@kryv/teal'
+
+export function AvatarDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <>
+        <Avatar name="Avery Chen" />
+        <Avatar name="Morgan" />
+        <Avatar />
+      </>
+    )
+  }
+  return (
+    <>
+      <Avatar name="Avery Chen" size="sm" />
+      <Avatar name="Avery Chen" />
+      <Avatar name="Avery Chen" size="lg" />
+    </>
+  )
+}
+```
+
+### Fallbacks
+
+Initials replace a missing or failed image; a generic icon covers unnamed users.
+
+```jsx
+import { Avatar } from '@kryv/teal'
+
+export function AvatarDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <>
+        <Avatar name="Avery Chen" />
+        <Avatar name="Morgan" />
+        <Avatar />
+      </>
+    )
+  }
+  return (
+    <>
+      <Avatar name="Avery Chen" size="sm" />
+      <Avatar name="Avery Chen" />
+      <Avatar name="Avery Chen" size="lg" />
+    </>
+  )
+}
+```
+
+## Interface
+
+### Avatar
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `alt` | `string` | - | Image alt text; defaults to `name`. Pass an empty string for decorative avatars. |
+| `name` | `string` | - | Name used for the initials fallback and default alt text. |
+| `src` | `string` | - | Image URL; falls back to initials when missing or when the image fails to load. |
+| `size` | `"sm" \| "md" \| "lg" \| null` | `"md"` | Diameter of the avatar. |
+
+## Accessibility
+
+- Image alt text defaults to the name; pass an empty alt for decorative avatars.
+- Initials and icon fallbacks render role="img" with the name as the accessible label.
 
 ---
 

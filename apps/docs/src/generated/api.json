@@ -1,6 +1,122 @@
 [
   {
     "description": "",
+    "displayName": "Accordion",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Items rendered by the accordion.",
+        "name": "items",
+        "required": true,
+        "type": "AccordionItem[]"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Single-open mode: at most one item is open.\nMulti-open mode: any number of items can be open.",
+        "name": "multiple",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string | string[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "onValueChange",
+        "required": false,
+        "type": "((value: string) => void) | ((value: string[]) => void)"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "value",
+        "required": false,
+        "type": "string | string[]"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Alert",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Icon override; defaults to the variant's standard icon. Always hidden from assistive technology.",
+        "name": "icon",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Renders a dismiss button and calls this when it is pressed.",
+        "name": "onDismiss",
+        "required": false,
+        "type": "() => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Bold leading text of the alert.",
+        "name": "title",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "variant",
+        "required": false,
+        "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\" | null"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Avatar",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Image alt text; defaults to `name`. Pass an empty string for decorative avatars.",
+        "name": "alt",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Name used for the initials fallback and default alt text.",
+        "name": "name",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Image URL; falls back to initials when missing or when the image fails to load.",
+        "name": "src",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "size",
+        "required": false,
+        "type": "\"sm\" | \"md\" | \"lg\" | null"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "Badge",
     "props": [
       {
@@ -9,6 +125,40 @@
         "name": "variant",
         "required": false,
         "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\" | null"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Breadcrumb",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "5",
+        "description": "Maximum items shown before middle items collapse into a menu.",
+        "name": "collapseAfter",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Items in hierarchy order; the last item is the current page.",
+        "name": "items",
+        "required": true,
+        "type": "BreadcrumbItem[]"
+      },
+      {
+        "defaultValue": "Breadcrumb",
+        "description": "Accessible name for the navigation landmark.",
+        "name": "label",
+        "required": false,
+        "type": "string"
       }
     ]
   },
@@ -705,16 +855,16 @@
       {
         "defaultValue": "",
         "description": "",
-        "name": "value",
+        "name": "onValueChange",
         "required": false,
-        "type": "string"
+        "type": "(value: string) => void"
       },
       {
         "defaultValue": "",
         "description": "",
-        "name": "onValueChange",
+        "name": "value",
         "required": false,
-        "type": "(value: string) => void"
+        "type": "string"
       }
     ]
   },

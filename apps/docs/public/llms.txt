@@ -18,6 +18,7 @@
 - [Switch](/modules/switch) (Forms): An immediate boolean setting with explicit labeling and controlled or uncontrolled state.
 - [Card](/modules/card) (Surfaces): A structural surface for related content without ambiguous interactive behavior.
 - [Badge](/modules/badge) (Surfaces): A compact semantic status indicator using canonical information variants.
+- [Accordion](/modules/accordion) (Surfaces): A stacked disclosure list with single and multi-open modes driven by a compact item interface.
 - [Dialog](/modules/dialog) (Overlays): A modal surface that owns focus management, naming, dismissal, and scroll locking.
 - [Tooltip](/modules/tooltip) (Overlays): A short contextual hint with accessible trigger association and collision handling.
 - [Menu](/modules/menu) (Overlays): A structured action menu with keyboard navigation, disabled items, icons, and danger styling.
@@ -25,13 +26,16 @@
 - [Toast](/modules/toast) (Feedback): Imperative, announced feedback with semantic variants, optional actions, and dismissal.
 - [Empty State](/modules/empty-state) (Feedback): An explanatory empty result with an optional action and SVG icon.
 - [Loading](/modules/loading) (Feedback): Named progress and loading treatments for local, skeleton, and full-surface states.
+- [Alert](/modules/alert) (Feedback): An inline feedback banner with semantic variants, an optional title, and dismissal.
 - [Tabs](/modules/tabs) (Navigation): Keyboard-navigable content switching through a compact item interface.
 - [Pagination](/modules/pagination) (Navigation): A controlled page navigator with compact ranges and unavailable directions.
 - [Page Header](/modules/page-header) (Navigation): A responsive page title, supporting text, and action area.
 - [Vertical Nav](/modules/vertical-nav) (Navigation): A compound vertical navigation with icon-rail and full-text modes.
 - [Top Bar](/modules/top-bar) (Navigation): A sticky top bar with brand, search, and action slots.
+- [Breadcrumb](/modules/breadcrumb) (Navigation): A hierarchical trail with router-ready items and automatic middle-item collapse.
 - [Table](/modules/table) (Data): Accessible data presentation driven by column definitions, density, loading, and empty state.
 - [Separator](/modules/separator) (Data): A semantic or decorative divider for related content.
+- [Avatar](/modules/avatar) (Data): A compact identity image with initials and icon fallbacks.
 
 ## Patterns
 
