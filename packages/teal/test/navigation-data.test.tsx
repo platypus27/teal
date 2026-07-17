@@ -102,6 +102,22 @@ describe('data modules', () => {
     expect(screen.getByText('No projects found')).toBeInTheDocument()
   })
 
+  it('marks the region busy and announces loading without naming rows', () => {
+    const { container } = render(
+      <Table
+        caption="Projects"
+        rows={[]}
+        getRowKey={(row: { id: string }) => row.id}
+        columns={[{ key: 'name', header: 'Project', cell: () => null }]}
+        loading
+        loadingLabel="Loading projects"
+      />,
+    )
+    expect(screen.getByRole('region', { name: 'Projects table' })).toHaveAttribute('aria-busy', 'true')
+    expect(screen.getByRole('status')).toHaveTextContent('Loading projects')
+    container.querySelectorAll('tr').forEach((row) => expect(row).not.toHaveAttribute('aria-label'))
+  })
+
   it('forwards refs to the table, tabs, and pagination roots', () => {
     const tableRef = createRef<HTMLDivElement>()
     const tabsRef = createRef<HTMLDivElement>()

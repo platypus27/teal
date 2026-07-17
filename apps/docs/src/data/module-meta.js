@@ -458,7 +458,7 @@ const additionalExamples = {
   'page-header': [{ title: 'Responsive actions', description: 'Let actions wrap beneath the title on narrow screens.' }],
   'vertical-nav': [{ title: 'Application shell', description: 'Compose a persistent rail with a full navigation drawer for responsive products.' }, { title: 'Router integration', description: 'Use VerticalNavItem with a router link and pass active state from the route.' }],
   'top-bar': [{ title: 'Application shell header', description: 'Combine brand, global search, and account actions in one persistent header.' }, { title: 'Compact shell', description: 'Use the same slots for a focused route header with fewer global actions.', demo: 'top-bar-shell' }],
-  table: [{ title: 'Review queue', description: 'Use status badges and stable row keys in an operational table.' }],
+  table: [{ title: 'Loading rows', description: 'Skeleton rows stand in for data while loading; the region is marked busy and announced through loadingLabel.' }],
   separator: [{ title: 'Vertical grouping', description: 'Use a vertical separator only when adjacent controls form one horizontal group.' }],
 }
 

@@ -52,6 +52,11 @@ describe('display modules', () => {
     expect(screen.getByRole('status', { name: 'Loading reports' })).toBeInTheDocument()
   })
 
+  it('hides custom empty-state icons from assistive technology', () => {
+    render(<EmptyState title="No reports" icon={<svg data-testid="custom-icon" />} />)
+    expect(screen.getByTestId('custom-icon').parentElement).toHaveAttribute('aria-hidden', 'true')
+  })
+
   it('applies disabled semantics to interactive cards', () => {
     render(
       <>

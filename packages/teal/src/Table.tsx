@@ -27,7 +27,7 @@ export interface TableProps<Row> {
   empty?: ReactNode
   /** Returns a stable, unique key for each row. */
   getRowKey: (row: Row) => string
-  /** Renders skeleton rows in place of data. */
+  /** Renders skeleton rows in place of data and marks the region busy. */
   loading?: boolean
   /** Accessible label announced while skeleton rows are shown. */
   loadingLabel?: string
@@ -54,12 +54,18 @@ function TableRender<Row>(
       ref={ref}
       role="region"
       aria-label={`${caption} table`}
+      aria-busy={loading || undefined}
       tabIndex={0}
       className={cn(
         'overflow-x-auto rounded-2xl border border-outline-variant/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
         className,
       )}
     >
+      {loading ? (
+        <span role="status" className="sr-only">
+          {loadingLabel}
+        </span>
+      ) : null}
       <table className="w-full border-collapse text-left text-sm">
         <caption className="sr-only">{caption}</caption>
         <thead className={cn('text-xs font-semibold uppercase tracking-wide text-on-surface-variant', 'bg-surface-container-high')}>
@@ -78,7 +84,7 @@ function TableRender<Row>(
         <tbody className={cn('divide-y divide-outline-variant/25', 'bg-surface-container')}>
           {loading
             ? Array.from({ length: 3 }, (_, rowIndex) => (
-                <tr key={`loading-${rowIndex}`} aria-label={loadingLabel}>
+                <tr key={`loading-${rowIndex}`}>
                   {columns.map((column) => (
                     <td key={column.key} className={density === 'compact' ? 'px-3 py-2' : 'px-4 py-3'}>
                       <Skeleton className="h-4 w-4/5" />

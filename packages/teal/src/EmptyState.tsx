@@ -26,8 +26,11 @@ export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function E
       )}
       {...props}
     >
-      <div className="flex size-12 items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant [&_svg]:size-6">
-        {icon ?? <Inbox aria-hidden="true" />}
+      <div
+        aria-hidden="true"
+        className="flex size-12 items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant [&_svg]:size-6"
+      >
+        {icon ?? <Inbox />}
       </div>
       <h3 className="mt-4 font-headline text-lg font-bold text-on-surface">{title}</h3>
       {description ? <p className="mt-1 max-w-sm text-sm leading-relaxed text-on-surface-variant">{description}</p> : null}

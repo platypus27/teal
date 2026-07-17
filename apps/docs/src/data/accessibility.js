@@ -13,6 +13,7 @@ export const accessibility = {
     notes: [
       'Icon-only actions use IconButton, which requires a label applied as aria-label and mirrored in the title tooltip.',
       'Loading buttons set aria-busy and are disabled so they cannot be activated twice.',
+      'A loading IconButton replaces its icon with a spinner while keeping the accessible label.',
       'The danger variant carries meaning through its label as well as its color.',
     ],
   },
@@ -22,6 +23,7 @@ export const accessibility = {
       'Description and error text are linked to Input and TextArea children through aria-describedby automatically.',
       'Setting error marks the control aria-invalid and renders the message in error color.',
       'The required indicator is decorative; the underlying control keeps the native required attribute.',
+      'Custom controls can join the same wiring through the exported useFieldControl hook and mergeDescriptionIds helper.',
     ],
   },
   input: {
