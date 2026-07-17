@@ -137,21 +137,25 @@ const VerticalNavItemImpl = forwardRef<HTMLElement, VerticalNavItemProps>(functi
       aria-current={active ? 'page' : undefined}
       {...props}
     >
-      <span className="flex w-16 shrink-0 items-center justify-center">
-        <span
-          className={cn(
-            'flex size-9 items-center justify-center rounded-xl transition-colors group-focus-visible/item:ring-2 group-focus-visible/item:ring-primary',
-            active
-              ? 'bg-primary/10 text-primary'
-              : 'text-on-surface-variant group-hover/item:bg-surface-container-high group-hover/item:text-on-surface',
-          )}
-        >
-          {icon}
+      {icon ? (
+        <span className="flex w-16 shrink-0 items-center justify-center">
+          <span
+            className={cn(
+              'flex size-9 items-center justify-center rounded-xl transition-colors group-focus-visible/item:ring-2 group-focus-visible/item:ring-primary',
+              active
+                ? 'bg-primary/10 text-primary'
+                : 'text-on-surface-variant group-hover/item:bg-surface-container-high group-hover/item:text-on-surface',
+            )}
+          >
+            {icon}
+          </span>
         </span>
-      </span>
+      ) : null}
       <span
         className={cn(
           labelClass,
+          'flex items-center',
+          icon ? undefined : 'pl-3',
           active ? 'font-semibold text-primary' : 'text-on-surface-variant group-hover/item:text-on-surface',
         )}
       >

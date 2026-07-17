@@ -1,7 +1,7 @@
 import { createRef } from 'react'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Accordion, Breadcrumb, Menu, Pagination, Popover, Table, Tabs } from '../src/index'
+import { Accordion, Breadcrumb, Menu, Pagination, Popover, Table, Tabs, VerticalNav, VerticalNavItem, VerticalNavList } from '../src/index'
 
 describe('navigation modules', () => {
   it('moves between tabs with the keyboard and exposes the active panel', async () => {
@@ -265,5 +265,23 @@ describe('breadcrumb and accordion', () => {
     )
     await user.click(screen.getByRole('button', { name: 'Locked' }))
     expect(screen.getByRole('button', { name: 'Locked' })).toHaveAttribute('aria-expanded', 'false')
+  })
+})
+
+
+describe('vertical nav items', () => {
+  it('renders the icon column only when an icon is provided', () => {
+    render(
+      <VerticalNav aria-label="Primary">
+        <VerticalNavList>
+          <VerticalNavItem href="/plain">Plain</VerticalNavItem>
+          <VerticalNavItem href="/icon" icon={<svg data-testid="nav-icon" />}>
+            With icon
+          </VerticalNavItem>
+        </VerticalNavList>
+      </VerticalNav>,
+    )
+    expect(screen.getByRole('link', { name: 'Plain' }).querySelector('.w-16')).toBeNull()
+    expect(screen.getByRole('link', { name: 'With icon' }).querySelector('.w-16')).not.toBeNull()
   })
 })
