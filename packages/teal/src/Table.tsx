@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import { forwardRef, type ReactElement, type ReactNode, type Ref } from 'react'
 import { Skeleton } from './LoadingState'
 import { cn } from './cn'
 
@@ -35,19 +35,23 @@ export interface TableProps<Row> {
   rows: Row[]
 }
 
-export function Table<Row>({
-  caption,
-  className,
-  columns,
-  density = 'comfortable',
-  empty = 'No results',
-  getRowKey,
-  loading = false,
-  loadingLabel = 'Loading table data',
-  rows,
-}: TableProps<Row>) {
+function TableRender<Row>(
+  {
+    caption,
+    className,
+    columns,
+    density = 'comfortable',
+    empty = 'No results',
+    getRowKey,
+    loading = false,
+    loadingLabel = 'Loading table data',
+    rows,
+  }: TableProps<Row>,
+  ref: Ref<HTMLDivElement>,
+) {
   return (
     <div
+      ref={ref}
       role="region"
       aria-label={`${caption} table`}
       tabIndex={0}
@@ -110,3 +114,7 @@ export function Table<Row>({
     </div>
   )
 }
+
+export const Table = forwardRef(TableRender) as <Row>(
+  props: TableProps<Row> & { ref?: Ref<HTMLDivElement> },
+) => ReactElement

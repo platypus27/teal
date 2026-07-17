@@ -9,7 +9,10 @@ const parser = withCustomConfig(resolve(root, 'packages/teal/tsconfig.json'), {
   savePropValueAsString: true,
   shouldExtractLiteralValuesFromEnum: true,
   shouldRemoveUndefinedFromOptional: true,
-  propFilter: (prop) => !prop.parent?.fileName.includes('node_modules'),
+  // Polymorphic components (Card, TopBar, VerticalNav, VerticalNavItem) carry a
+  // `ref` in their public call signature; it is a React convention, not a
+  // documented prop, so drop the spurious row.
+  propFilter: (prop) => prop.name !== 'ref' && !prop.parent?.fileName.includes('node_modules'),
 })
 
 const files = [
@@ -37,17 +40,24 @@ const files = [
   'VerticalNav.tsx',
 ].map((file) => resolve(source, file))
 
-const docs = parser.parse(files).map((doc) => ({
-  description: doc.description,
-  displayName: doc.displayName,
-  props: Object.values(doc.props).map((prop) => ({
-    defaultValue: prop.defaultValue?.value ?? '',
-    description: prop.description,
-    name: prop.name,
-    required: prop.required,
-    type: prop.name === 'as' ? 'ElementType' : prop.type.name,
-  })),
-}))
+// react-docgen-typescript also reports plain function exports (toast,
+// dismissToast, mergeDescriptionIds, useFieldControl) as pseudo-components.
+// Components are PascalCase by convention; anything else is a function or
+// value export and gets no interface table.
+const docs = parser
+  .parse(files)
+  .filter((doc) => /^[A-Z]/.test(doc.displayName))
+  .map((doc) => ({
+    description: doc.description,
+    displayName: doc.displayName,
+    props: Object.values(doc.props).map((prop) => ({
+      defaultValue: prop.defaultValue?.value ?? '',
+      description: prop.description,
+      name: prop.name,
+      required: prop.required,
+      type: prop.name === 'as' ? 'ElementType' : prop.type.name,
+    })),
+  }))
 
 await mkdir(resolve(output, '..'), { recursive: true })
 const contents = `${JSON.stringify(docs, null, 2)}\n`

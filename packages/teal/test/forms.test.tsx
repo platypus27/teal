@@ -1,3 +1,4 @@
+import { createRef } from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Checkbox, Field, Input, Select, Switch, TextArea } from '../src/index'
@@ -23,6 +24,16 @@ describe('Field', () => {
       </Field>,
     )
     expect(screen.getByRole('textbox', { name: 'Notes' })).toBeInTheDocument()
+  })
+
+  it('forwards its ref to the field wrapper', () => {
+    const ref = createRef<HTMLDivElement>()
+    render(
+      <Field ref={ref} label="Email">
+        <Input />
+      </Field>,
+    )
+    expect(ref.current).toContainElement(screen.getByRole('textbox', { name: 'Email' }))
   })
 
   it('keeps generated ids unique and merges caller descriptions', () => {

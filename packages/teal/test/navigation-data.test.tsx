@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { createRef } from 'react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Menu, Pagination, Popover, Table, Tabs } from '../src/index'
 
@@ -17,7 +18,7 @@ describe('navigation modules', () => {
     )
 
     const profile = screen.getByRole('tab', { name: 'Profile' })
-    profile.focus()
+    act(() => profile.focus())
     await user.keyboard('{ArrowRight}')
     expect(screen.getByRole('tab', { name: 'Security' })).toHaveAttribute('aria-selected', 'true')
     expect(screen.getByRole('tabpanel')).toHaveTextContent('Security panel')
@@ -99,6 +100,32 @@ describe('data modules', () => {
       />,
     )
     expect(screen.getByText('No projects found')).toBeInTheDocument()
+  })
+
+  it('forwards refs to the table, tabs, and pagination roots', () => {
+    const tableRef = createRef<HTMLDivElement>()
+    const tabsRef = createRef<HTMLDivElement>()
+    const paginationRef = createRef<HTMLElement>()
+    render(
+      <>
+        <Table
+          ref={tableRef}
+          caption="Projects"
+          rows={rows}
+          getRowKey={(row) => row.id}
+          columns={[{ key: 'name', header: 'Project', cell: (row) => row.name }]}
+        />
+        <Tabs
+          ref={tabsRef}
+          aria-label="Account settings"
+          items={[{ value: 'profile', label: 'Profile', content: 'Profile panel' }]}
+        />
+        <Pagination ref={paginationRef} page={1} pageCount={3} onPageChange={() => {}} />
+      </>,
+    )
+    expect(tableRef.current).toBe(screen.getByRole('region', { name: 'Projects table' }))
+    expect(tabsRef.current).toContainElement(screen.getByRole('tab', { name: 'Profile' }))
+    expect(paginationRef.current).toBe(screen.getByRole('navigation', { name: 'Pagination' }))
   })
 
   it('keeps pagination controlled and disables unavailable directions', async () => {

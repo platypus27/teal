@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderToString } from 'react-dom/server'
-import { useRef, useState } from 'react'
+import { useRef, useState, createRef } from 'react'
 import {
   Badge,
   Button,
@@ -118,6 +118,12 @@ describe('overlays and feedback', () => {
     expect(screen.getByText('Changes saved')).toBeInTheDocument()
     act(() => dismissToast(id))
     expect(screen.queryByText('Changes saved')).not.toBeInTheDocument()
+  })
+
+  it('forwards the toaster ref to its viewport', () => {
+    const ref = createRef<HTMLOListElement>()
+    render(<Toaster ref={ref} />)
+    expect(ref.current).toBeInstanceOf(HTMLOListElement)
   })
 
   it('renders portal-backed roots safely during SSR', () => {

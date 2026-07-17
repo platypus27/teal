@@ -1,6 +1,6 @@
 export { Button, IconButton, buttonVariants, iconButtonVariants } from './Button'
 export type { ButtonProps, IconButtonProps } from './Button'
-export { Field, Label } from './Field'
+export { Field, Label, mergeDescriptionIds, useFieldControl } from './Field'
 export type { FieldProps, LabelProps } from './Field'
 export { Input, TextArea, fieldVariants } from './Input'
 export type { InputProps, TextAreaProps } from './Input'

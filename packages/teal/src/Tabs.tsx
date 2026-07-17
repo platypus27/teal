@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import { forwardRef, type ReactNode } from 'react'
 import * as TabsPrimitive from '@radix-ui/react-tabs'
 import { cn } from './cn'
 
@@ -27,10 +27,14 @@ export interface TabsProps {
   value?: string
 }
 
-export function Tabs({ 'aria-label': ariaLabel, className, defaultValue, items, onValueChange, value }: TabsProps) {
+export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
+  { 'aria-label': ariaLabel, className, defaultValue, items, onValueChange, value },
+  ref,
+) {
   const initialValue = defaultValue ?? items.find((item) => !item.disabled)?.value
   return (
     <TabsPrimitive.Root
+      ref={ref}
       className={cn('w-full', className)}
       {...(value !== undefined ? { value } : {})}
       {...(initialValue !== undefined ? { defaultValue: initialValue } : {})}
@@ -65,4 +69,4 @@ export function Tabs({ 'aria-label': ariaLabel, className, defaultValue, items, 
       ))}
     </TabsPrimitive.Root>
   )
-}
+})

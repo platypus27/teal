@@ -1,3 +1,4 @@
+import { forwardRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { IconButton } from './Button'
 import { cn } from './cn'
@@ -27,11 +28,14 @@ function pagesFor(page: number, pageCount: number): Array<number | 'ellipsis'> {
   return result
 }
 
-export function Pagination({ className, label = 'Pagination', onPageChange, page, pageCount }: PaginationProps) {
+export const Pagination = forwardRef<HTMLElement, PaginationProps>(function Pagination(
+  { className, label = 'Pagination', onPageChange, page, pageCount },
+  ref,
+) {
   const safePageCount = Math.max(1, pageCount)
   const currentPage = Math.min(Math.max(1, page), safePageCount)
   return (
-    <nav aria-label={label} className={cn('flex flex-wrap items-center justify-center gap-1', className)}>
+    <nav ref={ref} aria-label={label} className={cn('flex flex-wrap items-center justify-center gap-1', className)}>
       <IconButton
         label="Previous page"
         size="sm"
@@ -73,4 +77,4 @@ export function Pagination({ className, label = 'Pagination', onPageChange, page
       </IconButton>
     </nav>
   )
-}
+})

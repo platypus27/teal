@@ -1,4 +1,4 @@
-import { forwardRef, type HTMLAttributes, type ReactNode } from 'react'
+import { forwardRef, type ComponentRef, type HTMLAttributes, type ReactNode } from 'react'
 import * as LabelPrimitive from '@radix-ui/react-label'
 import { cn } from './cn'
 import { FormSemanticsContext, hasFormContent, mergeDescriptionIds, useFormSemantics, useFormSemanticsContext } from './form-semantics'
@@ -9,7 +9,7 @@ export function useFieldControl() {
 
 export type LabelProps = React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
 
-export const Label = forwardRef<React.ElementRef<typeof LabelPrimitive.Root>, LabelProps>(function Label(
+export const Label = forwardRef<ComponentRef<typeof LabelPrimitive.Root>, LabelProps>(function Label(
   { className, ...props },
   ref,
 ) {
@@ -37,17 +37,10 @@ export interface FieldProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childr
   invalid?: boolean
 }
 
-export function Field({
-  children,
-  className,
-  description,
-  error,
-  id,
-  invalid,
-  label,
-  required = false,
-  ...props
-}: FieldProps) {
+export const Field = forwardRef<HTMLDivElement, FieldProps>(function Field(
+  { children, className, description, error, id, invalid, label, required = false, ...props },
+  ref,
+) {
   const semantics = useFormSemantics({
     description,
     error,
@@ -59,7 +52,7 @@ export function Field({
 
   return (
     <FormSemanticsContext.Provider value={semantics}>
-      <div className={cn('grid gap-1.5', className)} {...props}>
+      <div ref={ref} className={cn('grid gap-1.5', className)} {...props}>
         <Label htmlFor={semantics.controlId}>
           {label}
           {required ? <span className="ml-1 text-error" aria-hidden="true">*</span> : null}
@@ -78,6 +71,6 @@ export function Field({
       </div>
     </FormSemanticsContext.Provider>
   )
-}
+})
 
 export { mergeDescriptionIds }

@@ -33,7 +33,20 @@ const exported = new Set()
 for (const match of indexSource.matchAll(/export\s+(?:type\s+)?\{([^}]+)\}/g)) {
   for (const name of match[1].split(',').map((part) => part.trim().split(/\s+as\s+/)[0]).filter(Boolean)) exported.add(name)
 }
-const intentionallyUndocumented = new Set(['buttonVariants', 'iconButtonVariants', 'fieldVariants', 'badgeVariants', 'topBarVariants', 'verticalNavVariants'])
+const intentionallyUndocumented = new Set([
+  'buttonVariants',
+  'iconButtonVariants',
+  'fieldVariants',
+  'badgeVariants',
+  'topBarVariants',
+  'verticalNavVariants',
+  // Function and hook exports are documented in module usage snippets, not in
+  // generated interface tables, so they have no api.json entry by design.
+  'toast',
+  'dismissToast',
+  'mergeDescriptionIds',
+  'useFieldControl',
+])
 for (const name of exported) {
   const isDocumentedTypeCompanion = name.endsWith('Props') || /(?:Option|Item|Column|Variant|Input)$/.test(name)
   if (!documented.has(name) && !intentionallyUndocumented.has(name) && !isDocumentedTypeCompanion && !api.some((entry) => entry.displayName === name)) {

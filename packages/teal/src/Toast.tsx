@@ -1,4 +1,4 @@
-import { useSyncExternalStore, type ReactNode } from 'react'
+import { forwardRef, useSyncExternalStore, type ComponentRef, type ReactNode } from 'react'
 import * as ToastPrimitive from '@radix-ui/react-toast'
 import { CheckCircle2, CircleAlert, Info, TriangleAlert, X } from 'lucide-react'
 import { IconButton } from './Button'
@@ -17,6 +17,9 @@ export interface ToastInput {
 interface ToastRecord extends ToastInput {
   id: string
 }
+
+// Radix has no "never auto-dismiss"; ~68 years stands in for Infinity.
+const PERSISTENT_TOAST_DURATION = 2_147_483_647
 
 let nextToastId = 1
 let records: ToastRecord[] = []
@@ -52,7 +55,7 @@ const variantStyles: Record<ToastVariant, { icon: typeof Info; className: string
   danger: { icon: CircleAlert, className: 'text-error' },
 }
 
-export function Toaster() {
+export const Toaster = forwardRef<ComponentRef<typeof ToastPrimitive.Viewport>>(function Toaster(_props, ref) {
   const toasts = useSyncExternalStore(subscribe, () => records, () => emptyRecords)
 
   return (
@@ -65,7 +68,7 @@ export function Toaster() {
             key={item.id}
             open
             {...(item.duration !== undefined
-              ? { duration: item.duration === Infinity ? 2_147_483_647 : item.duration }
+              ? { duration: item.duration === Infinity ? PERSISTENT_TOAST_DURATION : item.duration }
               : {})}
             onOpenChange={(open) => {
               if (!open) dismissToast(item.id)
@@ -103,7 +106,10 @@ export function Toaster() {
           </ToastPrimitive.Root>
         )
       })}
-      <ToastPrimitive.Viewport className="fixed bottom-0 right-0 z-[var(--teal-z-toast)] flex max-h-screen w-full flex-col items-end gap-2 p-4 sm:w-auto" />
+      <ToastPrimitive.Viewport
+        ref={ref}
+        className="fixed bottom-0 right-0 z-[var(--teal-z-toast)] flex max-h-screen w-full flex-col items-end gap-2 p-4 sm:w-auto"
+      />
     </ToastPrimitive.Provider>
   )
-}
+})
