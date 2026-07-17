@@ -3855,6 +3855,12 @@ A recipe becomes a published module only after at least two Kryv products need t
 
 Versioned changes to @kryv/teal, generated from the changesets changelog. Current version: v0.2.1.
 
+## v0.2.1
+
+### Patch Changes
+
+- Harden the published package with cross-platform builds, shared form semantics, polymorphic navigation typing, generated token outputs, packed artifact verification, and required accessible names for Popover dialog surfaces.
+
 ## v0.2.0
 
 ### Historical baseline
@@ -3862,9 +3868,3 @@ Versioned changes to @kryv/teal, generated from the changesets changelog. Curren
 - Public ESM package with React 18 and React 19 peer support.
 - 22 typed modules with compiled styles, semantic tokens, and TypeScript declarations.
 - Responsive documentation with examples, playgrounds, recipes, and accessibility coverage.
-
-## v0.2.1
-
-### Patch Changes
-
-- Harden the published package with cross-platform builds, shared form semantics, polymorphic navigation typing, generated token outputs, packed artifact verification, and required accessible names for Popover dialog surfaces.
