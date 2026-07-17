@@ -3,8 +3,6 @@ import { cn } from './cn'
 import type { PolymorphicComponent, PolymorphicProps } from './polymorphic'
 
 export interface CardOwnProps {
-  /** Element rendered by the card; use an interactive element for clickable cards. */
-  as?: ElementType
   /** Applies disabled styling and blocks interaction on interactive cards. */
   disabled?: boolean
   /** Button type used when the card renders an interactive element. */
@@ -13,15 +11,20 @@ export interface CardOwnProps {
 
 export type CardProps<C extends ElementType = 'div'> = PolymorphicProps<C, CardOwnProps>
 
-const CardImpl = forwardRef<HTMLElement, CardProps>(function Card(
-  { as: Component = 'div', className, ...props },
+const CardImpl = forwardRef<HTMLElement, CardProps<ElementType>>(function Card(
+  { as: Component = 'div', className, disabled = false, type, ...props },
   ref,
 ) {
+  const isButton = Component === 'button'
   return (
     <Component
+      // ElementType does not model the per-element ref; the public type carries it.
       ref={ref as never}
+      {...(isButton ? { type: type ?? 'button', disabled } : {})}
+      aria-disabled={disabled || undefined}
       className={cn(
         'rounded-2xl border border-outline-variant/20 bg-surface-container p-6 shadow-[var(--teal-shadow-card)]',
+        disabled && 'pointer-events-none opacity-55',
         className,
       )}
       {...props}

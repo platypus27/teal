@@ -51,6 +51,25 @@ describe('display modules', () => {
     expect(screen.getByRole('button', { name: 'Create report' })).toBeInTheDocument()
     expect(screen.getByRole('status', { name: 'Loading reports' })).toBeInTheDocument()
   })
+
+  it('applies disabled semantics to interactive cards', () => {
+    render(
+      <>
+        <Card as="button" disabled>
+          Disabled button card
+        </Card>
+        <Card as="a" href="/reports" disabled>
+          Disabled link card
+        </Card>
+      </>,
+    )
+    const button = screen.getByRole('button', { name: 'Disabled button card' })
+    expect(button).toBeDisabled()
+    const link = screen.getByRole('link', { name: 'Disabled link card' })
+    expect(link).toHaveAttribute('aria-disabled', 'true')
+    expect(link).not.toHaveAttribute('disabled')
+    expect(link.className).toContain('pointer-events-none')
+  })
 })
 
 describe('overlays and feedback', () => {

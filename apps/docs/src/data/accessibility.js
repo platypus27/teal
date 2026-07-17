@@ -73,6 +73,7 @@ export const accessibility = {
       'Cards are passive surfaces with no keyboard behavior of their own.',
       'Render real links and buttons inside a card rather than making the card itself clickable.',
       'The as prop lets you render the card as a section, article, or list item to fit the page outline.',
+      'Disabled cards are dimmed, skip pointer events, and set aria-disabled.',
     ],
   },
   badge: {
