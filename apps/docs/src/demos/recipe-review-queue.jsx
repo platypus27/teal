@@ -26,7 +26,7 @@ export function ReviewQueueRecipe() {
               key: 'priority',
               header: 'Priority',
               cell: (row) => (
-                <Badge tone={row.priority === 'Critical' ? 'danger' : 'warning'}>{row.priority}</Badge>
+                <Badge variant={row.priority === 'Critical' ? 'danger' : 'warning'}>{row.priority}</Badge>
               ),
             },
           ]}

@@ -4,14 +4,14 @@ import { CheckCircle2, CircleAlert, Info, TriangleAlert, X } from 'lucide-react'
 import { IconButton } from './Button'
 import { cn } from './cn'
 
-export type ToastTone = 'neutral' | 'info' | 'success' | 'warning' | 'danger'
+export type ToastVariant = 'neutral' | 'info' | 'success' | 'warning' | 'danger'
 
 export interface ToastInput {
   action?: { label: string; onClick: () => void }
   description?: ReactNode
   duration?: number
   title: ReactNode
-  tone?: ToastTone
+  variant?: ToastVariant
 }
 
 interface ToastRecord extends ToastInput {
@@ -44,7 +44,7 @@ export function dismissToast(id: string) {
   emit()
 }
 
-const toneStyles: Record<ToastTone, { icon: typeof Info; className: string }> = {
+const variantStyles: Record<ToastVariant, { icon: typeof Info; className: string }> = {
   neutral: { icon: Info, className: 'text-on-surface-variant' },
   info: { icon: Info, className: 'text-primary' },
   success: { icon: CheckCircle2, className: 'text-tertiary' },
@@ -58,8 +58,8 @@ export function Toaster() {
   return (
     <ToastPrimitive.Provider swipeDirection="right">
       {toasts.map((item) => {
-        const tone = toneStyles[item.tone ?? 'neutral']
-        const ToneIcon = tone.icon
+        const variant = variantStyles[item.variant ?? 'neutral']
+        const VariantIcon = variant.icon
         return (
           <ToastPrimitive.Root
             key={item.id}
@@ -75,7 +75,7 @@ export function Toaster() {
               'bg-surface-container',
             )}
           >
-            <ToneIcon aria-hidden="true" className={cn('mt-0.5 size-5', tone.className)} />
+            <VariantIcon aria-hidden="true" className={cn('mt-0.5 size-5', variant.className)} />
             <div className="min-w-0">
               <ToastPrimitive.Title className="text-sm font-semibold">{item.title}</ToastPrimitive.Title>
               {item.description ? (

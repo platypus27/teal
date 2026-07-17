@@ -4,10 +4,10 @@ export function BadgeDemo() {
   return (
     <>
       <Badge>Neutral</Badge>
-      <Badge tone="info">Information</Badge>
-      <Badge tone="success">Ready</Badge>
-      <Badge tone="warning">Attention</Badge>
-      <Badge tone="danger">Action required</Badge>
+      <Badge variant="info">Information</Badge>
+      <Badge variant="success">Ready</Badge>
+      <Badge variant="warning">Attention</Badge>
+      <Badge variant="danger">Action required</Badge>
     </>
   )
 }

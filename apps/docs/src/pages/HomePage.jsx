@@ -90,7 +90,7 @@ export function HomePage() {
                 <CardTitle>Review queue</CardTitle>
                 <CardDescription className="mt-1">Three items need a decision today.</CardDescription>
               </div>
-              <Badge tone="warning">Needs review</Badge>
+              <Badge variant="warning">Needs review</Badge>
             </div>
             <Table
               caption="Review queue"
@@ -102,7 +102,7 @@ export function HomePage() {
               columns={[
                 { key: 'title', header: 'Item', cell: (row) => <span className="font-medium">{row.title}</span> },
                 { key: 'owner', header: 'Owner', cell: (row) => row.owner },
-                { key: 'priority', header: 'Priority', cell: (row) => <Badge tone={row.priority === 'Critical' ? 'danger' : 'warning'}>{row.priority}</Badge> },
+                { key: 'priority', header: 'Priority', cell: (row) => <Badge variant={row.priority === 'Critical' ? 'danger' : 'warning'}>{row.priority}</Badge> },
               ]}
             />
           </Card>
@@ -115,7 +115,7 @@ export function HomePage() {
               </Field>
               <Switch label="Review reminders" description="Send a daily summary to owners" defaultChecked />
               <div className="flex flex-wrap gap-2">
-                <Button onClick={() => toast({ title: 'Settings saved', tone: 'success' })}>Save settings</Button>
+                <Button onClick={() => toast({ title: 'Settings saved', variant: 'success' })}>Save settings</Button>
                 <PreviewDialog />
               </div>
             </div>

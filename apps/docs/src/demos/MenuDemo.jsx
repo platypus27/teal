@@ -15,7 +15,7 @@ export function MenuDemo({ exampleIndex = 0 }) {
           id: 'archive',
           label: 'Archive',
           icon: <Archive />,
-          tone: 'danger',
+          variant: 'danger',
           separatorBefore: true,
           onSelect: () => undefined,
         },

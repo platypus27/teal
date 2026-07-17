@@ -16,7 +16,7 @@ export interface MenuItem {
   /** Renders a separator above this item. */
   separatorBefore?: boolean
   /** Use 'danger' for destructive actions. */
-  tone?: 'default' | 'danger'
+  variant?: 'neutral' | 'danger'
 }
 
 export interface MenuProps {
@@ -53,7 +53,7 @@ export function Menu({ align = 'end', className, items, label, trigger }: MenuPr
                 {...(item.disabled !== undefined ? { disabled: item.disabled } : {})}
                 className={cn(
                   'flex min-h-9 cursor-default select-none items-center gap-2 rounded-lg px-3 py-2 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-45 data-[highlighted]:bg-surface-container-high',
-                  item.tone === 'danger' ? 'text-error data-[highlighted]:bg-error/10' : 'text-on-surface',
+                  item.variant === 'danger' ? 'text-error data-[highlighted]:bg-error/10' : 'text-on-surface',
                 )}
               >
                 {item.icon ? <span className="shrink-0 [&_svg]:size-4">{item.icon}</span> : null}

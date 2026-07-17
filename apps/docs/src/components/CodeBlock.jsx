@@ -11,10 +11,10 @@ export function CodeBlock({ code, lang = 'jsx', label = undefined }) {
     try {
       await navigator.clipboard.writeText(code.replace(/^\n+|\n+$/g, ''))
       setCopied(true)
-      toast({ title: 'Copied to clipboard', tone: 'success', duration: 2000 })
+      toast({ title: 'Copied to clipboard', variant: 'success', duration: 2000 })
       window.setTimeout(() => setCopied(false), 2000)
     } catch {
-      toast({ title: 'Could not copy code', tone: 'danger' })
+      toast({ title: 'Could not copy code', variant: 'danger' })
     }
   }
 

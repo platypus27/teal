@@ -17,10 +17,10 @@ function useCopyToken() {
     try {
       await navigator.clipboard.writeText(token)
       setCopied(token)
-      toast({ title: `Copied ${token}`, tone: 'success', duration: 2000 })
+      toast({ title: `Copied ${token}`, variant: 'success', duration: 2000 })
       window.setTimeout(() => setCopied(null), 2000)
     } catch {
-      toast({ title: 'Could not copy token', tone: 'danger' })
+      toast({ title: 'Could not copy token', variant: 'danger' })
     }
   }
   return { copied, copy }

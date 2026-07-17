@@ -137,13 +137,13 @@ export const moduleGroups = [
         id: 'badge',
         name: 'Badge',
         apiNames: ['Badge'],
-        description: 'A compact semantic status indicator using canonical information tones.',
-        usage: '<Badge tone="success">Deployed</Badge>',
+        description: 'A compact semantic status indicator using canonical information variants.',
+        usage: '<Badge variant="success">Deployed</Badge>',
         examples: [
           {
-            title: 'Tones',
+            title: 'Variants',
             description:
-              'Five tones cover neutral, informational, success, warning, and danger statuses.',
+              'Five variants cover neutral, informational, success, warning, and danger statuses.',
           },
         ],
       },
@@ -206,13 +206,13 @@ export const moduleGroups = [
   trigger={<IconButton label="Project actions"><MoreVertical /></IconButton>}
   items={[
     { id: 'settings', label: 'Settings', onSelect: () => undefined },
-    { id: 'archive', label: 'Archive', tone: 'danger', onSelect: () => undefined },
+    { id: 'archive', label: 'Archive', variant: 'danger', onSelect: () => undefined },
   ]}
 />`,
         examples: [
           {
             title: 'Project actions',
-            description: 'Items support icons, separators, and a danger tone for destructive actions.',
+            description: 'Items support icons, separators, and a danger variant for destructive actions.',
           },
         ],
       },
@@ -245,12 +245,12 @@ export const moduleGroups = [
         name: 'Toast',
         apiNames: ['Toaster'],
         imports: ['Toaster', 'toast'],
-        description: 'Imperative, announced feedback with semantic tones, optional actions, and dismissal.',
+        description: 'Imperative, announced feedback with semantic variants, optional actions, and dismissal.',
         usage: `// Mount once near the app root
 <Toaster />
 
 // Call toast() from anywhere
-toast({ title: 'Changes saved', tone: 'success' })`,
+toast({ title: 'Changes saved', variant: 'success' })`,
         examples: [
           {
             title: 'Saving feedback',
@@ -450,7 +450,7 @@ const additionalExamples = {
   tooltip: [{ title: 'Pure hover and focus hint', description: 'Use Tooltip for short, non-interactive context around an unfamiliar icon.', demo: 'tooltip-pure' }, { title: 'Action context', description: 'Keep the hint short when it sits beside an unfamiliar product action.', demo: 'tooltip-actions' }],
   menu: [{ title: 'Separated destructive action', description: 'Keep destructive actions at the end of the menu behind a separator.' }, { title: 'Keyboard action menu', description: 'Menus preserve arrow-key navigation and Escape dismissal.' }],
   popover: [{ title: 'Inline filters', description: 'Keep a small set of filters anchored to the toolbar that owns them.' }, { title: 'Supplemental controls', description: 'Use a popover for controls that do not deserve a full route or dialog.' }],
-  toast: [{ title: 'Failure feedback', description: 'Use a danger tone for a failed action and keep the recovery path in context.' }, { title: 'Undo feedback', description: 'Offer a short action when users may want to reverse a completed operation.' }],
+  toast: [{ title: 'Failure feedback', description: 'Use a danger variant for a failed action and keep the recovery path in context.' }, { title: 'Undo feedback', description: 'Offer a short action when users may want to reverse a completed operation.' }],
   'empty-state': [{ title: 'Filtered empty result', description: 'Explain that filters produced no results and offer a way to adjust them.' }],
   loading: [{ title: 'Skeleton region', description: 'Reserve the eventual layout with Skeleton when content shape is known.' }],
   tabs: [{ title: 'Profile sections', description: 'Use tabs for peer views that share the same route context.' }, { title: 'Responsive tab list', description: 'Long tab labels remain reachable through horizontal scrolling.', demo: 'tabs-responsive' }],
@@ -476,7 +476,7 @@ const guidanceById = {
   checkbox: { useWhen: 'Users can select independent items or a tri-state group.', avoidWhen: 'Changing the value should take effect immediately as a setting.', behavior: 'Checked, unchecked, and indeterminate states remain native and form-friendly.', responsive: 'Allow supporting text to wrap beside the control.' },
   switch: { useWhen: 'A boolean setting takes effect immediately.', avoidWhen: 'The user must submit several values together as a form.', behavior: 'The label and description remain associated with the switch control.', responsive: 'Keep the control at a fixed size while the setting copy takes available width.' },
   card: { useWhen: 'Related content needs a structural surface.', avoidWhen: 'A card is being used only to decorate every section or hide a primary action.', behavior: 'Card is non-interactive by default and accepts an explicit polymorphic element.', responsive: 'Use compact padding and let card content define its width.' },
-  badge: { useWhen: 'A short status or category needs quick visual scanning.', avoidWhen: 'The content needs an action or a sentence of explanation.', behavior: 'Tone changes meaning without changing the content semantics.', responsive: 'Keep labels short so badges do not dominate dense rows.' },
+  badge: { useWhen: 'A short status or category needs quick visual scanning.', avoidWhen: 'The content needs an action or a sentence of explanation.', behavior: 'Variant changes meaning without changing the content semantics.', responsive: 'Keep labels short so badges do not dominate dense rows.' },
   dialog: { useWhen: 'A decision or focused task must temporarily block the page.', avoidWhen: 'The content can be inline or handled by a popover.', behavior: 'Focus is trapped, Escape dismisses, and focus returns to the trigger.', responsive: 'Use the built-in size and allow the body to scroll inside the panel.' },
   tooltip: { useWhen: 'An unfamiliar icon or abbreviated label needs a brief hint.', avoidWhen: 'The user must read or interact with the content.', behavior: 'Hover and focus reveal a short non-interactive description.', responsive: 'Never rely on hover alone; provide a visible label on touch layouts.' },
   menu: { useWhen: 'Several related actions belong behind one trigger.', avoidWhen: 'The actions should remain visible for frequent workflows.', behavior: 'Keyboard navigation and dismissal are managed by Radix.', responsive: 'Keep destructive actions separated and easy to reach on touch.' },

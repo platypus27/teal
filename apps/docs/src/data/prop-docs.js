@@ -30,7 +30,7 @@ export const propDocs = {
     size: { description: 'Hit-target size; the icon scales with it.', defaultValue: '"md"' },
   },
   Badge: {
-    tone: { description: 'Semantic color treatment.', defaultValue: '"neutral"' },
+    variant: { description: 'Semantic color treatment.', defaultValue: '"neutral"' },
   },
   Input: {
     size: { description: 'Height and text size of the control.', defaultValue: '"md"' },

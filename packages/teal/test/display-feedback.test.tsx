@@ -32,7 +32,7 @@ describe('display modules', () => {
           </CardHeader>
           <CardContent>Content</CardContent>
         </Card>
-        <Badge tone="danger">Action required</Badge>
+        <Badge variant="danger">Action required</Badge>
       </>,
     )
 
@@ -113,7 +113,7 @@ describe('overlays and feedback', () => {
     render(<Toaster />)
     let id = ''
     act(() => {
-      id = toast({ title: 'Changes saved', tone: 'success', duration: Infinity })
+      id = toast({ title: 'Changes saved', variant: 'success', duration: Infinity })
     })
     expect(screen.getByText('Changes saved')).toBeInTheDocument()
     act(() => dismissToast(id))

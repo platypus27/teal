@@ -9,10 +9,10 @@ export function CopyPageButton({ markdown }) {
     try {
       await navigator.clipboard.writeText(markdown)
       setCopied(true)
-      toast({ title: 'Copied page as Markdown', tone: 'success', duration: 2000 })
+      toast({ title: 'Copied page as Markdown', variant: 'success', duration: 2000 })
       window.setTimeout(() => setCopied(false), 2000)
     } catch {
-      toast({ title: 'Could not copy page', tone: 'danger' })
+      toast({ title: 'Could not copy page', variant: 'danger' })
     }
   }
 

@@ -29,7 +29,7 @@ describe('navigation modules', () => {
     render(
       <Menu
         trigger={<button type="button">Actions</button>}
-        items={[{ id: 'archive', label: 'Archive', tone: 'danger', onSelect }]}
+        items={[{ id: 'archive', label: 'Archive', variant: 'danger', onSelect }]}
       />,
     )
     await user.click(screen.getByRole('button', { name: 'Actions' }))

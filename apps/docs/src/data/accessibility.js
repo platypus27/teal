@@ -78,7 +78,7 @@ export const accessibility = {
   badge: {
     notes: [
       'Badges are plain text, so their status is announced verbatim by screen readers.',
-      'Always pair a tone with meaningful text; never rely on color alone to carry the status.',
+      'Always pair a variant with meaningful text; never rely on color alone to carry the status.',
     ],
   },
   dialog: {

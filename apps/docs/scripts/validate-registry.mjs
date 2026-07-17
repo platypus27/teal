@@ -35,7 +35,7 @@ for (const match of indexSource.matchAll(/export\s+(?:type\s+)?\{([^}]+)\}/g)) {
 }
 const intentionallyUndocumented = new Set(['buttonVariants', 'iconButtonVariants', 'fieldVariants', 'badgeVariants', 'topBarVariants', 'verticalNavVariants'])
 for (const name of exported) {
-  const isDocumentedTypeCompanion = name.endsWith('Props') || /(?:Option|Item|Column|Tone|Input)$/.test(name)
+  const isDocumentedTypeCompanion = name.endsWith('Props') || /(?:Option|Item|Column|Variant|Input)$/.test(name)
   if (!documented.has(name) && !intentionallyUndocumented.has(name) && !isDocumentedTypeCompanion && !api.some((entry) => entry.displayName === name)) {
     errors.push(`public export ${name} has no registry representation`)
   }

@@ -171,7 +171,7 @@ const extras = {
     playground: {
       component: 'Badge',
       controls: [
-        { name: 'tone' },
+        { name: 'variant' },
         { name: 'children', kind: 'text', defaultValue: 'Deployed', required: true },
       ],
     },
