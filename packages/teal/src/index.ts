@@ -44,3 +44,6 @@ export type { VerticalNavProps, VerticalNavSectionProps, VerticalNavItemProps } 
 
 export { TopBar, TopBarBrand, TopBarSearch, TopBarActions, topBarVariants } from './TopBar'
 export type { TopBarProps } from './TopBar'
+
+export { Alert, alertVariants } from './Alert'
+export type { AlertProps } from './Alert'
