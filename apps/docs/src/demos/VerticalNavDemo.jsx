@@ -5,7 +5,7 @@ export function VerticalNavDemo() {
   return (
     <div className="grid w-full gap-4 sm:grid-cols-2">
       <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
-        <VerticalNav mode="rail" variant="solid" className="absolute">
+        <VerticalNav mode="rail" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
               <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
@@ -29,7 +29,7 @@ export function VerticalNavDemo() {
       </div>
 
       <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
-        <VerticalNav mode="full" variant="solid" className="absolute">
+        <VerticalNav mode="full" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
               <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">

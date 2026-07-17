@@ -5,7 +5,7 @@ import { IconButton, TopBar, TopBarActions, TopBarBrand, TopBarSearch } from '@k
 export function TopBarDemo() {
   return (
     <div className="w-full space-y-4">
-      <TopBar variant="solid" sticky={false}>
+      <TopBar sticky={false}>
         <TopBarBrand>
           <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
             <Palette className="size-4" />
@@ -31,7 +31,7 @@ export function TopBarDemo() {
         </TopBarActions>
       </TopBar>
 
-      <TopBar variant="solid" sticky={false} className="rounded-xl">
+      <TopBar sticky={false} className="rounded-xl">
         <TopBarBrand>
           <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
             <Palette className="size-4" />

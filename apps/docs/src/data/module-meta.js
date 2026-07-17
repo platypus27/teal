@@ -357,8 +357,8 @@ toast({ title: 'Changes saved', variant: 'success' })`,
         apiNames: ['VerticalNav', 'VerticalNavBrand', 'VerticalNavList', 'VerticalNavSection', 'VerticalNavItem', 'VerticalNavFooter'],
         imports: ['VerticalNav', 'VerticalNavBrand', 'VerticalNavList', 'VerticalNavSection', 'VerticalNavItem', 'VerticalNavFooter'],
         description:
-          'A compound vertical navigation with icon-rail and full-text modes and a solid variant.',
-        usage: `<VerticalNav mode="rail" variant="solid">
+          'A compound vertical navigation with icon-rail and full-text modes.',
+        usage: `<VerticalNav mode="rail">
   <VerticalNavBrand>...</VerticalNavBrand>
   <VerticalNavList>
     <VerticalNavSection label="Workspace">
@@ -380,8 +380,8 @@ toast({ title: 'Changes saved', variant: 'success' })`,
         name: 'Top Bar',
         apiNames: ['TopBar', 'TopBarBrand', 'TopBarSearch', 'TopBarActions'],
         imports: ['TopBar', 'TopBarBrand', 'TopBarSearch', 'TopBarActions'],
-        description: 'A sticky top bar with a solid variant and brand, search, and action slots.',
-        usage: `<TopBar variant="solid" sticky>
+        description: 'A sticky top bar with brand, search, and action slots.',
+        usage: `<TopBar sticky>
   <TopBarBrand>...</TopBarBrand>
   <TopBarSearch>...</TopBarSearch>
   <TopBarActions>...</TopBarActions>

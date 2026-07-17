@@ -4,27 +4,19 @@ import { cn } from './cn'
 import type { PolymorphicComponent, PolymorphicProps } from './polymorphic'
 
 const verticalNavVariants = cva(
-  'group flex flex-col overflow-hidden transition-[width] duration-300 ease-out motion-reduce:transition-none',
+  'group flex flex-col overflow-hidden border-outline-variant/30 bg-surface-container transition-[width] duration-300 ease-out motion-reduce:transition-none',
   {
     variants: {
-      variant: {
-        solid: 'border-outline-variant/30 bg-surface-container',
-      },
       mode: {
         rail: 'w-20 hover:w-72 focus-within:w-72',
         full: 'w-72',
       },
       side: {
-        left: '',
-        right: '',
+        left: 'border-r',
+        right: 'border-l',
       },
     },
-    compoundVariants: [
-      { variant: 'solid', side: 'left', className: 'border-r' },
-      { variant: 'solid', side: 'right', className: 'border-l' },
-    ],
     defaultVariants: {
-      variant: 'solid',
       mode: 'full',
       side: 'left',
     },
@@ -34,11 +26,7 @@ const verticalNavVariants = cva(
 const VerticalNavContext = createContext<{ mode: 'rail' | 'full' }>({ mode: 'full' })
 const useVerticalNavMode = () => useContext(VerticalNavContext)
 
-export interface VerticalNavOwnProps extends VariantProps<typeof verticalNavVariants> {
-  /** Element rendered by the nav container; defaults to `<nav>`. */
-  as?: ElementType
-  /** Visual treatment of the navigation surface. */
-  variant?: VariantProps<typeof verticalNavVariants>['variant']
+export interface VerticalNavOwnProps {
   /** Rail collapses labels until hover or focus; full keeps labels visible. */
   mode?: VariantProps<typeof verticalNavVariants>['mode']
   /** Edge where the navigation is attached. */
@@ -48,7 +36,7 @@ export interface VerticalNavOwnProps extends VariantProps<typeof verticalNavVari
 export type VerticalNavProps<C extends ElementType = 'nav'> = PolymorphicProps<C, VerticalNavOwnProps>
 
 const VerticalNavImpl = forwardRef<HTMLElement, VerticalNavProps>(function VerticalNav(
-  { as: Component = 'nav', className, variant, mode, side, ...props },
+  { as: Component = 'nav', className, mode, side, ...props },
   ref,
 ) {
   const resolvedMode = mode ?? 'full'
@@ -56,7 +44,7 @@ const VerticalNavImpl = forwardRef<HTMLElement, VerticalNavProps>(function Verti
     <VerticalNavContext.Provider value={{ mode: resolvedMode }}>
       <Component
         ref={ref as never}
-        className={cn(verticalNavVariants({ variant, mode, side }), className)}
+        className={cn(verticalNavVariants({ mode, side }), className)}
         {...props}
       />
     </VerticalNavContext.Provider>
@@ -118,8 +106,6 @@ export const VerticalNavSection = forwardRef<HTMLDivElement, VerticalNavSectionP
 )
 
 export interface VerticalNavItemOwnProps {
-  /** Element rendered by the item; defaults to `<a>`. Use `as={Link}` for router integration. */
-  as?: ElementType
   /** Marks the item as the current page; sets `aria-current="page"`. */
   active?: boolean
   /** Icon element shown before the label. Always visible, even in rail mode. */

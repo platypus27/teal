@@ -3,33 +3,19 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './cn'
 import type { PolymorphicComponent, PolymorphicProps } from './polymorphic'
 
-const topBarVariants = cva(
-  'flex h-16 items-center gap-3 px-4 sm:px-8 lg:px-12',
-  {
-    variants: {
-      variant: {
-        solid: 'bg-surface-container',
-      },
-      sticky: {
-        true: 'sticky top-0 z-30',
-        false: '',
-      },
-    },
-    compoundVariants: [
-      { sticky: true, variant: 'solid', className: 'border-b border-outline-variant/30' },
-    ],
-    defaultVariants: {
-      variant: 'solid',
-      sticky: true,
+const topBarVariants = cva('flex h-16 items-center gap-3 bg-surface-container px-4 sm:px-8 lg:px-12', {
+  variants: {
+    sticky: {
+      true: 'sticky top-0 z-30 border-b border-outline-variant/30',
+      false: '',
     },
   },
-)
+  defaultVariants: {
+    sticky: true,
+  },
+})
 
-export interface TopBarOwnProps extends VariantProps<typeof topBarVariants> {
-  /** Element rendered by the top bar; defaults to `<header>`. */
-  as?: ElementType
-  /** Visual treatment of the bar. */
-  variant?: VariantProps<typeof topBarVariants>['variant']
+export interface TopBarOwnProps {
   /** Keeps the bar at the top of its scrolling container. */
   sticky?: VariantProps<typeof topBarVariants>['sticky']
 }
@@ -37,13 +23,13 @@ export interface TopBarOwnProps extends VariantProps<typeof topBarVariants> {
 export type TopBarProps<C extends ElementType = 'header'> = PolymorphicProps<C, TopBarOwnProps>
 
 const TopBarImpl = forwardRef<HTMLElement, TopBarProps>(function TopBar(
-  { as: Component = 'header', className, variant, sticky = true, ...props },
+  { as: Component = 'header', className, sticky = true, ...props },
   ref,
 ) {
   return (
     <Component
       ref={ref}
-      className={cn(topBarVariants({ variant, sticky }), className)}
+      className={cn(topBarVariants({ sticky }), className)}
       {...props}
     />
   )

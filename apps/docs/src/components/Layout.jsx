@@ -36,7 +36,7 @@ function Header({ navOpen, setNavOpen }) {
     typeof navigator !== 'undefined' && /mac/i.test(navigator.userAgent) ? '⌘K' : 'Ctrl K',
   )
   return (
-    <TopBar variant="solid" sticky>
+    <TopBar sticky>
       <TopBarBrand>
         <NavLink to="/" className="flex items-center gap-2 font-headline font-extrabold lg:hidden">
           <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
