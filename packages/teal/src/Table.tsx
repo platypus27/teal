@@ -1,4 +1,4 @@
-import { forwardRef, type ReactElement, type ReactNode, type Ref } from 'react'
+import { forwardRef, useCallback, useRef, useState, type ReactElement, type ReactNode, type Ref } from 'react'
 import { Skeleton } from './LoadingState'
 import { cn } from './cn'
 
@@ -35,6 +35,23 @@ export interface TableProps<Row> {
   rows: Row[]
 }
 
+/** Reports when the observed element's content overflows horizontally. */
+function useOverflowing() {
+  const [overflowing, setOverflowing] = useState(false)
+  const observerRef = useRef<ResizeObserver | null>(null)
+  const refCallback = useCallback((node: HTMLDivElement | null) => {
+    observerRef.current?.disconnect()
+    observerRef.current = null
+    if (node) {
+      const measure = () => setOverflowing(node.scrollWidth - node.clientWidth > 1)
+      measure()
+      observerRef.current = new ResizeObserver(measure)
+      observerRef.current.observe(node)
+    }
+  }, [])
+  return [overflowing, refCallback] as const
+}
+
 function TableRender<Row>(
   {
     caption,
@@ -49,13 +66,19 @@ function TableRender<Row>(
   }: TableProps<Row>,
   ref: Ref<HTMLDivElement>,
 ) {
+  const [overflowing, overflowRef] = useOverflowing()
+  const setRefs = (node: HTMLDivElement | null) => {
+    overflowRef(node)
+    if (typeof ref === 'function') ref(node)
+    else if (ref) ref.current = node
+  }
   return (
     <div
-      ref={ref}
+      ref={setRefs}
       role="region"
       aria-label={`${caption} table`}
       aria-busy={loading || undefined}
-      tabIndex={0}
+      tabIndex={overflowing ? 0 : undefined}
       className={cn(
         'overflow-x-auto rounded-2xl border border-outline-variant/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
         className,
