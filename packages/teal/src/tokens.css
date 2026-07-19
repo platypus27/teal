@@ -48,7 +48,7 @@
   --color-surface-container-high: 241 247 245;
   --color-secondary-container: 224 245 244;
   --color-on-surface-variant: 64 92 90;
-  --color-outline: 148 168 165;
+  --color-outline: 100 128 125;
   --color-surface-container-low: 252 254 253;
   --color-surface-tint: 0 106 108;
   --color-primary-container: 224 245 244;
@@ -63,11 +63,16 @@
   --teal-radius-surface: 1.25rem;
   --teal-radius-pill: 9999px;
   --teal-border-subtle: rgb(var(--color-outline-variant) / 0.55);
-  --teal-border-strong: rgb(var(--color-outline) / 0.8);
-  --teal-focus-ring: 0 0 0 3px rgb(var(--color-primary) / 0.28);
+  --teal-border-strong: rgb(var(--color-outline));
+  --teal-focus-ring: 0 0 0 2px rgb(var(--color-surface)), 0 0 0 4px rgb(var(--color-primary));
   --teal-shadow-raised: 0 1px 2px rgba(0, 35, 36, 0.06), 0 12px 32px -20px rgba(0, 84, 84, 0.32);
   --teal-shadow-card: var(--teal-shadow-raised);
   --teal-shadow-overlay: 0 2px 6px rgba(0, 20, 21, 0.12), 0 24px 64px -20px rgba(0, 20, 21, 0.42);
+  --teal-icon-xs: 0.875rem;
+  --teal-icon-sm: 1rem;
+  --teal-icon-md: 1.25rem;
+  --teal-icon-lg: 1.5rem;
+  --teal-icon-xl: 2rem;
   --teal-motion-fast: 150ms;
   --teal-motion-standard: 200ms;
   --teal-z-popover: 40;
@@ -125,7 +130,7 @@ html.dark {
   --color-surface-container-high: 20 54 54;
   --color-secondary-container: 0 100 102;
   --color-on-surface-variant: 138 176 173;
-  --color-outline: 74 100 99;
+  --color-outline: 112 142 140;
   --color-surface-container-low: 10 40 40;
   --color-surface-tint: 45 212 191;
   --color-primary-container: 0 100 102;

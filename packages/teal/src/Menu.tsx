@@ -58,7 +58,7 @@ export function Menu({ align = 'end', className, items, label, modal = false, tr
                   item.variant === 'danger' ? 'text-error data-[highlighted]:bg-error/10' : 'text-on-surface',
                 )}
               >
-                {item.icon ? <span className="shrink-0 [&_svg]:size-4">{item.icon}</span> : null}
+                {item.icon ? <span className="shrink-0 [&_svg]:size-[var(--teal-icon-sm)]">{item.icon}</span> : null}
                 {item.label}
               </MenuPrimitive.Item>
             </div>

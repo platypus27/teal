@@ -148,6 +148,13 @@ Override these supported CSS properties at `:root` to tune Teal without rewritin
 - **Focus ring** - `--teal-focus-ring`
 - **Raised elevation** - `--teal-shadow-raised`
 - **Overlay elevation** - `--teal-shadow-overlay`
+- **Extra-small icon** - `--teal-icon-xs`
+- **Small icon** - `--teal-icon-sm`
+- **Medium icon** - `--teal-icon-md`
+- **Large icon** - `--teal-icon-lg`
+- **Extra-large icon** - `--teal-icon-xl`
+- **Fast motion** - `--teal-motion-fast`
+- **Standard motion** - `--teal-motion-standard`
 
 ---
 

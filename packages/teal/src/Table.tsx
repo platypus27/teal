@@ -116,7 +116,7 @@ function TableRender<Row>(
                 </tr>
               ))
             : rows.map((row) => (
-                <tr key={getRowKey(row)} className="transition-colors hover:bg-surface-container-high/70">
+                <tr key={getRowKey(row)} className="transition-colors duration-[var(--teal-motion-fast)] hover:bg-surface-container-high/70">
                   {columns.map((column) => (
                     <td
                       key={column.key}

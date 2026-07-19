@@ -43,7 +43,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
       <TabsPrimitive.List
         aria-label={ariaLabel}
         className={cn(
-          'inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-xl border border-[color:var(--teal-border-subtle)] p-1 text-on-surface-variant',
+          'box-border inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-xl border border-solid border-[color:var(--teal-border-subtle)] p-[calc(0.25rem-1px)] text-on-surface-variant',
           'bg-surface-container-high',
         )}
       >

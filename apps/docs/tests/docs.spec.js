@@ -69,6 +69,8 @@ test('foundations documents the supported visual theming hooks', async ({ page }
   await page.goto('/foundations')
   await expect(page.getByRole('heading', { name: 'Visual tokens' })).toBeVisible()
   await expect(page.getByText('--teal-radius-control', { exact: true })).toBeVisible()
+  await expect(page.getByText('--teal-icon-sm', { exact: true })).toBeVisible()
+  await expect(page.getByText('--teal-motion-standard', { exact: true })).toBeVisible()
   await expect(page.getByText('--teal-shadow-overlay', { exact: true })).toBeVisible()
 })
 
@@ -114,6 +116,33 @@ test('overlay modules match their approved open-state baselines', async ({ page,
   await page.reload()
   await page.getByRole('button', { name: 'Open popover' }).click()
   await expect(page.getByRole('dialog', { name: 'Workspace filters' })).toHaveScreenshot('visual-qa-popover-open.png')
+})
+
+test('transient interactions match their approved state baselines', async ({ page, browserName, isMobile }) => {
+  test.skip(browserName !== 'chromium' || isMobile, 'Stable interaction baseline uses desktop Chromium')
+  await page.goto('/visual-qa')
+
+  const primary = page.getByRole('button', { name: 'Primary action' })
+  await primary.hover()
+  await expect(primary).toHaveScreenshot('visual-qa-button-hover.png')
+  await primary.click({ position: { x: 20, y: 20 }, delay: 200 })
+  await primary.hover()
+  await page.mouse.down()
+  await expect(primary).toHaveScreenshot('visual-qa-button-active.png')
+  await page.mouse.up()
+
+  await page.getByRole('button', { name: 'Search' }).hover()
+  const tooltip = page.locator('[data-radix-popper-content-wrapper]').filter({ hasText: 'Search all workspaces' })
+  await expect(tooltip).toHaveScreenshot('visual-qa-tooltip-open.png')
+
+  await page.reload()
+  await page.getByRole('combobox', { name: 'Owner' }).click()
+  await expect(page.getByRole('listbox')).toHaveScreenshot('visual-qa-select-open.png')
+
+  await page.reload()
+  await page.getByRole('button', { name: 'Show toast' }).click()
+  const toast = page.getByText('Import complete', { exact: true }).locator('xpath=ancestor::*[@data-state][1]')
+  await expect(toast).toHaveScreenshot('visual-qa-toast-open.png')
 })
 
 test('visual interactions respect reduced motion', async ({ page }) => {

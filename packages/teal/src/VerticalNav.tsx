@@ -4,7 +4,7 @@ import { cn } from './cn'
 import type { PolymorphicComponent, PolymorphicProps } from './polymorphic'
 
 const verticalNavVariants = cva(
-  'group flex flex-col overflow-hidden border-[color:var(--teal-border-subtle)] bg-surface transition-[width] duration-300 ease-out motion-reduce:transition-none',
+  'box-border group flex flex-col overflow-hidden border-solid border-[color:var(--teal-border-subtle)] bg-surface transition-[width] duration-[var(--teal-motion-standard)] ease-out motion-reduce:transition-none',
   {
     variants: {
       mode: {
@@ -90,7 +90,7 @@ export const VerticalNavSection = forwardRef<HTMLDivElement, VerticalNavSectionP
         {label ? (
           <div
             className={cn(
-              'px-3 pb-2 text-xs font-bold uppercase tracking-wider text-on-surface-variant transition-opacity duration-200 motion-reduce:transition-none',
+              'px-3 pb-2 text-xs font-bold uppercase tracking-wider text-on-surface-variant transition-opacity duration-[var(--teal-motion-fast)] motion-reduce:transition-none',
               mode === 'rail'
                 ? 'opacity-0 group-hover:opacity-100 group-focus-within:opacity-100'
                 : 'opacity-100',
@@ -121,7 +121,7 @@ const VerticalNavItemImpl = forwardRef<HTMLElement, VerticalNavItemProps>(functi
   const { mode } = useVerticalNavMode()
 
   const labelClass = cn(
-    'overflow-hidden whitespace-nowrap transition-[width,opacity] duration-200 motion-reduce:transition-none',
+    'overflow-hidden whitespace-nowrap transition-[width,opacity] duration-[var(--teal-motion-standard)] motion-reduce:transition-none',
     mode === 'rail'
       ? 'w-0 opacity-0 group-hover:w-auto group-hover:opacity-100 group-focus-within:w-auto group-focus-within:opacity-100'
       : 'flex-1 opacity-100',
@@ -141,7 +141,7 @@ const VerticalNavItemImpl = forwardRef<HTMLElement, VerticalNavItemProps>(functi
         <span className="flex w-16 shrink-0 items-center justify-center">
           <span
             className={cn(
-              'flex size-9 items-center justify-center rounded-xl transition-colors',
+              'flex size-9 items-center justify-center rounded-xl transition-colors duration-[var(--teal-motion-fast)]',
               active
                 ? 'bg-primary/10 text-primary'
                 : 'text-on-surface-variant group-hover/item:bg-surface-container-high group-hover/item:text-on-surface',

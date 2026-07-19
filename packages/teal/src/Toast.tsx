@@ -78,7 +78,7 @@ export const Toaster = forwardRef<ElementRef<typeof ToastPrimitive.Viewport>>(fu
               'bg-surface',
             )}
           >
-            <VariantIcon aria-hidden="true" className={cn('mt-0.5 size-5', variant.className)} />
+            <VariantIcon aria-hidden="true" className={cn('mt-0.5 size-[var(--teal-icon-md)]', variant.className)} />
             <div className="min-w-0">
               <ToastPrimitive.Title className="text-sm font-semibold">{item.title}</ToastPrimitive.Title>
               {item.description ? (

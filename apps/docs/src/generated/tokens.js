@@ -100,6 +100,34 @@ export default {
     {
       "name": "Overlay elevation",
       "token": "--teal-shadow-overlay"
+    },
+    {
+      "name": "Extra-small icon",
+      "token": "--teal-icon-xs"
+    },
+    {
+      "name": "Small icon",
+      "token": "--teal-icon-sm"
+    },
+    {
+      "name": "Medium icon",
+      "token": "--teal-icon-md"
+    },
+    {
+      "name": "Large icon",
+      "token": "--teal-icon-lg"
+    },
+    {
+      "name": "Extra-large icon",
+      "token": "--teal-icon-xl"
+    },
+    {
+      "name": "Fast motion",
+      "token": "--teal-motion-fast"
+    },
+    {
+      "name": "Standard motion",
+      "token": "--teal-motion-standard"
     }
   ]
 }

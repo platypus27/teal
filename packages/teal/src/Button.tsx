@@ -4,14 +4,16 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { LoaderCircle } from 'lucide-react'
 import { cn } from './cn'
 
+const secondaryActionClasses =
+  'box-border border border-solid border-[color:var(--teal-border-subtle)] bg-surface shadow-sm hover:border-[color:var(--teal-border-strong)] hover:bg-surface-container-low'
+
 const buttonVariants = cva(
   'teal-focus-ring inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-bold active:scale-[0.98] disabled:pointer-events-none disabled:opacity-55 motion-reduce:transform-none',
   {
     variants: {
       variant: {
         primary: 'bg-primary text-on-primary hover:bg-primary/90',
-        secondary:
-          'border border-[color:var(--teal-border-subtle)] bg-surface text-on-surface shadow-sm hover:border-[color:var(--teal-border-strong)] hover:bg-surface-container-low',
+        secondary: cn(secondaryActionClasses, 'text-on-surface'),
         ghost: 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface',
         danger: 'bg-error text-on-error hover:bg-error-dim',
       },
@@ -71,7 +73,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       disabled={disabled || loading}
       {...props}
     >
-      {loading ? <LoaderCircle aria-hidden="true" className="size-4 animate-spin motion-reduce:animate-none" /> : null}
+      {loading ? <LoaderCircle aria-hidden="true" className="size-[var(--teal-icon-sm)] animate-spin motion-reduce:animate-none" /> : null}
       {children}
     </button>
   )
@@ -83,13 +85,13 @@ const iconButtonVariants = cva(
     variants: {
       variant: {
         ghost: 'hover:bg-surface-container-high hover:text-on-surface',
-        secondary: 'border border-[color:var(--teal-border-subtle)] bg-surface shadow-sm hover:border-[color:var(--teal-border-strong)] hover:bg-surface-container-low',
+        secondary: secondaryActionClasses,
         danger: 'text-error hover:bg-error/10',
       },
       size: {
-        sm: 'size-8 [&_svg]:size-4',
-        md: 'size-10 [&_svg]:size-5',
-        lg: 'size-12 [&_svg]:size-6',
+        sm: 'size-8 [&_svg]:size-[var(--teal-icon-sm)]',
+        md: 'size-10 [&_svg]:size-[var(--teal-icon-md)]',
+        lg: 'size-12 [&_svg]:size-[var(--teal-icon-lg)]',
       },
     },
     defaultVariants: {

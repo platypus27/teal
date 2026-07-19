@@ -5,6 +5,14 @@
 
 @layer components {
   .teal-focus-ring {
+    appearance: none;
+    background-color: transparent;
+    border-width: 0;
+    box-sizing: border-box;
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    padding: 0;
     outline: none;
     transition-duration: var(--teal-motion-fast);
     transition-property: background-color, border-color, box-shadow, color, opacity, transform;
@@ -18,12 +26,16 @@
   .teal-raised-surface {
     border-color: var(--teal-border-subtle);
     border-radius: var(--teal-radius-surface);
+    border-style: solid;
+    box-sizing: border-box;
     box-shadow: var(--teal-shadow-raised);
   }
 
   .teal-overlay-surface {
     border-color: var(--teal-border-strong);
     border-radius: var(--teal-radius-control);
+    border-style: solid;
+    box-sizing: border-box;
     box-shadow: var(--teal-shadow-overlay);
   }
 }

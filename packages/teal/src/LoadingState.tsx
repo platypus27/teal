@@ -20,9 +20,9 @@ export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(function Spinne
         aria-hidden="true"
         className={cn(
           'animate-spin motion-reduce:animate-none',
-          size === 'sm' && 'size-4',
-          size === 'md' && 'size-6',
-          size === 'lg' && 'size-8',
+          size === 'sm' && 'size-[var(--teal-icon-sm)]',
+          size === 'md' && 'size-[var(--teal-icon-lg)]',
+          size === 'lg' && 'size-[var(--teal-icon-xl)]',
         )}
       />
     </span>
@@ -49,7 +49,7 @@ export const LoadingState = forwardRef<HTMLDivElement, LoadingStateProps>(functi
       )}
       {...props}
     >
-      <LoaderCircle aria-hidden="true" className="size-8 animate-spin text-primary motion-reduce:animate-none" />
+      <LoaderCircle aria-hidden="true" className="size-[var(--teal-icon-xl)] animate-spin text-primary motion-reduce:animate-none" />
     </div>
   )
 })
@@ -88,7 +88,7 @@ export const Progress = forwardRef<React.ElementRef<typeof ProgressPrimitive.Roo
       {...props}
     >
       <ProgressPrimitive.Indicator
-        className="h-full w-full bg-primary transition-transform motion-reduce:transition-none"
+        className="h-full w-full bg-primary transition-transform duration-[var(--teal-motion-standard)] motion-reduce:transition-none"
         style={{ transform: `translateX(-${100 - percentage}%)` }}
       />
     </ProgressPrimitive.Root>

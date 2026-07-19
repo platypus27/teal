@@ -50,7 +50,7 @@ export const Switch = forwardRef<React.ComponentRef<typeof SwitchPrimitive.Root>
         aria-invalid={invalid ?? (semantics.invalid || undefined)}
         required={semantics.required}
         className={cn(
-          'teal-focus-ring relative shrink-0 rounded-full border border-[color:var(--teal-border-strong)] bg-surface hover:border-outline disabled:cursor-not-allowed disabled:bg-surface-container-high disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary',
+          'teal-focus-ring box-border relative shrink-0 rounded-full border border-solid border-[color:var(--teal-border-strong)] bg-surface hover:border-outline disabled:cursor-not-allowed disabled:bg-surface-container-high disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary',
           size === 'sm' ? 'h-5 w-9' : 'h-6 w-11',
           className,
         )}
@@ -58,7 +58,7 @@ export const Switch = forwardRef<React.ComponentRef<typeof SwitchPrimitive.Root>
       >
         <SwitchPrimitive.Thumb
           className={cn(
-            'block rounded-full bg-white shadow-sm transition-transform motion-reduce:transition-none',
+            'block rounded-full bg-white shadow-sm transition-transform duration-[var(--teal-motion-standard)] motion-reduce:transition-none',
             size === 'sm'
               ? 'size-4 translate-x-0.5 data-[state=checked]:translate-x-[18px]'
               : 'size-5 translate-x-0.5 data-[state=checked]:translate-x-[22px]',

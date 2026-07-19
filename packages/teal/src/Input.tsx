@@ -4,7 +4,7 @@ import { cn } from './cn'
 import { isAriaTrue, mergeDescriptionIds, useFormSemantics } from './form-semantics'
 
 const fieldVariants = cva(
-  'teal-focus-ring w-full rounded-xl border border-[color:var(--teal-border-strong)] bg-surface text-on-surface placeholder:text-on-surface-variant hover:border-outline focus-visible:border-primary disabled:cursor-not-allowed disabled:bg-surface-container-high disabled:opacity-55 aria-[invalid=true]:border-error aria-[invalid=true]:shadow-[0_0_0_3px_rgb(var(--color-error)/0.2)]',
+  'teal-focus-ring box-border w-full rounded-xl border border-solid border-[color:var(--teal-border-strong)] bg-surface text-on-surface placeholder:text-on-surface-variant hover:border-outline focus-visible:border-primary disabled:cursor-not-allowed disabled:bg-surface-container-high disabled:opacity-55 aria-[invalid=true]:border-error aria-[invalid=true]:shadow-[0_0_0_3px_rgb(var(--color-error)/0.2)]',
   {
     variants: {
       size: {

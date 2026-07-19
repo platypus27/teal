@@ -45,7 +45,7 @@ export const Checkbox = forwardRef<React.ComponentRef<typeof CheckboxPrimitive.R
           aria-invalid={invalid ?? (semantics.invalid || undefined)}
           required={semantics.required}
           className={cn(
-            'teal-focus-ring group mt-0.5 flex size-5 shrink-0 items-center justify-center rounded border border-[color:var(--teal-border-strong)] bg-surface text-on-primary hover:border-primary disabled:cursor-not-allowed disabled:bg-surface-container-high disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=indeterminate]:border-primary data-[state=indeterminate]:bg-primary',
+            'teal-focus-ring box-border group mt-0.5 flex size-5 shrink-0 items-center justify-center rounded border border-solid border-[color:var(--teal-border-strong)] bg-surface text-on-primary hover:border-primary disabled:cursor-not-allowed disabled:bg-surface-container-high disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=indeterminate]:border-primary data-[state=indeterminate]:bg-primary',
             className,
           )}
           {...props}
@@ -53,12 +53,12 @@ export const Checkbox = forwardRef<React.ComponentRef<typeof CheckboxPrimitive.R
           <CheckboxPrimitive.Indicator>
             <Minus
               aria-hidden="true"
-              className="hidden size-3.5 group-data-[state=indeterminate]:block"
+              className="hidden size-[var(--teal-icon-xs)] group-data-[state=indeterminate]:block"
               strokeWidth={3}
             />
             <Check
               aria-hidden="true"
-              className="size-3.5 group-data-[state=indeterminate]:hidden"
+              className="size-[var(--teal-icon-xs)] group-data-[state=indeterminate]:hidden"
               strokeWidth={3}
             />
           </CheckboxPrimitive.Indicator>

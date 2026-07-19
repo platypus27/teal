@@ -60,6 +60,15 @@ describe('semantic color tokens', () => {
   ])('%s meets WCAG AA for normal text', (_name, foreground, background) => {
     expect(contrast(foreground ?? [], background ?? [])).toBeGreaterThanOrEqual(4.5)
   })
+
+  it.each([
+    ['light strong control border', light['color-outline'], light['color-surface']],
+    ['light focus indicator', light['color-primary'], light['color-surface']],
+    ['dark strong control border', dark['color-outline'], dark['color-surface']],
+    ['dark focus indicator', dark['color-primary'], dark['color-surface']],
+  ])('%s meets WCAG non-text contrast', (_name, foreground, background) => {
+    expect(contrast(foreground ?? [], background ?? [])).toBeGreaterThanOrEqual(3)
+  })
 })
 
 describe('visual system tokens', () => {
@@ -74,6 +83,13 @@ describe('visual system tokens', () => {
     '--teal-focus-ring',
     '--teal-shadow-raised',
     '--teal-shadow-overlay',
+    '--teal-icon-xs',
+    '--teal-icon-sm',
+    '--teal-icon-md',
+    '--teal-icon-lg',
+    '--teal-icon-xl',
+    '--teal-motion-fast',
+    '--teal-motion-standard',
   ])('publishes %s as a supported theming hook', (token) => {
     expect(css).toMatch(new RegExp(`${token}:\\s*[^;]+;`))
   })

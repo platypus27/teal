@@ -88,7 +88,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
       >
         <SelectPrimitive.Value placeholder={placeholder} />
         <SelectPrimitive.Icon asChild>
-          <ChevronDown aria-hidden="true" className="size-4 shrink-0 text-on-surface-variant" />
+          <ChevronDown aria-hidden="true" className="size-[var(--teal-icon-sm)] shrink-0 text-on-surface-variant" />
         </SelectPrimitive.Icon>
       </SelectPrimitive.Trigger>
       <SelectPrimitive.Portal>
@@ -110,9 +110,9 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
                   ? { textValue: option.textValue ?? String(option.label) }
                   : {})}
               >
-                <span className="absolute left-2 flex size-4 items-center justify-center">
+                <span className="absolute left-2 flex size-[var(--teal-icon-sm)] items-center justify-center">
                   <SelectPrimitive.ItemIndicator>
-                    <Check aria-hidden="true" className="size-4" />
+                    <Check aria-hidden="true" className="size-[var(--teal-icon-sm)]" />
                   </SelectPrimitive.ItemIndicator>
                 </span>
                 <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>

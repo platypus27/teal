@@ -1,7 +1,9 @@
 import { access, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { execFile } from 'node:child_process'
+import { createServer } from 'node:http'
 import { promisify } from 'node:util'
 import { resolve } from 'node:path'
+import { chromium } from 'playwright'
 
 const exec = promisify(execFile)
 const root = resolve(import.meta.dirname, '..')
@@ -12,6 +14,70 @@ async function run(command, args, cwd = workspaceRoot) {
   const { stdout, stderr } = await exec(command, args, { cwd, env: process.env, maxBuffer: 10 * 1024 * 1024 })
   if (stdout) process.stdout.write(stdout)
   if (stderr) process.stderr.write(stderr)
+}
+
+async function verifyCompiledConsumer(consumer) {
+  const directory = resolve(consumer, 'dist')
+  const server = createServer(async (request, response) => {
+    const pathname = new URL(request.url ?? '/', 'http://localhost').pathname
+    const file = resolve(directory, pathname === '/' ? 'index.html' : `.${pathname}`)
+    if (!file.startsWith(directory)) {
+      response.writeHead(403).end()
+      return
+    }
+    try {
+      const body = await readFile(file)
+      const contentType = file.endsWith('.css') ? 'text/css' : file.endsWith('.js') ? 'text/javascript' : 'text/html'
+      response.writeHead(200, { 'content-type': contentType }).end(body)
+    } catch {
+      response.writeHead(404).end()
+    }
+  })
+
+  await new Promise((resolveListening) => server.listen(0, '127.0.0.1', resolveListening))
+  const address = server.address()
+  if (!address || typeof address === 'string') throw new Error('Packed consumer server did not expose a port')
+
+  const browser = await chromium.launch({ headless: true })
+  try {
+    const page = await browser.newPage()
+    await page.goto(`http://127.0.0.1:${address.port}`)
+    const styles = await page.evaluate(() => {
+      const computed = (id) => getComputedStyle(document.getElementById(id))
+      const root = getComputedStyle(document.documentElement)
+      return {
+        alert: { borderStyle: computed('consumer-alert').borderStyle, borderWidth: computed('consumer-alert').borderWidth },
+        avatarSize: { height: computed('consumer-avatar').height, width: computed('consumer-avatar').width },
+        badgeHeight: computed('consumer-badge').height,
+        buttonHeight: computed('consumer-button').height,
+        card: {
+          borderRadius: computed('consumer-card').borderRadius,
+          borderStyle: computed('consumer-card').borderStyle,
+          borderWidth: computed('consumer-card').borderWidth,
+        },
+        controlRadius: root.getPropertyValue('--teal-radius-control').trim(),
+        inputBackground: computed('consumer-input').backgroundColor,
+        tabsHeight: getComputedStyle(document.querySelector('[role="tablist"]')).height,
+      }
+    })
+    if (styles.alert.borderStyle !== 'solid' || styles.alert.borderWidth !== '1px') {
+      throw new Error(`Compiled Alert border is not visible: ${JSON.stringify(styles.alert)}`)
+    }
+    if (styles.card.borderStyle !== 'solid' || styles.card.borderWidth !== '1px' || styles.card.borderRadius !== '20px') {
+      throw new Error(`Compiled Card surface is incorrect: ${JSON.stringify(styles.card)}`)
+    }
+    if (styles.buttonHeight !== '40px') throw new Error(`Compiled Button height changed: ${styles.buttonHeight}`)
+    if (styles.avatarSize.height !== '40px' || styles.avatarSize.width !== '40px') {
+      throw new Error(`Compiled Avatar dimensions changed: ${JSON.stringify(styles.avatarSize)}`)
+    }
+    if (styles.badgeHeight !== '20px') throw new Error(`Compiled Badge height changed: ${styles.badgeHeight}`)
+    if (styles.tabsHeight !== '44px') throw new Error(`Compiled Tabs height changed: ${styles.tabsHeight}`)
+    if (styles.inputBackground === 'rgba(0, 0, 0, 0)') throw new Error('Compiled Input background is transparent')
+    if (styles.controlRadius !== '1rem') throw new Error(`Compiled token value is incorrect: ${styles.controlRadius}`)
+  } finally {
+    await browser.close()
+    await new Promise((resolveClosed, reject) => server.close((error) => error ? reject(error) : resolveClosed()))
+  }
 }
 
 await run(process.execPath, [resolve(root, 'scripts/build.mjs')], root)
@@ -56,15 +122,18 @@ try {
     await writeFile(resolve(consumer, 'index.html'), '<div id="root"></div><script type="module" src="/main.js"></script>')
     await writeFile(resolve(consumer, 'main.js'), `import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { Alert, Button, Card, Field, Input } from '@kryv/teal'
+import { Alert, Avatar, Badge, Button, Card, Field, Input, Tabs } from '@kryv/teal'
 import '@kryv/teal/styles.css'
 
 const app = React.createElement(
   Card,
-  null,
-  React.createElement(Alert, { title: 'Package verified', variant: 'success' }, 'Compiled styles loaded'),
-  React.createElement(Field, { label: 'Workspace' }, React.createElement(Input, { defaultValue: 'Northstar' })),
-  React.createElement(Button, null, 'Continue'),
+  { id: 'consumer-card' },
+  React.createElement(Alert, { id: 'consumer-alert', title: 'Package verified', variant: 'success' }, 'Compiled styles loaded'),
+  React.createElement(Avatar, { id: 'consumer-avatar', name: 'Avery Chen' }),
+  React.createElement(Badge, { id: 'consumer-badge' }, 'Ready'),
+  React.createElement(Field, { label: 'Workspace' }, React.createElement(Input, { id: 'consumer-input', defaultValue: 'Northstar' })),
+  React.createElement(Tabs, { 'aria-label': 'Consumer tabs', defaultValue: 'overview', items: [{ value: 'overview', label: 'Overview', content: 'Overview' }] }),
+  React.createElement(Button, { id: 'consumer-button', variant: 'secondary' }, 'Continue'),
 )
 createRoot(document.getElementById('root')).render(app)
 `)
@@ -80,6 +149,7 @@ createRoot(document.getElementById('root')).render(app)
     for (const expected of ['--teal-radius-control', '.teal-focus-ring', '.bg-primary']) {
       if (!builtCss.includes(expected)) throw new Error(`Packed consumer stylesheet is missing ${expected}`)
     }
+    await verifyCompiledConsumer(consumer)
     await run(process.execPath, ['-e', "Promise.all([import('@kryv/teal/tailwind-preset'), import('@kryv/teal/styles.css', { with: { type: 'css' } }).catch(() => undefined)])"], consumer)
     const installedPackage = resolve(consumer, 'node_modules/@kryv/teal')
     await access(resolve(installedPackage, 'src/Button.tsx'))

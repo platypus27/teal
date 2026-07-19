@@ -30,7 +30,7 @@ export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function E
     >
       <div
         aria-hidden="true"
-        className="flex size-12 items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant [&_svg]:size-6"
+        className="flex size-12 items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant [&_svg]:size-[var(--teal-icon-lg)]"
       >
         {icon ?? <Inbox />}
       </div>

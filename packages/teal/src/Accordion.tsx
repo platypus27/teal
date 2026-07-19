@@ -74,7 +74,7 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(function Acc
               {item.title}
               <ChevronDown
                 aria-hidden="true"
-                className="size-4 shrink-0 text-on-surface-variant transition-transform group-data-[state=open]:rotate-180 motion-reduce:transition-none"
+                className="size-[var(--teal-icon-sm)] shrink-0 text-on-surface-variant transition-transform duration-[var(--teal-motion-standard)] group-data-[state=open]:rotate-180 motion-reduce:transition-none"
               />
             </AccordionPrimitive.Trigger>
           </AccordionPrimitive.Header>

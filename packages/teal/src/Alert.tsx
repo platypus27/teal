@@ -57,7 +57,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
       className={cn(alertVariants({ variant }), className)}
       {...props}
     >
-      <span aria-hidden="true" className={cn('mt-0.5 shrink-0 [&_svg]:size-5', variantIconClasses[resolvedVariant])}>
+      <span aria-hidden="true" className={cn('mt-0.5 shrink-0 [&_svg]:size-[var(--teal-icon-md)]', variantIconClasses[resolvedVariant])}>
         {icon ?? <VariantIcon />}
       </span>
       <div className="min-w-0 flex-1">

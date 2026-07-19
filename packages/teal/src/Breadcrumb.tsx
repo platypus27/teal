@@ -24,7 +24,7 @@ export interface BreadcrumbProps {
   label?: string
 }
 
-const separator = <ChevronRight aria-hidden="true" className="size-4 shrink-0 text-on-surface-variant" />
+const separator = <ChevronRight aria-hidden="true" className="size-[var(--teal-icon-sm)] shrink-0 text-on-surface-variant" />
 
 export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(function Breadcrumb(
   { className, collapseAfter = 5, items, label = 'Breadcrumb' },

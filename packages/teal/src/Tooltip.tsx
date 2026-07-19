@@ -41,7 +41,7 @@ export function Tooltip({ children, className, content, delayDuration, side = 't
           side={side}
           sideOffset={6}
           className={cn(
-            'z-[var(--teal-z-tooltip)] max-w-xs rounded-lg border border-inverse-on-surface/15 px-2.5 py-1.5 text-xs font-medium shadow-overlay motion-reduce:transition-none',
+            'box-border z-[var(--teal-z-tooltip)] max-w-xs rounded-lg border border-solid border-inverse-on-surface/15 px-2.5 py-1.5 text-xs font-medium shadow-overlay motion-reduce:transition-none',
             'bg-inverse-surface text-inverse-on-surface',
             className,
           )}

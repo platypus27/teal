@@ -4,13 +4,13 @@ import { User } from 'lucide-react'
 import { cn } from './cn'
 
 const avatarVariants = cva(
-  'inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-[color:var(--teal-border-subtle)] bg-surface-container-high text-on-surface-variant shadow-sm',
+  'box-border inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-solid border-[color:var(--teal-border-subtle)] bg-surface-container-high text-on-surface-variant shadow-sm',
   {
     variants: {
       size: {
-        sm: 'size-8 text-xs [&_svg]:size-4',
-        md: 'size-10 text-sm [&_svg]:size-5',
-        lg: 'size-12 text-base [&_svg]:size-6',
+        sm: 'size-8 text-xs [&_svg]:size-[var(--teal-icon-sm)]',
+        md: 'size-10 text-sm [&_svg]:size-[var(--teal-icon-md)]',
+        lg: 'size-12 text-base [&_svg]:size-[var(--teal-icon-lg)]',
       },
     },
     defaultVariants: { size: 'md' },
