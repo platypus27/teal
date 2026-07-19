@@ -98,7 +98,11 @@ test('visual QA typography is locally served and ready before capture', async ({
   const typography = await page.evaluate(async () => {
     await document.fonts.ready
     return {
-      externalStylesheet: [...document.styleSheets].some((sheet) => sheet.href?.startsWith('https://fonts.googleapis.com')),
+      externalStylesheet: [...document.styleSheets].some((sheet) => {
+        if (!sheet.href) return false
+        const url = new URL(sheet.href)
+        return url.protocol === 'https:' && url.hostname === 'fonts.googleapis.com'
+      }),
       manrope: [...document.fonts].some((font) => font.family === 'Manrope' && font.status === 'loaded'),
       jakarta: [...document.fonts].some((font) => font.family === 'Plus Jakarta Sans' && font.status === 'loaded'),
     }
