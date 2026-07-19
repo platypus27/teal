@@ -25,8 +25,7 @@ test.describe('module accessibility', () => {
   for (const moduleId of moduleIds) {
     test(`${moduleId} has no accessibility violations`, async ({ page }) => {
       await page.goto(`/modules/${moduleId}`)
-      await expect(page.getByRole('heading', { level: 1, name: moduleNames.get(moduleId) })).toBeVisible()
-      await expect(page.locator('#examples')).toBeVisible()
+      await waitForVisualReady(page, moduleNames.get(moduleId), '#examples')
 
       if (moduleId === 'dialog') await page.locator('#examples').getByRole('button', { name: 'Open dialog' }).click()
       if (moduleId === 'tooltip') await page.getByRole('button', { name: 'Open search' }).hover()
@@ -168,6 +167,7 @@ test('transient interactions match their approved state baselines', async ({ pag
   await primary.click({ position: { x: 20, y: 20 }, delay: 200 })
   await primary.hover()
   await page.mouse.down()
+  await page.waitForTimeout(200)
   await expect(primary).toHaveScreenshot('visual-qa-button-active.png', { maxDiffPixels: 2 })
   await page.mouse.up()
 

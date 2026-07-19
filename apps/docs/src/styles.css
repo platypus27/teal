@@ -6,6 +6,12 @@ body {
   min-width: 320px;
 }
 
+@media (min-width: 1024px) {
+  html {
+    scrollbar-gutter: stable;
+  }
+}
+
 .docs-grid {
   background-image: radial-gradient(rgb(var(--color-outline-variant) / 0.7) 1px, transparent 1px);
   background-size: 24px 24px;
@@ -42,6 +48,10 @@ html.dark {
 .docs-code {
   color: var(--prism-text);
   font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+.docs-code code {
+  display: block;
 }
 
 .docs-code .token.comment,
