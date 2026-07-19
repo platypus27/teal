@@ -29,6 +29,7 @@ jobs:
       - run: npm run test:unit
       - run: npm run check:generated
       - run: npm run build
+      - run: npx playwright install --with-deps chromium
       - run: npm run pack:verify
 
   browser:

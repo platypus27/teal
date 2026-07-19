@@ -34,12 +34,13 @@ async function verifyCompiledConsumer(consumer) {
     }
   })
 
-  await new Promise((resolveListening) => server.listen(0, '127.0.0.1', resolveListening))
-  const address = server.address()
-  if (!address || typeof address === 'string') throw new Error('Packed consumer server did not expose a port')
-
-  const browser = await chromium.launch({ headless: true })
+  let browser
   try {
+    await new Promise((resolveListening) => server.listen(0, '127.0.0.1', resolveListening))
+    const address = server.address()
+    if (!address || typeof address === 'string') throw new Error('Packed consumer server did not expose a port')
+
+    browser = await chromium.launch({ headless: true })
     const page = await browser.newPage()
     await page.goto(`http://127.0.0.1:${address.port}`)
     const styles = await page.evaluate(() => {
@@ -75,8 +76,10 @@ async function verifyCompiledConsumer(consumer) {
     if (styles.inputBackground === 'rgba(0, 0, 0, 0)') throw new Error('Compiled Input background is transparent')
     if (styles.controlRadius !== '1rem') throw new Error(`Compiled token value is incorrect: ${styles.controlRadius}`)
   } finally {
-    await browser.close()
-    await new Promise((resolveClosed, reject) => server.close((error) => error ? reject(error) : resolveClosed()))
+    await browser?.close()
+    if (server.listening) {
+      await new Promise((resolveClosed, reject) => server.close((error) => error ? reject(error) : resolveClosed()))
+    }
   }
 }
 

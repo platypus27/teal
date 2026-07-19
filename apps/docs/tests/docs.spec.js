@@ -3,11 +3,20 @@ import AxeBuilder from '@axe-core/playwright'
 import { modules } from '../src/data/module-meta.js'
 
 const moduleIds = modules.map((module) => module.id)
+const moduleNames = new Map(modules.map((module) => [module.id, module.name]))
+
+async function waitForVisualReady(page, headingName) {
+  await expect(page.getByRole('heading', { level: 1, name: headingName })).toBeVisible()
+  await page.evaluate(async () => {
+    await document.fonts.ready
+  })
+}
 
 test.describe('module accessibility', () => {
   for (const moduleId of moduleIds) {
     test(`${moduleId} has no accessibility violations`, async ({ page }) => {
       await page.goto(`/modules/${moduleId}`)
+      await expect(page.getByRole('heading', { level: 1, name: moduleNames.get(moduleId) })).toBeVisible()
 
       if (moduleId === 'dialog') await page.locator('#examples').getByRole('button', { name: 'Open dialog' }).click()
       if (moduleId === 'tooltip') await page.getByRole('button', { name: 'Open search' }).hover()
@@ -74,9 +83,26 @@ test('foundations documents the supported visual theming hooks', async ({ page }
   await expect(page.getByText('--teal-shadow-overlay', { exact: true })).toBeVisible()
 })
 
+test('visual QA typography is locally served and ready before capture', async ({ page }) => {
+  await page.goto('/visual-qa')
+  await expect(page.getByRole('heading', { level: 1, name: 'Visual QA' })).toBeVisible()
+  const typography = await page.evaluate(async () => {
+    await document.fonts.ready
+    return {
+      externalStylesheet: [...document.styleSheets].some((sheet) => sheet.href?.startsWith('https://fonts.googleapis.com')),
+      manrope: [...document.fonts].some((font) => font.family === 'Manrope' && font.status === 'loaded'),
+      jakarta: [...document.fonts].some((font) => font.family === 'Plus Jakarta Sans' && font.status === 'loaded'),
+    }
+  })
+  expect(typography.externalStylesheet).toBe(false)
+  expect(typography.manrope).toBe(true)
+  expect(typography.jakarta).toBe(true)
+})
+
 test('module pages match the approved desktop visual baseline', async ({ page, browserName, isMobile }) => {
   test.skip(browserName !== 'chromium' || isMobile, 'Stable visual baseline uses desktop Chromium')
   await page.goto('/modules/button')
+  await waitForVisualReady(page, 'Button')
   await expect(page).toHaveScreenshot('button-module-light.png', { fullPage: true, maxDiffPixels: 300 })
   await page.getByRole('button', { name: 'Dark mode' }).click()
   await expect(page).toHaveScreenshot('button-module-dark.png', { fullPage: true, maxDiffPixels: 300 })
@@ -85,7 +111,7 @@ test('module pages match the approved desktop visual baseline', async ({ page, b
 test('visual QA surface covers every module family in both themes', async ({ page, browserName, isMobile }) => {
   test.skip(browserName !== 'chromium', 'Stable visual baseline uses Chromium')
   await page.goto('/visual-qa')
-  await expect(page.getByRole('heading', { level: 1, name: 'Visual QA' })).toBeVisible()
+  await waitForVisualReady(page, 'Visual QA')
   for (const family of ['Actions', 'Forms', 'Surfaces', 'Overlays', 'Feedback', 'Navigation', 'Data']) {
     await expect(page.getByRole('heading', { level: 2, name: family })).toBeVisible()
   }
@@ -102,6 +128,7 @@ test('visual QA surface covers every module family in both themes', async ({ pag
 test('overlay modules match their approved open-state baselines', async ({ page, browserName, isMobile }) => {
   test.skip(browserName !== 'chromium' || isMobile, 'Stable overlay baseline uses desktop Chromium')
   await page.goto('/visual-qa')
+  await waitForVisualReady(page, 'Visual QA')
 
   await page.getByRole('button', { name: 'Open dialog' }).click()
   const dialog = page.getByRole('dialog', { name: 'Archive project?' })
@@ -110,10 +137,12 @@ test('overlay modules match their approved open-state baselines', async ({ page,
   await expect(dialog).toBeHidden()
 
   await page.reload()
+  await waitForVisualReady(page, 'Visual QA')
   await page.getByRole('button', { name: 'Open menu' }).click()
   await expect(page.getByRole('menu')).toHaveScreenshot('visual-qa-menu-open.png')
 
   await page.reload()
+  await waitForVisualReady(page, 'Visual QA')
   await page.getByRole('button', { name: 'Open popover' }).click()
   await expect(page.getByRole('dialog', { name: 'Workspace filters' })).toHaveScreenshot('visual-qa-popover-open.png')
 })
@@ -121,6 +150,7 @@ test('overlay modules match their approved open-state baselines', async ({ page,
 test('transient interactions match their approved state baselines', async ({ page, browserName, isMobile }) => {
   test.skip(browserName !== 'chromium' || isMobile, 'Stable interaction baseline uses desktop Chromium')
   await page.goto('/visual-qa')
+  await waitForVisualReady(page, 'Visual QA')
 
   const primary = page.getByRole('button', { name: 'Primary action' })
   await primary.hover()
@@ -136,10 +166,12 @@ test('transient interactions match their approved state baselines', async ({ pag
   await expect(tooltip).toHaveScreenshot('visual-qa-tooltip-open.png')
 
   await page.reload()
+  await waitForVisualReady(page, 'Visual QA')
   await page.getByRole('combobox', { name: 'Owner' }).click()
   await expect(page.getByRole('listbox')).toHaveScreenshot('visual-qa-select-open.png')
 
   await page.reload()
+  await waitForVisualReady(page, 'Visual QA')
   await page.getByRole('button', { name: 'Show toast' }).click()
   const toast = page.getByText('Import complete', { exact: true }).locator('xpath=ancestor::*[@data-state][1]')
   await expect(toast).toHaveScreenshot('visual-qa-toast-open.png')
@@ -148,6 +180,7 @@ test('transient interactions match their approved state baselines', async ({ pag
 test('visual interactions respect reduced motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/visual-qa')
+  await waitForVisualReady(page, 'Visual QA')
   const primary = page.getByRole('button', { name: 'Primary action' })
   const transitionSeconds = await primary.evaluate((element) => Number.parseFloat(getComputedStyle(element).transitionDuration))
   expect(transitionSeconds).toBeLessThanOrEqual(0.00001)
@@ -157,6 +190,7 @@ test('visual interactions respect reduced motion', async ({ page }) => {
 
 test('visual states expose focus, disabled, loading, invalid, and selected feedback', async ({ page }) => {
   await page.goto('/visual-qa')
+  await waitForVisualReady(page, 'Visual QA')
   const primary = page.getByRole('button', { name: 'Primary action' })
   await primary.focus()
   expect(await primary.evaluate((element) => getComputedStyle(element).boxShadow)).not.toBe('none')
