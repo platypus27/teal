@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Check, Copy } from 'lucide-react'
 import { toast } from '@kryv/teal'
 import { Page, Section } from '../components/Page.jsx'
-import { colorTokens, shapeNotes, typeTokens } from '../data/foundations.js'
+import { colorTokens, shapeNotes, typeTokens, visualTokens } from '../data/foundations.js'
 import { foundationsMarkdown } from '../lib/markdown.js'
 
 const shapeStyles = [
@@ -92,6 +92,21 @@ export function FoundationsPage() {
             <div key={note} className={`${shapeStyles[index]} p-5`}>
               {note}
             </div>
+          ))}
+        </div>
+      </Section>
+      <Section title="Visual tokens" description="Override these supported CSS properties at :root to tune Teal without rewriting module styles.">
+        <div className="grid gap-3 sm:grid-cols-2">
+          {visualTokens.map(({ name, token }) => (
+            <button
+              key={token}
+              type="button"
+              onClick={() => copy(token)}
+              className="teal-focus-ring flex items-center justify-between gap-3 rounded-xl border border-[color:var(--teal-border-subtle)] bg-surface px-4 py-3 text-left shadow-sm hover:border-[color:var(--teal-border-strong)]"
+            >
+              <span className="text-sm font-semibold text-on-surface">{name}</span>
+              <span className="font-mono text-xs text-on-surface-variant">{token}</span>
+            </button>
           ))}
         </div>
       </Section>

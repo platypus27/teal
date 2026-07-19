@@ -43,7 +43,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
       <TabsPrimitive.List
         aria-label={ariaLabel}
         className={cn(
-          'inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-xl p-1 text-on-surface-variant',
+          'inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-xl border border-[color:var(--teal-border-subtle)] p-1 text-on-surface-variant',
           'bg-surface-container-high',
         )}
       >
@@ -52,7 +52,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
             key={item.value}
             value={item.value}
             disabled={item.disabled}
-            className="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold outline-none transition-colors hover:text-on-surface focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none disabled:opacity-45 data-[state=active]:bg-surface data-[state=active]:text-on-surface data-[state=active]:shadow-sm"
+            className="teal-focus-ring whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold hover:text-on-surface disabled:pointer-events-none disabled:opacity-45 data-[state=active]:bg-surface data-[state=active]:text-on-surface data-[state=active]:shadow-sm"
           >
             {item.label}
           </TabsPrimitive.Trigger>
@@ -62,7 +62,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
         <TabsPrimitive.Content
           key={item.value}
           value={item.value}
-          className="mt-4 outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          className="teal-focus-ring mt-4 rounded-lg"
         >
           {item.content}
         </TabsPrimitive.Content>

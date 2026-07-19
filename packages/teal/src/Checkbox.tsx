@@ -45,7 +45,7 @@ export const Checkbox = forwardRef<React.ComponentRef<typeof CheckboxPrimitive.R
           aria-invalid={invalid ?? (semantics.invalid || undefined)}
           required={semantics.required}
           className={cn(
-            'group mt-0.5 flex size-5 shrink-0 items-center justify-center rounded border border-outline-variant bg-surface-container-highest text-on-primary outline-none transition-colors hover:border-primary/70 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=indeterminate]:border-primary data-[state=indeterminate]:bg-primary',
+            'teal-focus-ring group mt-0.5 flex size-5 shrink-0 items-center justify-center rounded border border-[color:var(--teal-border-strong)] bg-surface text-on-primary hover:border-primary disabled:cursor-not-allowed disabled:bg-surface-container-high disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=indeterminate]:border-primary data-[state=indeterminate]:bg-primary',
             className,
           )}
           {...props}

@@ -54,12 +54,32 @@ try {
       devDependencies: { vite: '^8.1.4' },
     }, null, 2))
     await writeFile(resolve(consumer, 'index.html'), '<div id="root"></div><script type="module" src="/main.js"></script>')
-    await writeFile(resolve(consumer, 'main.js'), "import React from 'react'; import { createRoot } from 'react-dom/client'; import { Button } from '@kryv/teal'; import '@kryv/teal/styles.css'; createRoot(document.getElementById('root')).render(React.createElement(Button, null, 'Verified'))")
+    await writeFile(resolve(consumer, 'main.js'), `import React from 'react'
+import { createRoot } from 'react-dom/client'
+import { Alert, Button, Card, Field, Input } from '@kryv/teal'
+import '@kryv/teal/styles.css'
+
+const app = React.createElement(
+  Card,
+  null,
+  React.createElement(Alert, { title: 'Package verified', variant: 'success' }, 'Compiled styles loaded'),
+  React.createElement(Field, { label: 'Workspace' }, React.createElement(Input, { defaultValue: 'Northstar' })),
+  React.createElement(Button, null, 'Continue'),
+)
+createRoot(document.getElementById('root')).render(app)
+`)
     await writeFile(resolve(consumer, 'ssr.mjs'), "import React from 'react'; import { renderToString } from 'react-dom/server'; import { Button } from '@kryv/teal'; if (!renderToString(React.createElement(Button, null, 'SSR'))) process.exit(1)")
     await run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund'], consumer)
     await run(process.execPath, ['-e', "import('@kryv/teal').then((mod) => { if (!mod.Button || !mod.VerticalNavItem) throw new Error('public export missing') })"], consumer)
     await run(process.execPath, ['ssr.mjs'], consumer)
     await run('npm', ['exec', '--', 'vite', 'build'], consumer)
+    const builtAssets = resolve(consumer, 'dist/assets')
+    const builtCssFiles = (await readdir(builtAssets)).filter((file) => file.endsWith('.css'))
+    if (builtCssFiles.length !== 1) throw new Error(`Expected one compiled consumer stylesheet, found ${builtCssFiles.length}`)
+    const builtCss = await readFile(resolve(builtAssets, builtCssFiles[0]), 'utf8')
+    for (const expected of ['--teal-radius-control', '.teal-focus-ring', '.bg-primary']) {
+      if (!builtCss.includes(expected)) throw new Error(`Packed consumer stylesheet is missing ${expected}`)
+    }
     await run(process.execPath, ['-e', "Promise.all([import('@kryv/teal/tailwind-preset'), import('@kryv/teal/styles.css', { with: { type: 'css' } }).catch(() => undefined)])"], consumer)
     const installedPackage = resolve(consumer, 'node_modules/@kryv/teal')
     await access(resolve(installedPackage, 'src/Button.tsx'))

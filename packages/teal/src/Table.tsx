@@ -80,7 +80,7 @@ function TableRender<Row>(
       aria-busy={loading || undefined}
       tabIndex={overflowing ? 0 : undefined}
       className={cn(
-        'overflow-x-auto rounded-2xl border border-outline-variant/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+        'teal-raised-surface teal-focus-ring overflow-x-auto border bg-surface-container',
         className,
       )}
     >
@@ -91,7 +91,7 @@ function TableRender<Row>(
       ) : null}
       <table className="w-full border-collapse text-left text-sm">
         <caption className="sr-only">{caption}</caption>
-        <thead className={cn('text-xs font-semibold uppercase tracking-wide text-on-surface-variant', 'bg-surface-container-high')}>
+        <thead className={cn('text-xs font-semibold uppercase tracking-wide text-on-surface-variant', 'bg-surface-container-highest')}>
           <tr>
             {columns.map((column) => (
               <th
@@ -104,7 +104,7 @@ function TableRender<Row>(
             ))}
           </tr>
         </thead>
-        <tbody className={cn('divide-y divide-outline-variant/25', 'bg-surface-container')}>
+        <tbody className={cn('divide-y divide-outline-variant/40', 'bg-surface')}>
           {loading
             ? Array.from({ length: 3 }, (_, rowIndex) => (
                 <tr key={`loading-${rowIndex}`}>

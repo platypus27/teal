@@ -15,6 +15,9 @@ const RecipesPage = lazy(() => import('./pages/RecipesPage.jsx').then((module) =
 const NotFoundPage = lazy(() =>
   import('./pages/NotFoundPage.jsx').then((module) => ({ default: module.NotFoundPage })),
 )
+const VisualQaPage = lazy(() =>
+  import('./pages/VisualQaPage.jsx').then((module) => ({ default: module.VisualQaPage })),
+)
 
 function PageLoader() {
   return (
@@ -27,6 +30,14 @@ function PageLoader() {
 export default function App() {
   return (
     <Routes>
+      <Route
+        path="visual-qa"
+        element={
+          <Suspense fallback={<PageLoader />}>
+            <VisualQaPage />
+          </Suspense>
+        }
+      />
       <Route element={<Layout />}>
         <Route
           index

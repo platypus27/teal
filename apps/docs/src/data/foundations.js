@@ -2,6 +2,7 @@
 import tokenData from '../generated/tokens.js'
 
 export const colorTokens = tokenData.colors
+export const visualTokens = tokenData.visualTokens
 
 export const typeTokens = [
   { token: '--teal-font-headline', label: 'Plus Jakarta Sans', className: 'font-headline' },

@@ -44,7 +44,7 @@ export const LoadingState = forwardRef<HTMLDivElement, LoadingStateProps>(functi
       role="status"
       aria-label={label}
       className={cn(
-        'flex min-h-60 items-center justify-center rounded-2xl border border-outline-variant/20 bg-surface-container',
+        'teal-raised-surface flex min-h-60 items-center justify-center border bg-surface-container',
         className,
       )}
       {...props}
@@ -62,7 +62,7 @@ export const Skeleton = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement
     <div
       ref={ref}
       aria-hidden="true"
-      className={cn('animate-pulse rounded-lg bg-surface-container-high motion-reduce:animate-none', className)}
+      className={cn('animate-pulse rounded-lg bg-surface-container-highest motion-reduce:animate-none', className)}
       {...props}
     />
   )

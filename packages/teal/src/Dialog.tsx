@@ -59,7 +59,7 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
             restoreFocusRef.current?.focus()
           } : undefined}
           className={cn(
-            'teal-dialog-content fixed left-1/2 top-1/2 z-[var(--teal-z-dialog)] max-h-[calc(100vh-2rem)] w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-2xl border border-outline-variant/40 bg-surface-container p-6 text-on-surface shadow-[var(--teal-shadow-overlay)] outline-none',
+            'teal-dialog-content teal-overlay-surface fixed left-1/2 top-1/2 z-[var(--teal-z-dialog)] max-h-[calc(100vh-2rem)] w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto border bg-surface p-6 text-on-surface outline-none',
             size === 'sm' && 'max-w-sm',
             size === 'md' && 'max-w-lg',
             size === 'lg' && 'max-w-2xl',

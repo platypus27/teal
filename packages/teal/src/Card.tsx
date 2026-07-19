@@ -23,7 +23,7 @@ const CardImpl = forwardRef<HTMLElement, CardProps<ElementType>>(function Card(
       {...(isButton ? { type: type ?? 'button', disabled } : {})}
       aria-disabled={disabled || undefined}
       className={cn(
-        'rounded-2xl border border-outline-variant/20 bg-surface-container p-6 shadow-[var(--teal-shadow-card)]',
+        'teal-raised-surface border bg-surface-container p-6',
         disabled && 'pointer-events-none opacity-55',
         className,
       )}

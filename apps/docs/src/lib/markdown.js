@@ -5,7 +5,7 @@
  */
 
 import { accessibility } from '../data/accessibility.js'
-import { colorTokens, shapeNotes, typeTokens } from '../data/foundations.js'
+import { colorTokens, shapeNotes, typeTokens, visualTokens } from '../data/foundations.js'
 import { installSteps, packageManagers, principles } from '../data/getting-started.js'
 import { mergePropDocs } from '../data/prop-docs.js'
 import { promotionRule } from '../data/recipes.js'
@@ -135,6 +135,8 @@ export function foundationsMarkdown() {
   for (const type of typeTokens) lines.push(`- **${type.label}** - \`${type.token}\``)
   lines.push('', '## Shape, elevation, and motion', '')
   for (const note of shapeNotes) lines.push(`- ${note}`)
+  lines.push('', '## Visual tokens', '', 'Override these supported CSS properties at `:root` to tune Teal without rewriting module styles.', '')
+  for (const token of visualTokens) lines.push(`- **${token.name}** - \`${token.token}\``)
   return collapse(lines)
 }
 

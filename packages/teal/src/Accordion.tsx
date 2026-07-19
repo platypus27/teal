@@ -59,7 +59,7 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(function Acc
   return (
     <AccordionPrimitive.Root
       ref={ref}
-      className={cn('divide-y divide-outline-variant/25 rounded-2xl border border-outline-variant/30', className)}
+      className={cn('teal-raised-surface divide-y divide-outline-variant/40 border bg-surface-container', className)}
       {...modeProps}
     >
       {items.map((item) => (
@@ -70,7 +70,7 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(function Acc
           className="px-4"
         >
           <AccordionPrimitive.Header className="flex">
-            <AccordionPrimitive.Trigger className="group flex flex-1 items-center justify-between gap-2 py-4 text-left text-sm font-semibold text-on-surface outline-none transition-colors hover:text-primary focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none disabled:opacity-45">
+            <AccordionPrimitive.Trigger className="teal-focus-ring group flex flex-1 items-center justify-between gap-2 rounded-lg py-4 text-left text-sm font-semibold text-on-surface hover:text-primary disabled:pointer-events-none disabled:opacity-45">
               {item.title}
               <ChevronDown
                 aria-hidden="true"

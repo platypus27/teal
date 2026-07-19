@@ -43,7 +43,7 @@ export function Menu({ align = 'end', className, items, label, modal = false, tr
           sideOffset={6}
           aria-label={label}
           className={cn(
-            'z-[var(--teal-z-popover)] min-w-44 rounded-xl border border-outline-variant/40 bg-surface-container p-1 text-on-surface shadow-[var(--teal-shadow-overlay)]',
+            'teal-overlay-surface z-[var(--teal-z-popover)] min-w-44 border bg-surface p-1 text-on-surface',
             className,
           )}
         >
@@ -54,7 +54,7 @@ export function Menu({ align = 'end', className, items, label, modal = false, tr
                 onSelect={item.onSelect}
                 {...(item.disabled !== undefined ? { disabled: item.disabled } : {})}
                 className={cn(
-                  'flex min-h-9 cursor-default select-none items-center gap-2 rounded-lg px-3 py-2 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-45 data-[highlighted]:bg-surface-container-high',
+                  'teal-focus-ring flex min-h-9 cursor-default select-none items-center gap-2 rounded-lg px-3 py-2 text-sm data-[disabled]:pointer-events-none data-[disabled]:opacity-45 data-[highlighted]:bg-surface-container-high',
                   item.variant === 'danger' ? 'text-error data-[highlighted]:bg-error/10' : 'text-on-surface',
                 )}
               >

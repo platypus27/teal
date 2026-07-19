@@ -74,8 +74,8 @@ export const Toaster = forwardRef<ElementRef<typeof ToastPrimitive.Viewport>>(fu
               if (!open) dismissToast(item.id)
             }}
             className={cn(
-              'grid w-[min(22rem,calc(100vw-2rem))] grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-xl border border-outline-variant/40 p-4 text-on-surface shadow-[var(--teal-shadow-overlay)]',
-              'bg-surface-container',
+              'teal-overlay-surface grid w-[min(22rem,calc(100vw-2rem))] grid-cols-[auto_1fr_auto] items-start gap-x-3 border p-4 text-on-surface',
+              'bg-surface',
             )}
           >
             <VariantIcon aria-hidden="true" className={cn('mt-0.5 size-5', variant.className)} />
@@ -91,7 +91,7 @@ export const Toaster = forwardRef<ElementRef<typeof ToastPrimitive.Viewport>>(fu
                   <button
                     type="button"
                     onClick={item.action.onClick}
-                    className="mt-2 text-xs font-bold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                    className="teal-focus-ring mt-2 rounded text-xs font-bold text-primary hover:underline"
                   >
                     {item.action.label}
                   </button>

@@ -4,7 +4,7 @@ import { cn } from './cn'
 import type { PolymorphicComponent, PolymorphicProps } from './polymorphic'
 
 const verticalNavVariants = cva(
-  'group flex flex-col overflow-hidden border-outline-variant/30 bg-surface-container transition-[width] duration-300 ease-out motion-reduce:transition-none',
+  'group flex flex-col overflow-hidden border-[color:var(--teal-border-subtle)] bg-surface transition-[width] duration-300 ease-out motion-reduce:transition-none',
   {
     variants: {
       mode: {
@@ -131,7 +131,7 @@ const VerticalNavItemImpl = forwardRef<HTMLElement, VerticalNavItemProps>(functi
     <Component
       ref={ref as never}
       className={cn(
-        'group/item flex items-center py-1.5 text-sm transition-colors focus-visible:outline-none',
+        'teal-focus-ring group/item flex items-center rounded-xl py-1.5 text-sm',
         className,
       )}
       aria-current={active ? 'page' : undefined}
@@ -141,7 +141,7 @@ const VerticalNavItemImpl = forwardRef<HTMLElement, VerticalNavItemProps>(functi
         <span className="flex w-16 shrink-0 items-center justify-center">
           <span
             className={cn(
-              'flex size-9 items-center justify-center rounded-xl transition-colors group-focus-visible/item:ring-2 group-focus-visible/item:ring-primary',
+              'flex size-9 items-center justify-center rounded-xl transition-colors',
               active
                 ? 'bg-primary/10 text-primary'
                 : 'text-on-surface-variant group-hover/item:bg-surface-container-high group-hover/item:text-on-surface',

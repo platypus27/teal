@@ -44,6 +44,10 @@ export default {
       "color-background"
     ],
     [
+      "color-on-surface-variant",
+      "color-surface-container"
+    ],
+    [
       "color-on-primary",
       "color-primary"
     ],
@@ -63,5 +67,39 @@ export default {
       "color-on-error",
       "color-error-dim"
     ]
+  ],
+  "visualTokens": [
+    {
+      "name": "Control radius",
+      "token": "--teal-radius-control"
+    },
+    {
+      "name": "Surface radius",
+      "token": "--teal-radius-surface"
+    },
+    {
+      "name": "Pill radius",
+      "token": "--teal-radius-pill"
+    },
+    {
+      "name": "Subtle border",
+      "token": "--teal-border-subtle"
+    },
+    {
+      "name": "Strong border",
+      "token": "--teal-border-strong"
+    },
+    {
+      "name": "Focus ring",
+      "token": "--teal-focus-ring"
+    },
+    {
+      "name": "Raised elevation",
+      "token": "--teal-shadow-raised"
+    },
+    {
+      "name": "Overlay elevation",
+      "token": "--teal-shadow-overlay"
+    }
   ]
 }

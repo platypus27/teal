@@ -96,7 +96,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
           position="popper"
           sideOffset={6}
           className={cn(
-            'z-[var(--teal-z-popover)] max-h-[var(--radix-select-content-available-height)] min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-xl border border-outline-variant/50 bg-surface-container text-on-surface shadow-[var(--teal-shadow-overlay)]',
+            'teal-overlay-surface z-[var(--teal-z-popover)] max-h-[var(--radix-select-content-available-height)] min-w-[var(--radix-select-trigger-width)] overflow-hidden border bg-surface text-on-surface',
           )}
         >
           <SelectPrimitive.Viewport className="p-1">
@@ -104,7 +104,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
               <SelectPrimitive.Item
                 key={option.value}
                 value={option.value}
-                className="relative flex min-h-9 cursor-default select-none items-center rounded-lg py-2 pl-8 pr-3 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-45 data-[highlighted]:bg-primary/10 data-[highlighted]:text-primary"
+                className="teal-focus-ring relative flex min-h-9 cursor-default select-none items-center rounded-lg py-2 pl-8 pr-3 text-sm data-[disabled]:pointer-events-none data-[disabled]:opacity-45 data-[highlighted]:bg-primary/10 data-[highlighted]:text-primary"
                 {...(option.disabled !== undefined ? { disabled: option.disabled } : {})}
                 {...(option.textValue || typeof option.label === 'string'
                   ? { textValue: option.textValue ?? String(option.label) }

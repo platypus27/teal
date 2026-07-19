@@ -57,7 +57,7 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(function Pagi
             aria-current={item === currentPage ? 'page' : undefined}
             onClick={() => onPageChange(item)}
             className={cn(
-              'flex size-8 items-center justify-center rounded-full text-xs font-semibold outline-none transition-colors focus-visible:ring-2 focus-visible:ring-primary',
+              'teal-focus-ring flex size-8 items-center justify-center rounded-full text-xs font-semibold',
               item === currentPage
                 ? 'bg-primary text-on-primary'
                 : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface',

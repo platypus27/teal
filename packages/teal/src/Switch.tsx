@@ -50,7 +50,7 @@ export const Switch = forwardRef<React.ComponentRef<typeof SwitchPrimitive.Root>
         aria-invalid={invalid ?? (semantics.invalid || undefined)}
         required={semantics.required}
         className={cn(
-          'relative shrink-0 rounded-full border border-outline-variant bg-surface-container-highest outline-none transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary',
+          'teal-focus-ring relative shrink-0 rounded-full border border-[color:var(--teal-border-strong)] bg-surface hover:border-outline disabled:cursor-not-allowed disabled:bg-surface-container-high disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary',
           size === 'sm' ? 'h-5 w-9' : 'h-6 w-11',
           className,
         )}

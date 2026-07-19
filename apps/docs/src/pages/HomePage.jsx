@@ -125,7 +125,7 @@ export function HomePage() {
 
       <Section
         title="Installation"
-        description="Teal ships as a single package with compiled styles and a Tailwind preset. It works in any React 18 or 19 app with Tailwind CSS 3.4."
+        description="Teal ships compiled styles for any React 18 or 19 app. Tailwind is optional; Tailwind 3 consumers can use the preset for semantic utilities."
       >
         <div className="space-y-8">
           {installSteps.map((step, index) => (

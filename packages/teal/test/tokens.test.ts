@@ -61,3 +61,20 @@ describe('semantic color tokens', () => {
     expect(contrast(foreground ?? [], background ?? [])).toBeGreaterThanOrEqual(4.5)
   })
 })
+
+describe('visual system tokens', () => {
+  const css = readFileSync(resolve(import.meta.dirname, '../src/tokens.css'), 'utf8')
+
+  it.each([
+    '--teal-radius-control',
+    '--teal-radius-surface',
+    '--teal-radius-pill',
+    '--teal-border-subtle',
+    '--teal-border-strong',
+    '--teal-focus-ring',
+    '--teal-shadow-raised',
+    '--teal-shadow-overlay',
+  ])('publishes %s as a supported theming hook', (token) => {
+    expect(css).toMatch(new RegExp(`${token}:\\s*[^;]+;`))
+  })
+})

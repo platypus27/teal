@@ -39,9 +39,25 @@ yarn add @kryv/teal
 bun add @kryv/teal
 ```
 
-### 2. Configure Tailwind
+### 2. Import the styles
 
-Spread the Teal preset into your Tailwind config so every semantic token (primary, surface, outline, and friends) is available as a utility color.
+Import the compiled component styles once at your app entry. Teal modules do not require Tailwind in the consuming application.
+
+```js
+import '@kryv/teal/styles.css'
+```
+
+### 3. Optionally apply document defaults
+
+base.css applies Teal typography, body colors, selection, and scrollbar defaults. Skip it when the application already owns document-level styling.
+
+```js
+import '@kryv/teal/base.css'
+```
+
+### 4. Optionally configure Tailwind 3
+
+Use the preset only when application markup needs Teal semantic utilities such as bg-surface-container or text-on-surface-variant.
 
 ```js
 import tealPreset from '@kryv/teal/tailwind-preset'
@@ -53,16 +69,7 @@ export default {
 }
 ```
 
-### 3. Import the styles
-
-styles.css contains the compiled component layer and utilities; base.css adds the design tokens and document base styles. Import both once, at your app entry.
-
-```js
-import '@kryv/teal/styles.css'
-import '@kryv/teal/base.css'
-```
-
-### 4. Load the fonts
+### 5. Load the fonts
 
 Teal typesets headlines in Plus Jakarta Sans and body copy in Manrope. Add the Google Fonts links to your document head.
 
@@ -75,7 +82,7 @@ Teal typesets headlines in Plus Jakarta Sans and body copy in Manrope. Add the G
 />
 ```
 
-### 5. Enable dark mode
+### 6. Enable dark mode
 
 Tokens switch themes when the dark class is present on the html element. Persist the choice however your app prefers.
 
@@ -84,7 +91,7 @@ Tokens switch themes when the dark class is present on the html element. Persist
 document.documentElement.classList.toggle('dark', darkMode)
 ```
 
-### 6. Build something
+### 7. Build something
 
 ```jsx
 import { Button, Field, Input } from '@kryv/teal'
@@ -128,6 +135,19 @@ Use semantic roles instead of raw palette values.
 - Controls use 12 to 16 pixel radii.
 - Surfaces use soft teal elevation.
 - Motion stays between 150 and 200 milliseconds and respects reduced motion.
+
+## Visual tokens
+
+Override these supported CSS properties at `:root` to tune Teal without rewriting module styles.
+
+- **Control radius** - `--teal-radius-control`
+- **Surface radius** - `--teal-radius-surface`
+- **Pill radius** - `--teal-radius-pill`
+- **Subtle border** - `--teal-border-subtle`
+- **Strong border** - `--teal-border-strong`
+- **Focus ring** - `--teal-focus-ring`
+- **Raised elevation** - `--teal-shadow-raised`
+- **Overlay elevation** - `--teal-shadow-overlay`
 
 ---
 

@@ -44,7 +44,7 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(function Brea
             <li key={index} className="flex items-center gap-1">
               <LinkComponent
                 href={item.href}
-                className="rounded text-on-surface-variant outline-none transition-colors hover:text-on-surface focus-visible:ring-2 focus-visible:ring-primary"
+                className="teal-focus-ring rounded px-1 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface"
               >
                 {item.label}
               </LinkComponent>

@@ -23,7 +23,7 @@ export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function E
     <div
       ref={ref}
       className={cn(
-        'flex flex-col items-center justify-center rounded-2xl border border-dashed border-outline-variant/40 bg-surface-container p-10 text-center',
+        'teal-raised-surface flex flex-col items-center justify-center border border-dashed bg-surface-container p-10 text-center shadow-none',
         className,
       )}
       {...props}

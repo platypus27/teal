@@ -4,14 +4,14 @@ import { CheckCircle2, CircleAlert, Info, TriangleAlert, X } from 'lucide-react'
 import { IconButton } from './Button'
 import { cn } from './cn'
 
-const alertVariants = cva('flex items-start gap-3 rounded-xl border p-4 text-sm', {
+const alertVariants = cva('teal-raised-surface flex items-start gap-3 border p-4 text-sm shadow-none', {
   variants: {
     variant: {
-      neutral: 'border-outline-variant/40 bg-surface-container-high text-on-surface',
-      info: 'border-primary/30 bg-primary/10 text-on-surface',
-      success: 'border-tertiary/30 bg-tertiary/10 text-on-surface',
-      warning: 'border-warning/30 bg-warning/10 text-on-surface',
-      danger: 'border-error/30 bg-error/10 text-on-surface',
+      neutral: 'border-outline-variant/70 bg-surface-container-high text-on-surface',
+      info: 'border-primary/40 bg-primary/10 text-on-surface',
+      success: 'border-tertiary/40 bg-tertiary/10 text-on-surface',
+      warning: 'border-warning/40 bg-warning/10 text-on-surface',
+      danger: 'border-error/40 bg-error/10 text-on-surface',
     },
   },
   defaultVariants: { variant: 'info' },

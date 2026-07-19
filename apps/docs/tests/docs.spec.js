@@ -4,23 +4,24 @@ import { modules } from '../src/data/module-meta.js'
 
 const moduleIds = modules.map((module) => module.id)
 
-test('every documentation module has no accessibility violations', async ({ page }) => {
-  test.slow() // Visits all 22 module pages in one test
+test.describe('module accessibility', () => {
   for (const moduleId of moduleIds) {
-    await page.goto(`/modules/${moduleId}`)
+    test(`${moduleId} has no accessibility violations`, async ({ page }) => {
+      await page.goto(`/modules/${moduleId}`)
 
-    if (moduleId === 'dialog') await page.locator('#examples').getByRole('button', { name: 'Open dialog' }).click()
-    if (moduleId === 'tooltip') await page.getByRole('button', { name: 'Open search' }).hover()
-    if (moduleId === 'menu') await page.getByRole('button', { name: 'Project actions' }).click()
-    if (moduleId === 'popover') await page.getByRole('button', { name: 'Filters' }).click()
-    if (moduleId === 'toast') await page.getByRole('button', { name: 'Show toast' }).click()
+      if (moduleId === 'dialog') await page.locator('#examples').getByRole('button', { name: 'Open dialog' }).click()
+      if (moduleId === 'tooltip') await page.getByRole('button', { name: 'Open search' }).hover()
+      if (moduleId === 'menu') await page.getByRole('button', { name: 'Project actions' }).click()
+      if (moduleId === 'popover') await page.getByRole('button', { name: 'Filters' }).click()
+      if (moduleId === 'toast') await page.getByRole('button', { name: 'Show toast' }).click()
 
-    await page.waitForTimeout(250)
+      await page.waitForTimeout(250)
 
-    const results = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
-      .analyze()
-    expect(results.violations, `Accessibility violations on ${moduleId}`).toEqual([])
+      const results = await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+        .analyze()
+      expect(results.violations, `Accessibility violations on ${moduleId}`).toEqual([])
+    })
   }
 })
 
@@ -64,10 +65,74 @@ test('documentation has no horizontal overflow on a narrow viewport', async ({ p
   expect(overflow).toBeLessThanOrEqual(0)
 })
 
+test('foundations documents the supported visual theming hooks', async ({ page }) => {
+  await page.goto('/foundations')
+  await expect(page.getByRole('heading', { name: 'Visual tokens' })).toBeVisible()
+  await expect(page.getByText('--teal-radius-control', { exact: true })).toBeVisible()
+  await expect(page.getByText('--teal-shadow-overlay', { exact: true })).toBeVisible()
+})
+
 test('module pages match the approved desktop visual baseline', async ({ page, browserName, isMobile }) => {
   test.skip(browserName !== 'chromium' || isMobile, 'Stable visual baseline uses desktop Chromium')
   await page.goto('/modules/button')
   await expect(page).toHaveScreenshot('button-module-light.png', { fullPage: true, maxDiffPixels: 300 })
   await page.getByRole('button', { name: 'Dark mode' }).click()
   await expect(page).toHaveScreenshot('button-module-dark.png', { fullPage: true, maxDiffPixels: 300 })
+})
+
+test('visual QA surface covers every module family in both themes', async ({ page, browserName, isMobile }) => {
+  test.skip(browserName !== 'chromium', 'Stable visual baseline uses Chromium')
+  await page.goto('/visual-qa')
+  await expect(page.getByRole('heading', { level: 1, name: 'Visual QA' })).toBeVisible()
+  for (const family of ['Actions', 'Forms', 'Surfaces', 'Overlays', 'Feedback', 'Navigation', 'Data']) {
+    await expect(page.getByRole('heading', { level: 2, name: family })).toBeVisible()
+  }
+  const viewport = isMobile ? 'mobile' : 'desktop'
+  if (isMobile) {
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
+    expect(overflow).toBeLessThanOrEqual(0)
+  }
+  await expect(page).toHaveScreenshot(`visual-qa-${viewport}-light.png`, { fullPage: true, maxDiffPixels: 300 })
+  await page.evaluate(() => document.documentElement.classList.add('dark'))
+  await expect(page).toHaveScreenshot(`visual-qa-${viewport}-dark.png`, { fullPage: true, maxDiffPixels: 300 })
+})
+
+test('overlay modules match their approved open-state baselines', async ({ page, browserName, isMobile }) => {
+  test.skip(browserName !== 'chromium' || isMobile, 'Stable overlay baseline uses desktop Chromium')
+  await page.goto('/visual-qa')
+
+  await page.getByRole('button', { name: 'Open dialog' }).click()
+  const dialog = page.getByRole('dialog', { name: 'Archive project?' })
+  await expect(dialog).toHaveScreenshot('visual-qa-dialog-open.png')
+  await page.getByRole('button', { name: 'Close' }).click()
+  await expect(dialog).toBeHidden()
+
+  await page.reload()
+  await page.getByRole('button', { name: 'Open menu' }).click()
+  await expect(page.getByRole('menu')).toHaveScreenshot('visual-qa-menu-open.png')
+
+  await page.reload()
+  await page.getByRole('button', { name: 'Open popover' }).click()
+  await expect(page.getByRole('dialog', { name: 'Workspace filters' })).toHaveScreenshot('visual-qa-popover-open.png')
+})
+
+test('visual interactions respect reduced motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/visual-qa')
+  const primary = page.getByRole('button', { name: 'Primary action' })
+  const transitionSeconds = await primary.evaluate((element) => Number.parseFloat(getComputedStyle(element).transitionDuration))
+  expect(transitionSeconds).toBeLessThanOrEqual(0.00001)
+  await page.getByRole('button', { name: 'Open dialog' }).click()
+  await expect(page.getByRole('dialog', { name: 'Archive project?' })).toHaveCSS('animation-name', 'none')
+})
+
+test('visual states expose focus, disabled, loading, invalid, and selected feedback', async ({ page }) => {
+  await page.goto('/visual-qa')
+  const primary = page.getByRole('button', { name: 'Primary action' })
+  await primary.focus()
+  expect(await primary.evaluate((element) => getComputedStyle(element).boxShadow)).not.toBe('none')
+  await expect(page.getByRole('button', { name: 'Disabled' })).toBeDisabled()
+  await expect(page.getByRole('button', { name: 'Saving' })).toHaveAttribute('aria-busy', 'true')
+  await expect(page.getByRole('textbox', { name: 'Description' })).toHaveAttribute('aria-invalid', 'true')
+  await expect(page.getByRole('tab', { name: 'Overview' })).toHaveAttribute('aria-selected', 'true')
 })

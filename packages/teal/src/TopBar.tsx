@@ -3,10 +3,10 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './cn'
 import type { PolymorphicComponent, PolymorphicProps } from './polymorphic'
 
-const topBarVariants = cva('flex h-16 items-center gap-3 bg-surface-container px-4 sm:px-8 lg:px-12', {
+const topBarVariants = cva('flex h-16 items-center gap-3 bg-surface px-4 sm:px-8 lg:px-12', {
   variants: {
     sticky: {
-      true: 'sticky top-0 z-30 border-b border-outline-variant/30',
+      true: 'sticky top-0 z-30 border-b border-[color:var(--teal-border-subtle)] shadow-sm',
       false: '',
     },
   },
