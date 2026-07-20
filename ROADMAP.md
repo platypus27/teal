@@ -18,7 +18,7 @@
 - Alert, Avatar, Breadcrumb, and Accordion modules with documentation and axe coverage
 - 26 module pages across the seven established groups
 
-## Planned for 0.3.1
+## Released in 0.3.1
 
 - recalibrated light and dark surface hierarchy without changing control dimensions
 - supported visual tokens for shape, borders, focus, and elevation

@@ -1,6 +1,6 @@
 # Teal design system - full documentation
 
-Version: v0.3.0
+Version: v0.3.1
 ---
 
 # Getting started
@@ -3880,7 +3880,13 @@ A recipe becomes a published module only after at least two Kryv products need t
 
 # Changelog
 
-Versioned changes to @kryv/teal, generated from the changesets changelog. Current version: v0.3.0.
+Versioned changes to @kryv/teal, generated from the changesets changelog. Current version: v0.3.1.
+
+## v0.3.1
+
+### Patch Changes
+
+- Refine visual cohesion across the existing catalog with clearer light and dark surface hierarchy, shared shape, border, focus, and elevation tokens, and normalized component states without changing public React interfaces or control dimensions.
 
 ## v0.3.0
 

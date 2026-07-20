@@ -1,5 +1,11 @@
 # @kryv/teal
 
+## 0.3.1
+
+### Patch Changes
+
+- b155c34: Refine visual cohesion across the existing catalog with clearer light and dark surface hierarchy, shared shape, border, focus, and elevation tokens, and normalized component states without changing public React interfaces or control dimensions.
+
 ## 0.3.0
 
 ### Minor Changes

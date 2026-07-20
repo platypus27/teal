@@ -1,6 +1,17 @@
 {
-  "version": "0.3.0",
+  "version": "0.3.1",
   "entries": [
+    {
+      "version": "0.3.1",
+      "groups": [
+        {
+          "label": "Patch Changes",
+          "items": [
+            "Refine visual cohesion across the existing catalog with clearer light and dark surface hierarchy, shared shape, border, focus, and elevation tokens, and normalized component states without changing public React interfaces or control dimensions."
+          ]
+        }
+      ]
+    },
     {
       "version": "0.3.0",
       "groups": [
