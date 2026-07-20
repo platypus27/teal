@@ -29,6 +29,6 @@
     "verify": "npm run lint && npm run typecheck && npm run test:unit && npm run check:generated && npm run validate:registry --workspace @kryv/teal-docs && npm run build && npm run pack:verify"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.29.7"
+    "@changesets/cli": "^2.31.1"
   }
 }
