@@ -11,9 +11,25 @@
 - responsive routed documentation with live examples, interactive playgrounds, generated interface tables, keyboard documentation, recipes, command palette, and `llms.txt` support for all 22 module pages
 - interface, SSR, accessibility, browser, and visual-regression test foundations
 
+## Released in 0.3.0
+
+- unified variant naming, ref forwarding, form composition, heading control, and overlay configuration
+- accessibility hardening for tables, interactive cards, loading actions, tooltips, and selection controls
+- Alert, Avatar, Breadcrumb, and Accordion modules with documentation and axe coverage
+- 26 module pages across the seven established groups
+
+## Released in 0.3.1
+
+- recalibrated light and dark surface hierarchy without changing control dimensions
+- supported visual tokens for shape, borders, focus, and elevation
+- complete `--teal-color-*` values and namespaced public and internal Tailwind utilities
+- normalized visual states and component behavior across the existing catalog, with no new modules or React interfaces
+- deterministic light, dark, desktop, mobile, and open-overlay visual QA coverage
+- clearer setup guidance for compiled CSS, optional document defaults, and optional Tailwind 3 utilities
+
 ## Consumer rollout
 
-1. Install `@kryv/teal@0.2.0` from the npm registry in Daedalus.
+1. Install the latest `@kryv/teal` patch from the npm registry in Daedalus.
 2. Migrate the Settings workflow as the first accessibility and responsive-layout pilot.
 3. Migrate remaining call sites and remove Daedalus local UI copies.
 
@@ -24,9 +40,10 @@
 - Evaluate a chart seam only after real chart requirements exist in multiple products.
 - Add Tailwind 4 semantic utility integration when a consuming Kryv application adopts it.
 
-## Release engineering follow-ups
+## Release engineering
 
-- GitHub Actions CI running `npm run verify` on pull requests.
-- Changesets release workflow (version PRs and npm publish on merge).
+- GitHub Actions runs `npm run verify`, Playwright, and Lighthouse checks on pull requests.
+- Changesets owns version PRs, generated changelogs, and npm publishing.
+- Open: reduce the packed package from 52.5 kB toward the 35 kB target without dropping source files, declaration maps, or verification coverage.
 
 Teal should deepen existing interfaces before growing a generic catalog. Product behavior remains in products.

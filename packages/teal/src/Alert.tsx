@@ -4,14 +4,14 @@ import { CheckCircle2, CircleAlert, Info, TriangleAlert, X } from 'lucide-react'
 import { IconButton } from './Button'
 import { cn } from './cn'
 
-const alertVariants = cva('flex items-start gap-3 rounded-xl border p-4 text-sm', {
+const alertVariants = cva('teal-raised-surface teal-u-flex teal-u-items-start teal-u-gap-3 teal-u-border teal-u-p-4 teal-u-text-sm teal-u-shadow-none', {
   variants: {
     variant: {
-      neutral: 'border-outline-variant/40 bg-surface-container-high text-on-surface',
-      info: 'border-primary/30 bg-primary/10 text-on-surface',
-      success: 'border-tertiary/30 bg-tertiary/10 text-on-surface',
-      warning: 'border-warning/30 bg-warning/10 text-on-surface',
-      danger: 'border-error/30 bg-error/10 text-on-surface',
+      neutral: 'teal-u-border-outline-variant/70 teal-u-bg-surface-container-high teal-u-text-on-surface',
+      info: 'teal-u-border-primary/40 teal-u-bg-primary/10 teal-u-text-on-surface',
+      success: 'teal-u-border-tertiary/40 teal-u-bg-tertiary/10 teal-u-text-on-surface',
+      warning: 'teal-u-border-warning/40 teal-u-bg-warning/10 teal-u-text-on-surface',
+      danger: 'teal-u-border-error/40 teal-u-bg-error/10 teal-u-text-on-surface',
     },
   },
   defaultVariants: { variant: 'info' },
@@ -28,11 +28,11 @@ const variantIcons: Record<AlertVariant, typeof Info> = {
 }
 
 const variantIconClasses: Record<AlertVariant, string> = {
-  neutral: 'text-on-surface-variant',
-  info: 'text-primary',
-  success: 'text-tertiary',
-  warning: 'text-warning',
-  danger: 'text-error',
+  neutral: 'teal-u-text-on-surface-variant',
+  info: 'teal-u-text-primary',
+  success: 'teal-u-text-tertiary',
+  warning: 'teal-u-text-warning',
+  danger: 'teal-u-text-error',
 }
 
 export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'>, VariantProps<typeof alertVariants> {
@@ -57,15 +57,15 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
       className={cn(alertVariants({ variant }), className)}
       {...props}
     >
-      <span aria-hidden="true" className={cn('mt-0.5 shrink-0 [&_svg]:size-5', variantIconClasses[resolvedVariant])}>
+      <span aria-hidden="true" className={cn('teal-u-mt-0.5 teal-u-shrink-0 [&_svg]:teal-u-size-[var(--teal-icon-md)]', variantIconClasses[resolvedVariant])}>
         {icon ?? <VariantIcon />}
       </span>
-      <div className="min-w-0 flex-1">
-        {title ? <p className="font-semibold">{title}</p> : null}
-        {children ? <div className={cn('leading-relaxed text-on-surface-variant', title && 'mt-0.5')}>{children}</div> : null}
+      <div className="teal-u-min-w-0 teal-u-flex-1">
+        {title ? <p className="teal-u-font-semibold">{title}</p> : null}
+        {children ? <div className={cn('teal-u-leading-relaxed teal-u-text-on-surface-variant', title && 'teal-u-mt-0.5')}>{children}</div> : null}
       </div>
       {onDismiss ? (
-        <IconButton label="Dismiss" size="sm" variant="ghost" className="-mr-1 -mt-1" onClick={onDismiss}>
+        <IconButton label="Dismiss" size="sm" variant="ghost" className="-teal-u-mr-1 -teal-u-mt-1" onClick={onDismiss}>
           <X />
         </IconButton>
       ) : null}

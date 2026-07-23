@@ -3,10 +3,10 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './cn'
 import type { PolymorphicComponent, PolymorphicProps } from './polymorphic'
 
-const topBarVariants = cva('flex h-16 items-center gap-3 bg-surface-container px-4 sm:px-8 lg:px-12', {
+const topBarVariants = cva('teal-u-flex teal-u-h-16 teal-u-items-center teal-u-gap-3 teal-u-bg-surface teal-u-px-4 sm:teal-u-px-8 lg:teal-u-px-12', {
   variants: {
     sticky: {
-      true: 'sticky top-0 z-30 border-b border-outline-variant/30',
+      true: 'teal-u-box-border teal-u-sticky teal-u-top-0 teal-u-z-30 teal-u-border-b teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-shadow-sm',
       false: '',
     },
   },
@@ -39,19 +39,19 @@ export const TopBar = TopBarImpl as PolymorphicComponent<'header', TopBarOwnProp
 
 export const TopBarBrand = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   function TopBarBrand({ className, ...props }, ref) {
-    return <div ref={ref} className={cn('flex items-center gap-2', className)} {...props} />
+    return <div ref={ref} className={cn('teal-u-flex teal-u-items-center teal-u-gap-2', className)} {...props} />
   },
 )
 
 export const TopBarSearch = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   function TopBarSearch({ className, ...props }, ref) {
-    return <div ref={ref} className={cn('flex flex-1 items-center justify-center', className)} {...props} />
+    return <div ref={ref} className={cn('teal-u-flex teal-u-flex-1 teal-u-items-center teal-u-justify-center', className)} {...props} />
   },
 )
 
 export const TopBarActions = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   function TopBarActions({ className, ...props }, ref) {
-    return <div ref={ref} className={cn('ml-auto flex items-center gap-1', className)} {...props} />
+    return <div ref={ref} className={cn('teal-u-ml-auto teal-u-flex teal-u-items-center teal-u-gap-1', className)} {...props} />
   },
 )
 

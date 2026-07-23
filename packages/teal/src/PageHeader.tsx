@@ -19,14 +19,14 @@ export const PageHeader = forwardRef<HTMLElement, PageHeaderProps>(function Page
   return (
     <header
       ref={ref}
-      className={cn('mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between', className)}
+      className={cn('teal-u-mb-6 teal-u-flex teal-u-flex-col teal-u-gap-4 sm:teal-u-flex-row sm:teal-u-items-end sm:teal-u-justify-between', className)}
       {...props}
     >
-      <div className="min-w-0">
-        <TitleTag className="font-headline text-3xl font-extrabold tracking-tight text-on-surface md:text-4xl">{title}</TitleTag>
-        {subtitle ? <p className="mt-2 text-base leading-relaxed text-on-surface-variant">{subtitle}</p> : null}
+      <div className="teal-u-min-w-0">
+        <TitleTag className="teal-u-font-headline teal-u-text-3xl teal-u-font-extrabold teal-u-tracking-tight teal-u-text-on-surface md:teal-u-text-4xl">{title}</TitleTag>
+        {subtitle ? <p className="teal-u-mt-2 teal-u-text-base teal-u-leading-relaxed teal-u-text-on-surface-variant">{subtitle}</p> : null}
       </div>
-      {actions ?? children ? <div className="flex flex-wrap items-center gap-2">{actions ?? children}</div> : null}
+      {actions ?? children ? <div className="teal-u-flex teal-u-flex-wrap teal-u-items-center teal-u-gap-2">{actions ?? children}</div> : null}
     </header>
   )
 })

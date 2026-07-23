@@ -13,7 +13,7 @@ export function PopoverDemo({ exampleIndex = 0 }) {
       align="start"
     >
       <div className="grid gap-3">
-        <h3 className="font-headline font-bold">Filter projects</h3>
+        <h3 className="font-teal-headline font-bold">Filter projects</h3>
         <Checkbox label="Active only" defaultChecked />
         <Button size="sm">Apply filters</Button>
       </div>

@@ -12,8 +12,8 @@ export const Separator = forwardRef<React.ElementRef<typeof SeparatorPrimitive.R
         decorative={decorative}
         orientation={orientation}
         className={cn(
-          'shrink-0 bg-outline-variant/30',
-          orientation === 'horizontal' ? 'h-px w-full' : 'h-full w-px',
+          'teal-u-shrink-0 teal-u-bg-outline-variant/30',
+          orientation === 'horizontal' ? 'teal-u-h-px teal-u-w-full' : 'teal-u-h-full teal-u-w-px',
           className,
         )}
         {...props}

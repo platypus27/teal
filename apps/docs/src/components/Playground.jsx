@@ -35,7 +35,7 @@ function PlaygroundControl({ control, value, onChange }) {
   if (control.kind === 'select') {
     return (
       <span className="grid gap-1">
-        <span className="font-mono text-xs text-on-surface-variant">{control.label}</span>
+        <span className="font-mono text-xs text-teal-on-surface-variant">{control.label}</span>
         <Select
           size="sm"
           aria-label={control.label}
@@ -48,7 +48,7 @@ function PlaygroundControl({ control, value, onChange }) {
   }
   return (
     <label className="grid gap-1">
-      <span className="font-mono text-xs text-on-surface-variant">{control.label}</span>
+      <span className="font-mono text-xs text-teal-on-surface-variant">{control.label}</span>
       <Input
         size="sm"
         type={control.kind === 'number' ? 'number' : 'text'}
@@ -103,13 +103,13 @@ export function Playground({ config }) {
 
   return (
     <div className="space-y-4">
-      <div className="grid overflow-hidden rounded-2xl border border-outline-variant/30 lg:grid-cols-[1fr_15rem]">
-        <div className="docs-grid flex min-h-56 items-center justify-center bg-background p-6 sm:p-10">
+      <div className="grid overflow-hidden rounded-2xl border border-teal-outline-variant/30 lg:grid-cols-[1fr_15rem]">
+        <div className="docs-grid flex min-h-56 items-center justify-center bg-teal-background p-6 sm:p-10">
           {preview}
         </div>
-        <div className="border-t border-outline-variant/30 bg-surface-container p-4 lg:border-l lg:border-t-0">
+        <div className="border-t border-teal-outline-variant/30 bg-teal-surface-container p-4 lg:border-l lg:border-t-0">
           <div className="mb-3 flex items-center justify-between">
-            <span className="font-mono text-xs font-semibold uppercase tracking-wide text-on-surface-variant">
+            <span className="font-mono text-xs font-semibold uppercase tracking-wide text-teal-on-surface-variant">
               props
             </span>
             <IconButton label="Reset props" size="sm" variant="ghost" onClick={() => commit({})}>

@@ -3,15 +3,15 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from './cn'
 
 const badgeVariants = cva(
-  'inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold leading-none',
+  'teal-u-box-border teal-u-inline-flex teal-u-items-center teal-u-rounded-full teal-u-border teal-u-border-solid teal-u-px-[calc(0.625rem-1px)] teal-u-py-[calc(0.25rem-1px)] teal-u-text-xs teal-u-font-semibold teal-u-leading-none',
   {
     variants: {
       variant: {
-        neutral: 'bg-surface-container-high text-on-surface-variant',
-        info: 'bg-primary/10 text-primary',
-        success: 'bg-tertiary/10 text-tertiary',
-        warning: 'bg-warning/10 text-warning',
-        danger: 'bg-error/10 text-error',
+        neutral: 'teal-u-border-outline-variant/55 teal-u-bg-surface-container-high teal-u-text-on-surface-variant',
+        info: 'teal-u-border-primary/25 teal-u-bg-primary/10 teal-u-text-primary',
+        success: 'teal-u-border-tertiary/25 teal-u-bg-tertiary/10 teal-u-text-tertiary',
+        warning: 'teal-u-border-warning/25 teal-u-bg-warning/10 teal-u-text-warning',
+        danger: 'teal-u-border-error/25 teal-u-bg-error/10 teal-u-text-error',
       },
     },
     defaultVariants: { variant: 'neutral' },

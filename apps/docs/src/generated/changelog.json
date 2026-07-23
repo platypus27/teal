@@ -1,6 +1,17 @@
 {
-  "version": "0.3.0",
+  "version": "0.3.1",
   "entries": [
+    {
+      "version": "0.3.1",
+      "groups": [
+        {
+          "label": "Patch Changes",
+          "items": [
+            "Harden visual cohesion and consumer isolation across the existing catalog. - Replace legacy channel-only `--color-*` variables with complete, namespaced `--teal-color-*` CSS color values. This is an intentional breaking token migration in a patch release. - Namespace public Tailwind utilities as `*-teal-*` and isolate compiled component utilities behind `teal-u-` so consumer themes can safely define generic names such as `primary`. - Improve light and dark contrast, focus visibility, forced-colors support, required Select semantics, disabled Card links, Avatar source retries, and dynamic Table overflow handling. - Preserve public React component exports, prop types, and control dimensions."
+          ]
+        }
+      ]
+    },
     {
       "version": "0.3.0",
       "groups": [

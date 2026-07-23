@@ -12,19 +12,35 @@ export interface CardOwnProps {
 export type CardProps<C extends ElementType = 'div'> = PolymorphicProps<C, CardOwnProps>
 
 const CardImpl = forwardRef<HTMLElement, CardProps<ElementType>>(function Card(
-  { as: Component = 'div', className, disabled = false, type, ...props },
+  {
+    as: Component = 'div',
+    className,
+    disabled = false,
+    onClick,
+    onKeyDown,
+    tabIndex,
+    type,
+    ...props
+  },
   ref,
 ) {
   const isButton = Component === 'button'
+  const blockDisabledInteraction = (event: { preventDefault: () => void; stopPropagation: () => void }) => {
+    event.preventDefault()
+    event.stopPropagation()
+  }
   return (
     <Component
       // ElementType does not model the per-element ref; the public type carries it.
       ref={ref as never}
       {...(isButton ? { type: type ?? 'button', disabled } : {})}
       aria-disabled={disabled || undefined}
+      onClick={disabled && !isButton ? blockDisabledInteraction : onClick}
+      onKeyDown={disabled && !isButton ? blockDisabledInteraction : onKeyDown}
+      tabIndex={disabled && !isButton ? -1 : tabIndex}
       className={cn(
-        'rounded-2xl border border-outline-variant/20 bg-surface-container p-6 shadow-[var(--teal-shadow-card)]',
-        disabled && 'pointer-events-none opacity-55',
+        'teal-focus-ring teal-raised-surface teal-u-border teal-u-bg-surface-container teal-u-p-6',
+        disabled && 'teal-u-pointer-events-none teal-u-opacity-55',
         className,
       )}
       {...props}
@@ -38,7 +54,7 @@ export const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivEleme
   { className, ...props },
   ref,
 ) {
-  return <div ref={ref} className={cn('mb-4 flex items-center justify-between', className)} {...props} />
+  return <div ref={ref} className={cn('teal-u-mb-4 teal-u-flex teal-u-items-center teal-u-justify-between', className)} {...props} />
 })
 
 export interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {
@@ -50,12 +66,12 @@ export const CardTitle = forwardRef<HTMLHeadingElement, CardTitleProps>(function
   { className, titleAs: TitleTag = 'h2', ...props },
   ref,
 ) {
-  return <TitleTag ref={ref} className={cn('font-headline text-lg font-bold text-on-surface', className)} {...props} />
+  return <TitleTag ref={ref} className={cn('teal-u-font-headline teal-u-text-lg teal-u-font-bold teal-u-text-on-surface', className)} {...props} />
 })
 
 export const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLParagraphElement>>(
   function CardDescription({ className, ...props }, ref) {
-    return <p ref={ref} className={cn('text-sm leading-relaxed text-on-surface-variant', className)} {...props} />
+    return <p ref={ref} className={cn('teal-u-text-sm teal-u-leading-relaxed teal-u-text-on-surface-variant', className)} {...props} />
   },
 )
 
@@ -70,5 +86,5 @@ export const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivEleme
   { className, ...props },
   ref,
 ) {
-  return <div ref={ref} className={cn('mt-4 flex items-center gap-2', className)} {...props} />
+  return <div ref={ref} className={cn('teal-u-mt-4 teal-u-flex teal-u-items-center teal-u-gap-2', className)} {...props} />
 })

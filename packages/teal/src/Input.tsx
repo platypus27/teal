@@ -4,13 +4,13 @@ import { cn } from './cn'
 import { isAriaTrue, mergeDescriptionIds, useFormSemantics } from './form-semantics'
 
 const fieldVariants = cva(
-  'w-full rounded-xl border border-outline-variant bg-surface-container-highest text-on-surface outline-none transition-colors placeholder:text-on-surface-variant focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/25 disabled:cursor-not-allowed disabled:opacity-55 aria-[invalid=true]:border-error aria-[invalid=true]:ring-error/20',
+  'teal-focus-ring teal-u-box-border teal-u-w-full teal-u-rounded-xl teal-u-border teal-u-border-solid teal-u-border-[color:var(--teal-border-strong)] teal-u-bg-surface teal-u-text-on-surface placeholder:teal-u-text-on-surface-variant hover:teal-u-border-outline focus-visible:teal-u-border-primary disabled:teal-u-cursor-not-allowed disabled:teal-u-bg-surface-container-high disabled:teal-u-opacity-55 aria-[invalid=true]:teal-u-border-error aria-[invalid=true]:teal-u-shadow-[0_0_0_3px_color-mix(in_srgb,var(--teal-color-error)_20%,transparent)]',
   {
     variants: {
       size: {
-        sm: 'min-h-8 px-3 py-1.5 text-xs',
-        md: 'min-h-10 px-4 py-2.5 text-sm',
-        lg: 'min-h-12 px-4 py-3 text-base',
+        sm: 'teal-u-min-h-8 teal-u-px-3 teal-u-py-1.5 teal-u-text-xs',
+        md: 'teal-u-min-h-10 teal-u-px-4 teal-u-py-2.5 teal-u-text-sm',
+        lg: 'teal-u-min-h-12 teal-u-px-4 teal-u-py-3 teal-u-text-base',
       },
     },
     defaultVariants: { size: 'md' },
@@ -55,7 +55,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function 
       required={required ?? semantics.required}
       aria-invalid={invalid ?? (semantics.invalid || undefined)}
       aria-describedby={mergeDescriptionIds(describedBy, semantics.descriptionId, semantics.errorId)}
-      className={cn(fieldVariants({ size }), 'min-h-28 resize-y leading-relaxed', className)}
+      className={cn(fieldVariants({ size }), 'teal-u-min-h-28 teal-u-resize-y teal-u-leading-relaxed', className)}
       {...props}
     />
   )

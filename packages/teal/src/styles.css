@@ -3,6 +3,52 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .teal-focus-ring {
+    appearance: none;
+    background-color: transparent;
+    border-width: 0;
+    box-sizing: border-box;
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    transition-duration: var(--teal-motion-fast);
+    transition-property: background-color, border-color, box-shadow, color, opacity, transform;
+    transition-timing-function: ease-out;
+  }
+
+  .teal-raised-surface {
+    border-color: var(--teal-border-subtle);
+    border-radius: var(--teal-radius-surface);
+    border-style: solid;
+    box-sizing: border-box;
+    box-shadow: var(--teal-shadow-raised);
+  }
+
+  .teal-overlay-surface {
+    border-color: var(--teal-border-strong);
+    border-radius: var(--teal-radius-control);
+    border-style: solid;
+    box-sizing: border-box;
+    box-shadow: var(--teal-shadow-overlay);
+  }
+}
+
+.teal-focus-ring:focus-visible {
+  box-shadow: var(--teal-focus-ring);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+@media (forced-colors: active) {
+  .teal-focus-ring:focus-visible {
+    box-shadow: none;
+    outline-color: Highlight;
+  }
+}
+
 @keyframes teal-overlay-in {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -22,6 +68,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .teal-focus-ring {
+    transition-duration: 0.01ms;
+  }
+
   .teal-dialog-overlay,
   .teal-dialog-content {
     animation: none !important;

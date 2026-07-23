@@ -4,11 +4,11 @@ import { VerticalNav, VerticalNavBrand, VerticalNavFooter, VerticalNavItem, Vert
 export function VerticalNavDemo() {
   return (
     <div className="grid w-full gap-4 sm:grid-cols-2">
-      <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
+      <div className="relative h-80 overflow-hidden rounded-xl border border-teal-outline-variant/30">
         <VerticalNav mode="rail" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
-              <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
+              <span className="flex size-9 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
                 <LayoutDashboard className="size-5" />
               </span>
             </span>
@@ -28,15 +28,15 @@ export function VerticalNavDemo() {
         </VerticalNav>
       </div>
 
-      <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
+      <div className="relative h-80 overflow-hidden rounded-xl border border-teal-outline-variant/30">
         <VerticalNav mode="full" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
-              <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
+              <span className="flex size-9 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
                 <LayoutDashboard className="size-5" />
               </span>
             </span>
-            <span className="font-headline text-lg font-extrabold leading-none">Teal</span>
+            <span className="font-teal-headline text-lg font-extrabold leading-none">Teal</span>
           </VerticalNavBrand>
           <VerticalNavList>
             <VerticalNavSection label="Workspace">

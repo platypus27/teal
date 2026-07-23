@@ -35,7 +35,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   return (
     <TabsPrimitive.Root
       ref={ref}
-      className={cn('w-full', className)}
+      className={cn('teal-u-w-full', className)}
       {...(value !== undefined ? { value } : {})}
       {...(initialValue !== undefined ? { defaultValue: initialValue } : {})}
       {...(onValueChange ? { onValueChange } : {})}
@@ -43,8 +43,8 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
       <TabsPrimitive.List
         aria-label={ariaLabel}
         className={cn(
-          'inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-xl p-1 text-on-surface-variant',
-          'bg-surface-container-high',
+          'teal-u-box-border teal-u-inline-flex teal-u-max-w-full teal-u-items-center teal-u-gap-1 teal-u-overflow-x-auto teal-u-rounded-xl teal-u-border teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-p-[calc(0.25rem-1px)] teal-u-text-on-surface-variant',
+          'teal-u-bg-surface-container-high',
         )}
       >
         {items.map((item) => (
@@ -52,7 +52,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
             key={item.value}
             value={item.value}
             disabled={item.disabled}
-            className="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold outline-none transition-colors hover:text-on-surface focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none disabled:opacity-45 data-[state=active]:bg-surface data-[state=active]:text-on-surface data-[state=active]:shadow-sm"
+            className="teal-focus-ring teal-u-whitespace-nowrap teal-u-rounded-lg teal-u-px-3 teal-u-py-2 teal-u-text-sm teal-u-font-semibold hover:teal-u-text-on-surface disabled:teal-u-pointer-events-none disabled:teal-u-opacity-45 data-[state=active]:teal-u-bg-surface data-[state=active]:teal-u-text-on-surface data-[state=active]:teal-u-shadow-sm"
           >
             {item.label}
           </TabsPrimitive.Trigger>
@@ -62,7 +62,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
         <TabsPrimitive.Content
           key={item.value}
           value={item.value}
-          className="mt-4 outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          className="teal-focus-ring teal-u-mt-4 teal-u-rounded-lg"
         >
           {item.content}
         </TabsPrimitive.Content>

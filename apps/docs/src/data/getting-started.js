@@ -40,8 +40,9 @@ export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
 }`
 
-const stylesImport = `import '@kryv/teal/styles.css'
-import '@kryv/teal/base.css'`
+const stylesImport = `import '@kryv/teal/styles.css'`
+
+const baseStylesImport = `import '@kryv/teal/base.css'`
 
 const fontsMarkup = `<link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -73,20 +74,28 @@ export const installSteps = [
     kind: 'packageManagers',
   },
   {
-    title: 'Configure Tailwind',
-    description:
-      'Spread the Teal preset into your Tailwind config so every semantic token (primary, surface, outline, and friends) is available as a utility color.',
-    code: tailwindConfig,
-    lang: 'js',
-    label: 'tailwind.config.js',
-  },
-  {
     title: 'Import the styles',
     description:
-      'styles.css contains the compiled component layer and utilities; base.css adds the design tokens and document base styles. Import both once, at your app entry.',
+      'Import the compiled component styles once at your app entry. Teal modules do not require Tailwind in the consuming application.',
     code: stylesImport,
     lang: 'js',
     label: 'main.jsx',
+  },
+  {
+    title: 'Optionally apply document defaults',
+    description:
+      'base.css applies Teal typography, body colors, selection, and scrollbar defaults. Skip it when the application already owns document-level styling.',
+    code: baseStylesImport,
+    lang: 'js',
+    label: 'main.jsx',
+  },
+  {
+    title: 'Optionally configure Tailwind 3',
+    description:
+      'Use the preset only when application markup needs Teal semantic utilities such as bg-teal-surface-container or text-teal-on-surface-variant.',
+    code: tailwindConfig,
+    lang: 'js',
+    label: 'tailwind.config.js',
   },
   {
     title: 'Load the fonts',

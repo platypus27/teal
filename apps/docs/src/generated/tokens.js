@@ -3,65 +3,179 @@ export default {
   "colors": [
     {
       "name": "Primary",
-      "token": "--color-primary",
-      "bg": "bg-primary",
-      "fg": "text-on-primary"
+      "token": "--teal-color-primary",
+      "bg": "bg-teal-primary",
+      "fg": "text-teal-on-primary"
     },
     {
       "name": "Success",
-      "token": "--color-tertiary",
-      "bg": "bg-tertiary",
-      "fg": "text-on-tertiary"
+      "token": "--teal-color-tertiary",
+      "bg": "bg-teal-tertiary",
+      "fg": "text-teal-on-tertiary"
     },
     {
       "name": "Warning",
-      "token": "--color-warning",
-      "bg": "bg-warning",
+      "token": "--teal-color-warning",
+      "bg": "bg-teal-warning",
       "fg": "text-black"
     },
     {
       "name": "Danger",
-      "token": "--color-error",
-      "bg": "bg-error",
-      "fg": "text-on-error"
+      "token": "--teal-color-error",
+      "bg": "bg-teal-error",
+      "fg": "text-teal-on-error"
     },
     {
       "name": "Surface",
-      "token": "--color-surface-container",
-      "bg": "bg-surface-container",
-      "fg": "text-on-surface"
+      "token": "--teal-color-surface-container",
+      "bg": "bg-teal-surface-container",
+      "fg": "text-teal-on-surface"
     },
     {
       "name": "Elevated surface",
-      "token": "--color-surface-container-high",
-      "bg": "bg-surface-container-high",
-      "fg": "text-on-surface"
+      "token": "--teal-color-surface-container-high",
+      "bg": "bg-teal-surface-container-high",
+      "fg": "text-teal-on-surface"
     }
   ],
   "contrastPairs": [
     [
-      "color-on-surface-variant",
-      "color-background"
+      "teal-color-on-surface",
+      "teal-color-surface"
     ],
     [
-      "color-on-primary",
-      "color-primary"
+      "teal-color-on-surface-variant",
+      "teal-color-surface-variant"
     ],
     [
-      "color-tertiary",
-      "color-surface-container"
+      "teal-color-on-background",
+      "teal-color-background"
     ],
     [
-      "color-warning",
-      "color-surface-container"
+      "teal-color-on-primary",
+      "teal-color-primary"
     ],
     [
-      "color-error",
-      "color-background"
+      "teal-color-on-primary-container",
+      "teal-color-primary-container"
     ],
     [
-      "color-on-error",
-      "color-error-dim"
+      "teal-color-on-primary-fixed",
+      "teal-color-primary-fixed"
+    ],
+    [
+      "teal-color-on-primary-fixed-variant",
+      "teal-color-primary-fixed-dim"
+    ],
+    [
+      "teal-color-on-secondary",
+      "teal-color-secondary"
+    ],
+    [
+      "teal-color-on-secondary-container",
+      "teal-color-secondary-container"
+    ],
+    [
+      "teal-color-on-secondary-fixed",
+      "teal-color-secondary-fixed"
+    ],
+    [
+      "teal-color-on-secondary-fixed-variant",
+      "teal-color-secondary-fixed-dim"
+    ],
+    [
+      "teal-color-on-tertiary",
+      "teal-color-tertiary"
+    ],
+    [
+      "teal-color-on-tertiary-container",
+      "teal-color-tertiary-container"
+    ],
+    [
+      "teal-color-on-tertiary-fixed",
+      "teal-color-tertiary-fixed"
+    ],
+    [
+      "teal-color-on-tertiary-fixed-variant",
+      "teal-color-tertiary-fixed-dim"
+    ],
+    [
+      "teal-color-on-error",
+      "teal-color-error"
+    ],
+    [
+      "teal-color-on-error-container",
+      "teal-color-error-container"
+    ],
+    [
+      "teal-color-inverse-on-surface",
+      "teal-color-inverse-surface"
+    ],
+    [
+      "teal-color-inverse-primary",
+      "teal-color-inverse-surface"
     ]
+  ],
+  "visualTokens": [
+    {
+      "name": "Control radius",
+      "token": "--teal-radius-control"
+    },
+    {
+      "name": "Surface radius",
+      "token": "--teal-radius-surface"
+    },
+    {
+      "name": "Pill radius",
+      "token": "--teal-radius-pill"
+    },
+    {
+      "name": "Subtle border",
+      "token": "--teal-border-subtle"
+    },
+    {
+      "name": "Strong border",
+      "token": "--teal-border-strong"
+    },
+    {
+      "name": "Focus ring",
+      "token": "--teal-focus-ring"
+    },
+    {
+      "name": "Raised elevation",
+      "token": "--teal-shadow-raised"
+    },
+    {
+      "name": "Overlay elevation",
+      "token": "--teal-shadow-overlay"
+    },
+    {
+      "name": "Extra-small icon",
+      "token": "--teal-icon-xs"
+    },
+    {
+      "name": "Small icon",
+      "token": "--teal-icon-sm"
+    },
+    {
+      "name": "Medium icon",
+      "token": "--teal-icon-md"
+    },
+    {
+      "name": "Large icon",
+      "token": "--teal-icon-lg"
+    },
+    {
+      "name": "Extra-large icon",
+      "token": "--teal-icon-xl"
+    },
+    {
+      "name": "Fast motion",
+      "token": "--teal-motion-fast"
+    },
+    {
+      "name": "Standard motion",
+      "token": "--teal-motion-standard"
+    }
   ]
 }

@@ -4,21 +4,23 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { LoaderCircle } from 'lucide-react'
 import { cn } from './cn'
 
+const secondaryActionClasses =
+  'teal-u-box-border teal-u-border teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-bg-surface teal-u-shadow-sm hover:teal-u-border-[color:var(--teal-border-strong)] hover:teal-u-bg-surface-container-low'
+
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98] disabled:pointer-events-none disabled:opacity-55 motion-reduce:transform-none',
+  'teal-focus-ring teal-u-inline-flex teal-u-items-center teal-u-justify-center teal-u-gap-2 teal-u-whitespace-nowrap teal-u-rounded-full teal-u-font-bold active:teal-u-scale-[0.98] disabled:teal-u-pointer-events-none disabled:teal-u-opacity-55 motion-reduce:teal-u-transform-none',
   {
     variants: {
       variant: {
-        primary: 'bg-primary text-on-primary hover:bg-primary/90',
-        secondary:
-          'border border-outline-variant/50 bg-surface-container text-on-surface hover:bg-surface-container-high',
-        ghost: 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface',
-        danger: 'bg-error text-on-error hover:bg-error-dim',
+        primary: 'teal-u-bg-primary teal-u-text-on-primary hover:teal-u-bg-primary/90',
+        secondary: cn(secondaryActionClasses, 'teal-u-text-on-surface'),
+        ghost: 'teal-u-text-on-surface-variant hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface',
+        danger: 'teal-u-bg-error teal-u-text-on-error hover:teal-u-bg-error-dim',
       },
       size: {
-        sm: 'h-8 px-3 text-xs',
-        md: 'h-10 px-5 text-sm',
-        lg: 'h-12 px-6 text-base',
+        sm: 'teal-u-h-8 teal-u-px-3 teal-u-text-xs',
+        md: 'teal-u-h-10 teal-u-px-5 teal-u-text-sm',
+        lg: 'teal-u-h-12 teal-u-px-6 teal-u-text-base',
       },
     },
     defaultVariants: {
@@ -71,25 +73,25 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       disabled={disabled || loading}
       {...props}
     >
-      {loading ? <LoaderCircle aria-hidden="true" className="size-4 animate-spin motion-reduce:animate-none" /> : null}
+      {loading ? <LoaderCircle aria-hidden="true" className="teal-u-size-[var(--teal-icon-sm)] teal-u-animate-spin motion-reduce:teal-u-animate-none" /> : null}
       {children}
     </button>
   )
 })
 
 const iconButtonVariants = cva(
-  'inline-flex shrink-0 items-center justify-center rounded-full text-on-surface-variant transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-95 disabled:pointer-events-none disabled:opacity-55 motion-reduce:transform-none',
+  'teal-focus-ring teal-u-inline-flex teal-u-shrink-0 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-text-on-surface-variant active:teal-u-scale-95 disabled:teal-u-pointer-events-none disabled:teal-u-opacity-55 motion-reduce:teal-u-transform-none',
   {
     variants: {
       variant: {
-        ghost: 'hover:bg-surface-container-high hover:text-on-surface',
-        secondary: 'border border-outline-variant/50 bg-surface-container hover:bg-surface-container-high',
-        danger: 'text-error hover:bg-error/10',
+        ghost: 'hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface',
+        secondary: secondaryActionClasses,
+        danger: 'teal-u-text-error hover:teal-u-bg-error/10',
       },
       size: {
-        sm: 'size-8 [&_svg]:size-4',
-        md: 'size-10 [&_svg]:size-5',
-        lg: 'size-12 [&_svg]:size-6',
+        sm: 'teal-u-size-8 [&_svg]:teal-u-size-[var(--teal-icon-sm)]',
+        md: 'teal-u-size-10 [&_svg]:teal-u-size-[var(--teal-icon-md)]',
+        lg: 'teal-u-size-12 [&_svg]:teal-u-size-[var(--teal-icon-lg)]',
       },
     },
     defaultVariants: {
@@ -124,7 +126,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
       {...props}
     >
       {loading ? (
-        <LoaderCircle aria-hidden="true" className="animate-spin motion-reduce:animate-none" />
+        <LoaderCircle aria-hidden="true" className="teal-u-animate-spin motion-reduce:teal-u-animate-none" />
       ) : (
         children
       )}

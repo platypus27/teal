@@ -6,8 +6,8 @@ import { Preview } from './Preview.jsx'
 export function ExampleBlock({ title = undefined, description = undefined, source, lang = 'jsx', children }) {
   return (
     <div className="space-y-3">
-      {title ? <h3 className="font-headline text-lg font-bold text-on-surface">{title}</h3> : null}
-      {description ? <p className="max-w-2xl text-sm text-on-surface-variant">{description}</p> : null}
+      {title ? <h3 className="font-teal-headline text-lg font-bold text-teal-on-surface">{title}</h3> : null}
+      {description ? <p className="max-w-2xl text-sm text-teal-on-surface-variant">{description}</p> : null}
       <Tabs
         aria-label={title ? `${title} example` : 'Code example'}
         items={[

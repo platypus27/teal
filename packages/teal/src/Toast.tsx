@@ -48,11 +48,11 @@ export function dismissToast(id: string) {
 }
 
 const variantStyles: Record<ToastVariant, { icon: typeof Info; className: string }> = {
-  neutral: { icon: Info, className: 'text-on-surface-variant' },
-  info: { icon: Info, className: 'text-primary' },
-  success: { icon: CheckCircle2, className: 'text-tertiary' },
-  warning: { icon: TriangleAlert, className: 'text-warning' },
-  danger: { icon: CircleAlert, className: 'text-error' },
+  neutral: { icon: Info, className: 'teal-u-text-on-surface-variant' },
+  info: { icon: Info, className: 'teal-u-text-primary' },
+  success: { icon: CheckCircle2, className: 'teal-u-text-tertiary' },
+  warning: { icon: TriangleAlert, className: 'teal-u-text-warning' },
+  danger: { icon: CircleAlert, className: 'teal-u-text-error' },
 }
 
 export const Toaster = forwardRef<ElementRef<typeof ToastPrimitive.Viewport>>(function Toaster(_props, ref) {
@@ -74,15 +74,15 @@ export const Toaster = forwardRef<ElementRef<typeof ToastPrimitive.Viewport>>(fu
               if (!open) dismissToast(item.id)
             }}
             className={cn(
-              'grid w-[min(22rem,calc(100vw-2rem))] grid-cols-[auto_1fr_auto] items-start gap-x-3 rounded-xl border border-outline-variant/40 p-4 text-on-surface shadow-[var(--teal-shadow-overlay)]',
-              'bg-surface-container',
+              'teal-overlay-surface teal-u-grid teal-u-w-[min(22rem,calc(100vw-2rem))] teal-u-grid-cols-[auto_1fr_auto] teal-u-items-start teal-u-gap-x-3 teal-u-border teal-u-p-4 teal-u-text-on-surface',
+              'teal-u-bg-surface',
             )}
           >
-            <VariantIcon aria-hidden="true" className={cn('mt-0.5 size-5', variant.className)} />
-            <div className="min-w-0">
-              <ToastPrimitive.Title className="text-sm font-semibold">{item.title}</ToastPrimitive.Title>
+            <VariantIcon aria-hidden="true" className={cn('teal-u-mt-0.5 teal-u-size-[var(--teal-icon-md)]', variant.className)} />
+            <div className="teal-u-min-w-0">
+              <ToastPrimitive.Title className="teal-u-text-sm teal-u-font-semibold">{item.title}</ToastPrimitive.Title>
               {item.description ? (
-                <ToastPrimitive.Description className="mt-1 text-xs leading-relaxed text-on-surface-variant">
+                <ToastPrimitive.Description className="teal-u-mt-1 teal-u-text-xs teal-u-leading-relaxed teal-u-text-on-surface-variant">
                   {item.description}
                 </ToastPrimitive.Description>
               ) : null}
@@ -91,7 +91,7 @@ export const Toaster = forwardRef<ElementRef<typeof ToastPrimitive.Viewport>>(fu
                   <button
                     type="button"
                     onClick={item.action.onClick}
-                    className="mt-2 text-xs font-bold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                    className="teal-focus-ring teal-u-mt-2 teal-u-rounded teal-u-text-xs teal-u-font-bold teal-u-text-primary hover:teal-u-underline"
                   >
                     {item.action.label}
                   </button>
@@ -99,7 +99,7 @@ export const Toaster = forwardRef<ElementRef<typeof ToastPrimitive.Viewport>>(fu
               ) : null}
             </div>
             <ToastPrimitive.Close asChild>
-              <IconButton label="Dismiss notification" size="sm" className="-mr-2 -mt-2">
+              <IconButton label="Dismiss notification" size="sm" className="-teal-u-mr-2 -teal-u-mt-2">
                 <X />
               </IconButton>
             </ToastPrimitive.Close>
@@ -108,7 +108,7 @@ export const Toaster = forwardRef<ElementRef<typeof ToastPrimitive.Viewport>>(fu
       })}
       <ToastPrimitive.Viewport
         ref={ref}
-        className="fixed bottom-0 right-0 z-[var(--teal-z-toast)] flex max-h-screen w-full flex-col items-end gap-2 p-4 sm:w-auto"
+        className="teal-u-fixed teal-u-bottom-0 teal-u-right-0 teal-u-z-[var(--teal-z-toast)] teal-u-flex teal-u-max-h-screen teal-u-w-full teal-u-flex-col teal-u-items-end teal-u-gap-2 teal-u-p-4 sm:teal-u-w-auto"
       />
     </ToastPrimitive.Provider>
   )

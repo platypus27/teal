@@ -44,11 +44,11 @@ export function WorkspaceForm() {
 }
 ```
 
-## Tailwind integration
+## Optional Tailwind integration
 
 Tailwind is not required to render Teal modules. Tailwind 3 applications can
 extend `@kryv/teal/tailwind-preset` to use the semantic token utilities
-(`bg-surface-container`, `text-on-surface-variant`, `border-outline-variant`,
+(`bg-teal-surface-container`, `text-teal-on-surface-variant`, `border-teal-outline-variant`,
 and friends) in their own markup:
 
 ```js
@@ -69,24 +69,27 @@ Teal pairs Manrope (body) with Plus Jakarta Sans (headline). Load them once:
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet" />
 ```
 
-Colors are CSS custom properties, so dark mode is one class on a parent
-element:
+Colors and the supported shape, border, focus, and elevation hooks are CSS
+custom properties. Dark mode is one class on the document element:
 
 ```js
 document.documentElement.classList.toggle('dark')
 ```
 
+The complete supported token list is documented at
+[teal.kryvlabs.com/foundations](https://teal.kryvlabs.com/foundations).
+
 ## Modules
 
-Twenty-two typed modules across seven groups:
+Twenty-six documented module pages across seven groups:
 
 - **Actions** - Button, IconButton
 - **Forms** - Field, Input, TextArea, Select, Checkbox, Switch
-- **Surfaces** - Card, Badge
+- **Surfaces** - Card, Badge, Accordion
 - **Overlays** - Dialog, Tooltip, Menu, Popover
-- **Feedback** - Toast, EmptyState, Spinner, Progress, Skeleton, LoadingState
-- **Navigation** - Tabs, Pagination, PageHeader
-- **Data** - Table, Separator
+- **Feedback** - Toast, EmptyState, Spinner, Progress, Skeleton, LoadingState, Alert
+- **Navigation** - Tabs, Pagination, PageHeader, VerticalNav, TopBar, Breadcrumb
+- **Data** - Table, Separator, Avatar
 
 Every module ships TypeScript declarations, keyboard interaction support, and
 visible focus states. Complex interactions (Select, Dialog, Toast, and others)

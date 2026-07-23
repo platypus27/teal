@@ -47,8 +47,8 @@ export function Popover({
           side={side}
           sideOffset={6}
           className={cn(
-            'z-[var(--teal-z-popover)] w-[min(24rem,calc(100vw-2rem))] rounded-xl border border-outline-variant/40 p-4 text-on-surface shadow-[var(--teal-shadow-overlay)] outline-none',
-            'bg-surface-container',
+            'teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-w-[min(24rem,calc(100vw-2rem))] teal-u-border teal-u-p-4 teal-u-text-on-surface teal-u-outline-none',
+            'teal-u-bg-surface',
             className,
           )}
         >

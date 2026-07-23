@@ -13,9 +13,9 @@ export class DemoErrorBoundary extends Component {
   render() {
     if (this.state.error) {
       return (
-        <div role="alert" className="w-full rounded-xl border border-error/40 p-4 text-sm text-on-surface">
-          <p className="font-semibold text-error">This example failed to render.</p>
-          <pre className="mt-2 overflow-x-auto text-xs text-on-surface-variant">
+        <div role="alert" className="w-full rounded-xl border border-teal-error/40 p-4 text-sm text-teal-on-surface">
+          <p className="font-semibold text-teal-error">This example failed to render.</p>
+          <pre className="mt-2 overflow-x-auto text-xs text-teal-on-surface-variant">
             {String(this.state.error?.message ?? this.state.error)}
           </pre>
         </div>

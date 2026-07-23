@@ -1,6 +1,6 @@
 # Teal design system - full documentation
 
-Version: v0.3.0
+Version: v0.3.1
 ---
 
 # Getting started
@@ -39,9 +39,25 @@ yarn add @kryv/teal
 bun add @kryv/teal
 ```
 
-### 2. Configure Tailwind
+### 2. Import the styles
 
-Spread the Teal preset into your Tailwind config so every semantic token (primary, surface, outline, and friends) is available as a utility color.
+Import the compiled component styles once at your app entry. Teal modules do not require Tailwind in the consuming application.
+
+```js
+import '@kryv/teal/styles.css'
+```
+
+### 3. Optionally apply document defaults
+
+base.css applies Teal typography, body colors, selection, and scrollbar defaults. Skip it when the application already owns document-level styling.
+
+```js
+import '@kryv/teal/base.css'
+```
+
+### 4. Optionally configure Tailwind 3
+
+Use the preset only when application markup needs Teal semantic utilities such as bg-teal-surface-container or text-teal-on-surface-variant.
 
 ```js
 import tealPreset from '@kryv/teal/tailwind-preset'
@@ -53,16 +69,7 @@ export default {
 }
 ```
 
-### 3. Import the styles
-
-styles.css contains the compiled component layer and utilities; base.css adds the design tokens and document base styles. Import both once, at your app entry.
-
-```js
-import '@kryv/teal/styles.css'
-import '@kryv/teal/base.css'
-```
-
-### 4. Load the fonts
+### 5. Load the fonts
 
 Teal typesets headlines in Plus Jakarta Sans and body copy in Manrope. Add the Google Fonts links to your document head.
 
@@ -75,7 +82,7 @@ Teal typesets headlines in Plus Jakarta Sans and body copy in Manrope. Add the G
 />
 ```
 
-### 5. Enable dark mode
+### 6. Enable dark mode
 
 Tokens switch themes when the dark class is present on the html element. Persist the choice however your app prefers.
 
@@ -84,7 +91,7 @@ Tokens switch themes when the dark class is present on the html element. Persist
 document.documentElement.classList.toggle('dark', darkMode)
 ```
 
-### 6. Build something
+### 7. Build something
 
 ```jsx
 import { Button, Field, Input } from '@kryv/teal'
@@ -111,12 +118,12 @@ Semantic tokens keep visual decisions consistent across themes and products.
 
 Use semantic roles instead of raw palette values.
 
-- **Primary** - `--color-primary`
-- **Success** - `--color-tertiary`
-- **Warning** - `--color-warning`
-- **Danger** - `--color-error`
-- **Surface** - `--color-surface-container`
-- **Elevated surface** - `--color-surface-container-high`
+- **Primary** - `--teal-color-primary`
+- **Success** - `--teal-color-tertiary`
+- **Warning** - `--teal-color-warning`
+- **Danger** - `--teal-color-error`
+- **Surface** - `--teal-color-surface-container`
+- **Elevated surface** - `--teal-color-surface-container-high`
 
 ## Typography
 
@@ -128,6 +135,26 @@ Use semantic roles instead of raw palette values.
 - Controls use 12 to 16 pixel radii.
 - Surfaces use soft teal elevation.
 - Motion stays between 150 and 200 milliseconds and respects reduced motion.
+
+## Visual tokens
+
+Override these supported CSS properties at `:root` to tune Teal without rewriting module styles.
+
+- **Control radius** - `--teal-radius-control`
+- **Surface radius** - `--teal-radius-surface`
+- **Pill radius** - `--teal-radius-pill`
+- **Subtle border** - `--teal-border-subtle`
+- **Strong border** - `--teal-border-strong`
+- **Focus ring** - `--teal-focus-ring`
+- **Raised elevation** - `--teal-shadow-raised`
+- **Overlay elevation** - `--teal-shadow-overlay`
+- **Extra-small icon** - `--teal-icon-xs`
+- **Small icon** - `--teal-icon-sm`
+- **Medium icon** - `--teal-icon-md`
+- **Large icon** - `--teal-icon-lg`
+- **Extra-large icon** - `--teal-icon-xl`
+- **Fast motion** - `--teal-motion-fast`
+- **Standard motion** - `--teal-motion-standard`
 
 ---
 
@@ -676,17 +703,17 @@ export function CheckboxBulkDemo() {
     setSelected((current) => current.includes(id) ? current.filter((value) => value !== id) : [...current, id])
   }
   return (
-    <div className="w-full max-w-xl overflow-hidden rounded-2xl border border-outline-variant/30">
-      <div className="flex items-center gap-3 border-b border-outline-variant/30 bg-surface-container-high px-4 py-3">
+    <div className="w-full max-w-xl overflow-hidden rounded-2xl border border-teal-outline-variant/30">
+      <div className="flex items-center gap-3 border-b border-teal-outline-variant/30 bg-teal-surface-container-high px-4 py-3">
         <Checkbox label="Select all projects" visuallyHiddenLabel checked={allSelected ? true : partiallySelected ? 'indeterminate' : false} onCheckedChange={(value) => setSelected(value ? rows.map((row) => row.id) : [])} />
-        <span className="text-xs font-semibold uppercase tracking-wide text-on-surface-variant">Project</span>
-        <span className="ml-auto text-xs font-semibold uppercase tracking-wide text-on-surface-variant">Owner</span>
+        <span className="text-xs font-semibold uppercase tracking-wide text-teal-on-surface-variant">Project</span>
+        <span className="ml-auto text-xs font-semibold uppercase tracking-wide text-teal-on-surface-variant">Owner</span>
       </div>
       {rows.map((row) => (
-        <div key={row.id} className="flex items-center gap-3 border-b border-outline-variant/20 bg-surface-container px-4 py-3 last:border-b-0">
+        <div key={row.id} className="flex items-center gap-3 border-b border-teal-outline-variant/20 bg-teal-surface-container px-4 py-3 last:border-b-0">
           <Checkbox label={row.name} visuallyHiddenLabel checked={selected.includes(row.id)} onCheckedChange={() => toggle(row.id)} />
-          <span className="text-sm text-on-surface">{row.name}</span>
-          <span className="ml-auto text-sm text-on-surface-variant">{row.owner}</span>
+          <span className="text-sm text-teal-on-surface">{row.name}</span>
+          <span className="ml-auto text-sm text-teal-on-surface-variant">{row.owner}</span>
         </div>
       ))}
     </div>
@@ -925,7 +952,7 @@ export function CardDemo() {
         <CardDescription>Updated five minutes ago</CardDescription>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-on-surface">No critical findings were detected.</p>
+        <p className="text-sm text-teal-on-surface">No critical findings were detected.</p>
       </CardContent>
       <CardFooter>
         <Button size="sm" variant="secondary">
@@ -952,7 +979,7 @@ export function CardDemo() {
         <CardDescription>Updated five minutes ago</CardDescription>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-on-surface">No critical findings were detected.</p>
+        <p className="text-sm text-teal-on-surface">No critical findings were detected.</p>
       </CardContent>
       <CardFooter>
         <Button size="sm" variant="secondary">
@@ -1294,7 +1321,7 @@ export function DialogDemo({ exampleIndex = 0 }) {
           </>
         }
       >
-        <p className="text-sm text-on-surface-variant">
+        <p className="text-sm text-teal-on-surface-variant">
           Project Orion and its reports will leave the active workspace.
         </p>
       </Dialog>
@@ -1332,7 +1359,7 @@ export function DialogDemo({ exampleIndex = 0 }) {
           </>
         }
       >
-        <p className="text-sm text-on-surface-variant">
+        <p className="text-sm text-teal-on-surface-variant">
           Project Orion and its reports will leave the active workspace.
         </p>
       </Dialog>
@@ -1370,7 +1397,7 @@ export function DialogDemo({ exampleIndex = 0 }) {
           </>
         }
       >
-        <p className="text-sm text-on-surface-variant">
+        <p className="text-sm text-teal-on-surface-variant">
           Project Orion and its reports will leave the active workspace.
         </p>
       </Dialog>
@@ -1477,8 +1504,8 @@ export function TooltipDemo() {
       }`}
     >
       {open ? (
-        <div className="flex h-10 w-full items-center gap-1 rounded-full border border-outline-variant/40 bg-surface pl-3 pr-1 shadow-sm">
-          <Search aria-hidden="true" className="size-4 shrink-0 text-on-surface-variant" />
+        <div className="flex h-10 w-full items-center gap-1 rounded-full border border-teal-outline-variant/40 bg-teal-surface pl-3 pr-1 shadow-sm">
+          <Search aria-hidden="true" className="size-4 shrink-0 text-teal-on-surface-variant" />
           <Input
             ref={inputRef}
             aria-label="Search"
@@ -1537,7 +1564,7 @@ export function TooltipActionsDemo() {
       <Tooltip content="Changes apply to everyone in this workspace" delayDuration={0}>
         <IconButton label="Workspace sharing help"><CircleHelp /></IconButton>
       </Tooltip>
-      <span className="text-sm text-on-surface-variant">Workspace sharing</span>
+      <span className="text-sm text-teal-on-surface-variant">Workspace sharing</span>
     </div>
   )
 }
@@ -1794,7 +1821,7 @@ export function PopoverDemo({ exampleIndex = 0 }) {
       align="start"
     >
       <div className="grid gap-3">
-        <h3 className="font-headline font-bold">Filter projects</h3>
+        <h3 className="font-teal-headline font-bold">Filter projects</h3>
         <Checkbox label="Active only" defaultChecked />
         <Button size="sm">Apply filters</Button>
       </div>
@@ -1823,7 +1850,7 @@ export function PopoverDemo({ exampleIndex = 0 }) {
       align="start"
     >
       <div className="grid gap-3">
-        <h3 className="font-headline font-bold">Filter projects</h3>
+        <h3 className="font-teal-headline font-bold">Filter projects</h3>
         <Checkbox label="Active only" defaultChecked />
         <Button size="sm">Apply filters</Button>
       </div>
@@ -1852,7 +1879,7 @@ export function PopoverDemo({ exampleIndex = 0 }) {
       align="start"
     >
       <div className="grid gap-3">
-        <h3 className="font-headline font-bold">Filter projects</h3>
+        <h3 className="font-teal-headline font-bold">Filter projects</h3>
         <Checkbox label="Active only" defaultChecked />
         <Button size="sm">Apply filters</Button>
       </div>
@@ -2694,11 +2721,11 @@ import { VerticalNav, VerticalNavBrand, VerticalNavFooter, VerticalNavItem, Vert
 export function VerticalNavDemo() {
   return (
     <div className="grid w-full gap-4 sm:grid-cols-2">
-      <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
+      <div className="relative h-80 overflow-hidden rounded-xl border border-teal-outline-variant/30">
         <VerticalNav mode="rail" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
-              <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
+              <span className="flex size-9 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
                 <LayoutDashboard className="size-5" />
               </span>
             </span>
@@ -2718,15 +2745,15 @@ export function VerticalNavDemo() {
         </VerticalNav>
       </div>
 
-      <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
+      <div className="relative h-80 overflow-hidden rounded-xl border border-teal-outline-variant/30">
         <VerticalNav mode="full" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
-              <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
+              <span className="flex size-9 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
                 <LayoutDashboard className="size-5" />
               </span>
             </span>
-            <span className="font-headline text-lg font-extrabold leading-none">Teal</span>
+            <span className="font-teal-headline text-lg font-extrabold leading-none">Teal</span>
           </VerticalNavBrand>
           <VerticalNavList>
             <VerticalNavSection label="Workspace">
@@ -2758,11 +2785,11 @@ import { VerticalNav, VerticalNavBrand, VerticalNavFooter, VerticalNavItem, Vert
 export function VerticalNavDemo() {
   return (
     <div className="grid w-full gap-4 sm:grid-cols-2">
-      <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
+      <div className="relative h-80 overflow-hidden rounded-xl border border-teal-outline-variant/30">
         <VerticalNav mode="rail" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
-              <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
+              <span className="flex size-9 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
                 <LayoutDashboard className="size-5" />
               </span>
             </span>
@@ -2782,15 +2809,15 @@ export function VerticalNavDemo() {
         </VerticalNav>
       </div>
 
-      <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
+      <div className="relative h-80 overflow-hidden rounded-xl border border-teal-outline-variant/30">
         <VerticalNav mode="full" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
-              <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
+              <span className="flex size-9 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
                 <LayoutDashboard className="size-5" />
               </span>
             </span>
-            <span className="font-headline text-lg font-extrabold leading-none">Teal</span>
+            <span className="font-teal-headline text-lg font-extrabold leading-none">Teal</span>
           </VerticalNavBrand>
           <VerticalNavList>
             <VerticalNavSection label="Workspace">
@@ -2822,11 +2849,11 @@ import { VerticalNav, VerticalNavBrand, VerticalNavFooter, VerticalNavItem, Vert
 export function VerticalNavDemo() {
   return (
     <div className="grid w-full gap-4 sm:grid-cols-2">
-      <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
+      <div className="relative h-80 overflow-hidden rounded-xl border border-teal-outline-variant/30">
         <VerticalNav mode="rail" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
-              <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
+              <span className="flex size-9 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
                 <LayoutDashboard className="size-5" />
               </span>
             </span>
@@ -2846,15 +2873,15 @@ export function VerticalNavDemo() {
         </VerticalNav>
       </div>
 
-      <div className="relative h-80 overflow-hidden rounded-xl border border-outline-variant/30">
+      <div className="relative h-80 overflow-hidden rounded-xl border border-teal-outline-variant/30">
         <VerticalNav mode="full" className="absolute">
           <VerticalNavBrand>
             <span className="flex w-16 items-center justify-center">
-              <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
+              <span className="flex size-9 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
                 <LayoutDashboard className="size-5" />
               </span>
             </span>
-            <span className="font-headline text-lg font-extrabold leading-none">Teal</span>
+            <span className="font-teal-headline text-lg font-extrabold leading-none">Teal</span>
           </VerticalNavBrand>
           <VerticalNavList>
             <VerticalNavSection label="Workspace">
@@ -2973,15 +3000,15 @@ export function TopBarDemo() {
     <div className="w-full space-y-4">
       <TopBar sticky={false}>
         <TopBarBrand>
-          <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
+          <span className="flex size-8 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
             <Palette className="size-4" />
           </span>
-          <span className="font-headline font-extrabold">Teal</span>
+          <span className="font-teal-headline font-extrabold">Teal</span>
         </TopBarBrand>
         <TopBarSearch>
           <button
             type="button"
-            className="flex h-10 w-full max-w-sm items-center gap-2 rounded-xl border border-outline-variant/40 bg-surface px-3 text-sm text-on-surface-variant"
+            className="flex h-10 w-full max-w-sm items-center gap-2 rounded-xl border border-teal-outline-variant/40 bg-teal-surface px-3 text-sm text-teal-on-surface-variant"
           >
             <Search className="size-4" />
             Search the docs...
@@ -2999,10 +3026,10 @@ export function TopBarDemo() {
 
       <TopBar sticky={false} className="rounded-xl">
         <TopBarBrand>
-          <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
+          <span className="flex size-8 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
             <Palette className="size-4" />
           </span>
-          <span className="font-headline font-extrabold">Teal</span>
+          <span className="font-teal-headline font-extrabold">Teal</span>
         </TopBarBrand>
         <TopBarActions>
           <IconButton label="GitHub">
@@ -3032,15 +3059,15 @@ export function TopBarDemo() {
     <div className="w-full space-y-4">
       <TopBar sticky={false}>
         <TopBarBrand>
-          <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
+          <span className="flex size-8 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
             <Palette className="size-4" />
           </span>
-          <span className="font-headline font-extrabold">Teal</span>
+          <span className="font-teal-headline font-extrabold">Teal</span>
         </TopBarBrand>
         <TopBarSearch>
           <button
             type="button"
-            className="flex h-10 w-full max-w-sm items-center gap-2 rounded-xl border border-outline-variant/40 bg-surface px-3 text-sm text-on-surface-variant"
+            className="flex h-10 w-full max-w-sm items-center gap-2 rounded-xl border border-teal-outline-variant/40 bg-teal-surface px-3 text-sm text-teal-on-surface-variant"
           >
             <Search className="size-4" />
             Search the docs...
@@ -3058,10 +3085,10 @@ export function TopBarDemo() {
 
       <TopBar sticky={false} className="rounded-xl">
         <TopBarBrand>
-          <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
+          <span className="flex size-8 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
             <Palette className="size-4" />
           </span>
-          <span className="font-headline font-extrabold">Teal</span>
+          <span className="font-teal-headline font-extrabold">Teal</span>
         </TopBarBrand>
         <TopBarActions>
           <IconButton label="GitHub">
@@ -3087,14 +3114,14 @@ import { IconButton, TopBar, TopBarActions, TopBarBrand, TopBarSearch } from '@k
 
 export function TopBarShellDemo() {
   return (
-    <div className="w-full rounded-xl border border-outline-variant/30">
+    <div className="w-full rounded-xl border border-teal-outline-variant/30">
       <TopBar sticky={false} className="px-4">
         <TopBarBrand>
-          <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary"><Palette className="size-4" /></span>
-          <span className="font-headline font-bold">Project Orion</span>
+          <span className="flex size-8 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary"><Palette className="size-4" /></span>
+          <span className="font-teal-headline font-bold">Project Orion</span>
         </TopBarBrand>
         <TopBarSearch>
-          <button type="button" className="flex h-9 w-full max-w-xs items-center gap-2 rounded-lg border border-outline-variant/40 px-3 text-xs text-on-surface-variant"><Search className="size-4" />Search workspace</button>
+          <button type="button" className="flex h-9 w-full max-w-xs items-center gap-2 rounded-lg border border-teal-outline-variant/40 px-3 text-xs text-teal-on-surface-variant"><Search className="size-4" />Search workspace</button>
         </TopBarSearch>
         <TopBarActions><IconButton label="Notifications" size="sm"><Bell /></IconButton></TopBarActions>
       </TopBar>
@@ -3480,7 +3507,7 @@ export function SeparatorDemo() {
     <div className="w-full max-w-md space-y-4">
       <p>Account settings</p>
       <Separator />
-      <p className="text-sm text-on-surface-variant">Security preferences</p>
+      <p className="text-sm text-teal-on-surface-variant">Security preferences</p>
     </div>
   )
 }
@@ -3498,7 +3525,7 @@ export function SeparatorDemo() {
     <div className="w-full max-w-md space-y-4">
       <p>Account settings</p>
       <Separator />
-      <p className="text-sm text-on-surface-variant">Security preferences</p>
+      <p className="text-sm text-teal-on-surface-variant">Security preferences</p>
     </div>
   )
 }
@@ -3743,7 +3770,7 @@ export function FilterToolbarRecipe() {
     <Card className="w-full max-w-3xl p-4">
       <div className="flex flex-wrap items-center gap-2">
         <div className="relative min-w-48 flex-1">
-          <Search aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-on-surface-variant" />
+          <Search aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-teal-on-surface-variant" />
           <Input aria-label="Search projects" placeholder="Search projects" className="pl-9" />
         </div>
         <Select aria-label="Project status" placeholder="Status" options={[{ value: 'all', label: 'All statuses' }, { value: 'ready', label: 'Ready' }, { value: 'review', label: 'In review' }]} />
@@ -3769,7 +3796,7 @@ export function ConfirmationFlowRecipe() {
     <>
       <Button variant="danger" onClick={() => setOpen(true)}>Delete project</Button>
       <Dialog open={open} onOpenChange={setOpen} title="Delete project?" description="This removes the project from the active workspace." footer={<><Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button><Button variant="danger" onClick={() => setOpen(false)}>Delete project</Button></>}>
-        <p className="text-sm text-on-surface-variant">Export the project first if another team still needs the reports.</p>
+        <p className="text-sm text-teal-on-surface-variant">Export the project first if another team still needs the reports.</p>
       </Dialog>
     </>
   )
@@ -3804,18 +3831,18 @@ import { IconButton, TopBar, TopBarActions, TopBarBrand, VerticalNav, VerticalNa
 export function ResponsiveShellRecipe() {
   const [open, setOpen] = useState(false)
   return (
-    <div className="flex h-80 w-full max-w-3xl overflow-hidden rounded-2xl border border-outline-variant/30">
+    <div className="flex h-80 w-full max-w-3xl overflow-hidden rounded-2xl border border-teal-outline-variant/30">
       {open ? <button type="button" aria-label="Close navigation" className="fixed inset-0 z-30 bg-black/40 sm:hidden" onClick={() => setOpen(false)} /> : null}
       <VerticalNav mode="rail" className={`${open ? 'fixed inset-y-0 left-0 z-40 flex' : 'hidden'} shrink-0 sm:flex`}>
-        <VerticalNavBrand><span className="flex w-16 justify-center text-primary"><LayoutDashboard /></span></VerticalNavBrand>
+        <VerticalNavBrand><span className="flex w-16 justify-center text-teal-primary"><LayoutDashboard /></span></VerticalNavBrand>
         <VerticalNavList><VerticalNavSection label="Workspace"><VerticalNavItem active icon={<LayoutDashboard />} onClick={() => setOpen(false)}>Overview</VerticalNavItem><VerticalNavItem icon={<Settings />} onClick={() => setOpen(false)}>Settings</VerticalNavItem></VerticalNavSection></VerticalNavList>
       </VerticalNav>
       <div className="min-w-0 flex-1">
         <TopBar sticky={false} className="px-4">
-          <TopBarBrand><IconButton label={open ? 'Close navigation' : 'Open navigation'} size="sm" className="sm:hidden" onClick={() => setOpen((value) => !value)}>{open ? <X /> : <Menu />}</IconButton><span className="font-headline font-bold">Overview</span></TopBarBrand>
+          <TopBarBrand><IconButton label={open ? 'Close navigation' : 'Open navigation'} size="sm" className="sm:hidden" onClick={() => setOpen((value) => !value)}>{open ? <X /> : <Menu />}</IconButton><span className="font-teal-headline font-bold">Overview</span></TopBarBrand>
           <TopBarActions><IconButton label="Notifications" size="sm"><Bell /></IconButton></TopBarActions>
         </TopBar>
-        <div className="p-5 text-sm text-on-surface-variant">Content remains readable while navigation changes shape at the shell boundary.</div>
+        <div className="p-5 text-sm text-teal-on-surface-variant">Content remains readable while navigation changes shape at the shell boundary.</div>
       </div>
     </div>
   )
@@ -3836,8 +3863,8 @@ export function DisclosedSearchRecipe() {
   const inputRef = useRef(null)
   useEffect(() => { if (open) requestAnimationFrame(() => inputRef.current?.focus()) }, [open])
   return open ? (
-    <div className="flex w-full max-w-sm items-center gap-2 rounded-xl border border-outline-variant/40 bg-surface px-3">
-      <Search aria-hidden="true" className="size-4 text-on-surface-variant" />
+    <div className="flex w-full max-w-sm items-center gap-2 rounded-xl border border-teal-outline-variant/40 bg-teal-surface px-3">
+      <Search aria-hidden="true" className="size-4 text-teal-on-surface-variant" />
       <Input ref={inputRef} aria-label="Search projects" placeholder="Search projects" className="min-h-10 flex-1 rounded-none border-0 bg-transparent px-0 shadow-none focus-visible:ring-0" onKeyDown={(event) => { if (event.key === 'Escape') setOpen(false) }} />
       <IconButton label="Close search" size="sm" onClick={() => setOpen(false)}><X /></IconButton>
     </div>
@@ -3853,7 +3880,13 @@ A recipe becomes a published module only after at least two Kryv products need t
 
 # Changelog
 
-Versioned changes to @kryv/teal, generated from the changesets changelog. Current version: v0.3.0.
+Versioned changes to @kryv/teal, generated from the changesets changelog. Current version: v0.3.1.
+
+## v0.3.1
+
+### Patch Changes
+
+- Harden visual cohesion and consumer isolation across the existing catalog. - Replace legacy channel-only `--color-*` variables with complete, namespaced `--teal-color-*` CSS color values. This is an intentional breaking token migration in a patch release. - Namespace public Tailwind utilities as `*-teal-*` and isolate compiled component utilities behind `teal-u-` so consumer themes can safely define generic names such as `primary`. - Improve light and dark contrast, focus visibility, forced-colors support, required Select semantics, disabled Card links, Avatar source retries, and dynamic Table overflow handling. - Preserve public React component exports, prop types, and control dimensions.
 
 ## v0.3.0
 

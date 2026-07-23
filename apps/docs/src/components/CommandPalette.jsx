@@ -104,7 +104,7 @@ function scoreEntry(entry, query) {
 
 function KbdHint({ children }) {
   return (
-    <kbd className="rounded border border-outline-variant/50 bg-surface-container px-1.5 py-0.5 font-mono text-[10px] font-semibold text-on-surface">
+    <kbd className="rounded border border-teal-outline-variant/50 bg-teal-surface-container px-1.5 py-0.5 font-mono text-[10px] font-semibold text-teal-on-surface">
       {children}
     </kbd>
   )
@@ -165,8 +165,8 @@ function PaletteBody({ onClose }) {
 
   return (
     <div className="-mt-5">
-      <div className="relative flex h-16 items-center border-b border-outline-variant/30">
-        <Search aria-hidden="true" className="pointer-events-none absolute left-5 size-4 text-on-surface-variant" />
+      <div className="relative flex h-16 items-center border-b border-teal-outline-variant/30">
+        <Search aria-hidden="true" className="pointer-events-none absolute left-5 size-4 text-teal-on-surface-variant" />
         <Input
           ref={inputRef}
           value={query}
@@ -182,7 +182,7 @@ function PaletteBody({ onClose }) {
       </div>
       <div className="max-h-[min(20rem,45vh)] overflow-y-auto p-2">
         {!trimmed && recents.length ? (
-          <div className="px-3 pb-1 pt-2 text-xs font-bold uppercase tracking-wider text-on-surface-variant">
+          <div className="px-3 pb-1 pt-2 text-xs font-bold uppercase tracking-wider text-teal-on-surface-variant">
             Recent
           </div>
         ) : null}
@@ -193,13 +193,13 @@ function PaletteBody({ onClose }) {
               type="button"
               onMouseEnter={() => setActiveIndex(index)}
               onClick={() => go(entry)}
-              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-                index === activeIndex ? 'bg-primary/10 text-primary' : 'text-on-surface-variant hover:bg-surface-container-high'
+              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-primary ${
+                index === activeIndex ? 'bg-teal-primary/10 text-teal-primary' : 'text-teal-on-surface-variant hover:bg-teal-surface-container-high'
               }`}
             >
               <FileText aria-hidden="true" className="size-4 shrink-0" />
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-semibold text-on-surface">{entry.title}</span>
+                <span className="block truncate text-sm font-semibold text-teal-on-surface">{entry.title}</span>
                 <span className="block truncate text-xs">{entry.group}</span>
               </span>
               <ArrowRight
@@ -209,12 +209,12 @@ function PaletteBody({ onClose }) {
             </button>
           ))
         ) : (
-          <p className="px-3 py-10 text-center text-sm text-on-surface-variant">
-            No results for <span className="font-semibold text-on-surface">&ldquo;{query.trim()}&rdquo;</span>
+          <p className="px-3 py-10 text-center text-sm text-teal-on-surface-variant">
+            No results for <span className="font-semibold text-teal-on-surface">&ldquo;{query.trim()}&rdquo;</span>
           </p>
         )}
       </div>
-      <div className="flex h-11 items-center gap-4 border-t border-outline-variant/30 px-5 text-xs text-on-surface-variant">
+      <div className="flex h-11 items-center gap-4 border-t border-teal-outline-variant/30 px-5 text-xs text-teal-on-surface-variant">
         <span className="flex items-center gap-1.5">
           <KbdHint>&uarr;&darr;</KbdHint> Navigate
         </span>

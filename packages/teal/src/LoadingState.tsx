@@ -15,14 +15,14 @@ export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(function Spinne
   ref,
 ) {
   return (
-    <span ref={ref} role="status" aria-label={label} className={cn('inline-flex text-primary', className)} {...props}>
+    <span ref={ref} role="status" aria-label={label} className={cn('teal-u-inline-flex teal-u-text-primary', className)} {...props}>
       <LoaderCircle
         aria-hidden="true"
         className={cn(
-          'animate-spin motion-reduce:animate-none',
-          size === 'sm' && 'size-4',
-          size === 'md' && 'size-6',
-          size === 'lg' && 'size-8',
+          'teal-u-animate-spin motion-reduce:teal-u-animate-none',
+          size === 'sm' && 'teal-u-size-[var(--teal-icon-sm)]',
+          size === 'md' && 'teal-u-size-[var(--teal-icon-lg)]',
+          size === 'lg' && 'teal-u-size-[var(--teal-icon-xl)]',
         )}
       />
     </span>
@@ -44,12 +44,12 @@ export const LoadingState = forwardRef<HTMLDivElement, LoadingStateProps>(functi
       role="status"
       aria-label={label}
       className={cn(
-        'flex min-h-60 items-center justify-center rounded-2xl border border-outline-variant/20 bg-surface-container',
+        'teal-raised-surface teal-u-flex teal-u-min-h-60 teal-u-items-center teal-u-justify-center teal-u-border teal-u-bg-surface-container',
         className,
       )}
       {...props}
     >
-      <LoaderCircle aria-hidden="true" className="size-8 animate-spin text-primary motion-reduce:animate-none" />
+      <LoaderCircle aria-hidden="true" className="teal-u-size-[var(--teal-icon-xl)] teal-u-animate-spin teal-u-text-primary motion-reduce:teal-u-animate-none" />
     </div>
   )
 })
@@ -62,7 +62,7 @@ export const Skeleton = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement
     <div
       ref={ref}
       aria-hidden="true"
-      className={cn('animate-pulse rounded-lg bg-surface-container-high motion-reduce:animate-none', className)}
+      className={cn('teal-u-animate-pulse teal-u-rounded-lg teal-u-bg-surface-container-highest motion-reduce:teal-u-animate-none', className)}
       {...props}
     />
   )
@@ -84,11 +84,11 @@ export const Progress = forwardRef<React.ElementRef<typeof ProgressPrimitive.Roo
       aria-label={label}
       max={max}
       value={value}
-      className={cn('relative h-2 w-full overflow-hidden rounded-full bg-surface-container-high', className)}
+      className={cn('teal-u-relative teal-u-h-2 teal-u-w-full teal-u-overflow-hidden teal-u-rounded-full teal-u-bg-surface-container-high', className)}
       {...props}
     >
       <ProgressPrimitive.Indicator
-        className="h-full w-full bg-primary transition-transform motion-reduce:transition-none"
+        className="teal-u-h-full teal-u-w-full teal-u-bg-primary teal-u-transition-transform teal-u-duration-[var(--teal-motion-standard)] motion-reduce:teal-u-transition-none"
         style={{ transform: `translateX(-${100 - percentage}%)` }}
       />
     </ProgressPrimitive.Root>

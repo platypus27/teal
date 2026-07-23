@@ -57,12 +57,15 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
   },
   ref,
 ) {
-  const semantics = useFormSemantics({ id, invalid: isAriaTrue(invalid), prefix: 'teal-select' })
+  const semantics = useFormSemantics({
+    id,
+    invalid: isAriaTrue(invalid),
+    prefix: 'teal-select',
+    required,
+  })
   return (
     <SelectPrimitive.Root
-      {...(required !== undefined || semantics.required
-        ? { required: semantics.required }
-        : {})}
+      {...(required !== undefined || semantics.required ? { required: semantics.required } : {})}
       {...(value !== undefined ? { value } : {})}
       {...(defaultValue !== undefined ? { defaultValue } : {})}
       {...(onValueChange ? { onValueChange } : {})}
@@ -82,13 +85,13 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
         aria-describedby={mergeDescriptionIds(describedBy, semantics.descriptionId, semantics.errorId)}
         className={cn(
           fieldVariants({ size }),
-          'flex items-center justify-between gap-2 text-left data-[placeholder]:text-on-surface-variant',
+          'teal-u-flex teal-u-items-center teal-u-justify-between teal-u-gap-2 teal-u-text-left data-[placeholder]:teal-u-text-on-surface-variant',
           className,
         )}
       >
         <SelectPrimitive.Value placeholder={placeholder} />
         <SelectPrimitive.Icon asChild>
-          <ChevronDown aria-hidden="true" className="size-4 shrink-0 text-on-surface-variant" />
+          <ChevronDown aria-hidden="true" className="teal-u-size-[var(--teal-icon-sm)] teal-u-shrink-0 teal-u-text-on-surface-variant" />
         </SelectPrimitive.Icon>
       </SelectPrimitive.Trigger>
       <SelectPrimitive.Portal>
@@ -96,23 +99,23 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
           position="popper"
           sideOffset={6}
           className={cn(
-            'z-[var(--teal-z-popover)] max-h-[var(--radix-select-content-available-height)] min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-xl border border-outline-variant/50 bg-surface-container text-on-surface shadow-[var(--teal-shadow-overlay)]',
+            'teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-max-h-[var(--radix-select-content-available-height)] teal-u-min-w-[var(--radix-select-trigger-width)] teal-u-overflow-hidden teal-u-border teal-u-bg-surface teal-u-text-on-surface',
           )}
         >
-          <SelectPrimitive.Viewport className="p-1">
+          <SelectPrimitive.Viewport className="teal-u-p-1">
             {options.map((option) => (
               <SelectPrimitive.Item
                 key={option.value}
                 value={option.value}
-                className="relative flex min-h-9 cursor-default select-none items-center rounded-lg py-2 pl-8 pr-3 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-45 data-[highlighted]:bg-primary/10 data-[highlighted]:text-primary"
+                className="teal-focus-ring teal-u-relative teal-u-flex teal-u-min-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-rounded-lg teal-u-py-2 teal-u-pl-8 teal-u-pr-3 teal-u-text-sm data-[disabled]:teal-u-pointer-events-none data-[disabled]:teal-u-opacity-45 data-[highlighted]:teal-u-bg-primary/10 data-[highlighted]:teal-u-text-primary"
                 {...(option.disabled !== undefined ? { disabled: option.disabled } : {})}
                 {...(option.textValue || typeof option.label === 'string'
                   ? { textValue: option.textValue ?? String(option.label) }
                   : {})}
               >
-                <span className="absolute left-2 flex size-4 items-center justify-center">
+                <span className="teal-u-absolute teal-u-left-2 teal-u-flex teal-u-size-[var(--teal-icon-sm)] teal-u-items-center teal-u-justify-center">
                   <SelectPrimitive.ItemIndicator>
-                    <Check aria-hidden="true" className="size-4" />
+                    <Check aria-hidden="true" className="teal-u-size-[var(--teal-icon-sm)]" />
                   </SelectPrimitive.ItemIndicator>
                 </span>
                 <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>

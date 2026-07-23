@@ -27,8 +27,8 @@ await rm(dist, { recursive: true, force: true })
 await viteBuild({ configFile: resolve(root, 'vite.config.ts') })
 await runNode(require.resolve('typescript/bin/tsc'), ['-p', resolve(root, 'tsconfig.build.json')])
 await runNode(require.resolve('tailwindcss/lib/cli.js'), [
-  '-c',
-  resolve(root, 'tailwind.preset.js'),
+    '-c',
+    resolve(root, 'tailwind.internal.js'),
   '-i',
   resolve(root, 'src/styles.css'),
   '-o',

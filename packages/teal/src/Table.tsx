@@ -39,17 +39,32 @@ export interface TableProps<Row> {
 function useOverflowing() {
   const [overflowing, setOverflowing] = useState(false)
   const observerRef = useRef<ResizeObserver | null>(null)
-  const refCallback = useCallback((node: HTMLDivElement | null) => {
+  const viewportRef = useRef<HTMLDivElement | null>(null)
+  const contentRef = useRef<HTMLTableElement | null>(null)
+
+  const observe = useCallback(() => {
     observerRef.current?.disconnect()
     observerRef.current = null
-    if (node) {
-      const measure = () => setOverflowing(node.scrollWidth - node.clientWidth > 1)
-      measure()
-      observerRef.current = new ResizeObserver(measure)
-      observerRef.current.observe(node)
-    }
+    const viewport = viewportRef.current
+    if (!viewport) return
+
+    const measure = () => setOverflowing(viewport.scrollWidth - viewport.clientWidth > 1)
+    measure()
+    observerRef.current = new ResizeObserver(measure)
+    observerRef.current.observe(viewport)
+    if (contentRef.current) observerRef.current.observe(contentRef.current)
   }, [])
-  return [overflowing, refCallback] as const
+
+  const setViewportRef = useCallback((node: HTMLDivElement | null) => {
+    viewportRef.current = node
+    observe()
+  }, [observe])
+  const setContentRef = useCallback((node: HTMLTableElement | null) => {
+    contentRef.current = node
+    observe()
+  }, [observe])
+
+  return [overflowing, setViewportRef, setContentRef] as const
 }
 
 function TableRender<Row>(
@@ -66,7 +81,7 @@ function TableRender<Row>(
   }: TableProps<Row>,
   ref: Ref<HTMLDivElement>,
 ) {
-  const [overflowing, overflowRef] = useOverflowing()
+  const [overflowing, overflowRef, contentRef] = useOverflowing()
   const setRefs = (node: HTMLDivElement | null) => {
     overflowRef(node)
     if (typeof ref === 'function') ref(node)
@@ -80,49 +95,49 @@ function TableRender<Row>(
       aria-busy={loading || undefined}
       tabIndex={overflowing ? 0 : undefined}
       className={cn(
-        'overflow-x-auto rounded-2xl border border-outline-variant/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+        'teal-raised-surface teal-focus-ring teal-u-overflow-x-auto teal-u-border teal-u-bg-surface-container',
         className,
       )}
     >
       {loading ? (
-        <span role="status" className="sr-only">
+        <span role="status" className="teal-u-sr-only">
           {loadingLabel}
         </span>
       ) : null}
-      <table className="w-full border-collapse text-left text-sm">
-        <caption className="sr-only">{caption}</caption>
-        <thead className={cn('text-xs font-semibold uppercase tracking-wide text-on-surface-variant', 'bg-surface-container-high')}>
+      <table ref={contentRef} className="teal-u-w-full teal-u-border-collapse teal-u-text-left teal-u-text-sm">
+        <caption className="teal-u-sr-only">{caption}</caption>
+        <thead className={cn('teal-u-text-xs teal-u-font-semibold teal-u-uppercase teal-u-tracking-wide teal-u-text-on-surface-variant', 'teal-u-bg-surface-container-highest')}>
           <tr>
             {columns.map((column) => (
               <th
                 key={column.key}
                 scope="col"
-                className={cn(density === 'compact' ? 'px-3 py-2' : 'px-4 py-3', column.headerClassName)}
+                className={cn(density === 'compact' ? 'teal-u-px-3 teal-u-py-2' : 'teal-u-px-4 teal-u-py-3', column.headerClassName)}
               >
                 {column.header}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className={cn('divide-y divide-outline-variant/25', 'bg-surface-container')}>
+        <tbody className={cn('teal-u-divide-y teal-u-divide-outline-variant/40', 'teal-u-bg-surface')}>
           {loading
             ? Array.from({ length: 3 }, (_, rowIndex) => (
                 <tr key={`loading-${rowIndex}`}>
                   {columns.map((column) => (
-                    <td key={column.key} className={density === 'compact' ? 'px-3 py-2' : 'px-4 py-3'}>
-                      <Skeleton className="h-4 w-4/5" />
+                    <td key={column.key} className={density === 'compact' ? 'teal-u-px-3 teal-u-py-2' : 'teal-u-px-4 teal-u-py-3'}>
+                      <Skeleton className="teal-u-h-4 teal-u-w-4/5" />
                     </td>
                   ))}
                 </tr>
               ))
             : rows.map((row) => (
-                <tr key={getRowKey(row)} className="transition-colors hover:bg-surface-container-high/70">
+                <tr key={getRowKey(row)} className="teal-u-transition-colors teal-u-duration-[var(--teal-motion-fast)] hover:teal-u-bg-surface-container-high/70">
                   {columns.map((column) => (
                     <td
                       key={column.key}
                       className={cn(
-                        'text-on-surface',
-                        density === 'compact' ? 'px-3 py-2' : 'px-4 py-3',
+                        'teal-u-text-on-surface',
+                        density === 'compact' ? 'teal-u-px-3 teal-u-py-2' : 'teal-u-px-4 teal-u-py-3',
                         column.cellClassName,
                       )}
                     >
@@ -133,7 +148,7 @@ function TableRender<Row>(
               ))}
           {!loading && rows.length === 0 ? (
             <tr>
-              <td colSpan={columns.length} className="px-4 py-10 text-center text-sm text-on-surface-variant">
+              <td colSpan={columns.length} className="teal-u-px-4 teal-u-py-10 teal-u-text-center teal-u-text-sm teal-u-text-on-surface-variant">
                 {empty}
               </td>
             </tr>

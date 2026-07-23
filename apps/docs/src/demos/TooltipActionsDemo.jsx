@@ -7,7 +7,7 @@ export function TooltipActionsDemo() {
       <Tooltip content="Changes apply to everyone in this workspace" delayDuration={0}>
         <IconButton label="Workspace sharing help"><CircleHelp /></IconButton>
       </Tooltip>
-      <span className="text-sm text-on-surface-variant">Workspace sharing</span>
+      <span className="text-sm text-teal-on-surface-variant">Workspace sharing</span>
     </div>
   )
 }
