@@ -4,16 +4,16 @@ import { cn } from './cn'
 import type { PolymorphicComponent, PolymorphicProps } from './polymorphic'
 
 const verticalNavVariants = cva(
-  'box-border group flex flex-col overflow-hidden border-solid border-[color:var(--teal-border-subtle)] bg-surface transition-[width] duration-[var(--teal-motion-standard)] ease-out motion-reduce:transition-none',
+  'teal-u-box-border teal-u-group teal-u-flex teal-u-flex-col teal-u-overflow-hidden teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-bg-surface teal-u-transition-[width] teal-u-duration-[var(--teal-motion-standard)] teal-u-ease-out motion-reduce:teal-u-transition-none',
   {
     variants: {
       mode: {
-        rail: 'w-20 hover:w-72 focus-within:w-72',
-        full: 'w-72',
+        rail: 'teal-u-w-20 hover:teal-u-w-72 focus-within:teal-u-w-72',
+        full: 'teal-u-w-72',
       },
       side: {
-        left: 'border-r',
-        right: 'border-l',
+        left: 'teal-u-border-r',
+        right: 'teal-u-border-l',
       },
     },
     defaultVariants: {
@@ -55,7 +55,7 @@ export const VerticalNav = VerticalNavImpl as PolymorphicComponent<'nav', Vertic
 
 export const VerticalNavBrand = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   function VerticalNavBrand({ className, ...props }, ref) {
-    return <div ref={ref} className={cn('flex items-center px-2 py-5', className)} {...props} />
+    return <div ref={ref} className={cn('teal-u-flex teal-u-items-center teal-u-px-2 teal-u-py-5', className)} {...props} />
   },
 )
 
@@ -64,13 +64,13 @@ export const VerticalNavList = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDiv
     const { mode } = useVerticalNavMode()
     const overflowClass =
       mode === 'rail'
-        ? 'overflow-hidden group-hover:overflow-y-auto group-focus-within:overflow-y-auto'
-        : 'overflow-y-auto'
+        ? 'teal-u-overflow-hidden group-hover:teal-u-overflow-y-auto group-focus-within:teal-u-overflow-y-auto'
+        : 'teal-u-overflow-y-auto'
     return (
       <div
         ref={ref}
         tabIndex={mode === 'full' ? (tabIndex ?? 0) : tabIndex}
-        className={cn('flex-1 space-y-6 px-2 py-2', overflowClass, className)}
+        className={cn('teal-u-flex-1 teal-u-space-y-6 teal-u-px-2 teal-u-py-2', overflowClass, className)}
         {...props}
       />
     )
@@ -86,14 +86,14 @@ export const VerticalNavSection = forwardRef<HTMLDivElement, VerticalNavSectionP
   function VerticalNavSection({ className, label, children, ...props }, ref) {
     const { mode } = useVerticalNavMode()
     return (
-      <div ref={ref} className={cn('space-y-0.5', className)} {...props}>
+      <div ref={ref} className={cn('teal-u-space-y-0.5', className)} {...props}>
         {label ? (
           <div
             className={cn(
-              'px-3 pb-2 text-xs font-bold uppercase tracking-wider text-on-surface-variant transition-opacity duration-[var(--teal-motion-fast)] motion-reduce:transition-none',
+              'teal-u-px-3 teal-u-pb-2 teal-u-text-xs teal-u-font-bold teal-u-uppercase teal-u-tracking-wider teal-u-text-on-surface-variant teal-u-transition-opacity teal-u-duration-[var(--teal-motion-fast)] motion-reduce:teal-u-transition-none',
               mode === 'rail'
-                ? 'opacity-0 group-hover:opacity-100 group-focus-within:opacity-100'
-                : 'opacity-100',
+                ? 'teal-u-opacity-0 group-hover:teal-u-opacity-100 group-focus-within:teal-u-opacity-100'
+                : 'teal-u-opacity-100',
             )}
           >
             {label}
@@ -121,30 +121,30 @@ const VerticalNavItemImpl = forwardRef<HTMLElement, VerticalNavItemProps>(functi
   const { mode } = useVerticalNavMode()
 
   const labelClass = cn(
-    'overflow-hidden whitespace-nowrap transition-[width,opacity] duration-[var(--teal-motion-standard)] motion-reduce:transition-none',
+    'teal-u-overflow-hidden teal-u-whitespace-nowrap teal-u-transition-[width,opacity] teal-u-duration-[var(--teal-motion-standard)] motion-reduce:teal-u-transition-none',
     mode === 'rail'
-      ? 'w-0 opacity-0 group-hover:w-auto group-hover:opacity-100 group-focus-within:w-auto group-focus-within:opacity-100'
-      : 'flex-1 opacity-100',
+      ? 'teal-u-w-0 teal-u-opacity-0 group-hover:teal-u-w-auto group-hover:teal-u-opacity-100 group-focus-within:teal-u-w-auto group-focus-within:teal-u-opacity-100'
+      : 'teal-u-flex-1 teal-u-opacity-100',
   )
 
   return (
     <Component
       ref={ref as never}
       className={cn(
-        'teal-focus-ring group/item flex items-center rounded-xl py-1.5 text-sm',
+        'teal-focus-ring teal-u-group/item teal-u-flex teal-u-items-center teal-u-rounded-xl teal-u-py-1.5 teal-u-text-sm',
         className,
       )}
       aria-current={active ? 'page' : undefined}
       {...props}
     >
       {icon ? (
-        <span className="flex w-16 shrink-0 items-center justify-center">
+        <span className="teal-u-flex teal-u-w-16 teal-u-shrink-0 teal-u-items-center teal-u-justify-center">
           <span
             className={cn(
-              'flex size-9 items-center justify-center rounded-xl transition-colors duration-[var(--teal-motion-fast)]',
+              'teal-u-flex teal-u-size-9 teal-u-items-center teal-u-justify-center teal-u-rounded-xl teal-u-transition-colors teal-u-duration-[var(--teal-motion-fast)]',
               active
-                ? 'bg-primary/10 text-primary'
-                : 'text-on-surface-variant group-hover/item:bg-surface-container-high group-hover/item:text-on-surface',
+                ? 'teal-u-bg-primary/10 teal-u-text-primary'
+                : 'teal-u-text-on-surface-variant group-hover/item:teal-u-bg-surface-container-high group-hover/item:teal-u-text-on-surface',
             )}
           >
             {icon}
@@ -154,9 +154,9 @@ const VerticalNavItemImpl = forwardRef<HTMLElement, VerticalNavItemProps>(functi
       <span
         className={cn(
           labelClass,
-          'flex items-center',
-          icon ? undefined : 'pl-3',
-          active ? 'font-semibold text-primary' : 'text-on-surface-variant group-hover/item:text-on-surface',
+          'teal-u-flex teal-u-items-center',
+          icon ? undefined : 'teal-u-pl-3',
+          active ? 'teal-u-font-semibold teal-u-text-primary' : 'teal-u-text-on-surface-variant group-hover/item:teal-u-text-on-surface',
         )}
       >
         {children}
@@ -169,7 +169,7 @@ export const VerticalNavItem = VerticalNavItemImpl as PolymorphicComponent<'a', 
 
 export const VerticalNavFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   function VerticalNavFooter({ className, ...props }, ref) {
-    return <div ref={ref} className={cn('mt-auto px-2 pb-6', className)} {...props} />
+    return <div ref={ref} className={cn('teal-u-mt-auto teal-u-px-2 teal-u-pb-6', className)} {...props} />
   },
 )
 

@@ -19,8 +19,8 @@ export function TooltipDemo() {
       }`}
     >
       {open ? (
-        <div className="flex h-10 w-full items-center gap-1 rounded-full border border-outline-variant/40 bg-surface pl-3 pr-1 shadow-sm">
-          <Search aria-hidden="true" className="size-4 shrink-0 text-on-surface-variant" />
+        <div className="flex h-10 w-full items-center gap-1 rounded-full border border-teal-outline-variant/40 bg-teal-surface pl-3 pr-1 shadow-sm">
+          <Search aria-hidden="true" className="size-4 shrink-0 text-teal-on-surface-variant" />
           <Input
             ref={inputRef}
             aria-label="Search"

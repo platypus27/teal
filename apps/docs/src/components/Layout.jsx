@@ -38,8 +38,8 @@ function Header({ navOpen, setNavOpen }) {
   return (
     <TopBar sticky>
       <TopBarBrand>
-        <NavLink to="/" className="flex items-center gap-2 font-headline font-extrabold lg:hidden">
-          <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-on-primary">
+        <NavLink to="/" className="flex items-center gap-2 font-teal-headline font-extrabold lg:hidden">
+          <span className="flex size-8 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
             <Palette className="size-4" />
           </span>
           Teal
@@ -49,11 +49,11 @@ function Header({ navOpen, setNavOpen }) {
         <button
           type="button"
           onClick={() => setPaletteOpen(true)}
-          className="hidden h-10 w-full max-w-sm items-center gap-2 rounded-xl border border-outline-variant/40 bg-surface px-3 text-sm text-on-surface-variant transition hover:border-outline hover:text-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary lg:flex"
+          className="hidden h-10 w-full max-w-sm items-center gap-2 rounded-xl border border-teal-outline-variant/40 bg-teal-surface px-3 text-sm text-teal-on-surface-variant transition hover:border-teal-outline hover:text-teal-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-primary lg:flex"
         >
           <Search aria-hidden="true" className="size-4" />
           <span>Search the docs...</span>
-          <kbd className="ml-auto rounded border border-outline-variant/50 bg-surface-container px-1.5 py-0.5 font-mono text-[10px] font-semibold">
+          <kbd className="ml-auto rounded border border-teal-outline-variant/50 bg-teal-surface-container px-1.5 py-0.5 font-mono text-[10px] font-semibold">
             {modifier}
           </kbd>
         </button>
@@ -111,17 +111,17 @@ function Sidebar({ navOpen, setNavOpen }) {
       >
         <VerticalNavBrand>
           <NavLink to="/" className="flex items-center gap-3" onClick={() => setNavOpen(false)}>
-            <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-on-primary">
+            <span className="flex size-9 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
               <Palette className="size-5" />
             </span>
             <span>
-              <span className="flex items-center gap-2 font-headline text-lg font-extrabold leading-none">
+              <span className="flex items-center gap-2 font-teal-headline text-lg font-extrabold leading-none">
                 Teal
-                <span className="rounded-full bg-primary/10 px-1.5 py-0.5 font-mono text-[10px] font-bold text-primary">
+                <span className="rounded-full bg-teal-primary/10 px-1.5 py-0.5 font-mono text-[10px] font-bold text-teal-primary">
                   v{changelog.version}
                 </span>
               </span>
-              <span className="mt-1 block text-xs text-on-surface-variant">Kryv design system</span>
+              <span className="mt-1 block text-xs text-teal-on-surface-variant">Kryv design system</span>
             </span>
           </NavLink>
         </VerticalNavBrand>
@@ -150,7 +150,7 @@ function Sidebar({ navOpen, setNavOpen }) {
                 >
                   {module.name}
                   {module.hasPlayground ? (
-                    <FlaskConical aria-hidden="true" className="ml-auto size-3.5 text-primary/70" />
+                    <FlaskConical aria-hidden="true" className="ml-auto size-3.5 text-teal-primary/70" />
                   ) : null}
                 </VerticalNavItem>
               ))}
@@ -187,10 +187,10 @@ export function Layout() {
   return (
     <CommandPaletteProvider>
       <TooltipProvider>
-        <div className="min-h-screen bg-background text-on-surface">
+        <div className="min-h-screen bg-teal-background text-teal-on-surface">
           <a
             href="#main-content"
-            className="fixed left-3 top-3 z-[100] -translate-y-20 rounded-lg bg-primary px-4 py-2 font-semibold text-on-primary focus:translate-y-0"
+            className="fixed left-3 top-3 z-[100] -translate-y-20 rounded-lg bg-teal-primary px-4 py-2 font-semibold text-teal-on-primary focus:translate-y-0"
           >
             Skip to content
           </a>

@@ -48,7 +48,7 @@ export function WorkspaceForm() {
 
 Tailwind is not required to render Teal modules. Tailwind 3 applications can
 extend `@kryv/teal/tailwind-preset` to use the semantic token utilities
-(`bg-surface-container`, `text-on-surface-variant`, `border-outline-variant`,
+(`bg-teal-surface-container`, `text-teal-on-surface-variant`, `border-teal-outline-variant`,
 and friends) in their own markup:
 
 ```js

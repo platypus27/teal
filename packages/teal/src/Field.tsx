@@ -16,7 +16,7 @@ export const Label = forwardRef<ElementRef<typeof LabelPrimitive.Root>, LabelPro
   return (
     <LabelPrimitive.Root
       ref={ref}
-      className={cn('text-sm font-semibold text-on-surface', className)}
+      className={cn('teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface', className)}
       {...props}
     />
   )
@@ -52,19 +52,19 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(function Field(
 
   return (
     <FormSemanticsContext.Provider value={{ ...semantics, labeledByField: true }}>
-      <div ref={ref} className={cn('grid gap-1.5', className)} {...props}>
+      <div ref={ref} className={cn('teal-u-grid teal-u-gap-1.5', className)} {...props}>
         <Label htmlFor={semantics.controlId}>
           {label}
-          {required ? <span className="ml-1 text-error" aria-hidden="true">*</span> : null}
+          {required ? <span className="teal-u-ml-1 teal-u-text-error" aria-hidden="true">*</span> : null}
         </Label>
         {children}
         {hasFormContent(description) ? (
-          <p id={semantics.descriptionId} className="text-xs leading-relaxed text-on-surface-variant">
+          <p id={semantics.descriptionId} className="teal-u-text-xs teal-u-leading-relaxed teal-u-text-on-surface-variant">
             {description}
           </p>
         ) : null}
         {hasFormContent(error) ? (
-          <p id={semantics.errorId} className="text-xs font-medium leading-relaxed text-error">
+          <p id={semantics.errorId} className="teal-u-text-xs teal-u-font-medium teal-u-leading-relaxed teal-u-text-error">
             {error}
           </p>
         ) : null}

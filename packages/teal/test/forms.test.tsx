@@ -74,6 +74,32 @@ describe('Field', () => {
 })
 
 describe('Select', () => {
+  it('participates in native required form validation when standalone', async () => {
+    const user = userEvent.setup()
+    const { container } = render(
+      <form>
+        <Select
+          aria-label="Role"
+          name="role"
+          required
+          options={[
+            { value: 'admin', label: 'Administrator' },
+            { value: 'viewer', label: 'Viewer' },
+          ]}
+        />
+      </form>,
+    )
+
+    const form = container.querySelector('form')
+    const select = screen.getByRole('combobox', { name: 'Role' })
+    expect(select).toBeRequired()
+    expect(form).not.toBeValid()
+
+    await user.click(select)
+    await user.click(await screen.findByRole('option', { name: 'Viewer' }))
+    expect(form).toBeValid()
+  })
+
   it('supports accessible option selection through its value interface', async () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()

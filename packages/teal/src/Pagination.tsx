@@ -35,7 +35,7 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(function Pagi
   const safePageCount = Math.max(1, pageCount)
   const currentPage = Math.min(Math.max(1, page), safePageCount)
   return (
-    <nav ref={ref} aria-label={label} className={cn('flex flex-wrap items-center justify-center gap-1', className)}>
+    <nav ref={ref} aria-label={label} className={cn('teal-u-flex teal-u-flex-wrap teal-u-items-center teal-u-justify-center teal-u-gap-1', className)}>
       <IconButton
         label="Previous page"
         size="sm"
@@ -46,7 +46,7 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(function Pagi
       </IconButton>
       {pagesFor(currentPage, safePageCount).map((item, index) =>
         item === 'ellipsis' ? (
-          <span key={`ellipsis-${index}`} aria-hidden="true" className="px-2 text-on-surface-variant">
+          <span key={`ellipsis-${index}`} aria-hidden="true" className="teal-u-px-2 teal-u-text-on-surface-variant">
             ...
           </span>
         ) : (
@@ -57,10 +57,10 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(function Pagi
             aria-current={item === currentPage ? 'page' : undefined}
             onClick={() => onPageChange(item)}
             className={cn(
-              'teal-focus-ring flex size-8 items-center justify-center rounded-full text-xs font-semibold',
+              'teal-focus-ring teal-u-flex teal-u-size-8 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-text-xs teal-u-font-semibold',
               item === currentPage
-                ? 'bg-primary text-on-primary'
-                : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface',
+                ? 'teal-u-bg-primary teal-u-text-on-primary'
+                : 'teal-u-text-on-surface-variant hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface',
             )}
           >
             {item}

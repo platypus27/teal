@@ -8,7 +8,7 @@ export function CardDemo() {
         <CardDescription>Updated five minutes ago</CardDescription>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-on-surface">No critical findings were detected.</p>
+        <p className="text-sm text-teal-on-surface">No critical findings were detected.</p>
       </CardContent>
       <CardFooter>
         <Button size="sm" variant="secondary">

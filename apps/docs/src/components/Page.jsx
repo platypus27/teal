@@ -28,9 +28,9 @@ export function Page({
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0 max-w-3xl">
             {eyebrow ? (
-              <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-primary">{eyebrow}</p>
+              <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-teal-primary">{eyebrow}</p>
             ) : null}
-            <h1 className="font-headline text-3xl font-extrabold tracking-tight text-on-surface sm:text-4xl">{title}</h1>
+            <h1 className="font-teal-headline text-3xl font-extrabold tracking-tight text-teal-on-surface sm:text-4xl">{title}</h1>
           </div>
           {markdown ? (
             <div className="shrink-0 pt-1.5">
@@ -39,7 +39,7 @@ export function Page({
           ) : null}
         </div>
         {description ? (
-          <p className="mt-3 max-w-3xl text-base leading-relaxed text-on-surface-variant sm:text-lg">{description}</p>
+          <p className="mt-3 max-w-3xl text-base leading-relaxed text-teal-on-surface-variant sm:text-lg">{description}</p>
         ) : null}
       </header>
       <div className="space-y-10">{children}</div>
@@ -52,16 +52,16 @@ export function Section({ children, description = undefined, id = undefined, tit
   return (
     <section id={anchorId} className="scroll-mt-24 space-y-4">
       <div>
-        <h2 className="font-headline text-xl font-bold text-on-surface">
+        <h2 className="font-teal-headline text-xl font-bold text-teal-on-surface">
           <a href={`#${anchorId}`} className="group inline-flex items-center gap-2 hover:underline">
             {title}
             <Link
               aria-hidden="true"
-              className="size-4 text-on-surface-variant opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+              className="size-4 text-teal-on-surface-variant opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
             />
           </a>
         </h2>
-        {description ? <p className="mt-1 text-sm leading-relaxed text-on-surface-variant">{description}</p> : null}
+        {description ? <p className="mt-1 text-sm leading-relaxed text-teal-on-surface-variant">{description}</p> : null}
       </div>
       {children}
     </section>

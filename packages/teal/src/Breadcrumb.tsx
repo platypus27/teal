@@ -24,7 +24,7 @@ export interface BreadcrumbProps {
   label?: string
 }
 
-const separator = <ChevronRight aria-hidden="true" className="size-[var(--teal-icon-sm)] shrink-0 text-on-surface-variant" />
+const separator = <ChevronRight aria-hidden="true" className="teal-u-size-[var(--teal-icon-sm)] teal-u-shrink-0 teal-u-text-on-surface-variant" />
 
 export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(function Breadcrumb(
   { className, collapseAfter = 5, items, label = 'Breadcrumb' },
@@ -37,14 +37,14 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(function Brea
 
   return (
     <nav ref={ref} aria-label={label} className={className}>
-      <ol className="flex flex-wrap items-center gap-1 text-sm">
+      <ol className="teal-u-flex teal-u-flex-wrap teal-u-items-center teal-u-gap-1 teal-u-text-sm">
         {visible.map((item, index) => {
           const LinkComponent = item.as ?? 'a'
           return (
-            <li key={index} className="flex items-center gap-1">
+            <li key={index} className="teal-u-flex teal-u-items-center teal-u-gap-1">
               <LinkComponent
                 href={item.href}
-                className="teal-focus-ring rounded px-1 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface"
+                className="teal-focus-ring teal-u-rounded teal-u-px-1 teal-u-text-on-surface-variant hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface"
               >
                 {item.label}
               </LinkComponent>
@@ -53,7 +53,7 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(function Brea
           )
         })}
         {hiddenItems.length > 0 ? (
-          <li className="flex items-center gap-1">
+          <li className="teal-u-flex teal-u-items-center teal-u-gap-1">
             <Menu
               label="Hidden breadcrumb items"
               trigger={<IconButton label="Show hidden breadcrumb items" size="sm"><MoreHorizontal /></IconButton>}
@@ -69,8 +69,8 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(function Brea
           </li>
         ) : null}
         {current ? (
-          <li className="flex items-center gap-1">
-            <span aria-current="page" className="font-semibold text-on-surface">
+          <li className="teal-u-flex teal-u-items-center teal-u-gap-1">
+            <span aria-current="page" className="teal-u-font-semibold teal-u-text-on-surface">
               {current.label}
             </span>
           </li>

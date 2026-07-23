@@ -23,20 +23,20 @@ export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function E
     <div
       ref={ref}
       className={cn(
-        'teal-raised-surface flex flex-col items-center justify-center border border-dashed bg-surface-container p-10 text-center shadow-none',
+        'teal-raised-surface teal-u-flex teal-u-flex-col teal-u-items-center teal-u-justify-center teal-u-border teal-u-border-dashed teal-u-bg-surface-container teal-u-p-10 teal-u-text-center teal-u-shadow-none',
         className,
       )}
       {...props}
     >
       <div
         aria-hidden="true"
-        className="flex size-12 items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant [&_svg]:size-[var(--teal-icon-lg)]"
+        className="teal-u-flex teal-u-size-12 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-bg-surface-container-high teal-u-text-on-surface-variant [&_svg]:teal-u-size-[var(--teal-icon-lg)]"
       >
         {icon ?? <Inbox />}
       </div>
-      <TitleTag className="mt-4 font-headline text-lg font-bold text-on-surface">{title}</TitleTag>
-      {description ? <p className="mt-1 max-w-sm text-sm leading-relaxed text-on-surface-variant">{description}</p> : null}
-      {action ? <div className="mt-5">{action}</div> : null}
+      <TitleTag className="teal-u-mt-4 teal-u-font-headline teal-u-text-lg teal-u-font-bold teal-u-text-on-surface">{title}</TitleTag>
+      {description ? <p className="teal-u-mt-1 teal-u-max-w-sm teal-u-text-sm teal-u-leading-relaxed teal-u-text-on-surface-variant">{description}</p> : null}
+      {action ? <div className="teal-u-mt-5">{action}</div> : null}
     </div>
   )
 })

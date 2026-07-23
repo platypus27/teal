@@ -22,7 +22,8 @@
 
 - recalibrated light and dark surface hierarchy without changing control dimensions
 - supported visual tokens for shape, borders, focus, and elevation
-- normalized visual states across the existing catalog, with no new modules or React interfaces
+- complete `--teal-color-*` values and namespaced public and internal Tailwind utilities
+- normalized visual states and component behavior across the existing catalog, with no new modules or React interfaces
 - deterministic light, dark, desktop, mobile, and open-overlay visual QA coverage
 - clearer setup guidance for compiled CSS, optional document defaults, and optional Tailwind 3 utilities
 
@@ -43,5 +44,6 @@
 
 - GitHub Actions runs `npm run verify`, Playwright, and Lighthouse checks on pull requests.
 - Changesets owns version PRs, generated changelogs, and npm publishing.
+- Open: reduce the packed package from 52.5 kB toward the 35 kB target without dropping source files, declaration maps, or verification coverage.
 
 Teal should deepen existing interfaces before growing a generic catalog. Product behavior remains in products.

@@ -59,7 +59,7 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(function Acc
   return (
     <AccordionPrimitive.Root
       ref={ref}
-      className={cn('teal-raised-surface divide-y divide-outline-variant/40 border bg-surface-container', className)}
+      className={cn('teal-raised-surface teal-u-divide-y teal-u-divide-outline-variant/40 teal-u-border teal-u-bg-surface-container', className)}
       {...modeProps}
     >
       {items.map((item) => (
@@ -67,18 +67,18 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(function Acc
           key={item.value}
           value={item.value}
           {...(item.disabled !== undefined ? { disabled: item.disabled } : {})}
-          className="px-4"
+          className="teal-u-px-4"
         >
-          <AccordionPrimitive.Header className="flex">
-            <AccordionPrimitive.Trigger className="teal-focus-ring group flex flex-1 items-center justify-between gap-2 rounded-lg py-4 text-left text-sm font-semibold text-on-surface hover:text-primary disabled:pointer-events-none disabled:opacity-45">
+          <AccordionPrimitive.Header className="teal-u-flex">
+            <AccordionPrimitive.Trigger className="teal-focus-ring teal-u-group teal-u-flex teal-u-flex-1 teal-u-items-center teal-u-justify-between teal-u-gap-2 teal-u-rounded-lg teal-u-py-4 teal-u-text-left teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface hover:teal-u-text-primary disabled:teal-u-pointer-events-none disabled:teal-u-opacity-45">
               {item.title}
               <ChevronDown
                 aria-hidden="true"
-                className="size-[var(--teal-icon-sm)] shrink-0 text-on-surface-variant transition-transform duration-[var(--teal-motion-standard)] group-data-[state=open]:rotate-180 motion-reduce:transition-none"
+                className="teal-u-size-[var(--teal-icon-sm)] teal-u-shrink-0 teal-u-text-on-surface-variant teal-u-transition-transform teal-u-duration-[var(--teal-motion-standard)] group-data-[state=open]:teal-u-rotate-180 motion-reduce:teal-u-transition-none"
               />
             </AccordionPrimitive.Trigger>
           </AccordionPrimitive.Header>
-          <AccordionPrimitive.Content className="pb-4 text-sm leading-relaxed text-on-surface-variant">
+          <AccordionPrimitive.Content className="teal-u-pb-4 teal-u-text-sm teal-u-leading-relaxed teal-u-text-on-surface-variant">
             {item.content}
           </AccordionPrimitive.Content>
         </AccordionPrimitive.Item>

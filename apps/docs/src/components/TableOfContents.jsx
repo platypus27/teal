@@ -60,7 +60,7 @@ export function TableOfContents() {
         aria-label="On this page"
         className="sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto px-2 py-10 pr-6 text-sm"
       >
-        <div className="mb-3 px-2 text-xs font-bold uppercase tracking-wider text-on-surface-variant">
+        <div className="mb-3 px-2 text-xs font-bold uppercase tracking-wider text-teal-on-surface-variant">
           On this page
         </div>
         {items.map((item) => (
@@ -69,8 +69,8 @@ export function TableOfContents() {
             href={`#${item.id}`}
             className={`block border-l-2 px-3 py-1.5 transition ${
               activeId === item.id
-                ? 'border-primary font-semibold text-primary'
-                : 'border-transparent text-on-surface-variant hover:border-outline hover:text-on-surface'
+                ? 'border-teal-primary font-semibold text-teal-primary'
+                : 'border-transparent text-teal-on-surface-variant hover:border-teal-outline hover:text-teal-on-surface'
             }`}
           >
             {item.label}

@@ -54,7 +54,7 @@ export function RecipesPage() {
         )
       })}
       <Section title="Promotion rule">
-        <p className="max-w-3xl rounded-2xl border border-outline-variant/30 bg-surface-container p-5 text-sm leading-relaxed text-on-surface-variant">
+        <p className="max-w-3xl rounded-2xl border border-teal-outline-variant/30 bg-teal-surface-container p-5 text-sm leading-relaxed text-teal-on-surface-variant">
           {promotionRule}
         </p>
       </Section>

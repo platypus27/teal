@@ -77,15 +77,19 @@ describe('display modules', () => {
     expect(screen.getByRole('heading', { level: 4, name: 'No data' })).toBeInTheDocument()
   })
 
-  it('applies disabled semantics to interactive cards', () => {
+  it('blocks disabled interactive cards from focus and activation', async () => {
+    const user = userEvent.setup()
+    const onLinkClick = vi.fn()
     render(
       <>
+        <button type="button">Before</button>
         <Card as="button" disabled>
           Disabled button card
         </Card>
-        <Card as="a" href="/reports" disabled>
+        <Card as="a" href="/reports" disabled onClick={onLinkClick}>
           Disabled link card
         </Card>
+        <button type="button">After</button>
       </>,
     )
     const button = screen.getByRole('button', { name: 'Disabled button card' })
@@ -94,6 +98,14 @@ describe('display modules', () => {
     expect(link).toHaveAttribute('aria-disabled', 'true')
     expect(link).not.toHaveAttribute('disabled')
     expect(link.className).toContain('pointer-events-none')
+
+    fireEvent.click(link)
+    expect(onLinkClick).not.toHaveBeenCalled()
+
+    await user.tab()
+    expect(screen.getByRole('button', { name: 'Before' })).toHaveFocus()
+    await user.tab()
+    expect(screen.getByRole('button', { name: 'After' })).toHaveFocus()
   })
 })
 
@@ -232,6 +244,15 @@ describe('alert and avatar', () => {
     render(<Avatar name="Ada Lovelace" src="/ada.png" />)
     fireEvent.error(screen.getByRole('img', { name: 'Ada Lovelace' }))
     expect(screen.getByRole('img', { name: 'Ada Lovelace' })).toHaveTextContent('AL')
+  })
+
+  it('retries image rendering when the source changes after an error', () => {
+    const { rerender } = render(<Avatar name="Ada Lovelace" src="/broken.png" />)
+    fireEvent.error(screen.getByRole('img', { name: 'Ada Lovelace' }))
+
+    rerender(<Avatar name="Ada Lovelace" src="/ada.png" />)
+
+    expect(screen.getByRole('img', { name: 'Ada Lovelace' })).toHaveAttribute('src', '/ada.png')
   })
 
   it('stays decorative without a name', () => {

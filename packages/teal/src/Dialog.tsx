@@ -51,7 +51,7 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
       {...(onOpenChange ? { onOpenChange } : {})}
     >
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className="teal-dialog-overlay fixed inset-0 z-[var(--teal-z-overlay)] bg-black/50 backdrop-blur-sm" />
+        <DialogPrimitive.Overlay className="teal-dialog-overlay teal-u-fixed teal-u-inset-0 teal-u-z-[var(--teal-z-overlay)] teal-u-bg-black/50 teal-u-backdrop-blur-sm" />
         <DialogPrimitive.Content
           ref={ref}
           onCloseAutoFocus={restoreFocusRef ? (event) => {
@@ -59,30 +59,30 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
             restoreFocusRef.current?.focus()
           } : undefined}
           className={cn(
-            'teal-dialog-content teal-overlay-surface fixed left-1/2 top-1/2 z-[var(--teal-z-dialog)] max-h-[calc(100vh-2rem)] w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto border bg-surface p-6 text-on-surface outline-none',
-            size === 'sm' && 'max-w-sm',
-            size === 'md' && 'max-w-lg',
-            size === 'lg' && 'max-w-2xl',
+            'teal-dialog-content teal-overlay-surface teal-u-fixed teal-u-left-1/2 teal-u-top-1/2 teal-u-z-[var(--teal-z-dialog)] teal-u-max-h-[calc(100vh-2rem)] teal-u-w-[calc(100%-2rem)] -teal-u-translate-x-1/2 -teal-u-translate-y-1/2 teal-u-overflow-y-auto teal-u-border teal-u-bg-surface teal-u-p-6 teal-u-text-on-surface teal-u-outline-none',
+            size === 'sm' && 'teal-u-max-w-sm',
+            size === 'md' && 'teal-u-max-w-lg',
+            size === 'lg' && 'teal-u-max-w-2xl',
             className,
           )}
         >
-          <div className="pr-10">
-            <DialogPrimitive.Title className="font-headline text-lg font-bold text-on-surface">
+          <div className="teal-u-pr-10">
+            <DialogPrimitive.Title className="teal-u-font-headline teal-u-text-lg teal-u-font-bold teal-u-text-on-surface">
               {title}
             </DialogPrimitive.Title>
             {description ? (
-              <DialogPrimitive.Description className="mt-2 text-sm leading-relaxed text-on-surface-variant">
+              <DialogPrimitive.Description className="teal-u-mt-2 teal-u-text-sm teal-u-leading-relaxed teal-u-text-on-surface-variant">
                 {description}
               </DialogPrimitive.Description>
             ) : null}
           </div>
           <DialogPrimitive.Close asChild>
-            <IconButton label={closeLabel} size="sm" className="absolute right-4 top-4">
+            <IconButton label={closeLabel} size="sm" className="teal-u-absolute teal-u-right-4 teal-u-top-4">
               <X />
             </IconButton>
           </DialogPrimitive.Close>
-          <div className="mt-5">{children}</div>
-          {footer ? <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">{footer}</div> : null}
+          <div className="teal-u-mt-5">{children}</div>
+          {footer ? <div className="teal-u-mt-6 teal-u-flex teal-u-flex-col-reverse teal-u-gap-2 sm:teal-u-flex-row sm:teal-u-justify-end">{footer}</div> : null}
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>

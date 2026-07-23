@@ -37,7 +37,7 @@ export const Checkbox = forwardRef<React.ComponentRef<typeof CheckboxPrimitive.R
     const showDescription = hasFormContent(description)
 
     return (
-      <div className="flex items-start gap-2.5">
+      <div className="teal-u-flex teal-u-items-start teal-u-gap-2.5">
         <CheckboxPrimitive.Root
           ref={ref}
           id={semantics.controlId}
@@ -45,7 +45,7 @@ export const Checkbox = forwardRef<React.ComponentRef<typeof CheckboxPrimitive.R
           aria-invalid={invalid ?? (semantics.invalid || undefined)}
           required={semantics.required}
           className={cn(
-            'teal-focus-ring box-border group mt-0.5 flex size-5 shrink-0 items-center justify-center rounded border border-solid border-[color:var(--teal-border-strong)] bg-surface text-on-primary hover:border-primary disabled:cursor-not-allowed disabled:bg-surface-container-high disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=indeterminate]:border-primary data-[state=indeterminate]:bg-primary',
+            'teal-focus-ring teal-u-box-border teal-u-group teal-u-mt-0.5 teal-u-flex teal-u-size-5 teal-u-shrink-0 teal-u-items-center teal-u-justify-center teal-u-rounded teal-u-border teal-u-border-solid teal-u-border-[color:var(--teal-border-strong)] teal-u-bg-surface teal-u-text-on-primary hover:teal-u-border-primary disabled:teal-u-cursor-not-allowed disabled:teal-u-bg-surface-container-high disabled:teal-u-opacity-50 data-[state=checked]:teal-u-border-primary data-[state=checked]:teal-u-bg-primary data-[state=indeterminate]:teal-u-border-primary data-[state=indeterminate]:teal-u-bg-primary',
             className,
           )}
           {...props}
@@ -53,28 +53,28 @@ export const Checkbox = forwardRef<React.ComponentRef<typeof CheckboxPrimitive.R
           <CheckboxPrimitive.Indicator>
             <Minus
               aria-hidden="true"
-              className="hidden size-[var(--teal-icon-xs)] group-data-[state=indeterminate]:block"
+              className="teal-u-hidden teal-u-size-[var(--teal-icon-xs)] group-data-[state=indeterminate]:teal-u-block"
               strokeWidth={3}
             />
             <Check
               aria-hidden="true"
-              className="size-[var(--teal-icon-xs)] group-data-[state=indeterminate]:hidden"
+              className="teal-u-size-[var(--teal-icon-xs)] group-data-[state=indeterminate]:teal-u-hidden"
               strokeWidth={3}
             />
           </CheckboxPrimitive.Indicator>
         </CheckboxPrimitive.Root>
         {showLabel || showDescription ? (
-          <div className="grid gap-0.5">
+          <div className="teal-u-grid teal-u-gap-0.5">
             {showLabel ? (
               <label
                 htmlFor={semantics.controlId}
-                className={cn('cursor-pointer text-sm font-medium text-on-surface', visuallyHiddenLabel && 'sr-only')}
+                className={cn('teal-u-cursor-pointer teal-u-text-sm teal-u-font-medium teal-u-text-on-surface', visuallyHiddenLabel && 'teal-u-sr-only')}
               >
                 {label}
               </label>
             ) : null}
             {showDescription ? (
-              <p id={semantics.descriptionId} className="text-xs leading-relaxed text-on-surface-variant">
+              <p id={semantics.descriptionId} className="teal-u-text-xs teal-u-leading-relaxed teal-u-text-on-surface-variant">
                 {description}
               </p>
             ) : null}

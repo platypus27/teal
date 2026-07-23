@@ -7,8 +7,8 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
-  background-color: rgb(var(--color-background));
-  color: rgb(var(--color-on-surface));
+  background-color: var(--teal-color-background);
+  color: var(--teal-color-on-surface);
   font-family: var(--teal-font-body);
   transition:
     background-color var(--teal-motion-standard) ease,
@@ -21,16 +21,16 @@ h3,
 h4,
 h5,
 h6,
-.font-headline {
+.teal-font-headline {
   font-family: var(--teal-font-headline);
 }
 
 ::selection {
-  background: rgb(var(--color-primary) / 0.22);
+  background: color-mix(in srgb, var(--teal-color-primary) 22%, transparent);
 }
 
 * {
-  scrollbar-color: rgb(var(--color-outline-variant) / 0.65) transparent;
+  scrollbar-color: color-mix(in srgb, var(--teal-color-outline-variant) 65%, transparent) transparent;
   scrollbar-width: thin;
 }
 

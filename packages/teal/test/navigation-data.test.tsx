@@ -281,7 +281,7 @@ describe('vertical nav items', () => {
         </VerticalNavList>
       </VerticalNav>,
     )
-    expect(screen.getByRole('link', { name: 'Plain' }).querySelector('.w-16')).toBeNull()
-    expect(screen.getByRole('link', { name: 'With icon' }).querySelector('.w-16')).not.toBeNull()
+    expect(screen.getByRole('link', { name: 'Plain' }).querySelector('.teal-u-w-16')).toBeNull()
+    expect(screen.getByRole('link', { name: 'With icon' }).querySelector('.teal-u-w-16')).not.toBeNull()
   })
 })

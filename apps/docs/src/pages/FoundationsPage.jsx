@@ -6,9 +6,9 @@ import { colorTokens, shapeNotes, typeTokens, visualTokens } from '../data/found
 import { foundationsMarkdown } from '../lib/markdown.js'
 
 const shapeStyles = [
-  'rounded-xl bg-surface-container-high',
-  'rounded-2xl bg-surface-container shadow-[var(--teal-shadow-card)]',
-  'rounded-2xl border border-outline-variant/30',
+  'rounded-xl bg-teal-surface-container-high',
+  'rounded-2xl bg-teal-surface-container shadow-[var(--teal-shadow-card)]',
+  'rounded-2xl border border-teal-outline-variant/30',
 ]
 
 function useCopyToken() {
@@ -43,7 +43,7 @@ export function FoundationsPage() {
               key={name}
               type="button"
               onClick={() => copy(token)}
-              className={`${bg} ${fg} group flex h-32 flex-col justify-end rounded-2xl border border-outline-variant/20 p-4 text-left transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background`}
+              className={`${bg} ${fg} group flex h-32 flex-col justify-end rounded-2xl border border-teal-outline-variant/20 p-4 text-left transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background`}
             >
               <span className="flex w-full items-center justify-between gap-2">
                 <span className="text-sm font-bold">{name}</span>
@@ -59,27 +59,27 @@ export function FoundationsPage() {
         </div>
       </Section>
       <Section title="Typography" description="Select a token to copy it.">
-        <div className="space-y-5 rounded-2xl border border-outline-variant/30 bg-surface-container p-6">
-          <p className="font-headline text-4xl font-extrabold">Display heading</p>
-          <p className="font-headline text-2xl font-bold">Section heading</p>
-          <p className="max-w-2xl text-base leading-relaxed text-on-surface-variant">
+        <div className="space-y-5 rounded-2xl border border-teal-outline-variant/30 bg-teal-surface-container p-6">
+          <p className="font-teal-headline text-4xl font-extrabold">Display heading</p>
+          <p className="font-teal-headline text-2xl font-bold">Section heading</p>
+          <p className="max-w-2xl text-base leading-relaxed text-teal-on-surface-variant">
             Body copy uses Manrope with relaxed line height. Headlines use Plus Jakarta Sans to create clear
             hierarchy without decorative weight.
           </p>
-          <div className="flex flex-wrap gap-2 border-t border-outline-variant/30 pt-5">
+          <div className="flex flex-wrap gap-2 border-t border-teal-outline-variant/30 pt-5">
             {typeTokens.map(({ token, label, className }) => (
               <button
                 key={token}
                 type="button"
                 onClick={() => copy(token)}
-                className="inline-flex items-center gap-2 rounded-xl border border-outline-variant/40 bg-surface px-3 py-2 text-xs transition hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="inline-flex items-center gap-2 rounded-xl border border-teal-outline-variant/40 bg-teal-surface px-3 py-2 text-xs transition hover:border-teal-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-primary"
               >
-                <span className={`${className} font-semibold text-on-surface`}>{label}</span>
-                <span className="font-mono text-on-surface-variant">{token}</span>
+                <span className={`${className} font-semibold text-teal-on-surface`}>{label}</span>
+                <span className="font-mono text-teal-on-surface-variant">{token}</span>
                 {copied === token ? (
-                  <Check aria-hidden="true" className="size-3.5 text-primary" />
+                  <Check aria-hidden="true" className="size-3.5 text-teal-primary" />
                 ) : (
-                  <Copy aria-hidden="true" className="size-3.5 text-on-surface-variant" />
+                  <Copy aria-hidden="true" className="size-3.5 text-teal-on-surface-variant" />
                 )}
               </button>
             ))}
@@ -102,10 +102,10 @@ export function FoundationsPage() {
               key={token}
               type="button"
               onClick={() => copy(token)}
-              className="teal-focus-ring flex items-center justify-between gap-3 rounded-xl border border-[color:var(--teal-border-subtle)] bg-surface px-4 py-3 text-left shadow-sm hover:border-[color:var(--teal-border-strong)]"
+              className="teal-focus-ring flex items-center justify-between gap-3 rounded-xl border border-[color:var(--teal-border-subtle)] bg-teal-surface px-4 py-3 text-left shadow-sm hover:border-[color:var(--teal-border-strong)]"
             >
-              <span className="text-sm font-semibold text-on-surface">{name}</span>
-              <span className="font-mono text-xs text-on-surface-variant">{token}</span>
+              <span className="text-sm font-semibold text-teal-on-surface">{name}</span>
+              <span className="font-mono text-xs text-teal-on-surface-variant">{token}</span>
             </button>
           ))}
         </div>

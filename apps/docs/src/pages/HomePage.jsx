@@ -19,12 +19,12 @@ function Step({ number, title, description = undefined, children }) {
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-3">
-        <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 font-mono text-xs font-bold text-primary">
+        <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-teal-primary/10 font-mono text-xs font-bold text-teal-primary">
           {number}
         </span>
-        <h3 className="font-headline font-bold text-on-surface">{title}</h3>
+        <h3 className="font-teal-headline font-bold text-teal-on-surface">{title}</h3>
       </div>
-      {description ? <p className="text-sm leading-relaxed text-on-surface-variant">{description}</p> : null}
+      {description ? <p className="text-sm leading-relaxed text-teal-on-surface-variant">{description}</p> : null}
       {children}
     </div>
   )
@@ -36,7 +36,7 @@ function PreviewDialog() {
     <>
       <Button variant="secondary" onClick={() => setOpen(true)}>Preview dialog</Button>
       <Dialog open={open} onOpenChange={setOpen} title="Unsaved changes" description="Review the values before leaving this workspace.">
-        <p className="text-sm text-on-surface-variant">The dialog owns focus, dismissal, and the close action.</p>
+        <p className="text-sm text-teal-on-surface-variant">The dialog owns focus, dismissal, and the close action.</p>
       </Dialog>
     </>
   )
@@ -68,7 +68,7 @@ export function HomePage() {
             const Icon = principleIcons[id]
             return (
               <Card key={title}>
-                <div className="mb-4 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <div className="mb-4 flex size-11 items-center justify-center rounded-xl bg-teal-primary/10 text-teal-primary">
                   <Icon className="size-5" />
                 </div>
                 <CardTitle>{title}</CardTitle>
@@ -85,7 +85,7 @@ export function HomePage() {
       >
         <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
           <Card className="p-0">
-            <div className="flex items-center justify-between border-b border-outline-variant/30 px-5 py-4">
+            <div className="flex items-center justify-between border-b border-teal-outline-variant/30 px-5 py-4">
               <div>
                 <CardTitle>Review queue</CardTitle>
                 <CardDescription className="mt-1">Three items need a decision today.</CardDescription>
@@ -157,19 +157,19 @@ export function HomePage() {
               <Link
                 key={module.id}
                 to={`/modules/${module.id}`}
-                className="group flex flex-col gap-2 rounded-2xl border border-outline-variant/30 bg-surface-container p-5 transition hover:-translate-y-0.5 hover:border-primary/40 hover:bg-surface-container-high focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="group flex flex-col gap-2 rounded-2xl border border-teal-outline-variant/30 bg-teal-surface-container p-5 transition hover:-translate-y-0.5 hover:border-teal-primary/40 hover:bg-teal-surface-container-high focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-primary"
               >
-                <span className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-teal-on-surface-variant">
                   {group.name}
                 </span>
-                <span className="flex items-center justify-between gap-2 font-headline font-bold text-on-surface">
+                <span className="flex items-center justify-between gap-2 font-teal-headline font-bold text-teal-on-surface">
                   {module.name}
                   <ArrowRight
                     aria-hidden="true"
-                    className="size-4 shrink-0 text-on-surface-variant transition group-hover:translate-x-0.5 group-hover:text-primary"
+                    className="size-4 shrink-0 text-teal-on-surface-variant transition group-hover:translate-x-0.5 group-hover:text-teal-primary"
                   />
                 </span>
-                <span className="line-clamp-2 text-xs leading-relaxed text-on-surface-variant">
+                <span className="line-clamp-2 text-xs leading-relaxed text-teal-on-surface-variant">
                   {module.description}
                 </span>
               </Link>

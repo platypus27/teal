@@ -62,10 +62,10 @@ function Section({ children, name }) {
   return (
     <section aria-labelledby={`visual-${name.toLowerCase()}`} className="grid gap-4">
       <div>
-        <h2 id={`visual-${name.toLowerCase()}`} className="font-headline text-xl font-bold text-on-surface">{name}</h2>
-        <p className="mt-1 text-sm text-on-surface-variant">{sections[name]}</p>
+        <h2 id={`visual-${name.toLowerCase()}`} className="font-teal-headline text-xl font-bold text-teal-on-surface">{name}</h2>
+        <p className="mt-1 text-sm text-teal-on-surface-variant">{sections[name]}</p>
       </div>
-      <div className="rounded-2xl border border-outline-variant/50 bg-surface-container-low p-4 shadow-raised sm:p-6">
+      <div className="rounded-2xl border border-teal-outline-variant/50 bg-teal-surface-container-low p-4 shadow-teal-raised sm:p-6">
         {children}
       </div>
     </section>
@@ -83,7 +83,7 @@ export function VisualQaDemo() {
 
   return (
     <TooltipProvider delayDuration={0}>
-      <main className="min-h-screen bg-background px-4 py-10 text-on-surface sm:px-8 lg:px-12">
+      <main className="min-h-screen bg-teal-background px-4 py-10 text-teal-on-surface sm:px-8 lg:px-12">
         <div className="mx-auto grid max-w-6xl gap-12">
           <PageHeader
             title="Visual QA"
@@ -169,7 +169,7 @@ export function VisualQaDemo() {
                 trigger={<Button variant="secondary">Open popover</Button>}
               >
                 <p className="font-semibold">Workspace filters</p>
-                <p className="mt-1 text-sm text-on-surface-variant">Choose which projects appear in this view.</p>
+                <p className="mt-1 text-sm text-teal-on-surface-variant">Choose which projects appear in this view.</p>
               </Popover>
             </div>
             <Dialog
@@ -179,7 +179,7 @@ export function VisualQaDemo() {
               description="You can restore the project later."
               footer={<><Button variant="ghost" onClick={() => setDialogOpen(false)}>Cancel</Button><Button variant="danger">Archive</Button></>}
             >
-              <p className="text-sm text-on-surface-variant">Project Northstar and its reports will leave the active workspace.</p>
+              <p className="text-sm text-teal-on-surface-variant">Project Northstar and its reports will leave the active workspace.</p>
             </Dialog>
           </Section>
 
@@ -207,19 +207,19 @@ export function VisualQaDemo() {
                 aria-label="Project sections"
                 defaultValue="overview"
                 items={[
-                  { value: 'overview', label: 'Overview', content: <p className="text-sm text-on-surface-variant">Overview content</p> },
+                  { value: 'overview', label: 'Overview', content: <p className="text-sm text-teal-on-surface-variant">Overview content</p> },
                   { value: 'activity', label: 'Activity', content: 'Activity content' },
                   { value: 'settings', label: 'Settings', content: 'Settings content', disabled: true },
                 ]}
               />
               <Pagination page={page} pageCount={8} onPageChange={setPage} />
-              <div className="overflow-hidden rounded-2xl border border-outline-variant/50">
+              <div className="overflow-hidden rounded-2xl border border-teal-outline-variant/50">
                 <TopBar sticky={false} className="px-4">
-                  <TopBarBrand className="font-headline font-bold">Northstar</TopBarBrand>
-                  <TopBarSearch><span className="text-sm text-on-surface-variant">Search workspace</span></TopBarSearch>
+                  <TopBarBrand className="font-teal-headline font-bold">Northstar</TopBarBrand>
+                  <TopBarSearch><span className="text-sm text-teal-on-surface-variant">Search workspace</span></TopBarSearch>
                   <TopBarActions><IconButton label="Settings"><Settings /></IconButton></TopBarActions>
                 </TopBar>
-                <div className="flex min-h-64 flex-col bg-background sm:flex-row">
+                <div className="flex min-h-64 flex-col bg-teal-background sm:flex-row">
                   <VerticalNav className="w-full shrink-0 border-b border-r-0 sm:w-72 sm:border-b-0 sm:border-r" mode="full">
                     <VerticalNavList>
                       <VerticalNavSection label="Workspace">
@@ -227,9 +227,9 @@ export function VisualQaDemo() {
                         <VerticalNavItem icon={<Users />} href="#">People</VerticalNavItem>
                       </VerticalNavSection>
                     </VerticalNavList>
-                    <VerticalNavFooter className="text-xs text-on-surface-variant">Northstar</VerticalNavFooter>
+                    <VerticalNavFooter className="text-xs text-teal-on-surface-variant">Northstar</VerticalNavFooter>
                   </VerticalNav>
-                  <div className="flex min-h-32 flex-1 items-center justify-center text-sm text-on-surface-variant">Workspace content</div>
+                  <div className="flex min-h-32 flex-1 items-center justify-center text-sm text-teal-on-surface-variant">Workspace content</div>
                 </div>
               </div>
             </div>

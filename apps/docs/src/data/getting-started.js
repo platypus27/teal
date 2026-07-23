@@ -92,7 +92,7 @@ export const installSteps = [
   {
     title: 'Optionally configure Tailwind 3',
     description:
-      'Use the preset only when application markup needs Teal semantic utilities such as bg-surface-container or text-on-surface-variant.',
+      'Use the preset only when application markup needs Teal semantic utilities such as bg-teal-surface-container or text-teal-on-surface-variant.',
     code: tailwindConfig,
     lang: 'js',
     label: 'tailwind.config.js',

@@ -19,10 +19,6 @@
     transition-timing-function: ease-out;
   }
 
-  .teal-focus-ring:focus-visible {
-    box-shadow: var(--teal-focus-ring);
-  }
-
   .teal-raised-surface {
     border-color: var(--teal-border-subtle);
     border-radius: var(--teal-radius-surface);
@@ -37,6 +33,19 @@
     border-style: solid;
     box-sizing: border-box;
     box-shadow: var(--teal-shadow-overlay);
+  }
+}
+
+.teal-focus-ring:focus-visible {
+  box-shadow: var(--teal-focus-ring);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+@media (forced-colors: active) {
+  .teal-focus-ring:focus-visible {
+    box-shadow: none;
+    outline-color: Highlight;
   }
 }
 

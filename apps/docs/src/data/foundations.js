@@ -5,8 +5,8 @@ export const colorTokens = tokenData.colors
 export const visualTokens = tokenData.visualTokens
 
 export const typeTokens = [
-  { token: '--teal-font-headline', label: 'Plus Jakarta Sans', className: 'font-headline' },
-  { token: '--teal-font-body', label: 'Manrope', className: 'font-body' },
+  { token: '--teal-font-headline', label: 'Plus Jakarta Sans', className: 'font-teal-headline' },
+  { token: '--teal-font-body', label: 'Manrope', className: 'font-teal-body' },
 ]
 
 export const shapeNotes = [

@@ -13,7 +13,7 @@ body {
 }
 
 .docs-grid {
-  background-image: radial-gradient(rgb(var(--color-outline-variant) / 0.7) 1px, transparent 1px);
+  background-image: radial-gradient(color-mix(in srgb, var(--teal-color-outline-variant) 70%, transparent) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 

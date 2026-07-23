@@ -22,7 +22,7 @@ export function DialogDemo({ exampleIndex = 0 }) {
           </>
         }
       >
-        <p className="text-sm text-on-surface-variant">
+        <p className="text-sm text-teal-on-surface-variant">
           Project Orion and its reports will leave the active workspace.
         </p>
       </Dialog>

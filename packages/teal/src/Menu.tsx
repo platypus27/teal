@@ -43,22 +43,22 @@ export function Menu({ align = 'end', className, items, label, modal = false, tr
           sideOffset={6}
           aria-label={label}
           className={cn(
-            'teal-overlay-surface z-[var(--teal-z-popover)] min-w-44 border bg-surface p-1 text-on-surface',
+            'teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-min-w-44 teal-u-border teal-u-bg-surface teal-u-p-1 teal-u-text-on-surface',
             className,
           )}
         >
           {items.map((item) => (
             <div key={item.id}>
-              {item.separatorBefore ? <MenuPrimitive.Separator className="my-1 h-px bg-outline-variant/30" /> : null}
+              {item.separatorBefore ? <MenuPrimitive.Separator className="teal-u-my-1 teal-u-h-px teal-u-bg-outline-variant/30" /> : null}
               <MenuPrimitive.Item
                 onSelect={item.onSelect}
                 {...(item.disabled !== undefined ? { disabled: item.disabled } : {})}
                 className={cn(
-                  'teal-focus-ring flex min-h-9 cursor-default select-none items-center gap-2 rounded-lg px-3 py-2 text-sm data-[disabled]:pointer-events-none data-[disabled]:opacity-45 data-[highlighted]:bg-surface-container-high',
-                  item.variant === 'danger' ? 'text-error data-[highlighted]:bg-error/10' : 'text-on-surface',
+                  'teal-focus-ring teal-u-flex teal-u-min-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-gap-2 teal-u-rounded-lg teal-u-px-3 teal-u-py-2 teal-u-text-sm data-[disabled]:teal-u-pointer-events-none data-[disabled]:teal-u-opacity-45 data-[highlighted]:teal-u-bg-surface-container-high',
+                  item.variant === 'danger' ? 'teal-u-text-error data-[highlighted]:teal-u-bg-error/10' : 'teal-u-text-on-surface',
                 )}
               >
-                {item.icon ? <span className="shrink-0 [&_svg]:size-[var(--teal-icon-sm)]">{item.icon}</span> : null}
+                {item.icon ? <span className="teal-u-shrink-0 [&_svg]:teal-u-size-[var(--teal-icon-sm)]">{item.icon}</span> : null}
                 {item.label}
               </MenuPrimitive.Item>
             </div>

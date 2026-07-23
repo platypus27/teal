@@ -28,16 +28,16 @@ export const Switch = forwardRef<React.ComponentRef<typeof SwitchPrimitive.Root>
   const showDescription = hasFormContent(description)
 
   return (
-    <div className="flex items-start justify-between gap-4">
+    <div className="teal-u-flex teal-u-items-start teal-u-justify-between teal-u-gap-4">
       {showLabel || showDescription ? (
-        <div className="grid gap-0.5">
+        <div className="teal-u-grid teal-u-gap-0.5">
           {showLabel ? (
-            <label htmlFor={semantics.controlId} className="cursor-pointer text-sm font-medium text-on-surface">
+            <label htmlFor={semantics.controlId} className="teal-u-cursor-pointer teal-u-text-sm teal-u-font-medium teal-u-text-on-surface">
               {label}
             </label>
           ) : null}
           {showDescription ? (
-            <p id={semantics.descriptionId} className="text-xs leading-relaxed text-on-surface-variant">
+            <p id={semantics.descriptionId} className="teal-u-text-xs teal-u-leading-relaxed teal-u-text-on-surface-variant">
               {description}
             </p>
           ) : null}
@@ -50,18 +50,18 @@ export const Switch = forwardRef<React.ComponentRef<typeof SwitchPrimitive.Root>
         aria-invalid={invalid ?? (semantics.invalid || undefined)}
         required={semantics.required}
         className={cn(
-          'teal-focus-ring box-border relative shrink-0 rounded-full border border-solid border-[color:var(--teal-border-strong)] bg-surface hover:border-outline disabled:cursor-not-allowed disabled:bg-surface-container-high disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary',
-          size === 'sm' ? 'h-5 w-9' : 'h-6 w-11',
+          'teal-focus-ring teal-u-box-border teal-u-relative teal-u-shrink-0 teal-u-rounded-full teal-u-border teal-u-border-solid teal-u-border-[color:var(--teal-border-strong)] teal-u-bg-surface hover:teal-u-border-outline disabled:teal-u-cursor-not-allowed disabled:teal-u-bg-surface-container-high disabled:teal-u-opacity-50 data-[state=checked]:teal-u-border-primary data-[state=checked]:teal-u-bg-primary',
+          size === 'sm' ? 'teal-u-h-5 teal-u-w-9' : 'teal-u-h-6 teal-u-w-11',
           className,
         )}
         {...props}
       >
         <SwitchPrimitive.Thumb
           className={cn(
-            'block rounded-full bg-white shadow-sm transition-transform duration-[var(--teal-motion-standard)] motion-reduce:transition-none',
+            'teal-u-block teal-u-rounded-full teal-u-bg-white teal-u-shadow-sm teal-u-transition-transform teal-u-duration-[var(--teal-motion-standard)] motion-reduce:teal-u-transition-none',
             size === 'sm'
-              ? 'size-4 translate-x-0.5 data-[state=checked]:translate-x-[18px]'
-              : 'size-5 translate-x-0.5 data-[state=checked]:translate-x-[22px]',
+              ? 'teal-u-size-4 teal-u-translate-x-0.5 data-[state=checked]:teal-u-translate-x-[18px]'
+              : 'teal-u-size-5 teal-u-translate-x-0.5 data-[state=checked]:teal-u-translate-x-[22px]',
           )}
         />
       </SwitchPrimitive.Root>

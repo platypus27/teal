@@ -4,7 +4,12 @@
 
 ### Patch Changes
 
-- b155c34: Refine visual cohesion across the existing catalog with clearer light and dark surface hierarchy, shared shape, border, focus, and elevation tokens, and normalized component states without changing public React interfaces or control dimensions.
+- b155c34: Harden visual cohesion and consumer isolation across the existing catalog.
+
+  - Replace legacy channel-only `--color-*` variables with complete, namespaced `--teal-color-*` CSS color values. This is an intentional breaking token migration in a patch release.
+  - Namespace public Tailwind utilities as `*-teal-*` and isolate compiled component utilities behind `teal-u-` so consumer themes can safely define generic names such as `primary`.
+  - Improve light and dark contrast, focus visibility, forced-colors support, required Select semantics, disabled Card links, Avatar source retries, and dynamic Table overflow handling.
+  - Preserve public React component exports, prop types, and control dimensions.
 
 ## 0.3.0
 
