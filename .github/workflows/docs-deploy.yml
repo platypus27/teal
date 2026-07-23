@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - id: image
         run: echo "name=ghcr.io/${GITHUB_REPOSITORY,,}/teal-docs:${{ github.event.workflow_run.head_sha }}" >> "$GITHUB_OUTPUT"
-      - uses: docker/build-push-action@v6
+      - uses: docker/build-push-action@v7
         with:
           context: .
           file: apps/docs/Dockerfile
