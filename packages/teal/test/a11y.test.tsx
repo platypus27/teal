@@ -18,11 +18,13 @@ import {
   Dialog,
   EmptyState,
   Field,
+  HealthIndicator,
   IconButton,
   Input,
   LauncherCard,
   LoadingState,
   Menu,
+  NotificationItem,
   PageHeader,
   Pagination,
   PermissionMatrix,
@@ -32,6 +34,7 @@ import {
   Separator,
   Skeleton,
   Spinner,
+  StepUpNotice,
   Switch,
   Table,
   Tabs,
@@ -468,6 +471,58 @@ describe('axe: catalog expansion', () => {
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
   })
 
+  it('notification items have no violations in read and unread states', async () => {
+    const { baseElement } = render(
+      <>
+        <NotificationItem
+          severity="warning"
+          appLabel="Yang Operations"
+          timestamp="2 hours ago"
+          title="photos-api restarted unexpectedly"
+          href="https://yang.example/incidents/photos-api"
+          onMute={() => {}}
+          onArchive={() => {}}
+        />
+        <NotificationItem
+          severity="success"
+          appLabel="Photos"
+          timestamp="just now"
+          title="Import finished"
+          href="https://photos.example/imports/1"
+          read
+        />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('health indicators have no violations across statuses', async () => {
+    const { baseElement } = render(
+      <>
+        <HealthIndicator status="healthy" label="Photos" />
+        <HealthIndicator status="degraded" label="Yang Operations" />
+        <HealthIndicator status="down" label="Trict" />
+        <HealthIndicator status="stale" />
+        <HealthIndicator status="unknown" />
+        <HealthIndicator status="loading" />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('step-up notice has no violations with and without dismissal', async () => {
+    const { baseElement } = render(
+      <>
+        <StepUpNotice title="Confirm it's you" action={<button type="button">Verify with passkey</button>}>
+          Approving a repair requires fresh verification.
+        </StepUpNotice>
+        <StepUpNotice title="Session expiring" onDismiss={() => {}}>
+          Verify again to keep this session.
+        </StepUpNotice>
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
 
   it('avatars have no violations', async () => {
     const { baseElement } = render(

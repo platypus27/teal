@@ -2450,6 +2450,275 @@ export function AlertDemo({ exampleIndex = 0 }) {
 
 ---
 
+# Notification Item
+
+A sanitized ecosystem inbox row with severity, source application, read state, deep link, and delivery-state controls.
+
+## Usage
+
+```js
+import { NotificationItem } from '@kryv/teal'
+```
+
+```jsx
+<NotificationItem
+  severity="warning"
+  appLabel="Yang Operations"
+  timestamp="2 hours ago"
+  title="photos-api restarted unexpectedly"
+  href="https://yang.example/incidents/photos-api"
+  onMute={() => undefined}
+  onArchive={() => undefined}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+An inbox lists sanitized pointers to application events.
+### Avoid when
+
+The feedback is local to the current task; use Alert or Toast instead.
+### Behavior
+
+Mute and archive touch delivery state only; the deep link never mutates the source.
+### Responsive
+
+Text wraps and controls stay reachable at mobile widths.
+
+## Examples
+
+### Unread with controls
+
+Unread items are emphasized and announced; mute and archive only touch delivery state, never the source event.
+
+```jsx
+import { NotificationItem } from '@kryv/teal'
+
+export function NotificationItemDemo({ exampleIndex = 0 }) {
+  return exampleIndex ? (
+    <NotificationItem
+      severity="success"
+      appLabel="Photos"
+      timestamp="just now"
+      title="Import finished"
+      href="https://photos.kryvlabs.example/imports/1"
+      read
+    />
+  ) : (
+    <NotificationItem
+      severity="warning"
+      appLabel="Yang Operations"
+      timestamp="2 hours ago"
+      title="photos-api restarted unexpectedly"
+      href="https://yang.kryvlabs.example/incidents/photos-api"
+      onMute={() => undefined}
+      onArchive={() => undefined}
+    />
+  )
+}
+```
+
+### Read
+
+Read items drop the emphasis and the unread announcement.
+
+```jsx
+import { NotificationItem } from '@kryv/teal'
+
+export function NotificationItemDemo({ exampleIndex = 0 }) {
+  return exampleIndex ? (
+    <NotificationItem
+      severity="success"
+      appLabel="Photos"
+      timestamp="just now"
+      title="Import finished"
+      href="https://photos.kryvlabs.example/imports/1"
+      read
+    />
+  ) : (
+    <NotificationItem
+      severity="warning"
+      appLabel="Yang Operations"
+      timestamp="2 hours ago"
+      title="photos-api restarted unexpectedly"
+      href="https://yang.kryvlabs.example/incidents/photos-api"
+      onMute={() => undefined}
+      onArchive={() => undefined}
+    />
+  )
+}
+```
+
+---
+
+# Health Indicator
+
+An explicit ecosystem health status that reports unknown and stale evidence instead of implying health.
+
+## Usage
+
+```js
+import { HealthIndicator } from '@kryv/teal'
+```
+
+```jsx
+<HealthIndicator status="healthy" label="Photos" />
+<HealthIndicator status="unknown" label="Trict" />
+```
+
+## Design guidance
+
+### Use when
+
+A surface reports one application or ecosystem health status.
+### Avoid when
+
+The status is decorative; omit it instead of implying health.
+### Behavior
+
+Unknown, stale, and checking are explicit states; health is never inferred from missing evidence.
+### Responsive
+
+The badge and label wrap naturally in compact headers.
+
+## Examples
+
+### Reported statuses
+
+Healthy, degraded, and down come straight from source evidence.
+
+```jsx
+import { HealthIndicator } from '@kryv/teal'
+
+export function HealthIndicatorDemo({ exampleIndex = 0 }) {
+  return exampleIndex ? (
+    <div className="flex flex-wrap items-center gap-4">
+      <HealthIndicator status="stale" label="Photos" />
+      <HealthIndicator status="unknown" label="Trict" />
+      <HealthIndicator status="loading" label="Yang Operations" />
+    </div>
+  ) : (
+    <div className="flex flex-wrap items-center gap-4">
+      <HealthIndicator status="healthy" label="Photos" />
+      <HealthIndicator status="degraded" label="Yang Operations" />
+      <HealthIndicator status="down" label="Trict" />
+    </div>
+  )
+}
+```
+
+### Missing evidence
+
+Stale, unknown, and checking states stay visible; health is never inferred.
+
+```jsx
+import { HealthIndicator } from '@kryv/teal'
+
+export function HealthIndicatorDemo({ exampleIndex = 0 }) {
+  return exampleIndex ? (
+    <div className="flex flex-wrap items-center gap-4">
+      <HealthIndicator status="stale" label="Photos" />
+      <HealthIndicator status="unknown" label="Trict" />
+      <HealthIndicator status="loading" label="Yang Operations" />
+    </div>
+  ) : (
+    <div className="flex flex-wrap items-center gap-4">
+      <HealthIndicator status="healthy" label="Photos" />
+      <HealthIndicator status="degraded" label="Yang Operations" />
+      <HealthIndicator status="down" label="Trict" />
+    </div>
+  )
+}
+```
+
+---
+
+# Step-Up Notice
+
+An inline warning that explains a required fresh verification and hosts the caller’s verification action.
+
+## Usage
+
+```js
+import { StepUpNotice, Button } from '@kryv/teal'
+```
+
+```jsx
+<StepUpNotice
+  title="Confirm it's you"
+  action={<Button size="sm">Verify with passkey</Button>}
+>
+  Approving a repair requires fresh verification.
+</StepUpNotice>
+```
+
+## Design guidance
+
+### Use when
+
+A sensitive action requires fresh strong authentication first.
+### Avoid when
+
+A plain warning suffices; use Alert instead.
+### Behavior
+
+The verification action is caller-supplied; the notice never starts or auto-submits verification.
+### Responsive
+
+The action wraps beneath the explanation on narrow screens.
+
+## Examples
+
+### Verification required
+
+The action is caller-supplied; the notice never starts verification on its own.
+
+```jsx
+import { Button, StepUpNotice } from '@kryv/teal'
+
+export function StepUpNoticeDemo({ exampleIndex = 0 }) {
+  return exampleIndex ? (
+    <StepUpNotice title="Session expiring" onDismiss={() => undefined}>
+      Verify again to keep this session active.
+    </StepUpNotice>
+  ) : (
+    <StepUpNotice
+      title="Confirm it's you"
+      action={<Button size="sm">Verify with passkey</Button>}
+    >
+      Approving a repair requires fresh verification before Yang continues.
+    </StepUpNotice>
+  )
+}
+```
+
+### Dismissible
+
+Pass onDismiss when the notice is informational rather than blocking.
+
+```jsx
+import { Button, StepUpNotice } from '@kryv/teal'
+
+export function StepUpNoticeDemo({ exampleIndex = 0 }) {
+  return exampleIndex ? (
+    <StepUpNotice title="Session expiring" onDismiss={() => undefined}>
+      Verify again to keep this session active.
+    </StepUpNotice>
+  ) : (
+    <StepUpNotice
+      title="Confirm it's you"
+      action={<Button size="sm">Verify with passkey</Button>}
+    >
+      Approving a repair requires fresh verification before Yang continues.
+    </StepUpNotice>
+  )
+}
+```
+
+---
+
 # App Switcher
 
 An entitlement-filtered application switcher with an explicit Home destination and keyboard navigation.

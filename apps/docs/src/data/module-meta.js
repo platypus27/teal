@@ -358,6 +358,78 @@ toast({ title: 'Changes saved', variant: 'success' })`,
           },
         ],
       },
+      {
+        id: 'notification-item',
+        name: 'Notification Item',
+        apiNames: ['NotificationItem'],
+        imports: ['NotificationItem'],
+        description:
+          'A sanitized ecosystem inbox row with severity, source application, read state, deep link, and delivery-state controls.',
+        usage: `<NotificationItem
+  severity="warning"
+  appLabel="Yang Operations"
+  timestamp="2 hours ago"
+  title="photos-api restarted unexpectedly"
+  href="https://yang.example/incidents/photos-api"
+  onMute={() => undefined}
+  onArchive={() => undefined}
+/>`,
+        examples: [
+          {
+            title: 'Unread with controls',
+            description:
+              'Unread items are emphasized and announced; mute and archive only touch delivery state, never the source event.',
+          },
+          {
+            title: 'Read',
+            description: 'Read items drop the emphasis and the unread announcement.',
+          },
+        ],
+      },
+      {
+        id: 'health-indicator',
+        name: 'Health Indicator',
+        apiNames: ['HealthIndicator'],
+        imports: ['HealthIndicator'],
+        description:
+          'An explicit ecosystem health status that reports unknown and stale evidence instead of implying health.',
+        usage: `<HealthIndicator status="healthy" label="Photos" />
+<HealthIndicator status="unknown" label="Trict" />`,
+        examples: [
+          {
+            title: 'Reported statuses',
+            description: 'Healthy, degraded, and down come straight from source evidence.',
+          },
+          {
+            title: 'Missing evidence',
+            description: 'Stale, unknown, and checking states stay visible; health is never inferred.',
+          },
+        ],
+      },
+      {
+        id: 'step-up-notice',
+        name: 'Step-Up Notice',
+        apiNames: ['StepUpNotice'],
+        imports: ['StepUpNotice', 'Button'],
+        description:
+          'An inline warning that explains a required fresh verification and hosts the caller’s verification action.',
+        usage: `<StepUpNotice
+  title="Confirm it's you"
+  action={<Button size="sm">Verify with passkey</Button>}
+>
+  Approving a repair requires fresh verification.
+</StepUpNotice>`,
+        examples: [
+          {
+            title: 'Verification required',
+            description: 'The action is caller-supplied; the notice never starts verification on its own.',
+          },
+          {
+            title: 'Dismissible',
+            description: 'Pass onDismiss when the notice is informational rather than blocking.',
+          },
+        ],
+      },
     ],
   },
   {
@@ -655,6 +727,9 @@ const guidanceById = {
   'account-menu': { useWhen: 'A signed-in household identity needs session and account actions.', avoidWhen: 'The surface has no identity concept or is public.', behavior: 'App-session and SSO sign-out stay distinct actions with product-supplied labels.', responsive: 'The trigger stays a compact avatar so it fits top bars at any width.' },
   'launcher-card': { useWhen: 'An application destination needs a prominent, scannable entry point.', avoidWhen: 'The destination is a minor link inside prose; use a plain link instead.', behavior: 'Disabled cards leave the focus order and block navigation instead of hiding.', responsive: 'Cards stack single-column on mobile and grid at larger widths under the caller’s layout.' },
   'permission-matrix': { useWhen: 'Owners review who can reach which application or capability.', avoidWhen: 'The data is a flat list rather than a people-by-applications grid; use Table instead.', behavior: 'Cells are caller-rendered; missing entries show an explicit em dash rather than a blank.', responsive: 'The table region scrolls horizontally on narrow screens and becomes focusable only when it overflows.' },
+  'notification-item': { useWhen: 'An inbox lists sanitized pointers to application events.', avoidWhen: 'The feedback is local to the current task; use Alert or Toast instead.', behavior: 'Mute and archive touch delivery state only; the deep link never mutates the source.', responsive: 'Text wraps and controls stay reachable at mobile widths.' },
+  'health-indicator': { useWhen: 'A surface reports one application or ecosystem health status.', avoidWhen: 'The status is decorative; omit it instead of implying health.', behavior: 'Unknown, stale, and checking are explicit states; health is never inferred from missing evidence.', responsive: 'The badge and label wrap naturally in compact headers.' },
+  'step-up-notice': { useWhen: 'A sensitive action requires fresh strong authentication first.', avoidWhen: 'A plain warning suffices; use Alert instead.', behavior: 'The verification action is caller-supplied; the notice never starts or auto-submits verification.', responsive: 'The action wraps beneath the explanation on narrow screens.' },
 
   button: { useWhen: 'A user needs to take an explicit action.', avoidWhen: 'The control is only communicating status or navigation.', behavior: 'Loading disables the native button until the action completes.', responsive: 'Let actions wrap in narrow toolbars instead of shrinking their labels.' },
   field: { useWhen: 'A control needs a visible label, help text, or validation message.', avoidWhen: 'The control already owns an equivalent form-label composition.', behavior: 'Field provides the id and ARIA relationships consumed by its child control.', responsive: 'Keep labels readable and let long error messages wrap.' },

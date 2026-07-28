@@ -1,6 +1,6 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { AccountMenu, AppSwitcher, LauncherCard, PermissionMatrix } from '../src/index'
+import { AccountMenu, AppSwitcher, HealthIndicator, LauncherCard, NotificationItem, PermissionMatrix, StepUpNotice } from '../src/index'
 
 describe('ecosystem modules', () => {
   describe('AppSwitcher', () => {
@@ -174,6 +174,111 @@ describe('ecosystem modules', () => {
       )
       const row = screen.getByRole('row', { name: /Blair/ })
       expect(within(row).getAllByRole('cell')[2]).toHaveTextContent('—')
+    })
+  })
+
+  describe('NotificationItem', () => {
+    it('links a sanitized severity, application, and timestamp to the source event', () => {
+      render(
+        <NotificationItem
+          severity="warning"
+          appLabel="Yang Operations"
+          timestamp="2 hours ago"
+          title="photos-api restarted unexpectedly"
+          href="https://yang.example/incidents/photos-api"
+          read
+        />,
+      )
+      const link = screen.getByRole('link', { name: 'photos-api restarted unexpectedly' })
+      expect(link).toHaveAttribute('href', 'https://yang.example/incidents/photos-api')
+      expect(screen.getByText('Yang Operations')).toBeInTheDocument()
+      expect(screen.getByText('2 hours ago')).toBeInTheDocument()
+    })
+
+    it('announces unread state and omits the marker once read', () => {
+      const { rerender } = render(
+        <NotificationItem appLabel="Photos" timestamp="just now" title="Import finished" href="https://photos.example/imports/1" />,
+      )
+      expect(screen.getByRole('link', { name: 'Import finished, unread' })).toBeInTheDocument()
+      rerender(
+        <NotificationItem appLabel="Photos" timestamp="just now" title="Import finished" href="https://photos.example/imports/1" read />,
+      )
+      expect(screen.getByRole('link', { name: 'Import finished' })).toBeInTheDocument()
+    })
+
+    it('routes mute and archive controls to delivery-state handlers', async () => {
+      const user = userEvent.setup()
+      const onMute = vi.fn()
+      const onArchive = vi.fn()
+      render(
+        <NotificationItem
+          appLabel="Trict"
+          timestamp="yesterday"
+          title="Practice order filled"
+          href="https://trict.example/orders/1"
+          onMute={onMute}
+          onArchive={onArchive}
+        />,
+      )
+      await user.click(screen.getByRole('button', { name: 'Mute' }))
+      await user.click(screen.getByRole('button', { name: 'Archive' }))
+      expect(onMute).toHaveBeenCalledOnce()
+      expect(onArchive).toHaveBeenCalledOnce()
+    })
+  })
+
+  describe('HealthIndicator', () => {
+    it('states each status explicitly instead of implying health', () => {
+      render(
+        <>
+          <HealthIndicator status="healthy" />
+          <HealthIndicator status="degraded" />
+          <HealthIndicator status="down" />
+          <HealthIndicator status="stale" />
+          <HealthIndicator status="unknown" />
+          <HealthIndicator status="loading" />
+        </>,
+      )
+      expect(screen.getByText('Healthy')).toBeInTheDocument()
+      expect(screen.getByText('Degraded')).toBeInTheDocument()
+      expect(screen.getByText('Down')).toBeInTheDocument()
+      expect(screen.getByText('Stale')).toBeInTheDocument()
+      expect(screen.getByText('Unknown')).toBeInTheDocument()
+      expect(screen.getByText('Checking')).toBeInTheDocument()
+    })
+
+    it('names the application beside the status', () => {
+      render(<HealthIndicator status="degraded" label="Yang Operations" />)
+      expect(screen.getByText('Degraded')).toBeInTheDocument()
+      expect(screen.getByText('Yang Operations')).toBeInTheDocument()
+    })
+  })
+
+  describe('StepUpNotice', () => {
+    it('explains the required verification and renders the caller action', () => {
+      render(
+        <StepUpNotice
+          title="Confirm it's you"
+          action={<button type="button">Verify with passkey</button>}
+        >
+          Approving a repair requires fresh verification.
+        </StepUpNotice>,
+      )
+      expect(screen.getByText("Confirm it's you")).toBeInTheDocument()
+      expect(screen.getByText('Approving a repair requires fresh verification.')).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Verify with passkey' })).toBeInTheDocument()
+    })
+
+    it('can be dismissed when the caller allows it', async () => {
+      const user = userEvent.setup()
+      const onDismiss = vi.fn()
+      render(
+        <StepUpNotice title="Session expiring" onDismiss={onDismiss}>
+          Verify again to keep this session.
+        </StepUpNotice>,
+      )
+      await user.click(screen.getByRole('button', { name: 'Dismiss' }))
+      expect(onDismiss).toHaveBeenCalledOnce()
     })
   })
 })
