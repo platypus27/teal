@@ -18,6 +18,9 @@ const NotFoundPage = lazy(() =>
 const VisualQaPage = lazy(() =>
   import('./pages/VisualQaPage.jsx').then((module) => ({ default: module.VisualQaPage })),
 )
+const ShowcasePage = lazy(() =>
+  import('./pages/ShowcasePage.jsx').then((module) => ({ default: module.ShowcasePage })),
+)
 
 function PageLoader() {
   return (
@@ -35,6 +38,14 @@ export default function App() {
         element={
           <Suspense fallback={<PageLoader />}>
             <VisualQaPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="showcase"
+        element={
+          <Suspense fallback={<PageLoader />}>
+            <ShowcasePage />
           </Suspense>
         }
       />
