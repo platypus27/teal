@@ -20,10 +20,12 @@ import {
   Field,
   IconButton,
   Input,
+  LauncherCard,
   LoadingState,
   Menu,
   PageHeader,
   Pagination,
+  PermissionMatrix,
   Popover,
   Progress,
   Select,
@@ -299,6 +301,32 @@ describe('axe: data and navigation', () => {
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
   })
 
+  it('launcher card has no violations in available and unavailable states', async () => {
+    const { baseElement } = render(
+      <>
+        <LauncherCard href="https://photos.example" label="Photos" description="Household media" />
+        <LauncherCard href="https://trict.example" label="Trict" disabled />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('permission matrix has no violations', async () => {
+    const { baseElement } = render(
+      <PermissionMatrix
+        caption="Household application access"
+        columns={[
+          { id: 'photos', label: 'Photos' },
+          { id: 'trict', label: 'Trict' },
+        ]}
+        rows={[
+          { id: 'avery', label: 'Avery', cells: { photos: <Badge variant="success">Owner</Badge>, trict: 'Research' } },
+          { id: 'blair', label: 'Blair', cells: { photos: 'Member' } },
+        ]}
+      />,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
 })
 
 describe('axe: overlays and feedback', () => {

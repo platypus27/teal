@@ -134,6 +134,31 @@ export const moduleGroups = [
         ],
       },
       {
+        id: 'launcher-card',
+        name: 'Launcher Card',
+        apiNames: ['LauncherCard'],
+        imports: ['LauncherCard', 'Badge'],
+        description:
+          'An interactive application destination card with an icon, description, optional status, and an honest unavailable state.',
+        usage: `<LauncherCard
+  href="https://photos.example"
+  label="Photos"
+  description="Household media, albums, and sharing"
+  icon={<Camera />}
+  status={<Badge variant="success">Healthy</Badge>}
+/>`,
+        examples: [
+          {
+            title: 'Available application',
+            description: 'The whole card navigates; status content stays caller-supplied and sanitized.',
+          },
+          {
+            title: 'Unavailable application',
+            description: 'A disabled card is removed from focus order and blocks navigation.',
+          },
+        ],
+      },
+      {
         id: 'badge',
         name: 'Badge',
         apiNames: ['Badge'],
@@ -510,6 +535,34 @@ toast({ title: 'Changes saved', variant: 'success' })`,
     name: 'Data',
     modules: [
       {
+        id: 'permission-matrix',
+        name: 'Permission Matrix',
+        apiNames: ['PermissionMatrix'],
+        imports: ['PermissionMatrix', 'Badge'],
+        description:
+          'A people-by-applications access matrix with caller-supplied cell content and explicit no-access cells.',
+        usage: `<PermissionMatrix
+  caption="Household application access"
+  columns={[
+    { id: 'photos', label: 'Photos' },
+    { id: 'trict', label: 'Trict' },
+  ]}
+  rows={[
+    { id: 'avery', label: 'Avery', cells: { photos: <Badge variant="success">Owner</Badge> } },
+  ]}
+/>`,
+        examples: [
+          {
+            title: 'Household access',
+            description: 'Cells carry caller-rendered content such as badges; missing entries show an explicit em dash.',
+          },
+          {
+            title: 'Entitlement review',
+            description: 'Capability rows work the same way, keeping entitlement policy in the calling product.',
+          },
+        ],
+      },
+      {
         id: 'table',
         name: 'Table',
         apiNames: ['Table'],
@@ -600,6 +653,8 @@ for (const module of modules) {
 const guidanceById = {
   'app-switcher': { useWhen: 'People move between entitled ecosystem applications.', avoidWhen: 'The navigation is inside one application; use vertical nav or tabs instead.', behavior: 'The caller filters applications by entitlement first; the switcher always includes the explicit Home destination.', responsive: 'The dropdown collision-handles to stay on screen; keep labels short on narrow layouts.' },
   'account-menu': { useWhen: 'A signed-in household identity needs session and account actions.', avoidWhen: 'The surface has no identity concept or is public.', behavior: 'App-session and SSO sign-out stay distinct actions with product-supplied labels.', responsive: 'The trigger stays a compact avatar so it fits top bars at any width.' },
+  'launcher-card': { useWhen: 'An application destination needs a prominent, scannable entry point.', avoidWhen: 'The destination is a minor link inside prose; use a plain link instead.', behavior: 'Disabled cards leave the focus order and block navigation instead of hiding.', responsive: 'Cards stack single-column on mobile and grid at larger widths under the caller’s layout.' },
+  'permission-matrix': { useWhen: 'Owners review who can reach which application or capability.', avoidWhen: 'The data is a flat list rather than a people-by-applications grid; use Table instead.', behavior: 'Cells are caller-rendered; missing entries show an explicit em dash rather than a blank.', responsive: 'The table region scrolls horizontally on narrow screens and becomes focusable only when it overflows.' },
 
   button: { useWhen: 'A user needs to take an explicit action.', avoidWhen: 'The control is only communicating status or navigation.', behavior: 'Loading disables the native button until the action completes.', responsive: 'Let actions wrap in narrow toolbars instead of shrinking their labels.' },
   field: { useWhen: 'A control needs a visible label, help text, or validation message.', avoidWhen: 'The control already owns an equivalent form-label composition.', behavior: 'Field provides the id and ARIA relationships consumed by its child control.', responsive: 'Keep labels readable and let long error messages wrap.' },

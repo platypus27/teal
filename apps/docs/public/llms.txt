@@ -17,6 +17,7 @@
 - [Checkbox](/modules/checkbox) (Forms): Boolean and indeterminate selection with an integrated label and description.
 - [Switch](/modules/switch) (Forms): An immediate boolean setting with explicit labeling and controlled or uncontrolled state.
 - [Card](/modules/card) (Surfaces): A structural surface for related content without ambiguous interactive behavior.
+- [Launcher Card](/modules/launcher-card) (Surfaces): An interactive application destination card with an icon, description, optional status, and an honest unavailable state.
 - [Badge](/modules/badge) (Surfaces): A compact semantic status indicator using canonical information variants.
 - [Accordion](/modules/accordion) (Surfaces): A stacked disclosure list with single and multi-open modes driven by a compact item interface.
 - [Dialog](/modules/dialog) (Overlays): A modal surface that owns focus management, naming, dismissal, and scroll locking.
@@ -35,6 +36,7 @@
 - [Vertical Nav](/modules/vertical-nav) (Navigation): A compound vertical navigation with icon-rail and full-text modes.
 - [Top Bar](/modules/top-bar) (Navigation): A sticky top bar with brand, search, and action slots.
 - [Breadcrumb](/modules/breadcrumb) (Navigation): A hierarchical trail with router-ready items and automatic middle-item collapse.
+- [Permission Matrix](/modules/permission-matrix) (Data): A people-by-applications access matrix with caller-supplied cell content and explicit no-access cells.
 - [Table](/modules/table) (Data): Accessible data presentation driven by column definitions, density, loading, and empty state.
 - [Separator](/modules/separator) (Data): A semantic or decorative divider for related content.
 - [Avatar](/modules/avatar) (Data): A compact identity image with initials and icon fallbacks.
