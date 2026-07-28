@@ -69,7 +69,7 @@ async function verifyCompiledConsumer(consumer) {
     if (styles.alert.borderStyle !== 'solid' || styles.alert.borderWidth !== '1px') {
       throw new Error(`Compiled Alert border is not visible: ${JSON.stringify(styles.alert)}`)
     }
-    if (styles.card.borderStyle !== 'solid' || styles.card.borderWidth !== '1px' || styles.card.borderRadius !== '20px') {
+    if (styles.card.borderStyle !== 'solid' || styles.card.borderWidth !== '1px' || styles.card.borderRadius !== '12px') {
       throw new Error(`Compiled Card surface is incorrect: ${JSON.stringify(styles.card)}`)
     }
     if (styles.buttonHeight !== '40px') throw new Error(`Compiled Button height changed: ${styles.buttonHeight}`)
@@ -79,7 +79,7 @@ async function verifyCompiledConsumer(consumer) {
     if (styles.badgeHeight !== '20px') throw new Error(`Compiled Badge height changed: ${styles.badgeHeight}`)
     if (styles.tabsHeight !== '44px') throw new Error(`Compiled Tabs height changed: ${styles.tabsHeight}`)
     if (styles.inputBackground === 'rgba(0, 0, 0, 0)') throw new Error('Compiled Input background is transparent')
-    if (styles.controlRadius !== '1rem') throw new Error(`Compiled token value is incorrect: ${styles.controlRadius}`)
+    if (styles.controlRadius !== '.5rem') throw new Error(`Compiled token value is incorrect: ${styles.controlRadius}`)
     if (styles.genericBackground !== 'rgb(255, 0, 255)') {
       throw new Error(`Application utility did not retain its own primary color: ${styles.genericBackground}`)
     }
