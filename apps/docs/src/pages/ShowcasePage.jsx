@@ -51,34 +51,54 @@ import changelog from '../generated/changelog.json'
 
 /**
  * Refined direction: the details the library currently skips.
- * 1. Interactive state changes snap — every button, input, tab, checkbox and menu item
- *    flips color instantly. Here they transition over --teal-motion-fast.
- * 2. Default control borders are heavy (--teal-border-strong is full outline color).
+ * 1. Default control borders are heavy (--teal-border-strong is full outline color).
  *    Here they start as hairlines and strengthen on hover/focus.
+ * 2. Checkbox marks and switch thumbs appear instantly — here they pop/settle in.
+ * 3. Tab panels swap with no transition — here they fade and rise on switch.
+ * 4. Popover, menu, and tooltip content pop in with no entrance — here they fade in
+ *    with a small rise, matching the dialog's existing motion language.
  */
 const refinedMotionCss = `
-  [data-refined] button,
-  [data-refined] a,
-  [data-refined] input,
-  [data-refined] textarea,
-  [data-refined] [role='tab'],
-  [data-refined] [role='checkbox'],
-  [data-refined] [role='switch'],
-  [data-refined] [role='menuitem'] {
-    transition-property: color, background-color, border-color, box-shadow, transform;
-    transition-duration: var(--teal-motion-fast);
-    transition-timing-function: ease;
+  @keyframes refined-check-pop {
+    0% { scale: 0.4; opacity: 0; }
+    60% { scale: 1.12; }
+    100% { scale: 1; opacity: 1; }
   }
+  @keyframes refined-thumb-settle {
+    0% { scale: 0.8; }
+    60% { scale: 1.06; }
+    100% { scale: 1; }
+  }
+  @keyframes refined-panel-in {
+    from { opacity: 0; translate: 0 4px; }
+    to { opacity: 1; translate: 0 0; }
+  }
+  @keyframes refined-overlay-in {
+    from { opacity: 0; translate: 0 3px; scale: 0.98; }
+    to { opacity: 1; translate: 0 0; scale: 1; }
+  }
+
+  [data-refined] [role='checkbox'][data-state='checked'] svg,
+  [data-refined] [role='checkbox'][data-state='indeterminate'] svg {
+    animation: refined-check-pop var(--teal-motion-fast) ease-out;
+  }
+  [data-refined] [role='switch'][data-state='checked'] > span,
+  [data-refined] [role='switch'][data-state='unchecked'] > span {
+    animation: refined-thumb-settle var(--teal-motion-fast) ease-out;
+  }
+  [data-refined] [role='tabpanel'] {
+    animation: refined-panel-in var(--teal-motion-standard) ease-out;
+  }
+  [data-radix-popper-content-wrapper] > * {
+    animation: refined-overlay-in var(--teal-motion-fast) ease-out;
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    [data-refined] button,
-    [data-refined] a,
-    [data-refined] input,
-    [data-refined] textarea,
-    [data-refined] [role='tab'],
-    [data-refined] [role='checkbox'],
-    [data-refined] [role='switch'],
-    [data-refined] [role='menuitem'] {
-      transition: none;
+    [data-refined] [role='checkbox'] svg,
+    [data-refined] [role='switch'] > span,
+    [data-refined] [role='tabpanel'],
+    [data-radix-popper-content-wrapper] > * {
+      animation: none;
     }
   }
 `
@@ -93,7 +113,7 @@ const variants = [
     key: 'B',
     name: 'Refined',
     caption:
-      'Same language, finished feel — every interactive state eases over 150ms, and control borders start as hairlines that strengthen on hover.',
+      'Same language, finished feel — hairline control borders, a pop on every check, tab panels and overlays that fade in instead of appearing.',
   },
 ]
 
