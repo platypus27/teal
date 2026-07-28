@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { FlaskConical, Menu as MenuIcon, Moon, Palette, Search, Sun, X } from 'lucide-react'
 import { GitHubIcon } from './GitHubIcon.jsx'
-import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router'
 import { IconButton, Toaster, TooltipProvider, TopBar, TopBarActions, TopBarBrand, TopBarSearch, VerticalNav, VerticalNavBrand, VerticalNavItem, VerticalNavList, VerticalNavSection, iconButtonVariants } from '@kryv/teal'
 import { catalogGroups } from '../data/docs-module-registry.js'
 import changelog from '../generated/changelog.json'

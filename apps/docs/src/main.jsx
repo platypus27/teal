@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router'
 import '@kryv/teal/styles.css'
 import '@kryv/teal/base.css'
 import '@fontsource/manrope/latin-400.css'

@@ -1,5 +1,5 @@
 import { Search } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { Button } from '@kryv/teal'
 import { useCommandPalette } from '../components/CommandPalette.jsx'
 import { Page } from '../components/Page.jsx'

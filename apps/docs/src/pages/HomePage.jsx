@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ArrowRight, Blocks, Keyboard, PackageCheck, Palette } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { Badge, Button, Card, CardDescription, CardTitle, Dialog, Field, Input, Switch, Table, Tabs, toast } from '@kryv/teal'
 import { CodeBlock } from '../components/CodeBlock.jsx'
 import { Page, Section } from '../components/Page.jsx'

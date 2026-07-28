@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import api from '../generated/api.json'
 import { CodeBlock } from '../components/CodeBlock.jsx'
 import { ExampleBlock } from '../components/ExampleBlock.jsx'

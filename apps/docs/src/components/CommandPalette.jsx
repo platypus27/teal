@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { ArrowRight, FileText, Search } from 'lucide-react'
 import { Dialog, Input } from '@kryv/teal'
 import { catalogGroups } from '../data/docs-module-registry.js'
