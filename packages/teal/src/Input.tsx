@@ -4,7 +4,7 @@ import { cn } from './cn'
 import { isAriaTrue, mergeDescriptionIds, useFormSemantics } from './form-semantics'
 
 const fieldVariants = cva(
-  'teal-focus-ring teal-u-box-border teal-u-w-full teal-u-rounded-xl teal-u-border teal-u-border-solid teal-u-border-[color:var(--teal-border-strong)] teal-u-bg-surface teal-u-text-on-surface placeholder:teal-u-text-on-surface-variant hover:teal-u-border-outline focus-visible:teal-u-border-primary disabled:teal-u-cursor-not-allowed disabled:teal-u-bg-surface-container-high disabled:teal-u-opacity-55 aria-[invalid=true]:teal-u-border-error aria-[invalid=true]:teal-u-shadow-[0_0_0_3px_color-mix(in_srgb,var(--teal-color-error)_20%,transparent)]',
+  'teal-focus-ring teal-u-box-border teal-u-w-full teal-u-rounded-xl teal-u-border teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-bg-surface teal-u-text-on-surface placeholder:teal-u-text-on-surface-variant hover:teal-u-border-outline focus-visible:teal-u-border-primary disabled:teal-u-cursor-not-allowed disabled:teal-u-bg-surface-container-high disabled:teal-u-opacity-55 aria-[invalid=true]:teal-u-border-error aria-[invalid=true]:teal-u-shadow-[0_0_0_3px_color-mix(in_srgb,var(--teal-color-error)_20%,transparent)]',
   {
     variants: {
       size: {

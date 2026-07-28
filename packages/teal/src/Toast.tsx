@@ -74,7 +74,7 @@ export const Toaster = forwardRef<ElementRef<typeof ToastPrimitive.Viewport>>(fu
               if (!open) dismissToast(item.id)
             }}
             className={cn(
-              'teal-overlay-surface teal-u-grid teal-u-w-[min(22rem,calc(100vw-2rem))] teal-u-grid-cols-[auto_1fr_auto] teal-u-items-start teal-u-gap-x-3 teal-u-border teal-u-p-4 teal-u-text-on-surface',
+              'teal-toast-root teal-overlay-surface teal-u-grid teal-u-w-[min(22rem,calc(100vw-2rem))] teal-u-grid-cols-[auto_1fr_auto] teal-u-items-start teal-u-gap-x-3 teal-u-border teal-u-p-4 teal-u-text-on-surface',
               'teal-u-bg-surface',
             )}
           >

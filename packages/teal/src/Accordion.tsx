@@ -78,8 +78,8 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(function Acc
               />
             </AccordionPrimitive.Trigger>
           </AccordionPrimitive.Header>
-          <AccordionPrimitive.Content className="teal-u-pb-4 teal-u-text-sm teal-u-leading-relaxed teal-u-text-on-surface-variant">
-            {item.content}
+          <AccordionPrimitive.Content className="teal-accordion-content teal-u-overflow-hidden">
+            <div className="teal-u-pb-4 teal-u-text-sm teal-u-leading-relaxed teal-u-text-on-surface-variant">{item.content}</div>
           </AccordionPrimitive.Content>
         </AccordionPrimitive.Item>
       ))}

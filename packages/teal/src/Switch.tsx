@@ -58,7 +58,7 @@ export const Switch = forwardRef<React.ComponentRef<typeof SwitchPrimitive.Root>
       >
         <SwitchPrimitive.Thumb
           className={cn(
-            'teal-u-block teal-u-rounded-full teal-u-bg-white teal-u-shadow-sm teal-u-transition-transform teal-u-duration-[var(--teal-motion-standard)] motion-reduce:teal-u-transition-none data-[state=unchecked]:teal-u-bg-[color:light-dark(var(--teal-color-primary),#ffffff)]',
+            'teal-switch-thumb teal-u-block teal-u-rounded-full teal-u-bg-white teal-u-shadow-sm teal-u-transition-transform teal-u-duration-[var(--teal-motion-standard)] motion-reduce:teal-u-transition-none data-[state=unchecked]:teal-u-bg-[color:light-dark(var(--teal-color-primary),#ffffff)]',
             size === 'sm'
               ? 'teal-u-size-4 teal-u-translate-x-0.5 data-[state=checked]:teal-u-translate-x-[18px]'
               : 'teal-u-size-5 teal-u-translate-x-0.5 data-[state=checked]:teal-u-translate-x-[22px]',

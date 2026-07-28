@@ -43,7 +43,7 @@ export function Menu({ align = 'end', className, items, label, modal = false, tr
           sideOffset={6}
           aria-label={label}
           className={cn(
-            'teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-min-w-44 teal-u-border teal-u-bg-surface teal-u-p-1 teal-u-text-on-surface',
+            'teal-popper-content teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-min-w-44 teal-u-border teal-u-bg-surface teal-u-p-1 teal-u-text-on-surface',
             className,
           )}
         >

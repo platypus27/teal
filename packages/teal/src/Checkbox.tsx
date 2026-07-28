@@ -45,12 +45,12 @@ export const Checkbox = forwardRef<React.ComponentRef<typeof CheckboxPrimitive.R
           aria-invalid={invalid ?? (semantics.invalid || undefined)}
           required={semantics.required}
           className={cn(
-            'teal-focus-ring teal-u-box-border teal-u-group teal-u-mt-0.5 teal-u-flex teal-u-size-5 teal-u-shrink-0 teal-u-items-center teal-u-justify-center teal-u-rounded teal-u-border teal-u-border-solid teal-u-border-[color:var(--teal-border-strong)] teal-u-bg-surface teal-u-text-on-primary hover:teal-u-border-primary disabled:teal-u-cursor-not-allowed disabled:teal-u-bg-surface-container-high disabled:teal-u-opacity-50 data-[state=checked]:teal-u-border-primary data-[state=checked]:teal-u-bg-primary data-[state=indeterminate]:teal-u-border-primary data-[state=indeterminate]:teal-u-bg-primary',
+            'teal-focus-ring teal-u-box-border teal-u-group teal-u-mt-0.5 teal-u-flex teal-u-size-5 teal-u-shrink-0 teal-u-items-center teal-u-justify-center teal-u-rounded teal-u-border teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-bg-surface teal-u-text-on-primary hover:teal-u-border-primary disabled:teal-u-cursor-not-allowed disabled:teal-u-bg-surface-container-high disabled:teal-u-opacity-50 data-[state=checked]:teal-u-border-primary data-[state=checked]:teal-u-bg-primary data-[state=indeterminate]:teal-u-border-primary data-[state=indeterminate]:teal-u-bg-primary',
             className,
           )}
           {...props}
         >
-          <CheckboxPrimitive.Indicator>
+          <CheckboxPrimitive.Indicator className="teal-check-indicator">
             <Minus
               aria-hidden="true"
               className="teal-u-hidden teal-u-size-[var(--teal-icon-xs)] group-data-[state=indeterminate]:teal-u-block"

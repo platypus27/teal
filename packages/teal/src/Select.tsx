@@ -99,7 +99,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
           position="popper"
           sideOffset={6}
           className={cn(
-            'teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-max-h-[var(--radix-select-content-available-height)] teal-u-min-w-[var(--radix-select-trigger-width)] teal-u-overflow-hidden teal-u-border teal-u-bg-surface teal-u-text-on-surface',
+            'teal-popper-content teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-max-h-[var(--radix-select-content-available-height)] teal-u-min-w-[var(--radix-select-trigger-width)] teal-u-overflow-hidden teal-u-border teal-u-bg-surface teal-u-text-on-surface',
           )}
         >
           <SelectPrimitive.Viewport className="teal-u-p-1">

@@ -59,6 +59,48 @@
   to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 
+@keyframes teal-popper-in {
+  from { opacity: 0; translate: 0 3px; scale: 0.98; }
+  to { opacity: 1; translate: 0 0; scale: 1; }
+}
+
+@keyframes teal-check-pop {
+  0% { scale: 0.4; opacity: 0; }
+  60% { scale: 1.12; }
+  100% { scale: 1; opacity: 1; }
+}
+
+@keyframes teal-thumb-settle {
+  0% { scale: 0.8; }
+  60% { scale: 1.06; }
+  100% { scale: 1; }
+}
+
+@keyframes teal-panel-in {
+  from { opacity: 0; translate: 0 4px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes teal-toast-in {
+  from { opacity: 0; translate: 24px 0; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes teal-toast-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes teal-accordion-open {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes teal-accordion-close {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
 .teal-dialog-overlay[data-state='open'] {
   animation: teal-overlay-in var(--teal-motion-fast) ease-out;
 }
@@ -67,13 +109,52 @@
   animation: teal-dialog-in var(--teal-motion-fast) ease-out;
 }
 
+.teal-popper-content {
+  animation: teal-popper-in var(--teal-motion-fast) ease-out;
+}
+
+.teal-toast-root[data-state='open'] {
+  animation: teal-toast-in var(--teal-motion-standard) ease-out;
+}
+
+.teal-toast-root[data-state='closed'] {
+  animation: teal-toast-out var(--teal-motion-fast) ease-out forwards;
+}
+
+.teal-accordion-content[data-state='open'] {
+  animation: teal-accordion-open var(--teal-motion-standard) ease-out;
+}
+
+.teal-accordion-content[data-state='closed'] {
+  animation: teal-accordion-close var(--teal-motion-standard) ease-out;
+}
+
+.teal-check-indicator svg {
+  animation: teal-check-pop var(--teal-motion-fast) ease-out;
+}
+
+.teal-switch-thumb[data-state='checked'],
+.teal-switch-thumb[data-state='unchecked'] {
+  animation: teal-thumb-settle var(--teal-motion-fast) ease-out;
+}
+
+.teal-tab-panel {
+  animation: teal-panel-in var(--teal-motion-standard) ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .teal-focus-ring {
     transition-duration: 0.01ms;
   }
 
   .teal-dialog-overlay,
-  .teal-dialog-content {
+  .teal-dialog-content,
+  .teal-popper-content,
+  .teal-toast-root,
+  .teal-accordion-content,
+  .teal-check-indicator,
+  .teal-switch-thumb,
+  .teal-tab-panel {
     animation: none !important;
   }
 }
