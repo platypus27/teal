@@ -171,8 +171,7 @@ export const moduleGroups = [
   {
     name: 'Overlays',
     modules: [
-      {
-        id: 'dialog',
+      {        id: 'dialog',
         name: 'Dialog',
         apiNames: ['Dialog'],
         description: 'A modal surface that owns focus management, naming, dismissal, and scroll locking.',
@@ -339,6 +338,59 @@ toast({ title: 'Changes saved', variant: 'success' })`,
   {
     name: 'Navigation',
     modules: [
+      {
+        id: 'app-switcher',
+        name: 'App Switcher',
+        apiNames: ['AppSwitcher'],
+        imports: ['AppSwitcher', 'Button'],
+        description:
+          'An entitlement-filtered application switcher with an explicit Home destination and keyboard navigation.',
+        usage: `<AppSwitcher
+  trigger={<Button variant="secondary">Switch application</Button>}
+  homeHref="https://home.example"
+  homeLabel="Home"
+  apps={[
+    { id: 'yang', label: 'Yang Operations', href: 'https://yang.example' },
+    { id: 'photos', label: 'Photos', href: 'https://photos.example', current: true },
+  ]}
+/>`,
+        examples: [
+          {
+            title: 'Household applications',
+            description:
+              'The caller filters applications by entitlement first; the switcher renders only what it is given plus the explicit Home destination.',
+          },
+          {
+            title: 'Single application',
+            description: 'A member with one entitled application still gets the explicit Home destination.',
+          },
+        ],
+      },
+      {
+        id: 'account-menu',
+        name: 'Account Menu',
+        apiNames: ['AccountMenu'],
+        imports: ['AccountMenu'],
+        description:
+          'A household account menu with an identity header, product items, and distinct app and SSO sign-out actions.',
+        usage: `<AccountMenu
+  user={{ name: 'Avery Chen', email: 'avery@example.com' }}
+  items={[{ id: 'sessions', label: 'Active sessions', onSelect: () => undefined }]}
+  appSignOut={{ label: 'Sign out of Photos', onSelect: () => undefined }}
+  ssoSignOut={{ label: 'Sign out everywhere', onSelect: () => undefined }}
+/>`,
+        examples: [
+          {
+            title: 'Household account',
+            description:
+              'Sign-out actions are labeled by the product so people can tell an application session from the shared SSO session.',
+          },
+          {
+            title: 'Without product items',
+            description: 'The items list is optional; the identity header and sign-out actions remain.',
+          },
+        ],
+      },
       {
         id: 'tabs',
         name: 'Tabs',
@@ -546,6 +598,9 @@ for (const module of modules) {
 /** Editorial guidance is kept beside the canonical module registry. */
 /** @type {Record<string, { useWhen: string, avoidWhen: string, behavior: string, responsive: string }>} */
 const guidanceById = {
+  'app-switcher': { useWhen: 'People move between entitled ecosystem applications.', avoidWhen: 'The navigation is inside one application; use vertical nav or tabs instead.', behavior: 'The caller filters applications by entitlement first; the switcher always includes the explicit Home destination.', responsive: 'The dropdown collision-handles to stay on screen; keep labels short on narrow layouts.' },
+  'account-menu': { useWhen: 'A signed-in household identity needs session and account actions.', avoidWhen: 'The surface has no identity concept or is public.', behavior: 'App-session and SSO sign-out stay distinct actions with product-supplied labels.', responsive: 'The trigger stays a compact avatar so it fits top bars at any width.' },
+
   button: { useWhen: 'A user needs to take an explicit action.', avoidWhen: 'The control is only communicating status or navigation.', behavior: 'Loading disables the native button until the action completes.', responsive: 'Let actions wrap in narrow toolbars instead of shrinking their labels.' },
   field: { useWhen: 'A control needs a visible label, help text, or validation message.', avoidWhen: 'The control already owns an equivalent form-label composition.', behavior: 'Field provides the id and ARIA relationships consumed by its child control.', responsive: 'Keep labels readable and let long error messages wrap.' },
   input: { useWhen: 'Users enter or search for short text.', avoidWhen: 'A constrained set of choices or a long-form editor is clearer.', behavior: 'Native input behavior is preserved, including browser validation and refs.', responsive: 'Use full width on small screens and constrain width at larger sizes.' },

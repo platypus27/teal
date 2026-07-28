@@ -3,7 +3,9 @@ import userEvent from '@testing-library/user-event'
 import { axe, type JestAxeConfigureOptions } from 'jest-axe'
 import {
   Accordion,
+  AccountMenu,
   Alert,
+  AppSwitcher,
   Avatar,
   Badge,
   Breadcrumb,
@@ -263,6 +265,40 @@ describe('axe: data and navigation', () => {
     )
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
   })
+
+  it('app switcher has no violations when open', async () => {
+    const user = userEvent.setup()
+    const { baseElement } = render(
+      <AppSwitcher
+        trigger={<button type="button">Apps</button>}
+        homeHref="https://home.example"
+        homeLabel="Home"
+        apps={[
+          { id: 'yang', label: 'Yang Operations', href: 'https://yang.example', current: true },
+          { id: 'photos', label: 'Photos', href: 'https://photos.example' },
+        ]}
+      />,
+    )
+    await user.click(screen.getByRole('button', { name: 'Apps' }))
+    await screen.findByRole('menu')
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('account menu has no violations when open', async () => {
+    const user = userEvent.setup()
+    const { baseElement } = render(
+      <AccountMenu
+        user={{ name: 'Avery Chen', email: 'avery@example.com' }}
+        items={[{ id: 'sessions', label: 'Active sessions', onSelect: () => {} }]}
+        appSignOut={{ label: 'Sign out of Photos', onSelect: () => {} }}
+        ssoSignOut={{ label: 'Sign out everywhere', onSelect: () => {} }}
+      />,
+    )
+    await user.click(screen.getByRole('button', { name: 'Avery Chen' }))
+    await screen.findByRole('menu')
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
 })
 
 describe('axe: overlays and feedback', () => {
@@ -403,6 +439,7 @@ describe('axe: catalog expansion', () => {
     )
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
   })
+
 
   it('avatars have no violations', async () => {
     const { baseElement } = render(

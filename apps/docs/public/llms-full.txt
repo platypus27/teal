@@ -2355,6 +2355,189 @@ export function AlertDemo({ exampleIndex = 0 }) {
 
 ---
 
+# App Switcher
+
+An entitlement-filtered application switcher with an explicit Home destination and keyboard navigation.
+
+## Usage
+
+```js
+import { AppSwitcher, Button } from '@kryv/teal'
+```
+
+```jsx
+<AppSwitcher
+  trigger={<Button variant="secondary">Switch application</Button>}
+  homeHref="https://home.example"
+  homeLabel="Home"
+  apps={[
+    { id: 'yang', label: 'Yang Operations', href: 'https://yang.example' },
+    { id: 'photos', label: 'Photos', href: 'https://photos.example', current: true },
+  ]}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+People move between entitled ecosystem applications.
+### Avoid when
+
+The navigation is inside one application; use vertical nav or tabs instead.
+### Behavior
+
+The caller filters applications by entitlement first; the switcher always includes the explicit Home destination.
+### Responsive
+
+The dropdown collision-handles to stay on screen; keep labels short on narrow layouts.
+
+## Examples
+
+### Household applications
+
+The caller filters applications by entitlement first; the switcher renders only what it is given plus the explicit Home destination.
+
+```jsx
+import { AppSwitcher, Button } from '@kryv/teal'
+import { Camera, Gauge, LineChart } from 'lucide-react'
+
+export function AppSwitcherDemo({ exampleIndex = 0 }) {
+  return (
+    <AppSwitcher
+      trigger={<Button variant="secondary">Switch application</Button>}
+      homeHref="https://home.kryvlabs.example"
+      homeLabel="Home"
+      apps={
+        exampleIndex
+          ? [{ id: 'yang', label: 'Yang Operations', href: 'https://yang.kryvlabs.example', icon: <Gauge /> }]
+          : [
+              { id: 'yang', label: 'Yang Operations', href: 'https://yang.kryvlabs.example', icon: <Gauge /> },
+              { id: 'photos', label: 'Photos', href: 'https://photos.kryvlabs.example', icon: <Camera /> },
+              { id: 'trict', label: 'Trict', href: 'https://trict.kryvlabs.example', icon: <LineChart />, current: true },
+            ]
+      }
+    />
+  )
+}
+```
+
+### Single application
+
+A member with one entitled application still gets the explicit Home destination.
+
+```jsx
+import { AppSwitcher, Button } from '@kryv/teal'
+import { Camera, Gauge, LineChart } from 'lucide-react'
+
+export function AppSwitcherDemo({ exampleIndex = 0 }) {
+  return (
+    <AppSwitcher
+      trigger={<Button variant="secondary">Switch application</Button>}
+      homeHref="https://home.kryvlabs.example"
+      homeLabel="Home"
+      apps={
+        exampleIndex
+          ? [{ id: 'yang', label: 'Yang Operations', href: 'https://yang.kryvlabs.example', icon: <Gauge /> }]
+          : [
+              { id: 'yang', label: 'Yang Operations', href: 'https://yang.kryvlabs.example', icon: <Gauge /> },
+              { id: 'photos', label: 'Photos', href: 'https://photos.kryvlabs.example', icon: <Camera /> },
+              { id: 'trict', label: 'Trict', href: 'https://trict.kryvlabs.example', icon: <LineChart />, current: true },
+            ]
+      }
+    />
+  )
+}
+```
+
+---
+
+# Account Menu
+
+A household account menu with an identity header, product items, and distinct app and SSO sign-out actions.
+
+## Usage
+
+```js
+import { AccountMenu } from '@kryv/teal'
+```
+
+```jsx
+<AccountMenu
+  user={{ name: 'Avery Chen', email: 'avery@example.com' }}
+  items={[{ id: 'sessions', label: 'Active sessions', onSelect: () => undefined }]}
+  appSignOut={{ label: 'Sign out of Photos', onSelect: () => undefined }}
+  ssoSignOut={{ label: 'Sign out everywhere', onSelect: () => undefined }}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+A signed-in household identity needs session and account actions.
+### Avoid when
+
+The surface has no identity concept or is public.
+### Behavior
+
+App-session and SSO sign-out stay distinct actions with product-supplied labels.
+### Responsive
+
+The trigger stays a compact avatar so it fits top bars at any width.
+
+## Examples
+
+### Household account
+
+Sign-out actions are labeled by the product so people can tell an application session from the shared SSO session.
+
+```jsx
+import { AccountMenu } from '@kryv/teal'
+import { Clock } from 'lucide-react'
+
+export function AccountMenuDemo({ exampleIndex = 0 }) {
+  return (
+    <AccountMenu
+      user={{ name: 'Avery Chen', email: 'avery@kryvlabs.example' }}
+      items={
+        exampleIndex
+          ? []
+          : [{ id: 'sessions', label: 'Active sessions', icon: <Clock />, onSelect: () => undefined }]
+      }
+      appSignOut={{ label: 'Sign out of Photos', onSelect: () => undefined }}
+      ssoSignOut={{ label: 'Sign out everywhere', onSelect: () => undefined }}
+    />
+  )
+}
+```
+
+### Without product items
+
+The items list is optional; the identity header and sign-out actions remain.
+
+```jsx
+import { AccountMenu } from '@kryv/teal'
+import { Clock } from 'lucide-react'
+
+export function AccountMenuDemo({ exampleIndex = 0 }) {
+  return (
+    <AccountMenu
+      user={{ name: 'Avery Chen', email: 'avery@kryvlabs.example' }}
+      items={
+        exampleIndex
+          ? []
+          : [{ id: 'sessions', label: 'Active sessions', icon: <Clock />, onSelect: () => undefined }]
+      }
+      appSignOut={{ label: 'Sign out of Photos', onSelect: () => undefined }}
+      ssoSignOut={{ label: 'Sign out everywhere', onSelect: () => undefined }}
+    />
+  )
+}
+```
+
+---
+
 # Tabs
 
 Keyboard-navigable content switching through a compact item interface.

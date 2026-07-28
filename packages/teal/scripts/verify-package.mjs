@@ -287,7 +287,7 @@ export default {
 `)
     await writeFile(resolve(consumer, 'ssr.mjs'), "import React from 'react'; import { renderToString } from 'react-dom/server'; import { Button } from '@kryv/teal'; if (!renderToString(React.createElement(Button, null, 'SSR'))) process.exit(1)")
     await run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund'], consumer)
-    await run(process.execPath, ['-e', "import('@kryv/teal').then((mod) => { if (!mod.Button || !mod.VerticalNavItem) throw new Error('public export missing') })"], consumer)
+    await run(process.execPath, ['-e', "import('@kryv/teal').then((mod) => { if (!mod.Button || !mod.VerticalNavItem || !mod.AppSwitcher) throw new Error('public export missing') })"], consumer)
     await run(process.execPath, ['ssr.mjs'], consumer)
     await run('npm', ['exec', '--', 'tailwindcss', '-c', 'tailwind.config.js', '-i', 'tailwind-input.css', '-o', 'public-utilities.css', '--minify'], consumer)
     const publicUtilities = await readFile(resolve(consumer, 'public-utilities.css'), 'utf8')
