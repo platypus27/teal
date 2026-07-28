@@ -41,6 +41,22 @@ describe('ecosystem modules', () => {
       expect(screen.getByRole('menuitem', { name: 'Photos' })).not.toHaveAttribute('aria-current')
     })
 
+    it('marks the Home destination as current when requested', async () => {
+      const user = userEvent.setup()
+      render(
+        <AppSwitcher
+          trigger={<button type="button">Apps</button>}
+          homeHref="https://home.example"
+          homeLabel="Home"
+          homeCurrent
+          apps={[{ id: 'yang', label: 'Yang Operations', href: 'https://yang.example' }]}
+        />,
+      )
+      await user.click(screen.getByRole('button', { name: 'Apps' }))
+      expect(await screen.findByRole('menuitem', { name: 'Home' })).toHaveAttribute('aria-current', 'page')
+      expect(screen.getByRole('menuitem', { name: 'Yang Operations' })).not.toHaveAttribute('aria-current')
+    })
+
     it('reports the selected destination through onNavigate from the keyboard', async () => {
       const user = userEvent.setup()
       const onNavigate = vi.fn()

@@ -21,6 +21,8 @@ export interface AppSwitcherProps {
   /** Applications to show. The caller filters by entitlement first; the switcher renders only what it is given. */
   apps: AppSwitcherItem[]
   className?: string
+  /** Marks the Home destination as the application the person is currently using. */
+  homeCurrent?: boolean
   /** URL of the explicit Home destination. */
   homeHref: string
   /** Visible label of the Home destination. */
@@ -40,6 +42,7 @@ export function AppSwitcher({
   align = 'end',
   apps,
   className,
+  homeCurrent = false,
   homeHref,
   homeLabel,
   label,
@@ -60,7 +63,7 @@ export function AppSwitcher({
           )}
         >
           <MenuPrimitive.Item asChild onSelect={() => onNavigate?.('home')}>
-            <a className={itemClass} href={homeHref}>
+            <a className={itemClass} href={homeHref} {...(homeCurrent ? { 'aria-current': 'page' as const } : {})}>
               {homeLabel}
             </a>
           </MenuPrimitive.Item>
@@ -72,7 +75,7 @@ export function AppSwitcher({
               <a
                 className={itemClass}
                 href={app.href}
-                {...(app.current !== undefined ? { 'aria-current': app.current ? 'page' : undefined } : {})}
+                {...(app.current ? { 'aria-current': 'page' as const } : {})}
               >
                 {app.icon ? (
                   <span className="teal-u-shrink-0 [&_svg]:teal-u-size-[var(--teal-icon-sm)]">{app.icon}</span>

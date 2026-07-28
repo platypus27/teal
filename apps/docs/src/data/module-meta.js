@@ -196,7 +196,8 @@ export const moduleGroups = [
   {
     name: 'Overlays',
     modules: [
-      {        id: 'dialog',
+      {
+        id: 'dialog',
         name: 'Dialog',
         apiNames: ['Dialog'],
         description: 'A modal surface that owns focus management, naming, dismissal, and scroll locking.',
@@ -730,7 +731,6 @@ const guidanceById = {
   'notification-item': { useWhen: 'An inbox lists sanitized pointers to application events.', avoidWhen: 'The feedback is local to the current task; use Alert or Toast instead.', behavior: 'Mute and archive touch delivery state only; the deep link never mutates the source.', responsive: 'Text wraps and controls stay reachable at mobile widths.' },
   'health-indicator': { useWhen: 'A surface reports one application or ecosystem health status.', avoidWhen: 'The status is decorative; omit it instead of implying health.', behavior: 'Unknown, stale, and checking are explicit states; health is never inferred from missing evidence.', responsive: 'The badge and label wrap naturally in compact headers.' },
   'step-up-notice': { useWhen: 'A sensitive action requires fresh strong authentication first.', avoidWhen: 'A plain warning suffices; use Alert instead.', behavior: 'The verification action is caller-supplied; the notice never starts or auto-submits verification.', responsive: 'The action wraps beneath the explanation on narrow screens.' },
-
   button: { useWhen: 'A user needs to take an explicit action.', avoidWhen: 'The control is only communicating status or navigation.', behavior: 'Loading disables the native button until the action completes.', responsive: 'Let actions wrap in narrow toolbars instead of shrinking their labels.' },
   field: { useWhen: 'A control needs a visible label, help text, or validation message.', avoidWhen: 'The control already owns an equivalent form-label composition.', behavior: 'Field provides the id and ARIA relationships consumed by its child control.', responsive: 'Keep labels readable and let long error messages wrap.' },
   input: { useWhen: 'Users enter or search for short text.', avoidWhen: 'A constrained set of choices or a long-form editor is clearer.', behavior: 'Native input behavior is preserved, including browser validation and refs.', responsive: 'Use full width on small screens and constrain width at larger sizes.' },
