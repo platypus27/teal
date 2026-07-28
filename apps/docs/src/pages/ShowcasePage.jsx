@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
 import {
   Archive,
-  ChevronLeft,
-  ChevronRight,
   Filter,
   Moon,
   MoreVertical,
@@ -48,74 +45,6 @@ import {
   toast,
 } from '@kryv/teal'
 import changelog from '../generated/changelog.json'
-
-/**
- * Refined direction: the details the library currently skips.
- * 1. Default control borders are heavy (--teal-border-strong is full outline color).
- *    Here they start as hairlines and strengthen on hover/focus.
- * 2. Checkbox marks and switch thumbs appear instantly — here they pop/settle in.
- * 3. Tab panels swap with no transition — here they fade and rise on switch.
- * 4. Popover, menu, and tooltip content pop in with no entrance — here they fade in
- *    with a small rise, matching the dialog's existing motion language.
- */
-const refinedMotionCss = `
-  @keyframes refined-check-pop {
-    0% { scale: 0.4; opacity: 0; }
-    60% { scale: 1.12; }
-    100% { scale: 1; opacity: 1; }
-  }
-  @keyframes refined-thumb-settle {
-    0% { scale: 0.8; }
-    60% { scale: 1.06; }
-    100% { scale: 1; }
-  }
-  @keyframes refined-panel-in {
-    from { opacity: 0; translate: 0 4px; }
-    to { opacity: 1; translate: 0 0; }
-  }
-  @keyframes refined-overlay-in {
-    from { opacity: 0; translate: 0 3px; scale: 0.98; }
-    to { opacity: 1; translate: 0 0; scale: 1; }
-  }
-
-  [data-refined] [role='checkbox'][data-state='checked'] svg,
-  [data-refined] [role='checkbox'][data-state='indeterminate'] svg {
-    animation: refined-check-pop var(--teal-motion-fast) ease-out;
-  }
-  [data-refined] [role='switch'][data-state='checked'] > span,
-  [data-refined] [role='switch'][data-state='unchecked'] > span {
-    animation: refined-thumb-settle var(--teal-motion-fast) ease-out;
-  }
-  [data-refined] [role='tabpanel'] {
-    animation: refined-panel-in var(--teal-motion-standard) ease-out;
-  }
-  [data-radix-popper-content-wrapper] > * {
-    animation: refined-overlay-in var(--teal-motion-fast) ease-out;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    [data-refined] [role='checkbox'] svg,
-    [data-refined] [role='switch'] > span,
-    [data-refined] [role='tabpanel'],
-    [data-radix-popper-content-wrapper] > * {
-      animation: none;
-    }
-  }
-`
-
-const variants = [
-  {
-    key: 'A',
-    name: 'Current',
-    caption: 'The library as it ships today — hairline panels, refined radii, calm elevation.',
-  },
-  {
-    key: 'B',
-    name: 'Refined',
-    caption:
-      'Same language, finished feel — hairline control borders, a pop on every check, tab panels and overlays that fade in instead of appearing.',
-  },
-]
 
 /* ---------------------------------------------------------------- */
 /* Shared specimen set — identical content for every variant         */
@@ -439,57 +368,10 @@ function ThemeToggle() {
   )
 }
 
-function VariantSwitcher({ current, onChange }) {
-  const index = variants.findIndex((v) => v.key === current)
-  const step = (delta) => onChange(variants[(index + delta + variants.length) % variants.length].key)
-
-  useEffect(() => {
-    const onKeyDown = (event) => {
-      if (event.key === 'ArrowLeft') step(-1)
-      if (event.key === 'ArrowRight') step(1)
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  })
-
-  return (
-    <div className="fixed bottom-5 left-1/2 z-50 flex -translate-x-1/2 items-center gap-1 rounded-full border border-teal-outline-variant/40 bg-teal-inverse-surface px-2 py-1.5 text-teal-inverse-on-surface shadow-teal-overlay">
-      <button type="button" aria-label="Previous direction" onClick={() => step(-1)} className="grid size-8 place-items-center rounded-full transition hover:bg-white/10">
-        <ChevronLeft className="size-4" />
-      </button>
-      <span className="min-w-32 text-center text-xs font-bold tracking-wide">
-        <span className="text-teal-inverse-primary">{current}</span>
-        <span className="mx-1.5 opacity-40">/</span>
-        {variants[index].name}
-      </span>
-      <button type="button" aria-label="Next direction" onClick={() => step(1)} className="grid size-8 place-items-center rounded-full transition hover:bg-white/10">
-        <ChevronRight className="size-4" />
-      </button>
-    </div>
-  )
-}
-
 export function ShowcasePage() {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const requested = searchParams.get('variant')?.toUpperCase() ?? 'A'
-  const current = variants.some((v) => v.key === requested) ? requested : 'A'
-  const variant = variants.find((v) => v.key === current)
-  const refined = current === 'B'
-
-  const changeVariant = (key) => {
-    const next = new URLSearchParams(searchParams)
-    next.set('variant', key)
-    setSearchParams(next, { replace: true })
-  }
-
   return (
     <TooltipProvider>
-      <div
-        {...(refined ? { 'data-refined': '' } : {})}
-        style={refined ? { '--teal-border-strong': 'color-mix(in srgb, var(--teal-color-outline) 50%, transparent)' } : undefined}
-        className="min-h-screen bg-teal-surface text-teal-on-surface"
-      >
-        {refined ? <style>{refinedMotionCss}</style> : null}
+      <div className="min-h-screen bg-teal-surface text-teal-on-surface">
         <div className="relative mx-auto max-w-6xl px-4 pb-28 pt-8 sm:px-6 lg:px-8">
           <header className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <div className="max-w-2xl">
@@ -497,9 +379,11 @@ export function ShowcasePage() {
                 Teal design system · component gallery · v{changelog.version}
               </p>
               <h1 className="mt-3 font-teal-headline text-3xl font-extrabold tracking-tight sm:text-4xl">
-                Direction {current} — {variant.name}
+                Component gallery
               </h1>
-              <p className="mt-2 text-sm leading-relaxed text-teal-on-surface-variant">{variant.caption}</p>
+              <p className="mt-2 text-sm leading-relaxed text-teal-on-surface-variant">
+                The library as it ships — hairline panels, refined radii, calm elevation, and motion on every state change.
+              </p>
             </div>
             <ThemeToggle />
           </header>
@@ -512,7 +396,6 @@ export function ShowcasePage() {
             ))}
           </div>
         </div>
-        <VariantSwitcher current={current} onChange={changeVariant} />
         <Toaster />
       </div>
     </TooltipProvider>
