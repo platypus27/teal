@@ -49,41 +49,51 @@ import {
 } from '@kryv/teal'
 import changelog from '../generated/changelog.json'
 
+/**
+ * Refined direction: the details the library currently skips.
+ * 1. Interactive state changes snap — every button, input, tab, checkbox and menu item
+ *    flips color instantly. Here they transition over --teal-motion-fast.
+ * 2. Default control borders are heavy (--teal-border-strong is full outline color).
+ *    Here they start as hairlines and strengthen on hover/focus.
+ */
+const refinedMotionCss = `
+  [data-refined] button,
+  [data-refined] a,
+  [data-refined] input,
+  [data-refined] textarea,
+  [data-refined] [role='tab'],
+  [data-refined] [role='checkbox'],
+  [data-refined] [role='switch'],
+  [data-refined] [role='menuitem'] {
+    transition-property: color, background-color, border-color, box-shadow, transform;
+    transition-duration: var(--teal-motion-fast);
+    transition-timing-function: ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-refined] button,
+    [data-refined] a,
+    [data-refined] input,
+    [data-refined] textarea,
+    [data-refined] [role='tab'],
+    [data-refined] [role='checkbox'],
+    [data-refined] [role='switch'],
+    [data-refined] [role='menuitem'] {
+      transition: none;
+    }
+  }
+`
+
 const variants = [
   {
     key: 'A',
-    name: 'Refined',
-    caption: 'Tighter radius ramp, hairline borders, calmer elevation — crisper and more deliberate.',
-    tokens: {
-      '--teal-radius-control': '0.5rem',
-      '--teal-radius-surface': '0.75rem',
-      '--teal-shadow-raised': '0 1px 2px rgba(0, 35, 36, 0.04), 0 10px 28px -18px rgba(0, 84, 84, 0.22)',
-      '--teal-shadow-card': '0 1px 2px rgba(0, 35, 36, 0.04), 0 10px 28px -18px rgba(0, 84, 84, 0.22)',
-      '--teal-shadow-overlay': '0 2px 6px rgba(0, 20, 21, 0.1), 0 20px 56px -20px rgba(0, 20, 21, 0.38)',
-    },
+    name: 'Current',
+    caption: 'The library as it ships today — hairline panels, refined radii, calm elevation.',
   },
   {
     key: 'B',
-    name: 'Soft',
-    caption: 'Larger radii, diffused ambient shadows, layered tinted surfaces — friendlier and airier.',
-    darkCss: 'html.dark { --teal-color-surface-container-lowest: rgb(14 46 46); }',
-    tokens: {
-      '--teal-radius-control': '1.5rem',
-      '--teal-radius-surface': '2.25rem',
-      '--teal-color-outline-variant': 'color-mix(in srgb, var(--teal-color-outline) 28%, var(--teal-color-surface))',
-      '--teal-shadow-raised': '0 2px 8px rgba(0, 60, 60, 0.05), 0 32px 64px -24px rgba(0, 84, 84, 0.3)',
-      '--teal-shadow-card': '0 2px 8px rgba(0, 60, 60, 0.05), 0 32px 64px -24px rgba(0, 84, 84, 0.3)',
-      '--teal-shadow-overlay': '0 2px 8px rgba(0, 40, 40, 0.08), 0 32px 72px -28px rgba(0, 40, 40, 0.35)',
-    },
-  },
-  {
-    key: 'C',
-    name: 'Luminous',
-    caption: 'Primary-tinted accents, gradient highlights, richer glows — more character, same shapes.',
-    tokens: {
-      '--teal-shadow-raised': '0 1px 2px rgba(0, 35, 36, 0.05), 0 16px 40px -20px rgba(0, 106, 108, 0.35)',
-      '--teal-shadow-card': '0 1px 2px rgba(0, 35, 36, 0.05), 0 16px 40px -20px rgba(0, 106, 108, 0.35)',
-    },
+    name: 'Refined',
+    caption:
+      'Same language, finished feel — every interactive state eases over 150ms, and control borders start as hairlines that strengthen on hover.',
   },
 ]
 
@@ -364,7 +374,7 @@ function SurfacesSection() {
 }
 
 /* ---------------------------------------------------------------- */
-/* Variant presentation shells                                       */
+/* Presentation shell — identical for both variants                  */
 /* ---------------------------------------------------------------- */
 
 const sections = [
@@ -378,69 +388,16 @@ const sections = [
   { id: 'surfaces', title: 'Surfaces', hint: 'Card · EmptyState', Body: SurfacesSection },
 ]
 
-function Section({ variantKey, title, hint, children }) {
-  if (variantKey === 'A') {
-    return (
-      <section className="overflow-hidden rounded-teal-surface border border-teal-outline-variant/50 bg-teal-surface-container-lowest">
-        <header className="flex items-baseline justify-between gap-3 border-b border-teal-outline-variant/40 px-5 py-3">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.16em] text-teal-on-surface">{title}</h2>
-          <span className="text-[11px] font-medium text-teal-on-surface-variant">{hint}</span>
-        </header>
-        <div className="p-5">{children}</div>
-      </section>
-    )
-  }
-  if (variantKey === 'B') {
-    return (
-      <section className="rounded-teal-surface bg-teal-surface-container-lowest p-7 shadow-teal-raised sm:p-9">
-        <header className="mb-7 flex items-center gap-3.5">
-          <span className="grid size-8 place-items-center rounded-teal-control bg-teal-primary/10 text-[11px] font-black text-teal-primary">
-            {title.charAt(0)}
-          </span>
-          <div>
-            <h2 className="font-teal-headline text-base font-bold">{title}</h2>
-            <p className="text-xs text-teal-on-surface-variant">{hint}</p>
-          </div>
-        </header>
-        {children}
-      </section>
-    )
-  }
+function Section({ title, hint, children }) {
   return (
-    <section className="relative overflow-hidden rounded-teal-surface border border-teal-outline-variant/40 bg-teal-surface-container-lowest shadow-teal-raised">
-      <span aria-hidden className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-teal-primary via-teal-primary/30 to-transparent" />
-      <header className="flex items-center justify-between gap-3 px-6 pb-0 pt-6">
-        <h2 className="flex items-center gap-2.5 font-teal-headline text-base font-extrabold tracking-tight">
-          <span aria-hidden className="size-2 rounded-[3px] bg-teal-primary" />
-          {title}
-        </h2>
-        <span className="rounded-full bg-teal-primary/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-teal-primary">
-          {hint}
-        </span>
+    <section className="overflow-hidden rounded-teal-surface border border-teal-outline-variant/50 bg-teal-surface-container-lowest">
+      <header className="flex items-baseline justify-between gap-3 border-b border-teal-outline-variant/40 px-5 py-3">
+        <h2 className="text-[11px] font-bold uppercase tracking-[0.16em] text-teal-on-surface">{title}</h2>
+        <span className="text-[11px] font-medium text-teal-on-surface-variant">{hint}</span>
       </header>
-      <div className="p-6">{children}</div>
+      <div className="p-5">{children}</div>
     </section>
   )
-}
-
-function PageBackdrop({ variantKey }) {
-  if (variantKey === 'B') {
-    return (
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,var(--teal-color-background)_0%,var(--teal-color-surface-container)_55%,var(--teal-color-background)_100%)]"
-      />
-    )
-  }
-  if (variantKey === 'C') {
-    return (
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(70rem_32rem_at_50%_-12%,color-mix(in_srgb,var(--teal-color-primary)_18%,transparent),transparent),radial-gradient(40rem_20rem_at_90%_30%,color-mix(in_srgb,var(--teal-color-tertiary)_10%,transparent),transparent)]"
-      />
-    )
-  }
-  return null
 }
 
 /* ---------------------------------------------------------------- */
@@ -497,6 +454,7 @@ export function ShowcasePage() {
   const requested = searchParams.get('variant')?.toUpperCase() ?? 'A'
   const current = variants.some((v) => v.key === requested) ? requested : 'A'
   const variant = variants.find((v) => v.key === current)
+  const refined = current === 'B'
 
   const changeVariant = (key) => {
     const next = new URLSearchParams(searchParams)
@@ -504,33 +462,14 @@ export function ShowcasePage() {
     setSearchParams(next, { replace: true })
   }
 
-  // Token overrides live on :root so portaled overlays (Dialog, Popover, Toast) pick them up too.
-  useEffect(() => {
-    const root = document.documentElement
-    const previous = {}
-    let styleEl
-    for (const [name, value] of Object.entries(variant.tokens)) {
-      previous[name] = root.style.getPropertyValue(name)
-      root.style.setProperty(name, value)
-    }
-    if (variant.darkCss) {
-      styleEl = document.createElement('style')
-      styleEl.textContent = variant.darkCss
-      document.head.appendChild(styleEl)
-    }
-    return () => {
-      for (const name of Object.keys(variant.tokens)) {
-        if (previous[name]) root.style.setProperty(name, previous[name])
-        else root.style.removeProperty(name)
-      }
-      styleEl?.remove()
-    }
-  }, [variant])
-
   return (
     <TooltipProvider>
-      <div className={`relative min-h-screen text-teal-on-surface ${current === 'A' ? 'bg-teal-surface' : 'bg-teal-background'}`}>
-        <PageBackdrop variantKey={current} />
+      <div
+        {...(refined ? { 'data-refined': '' } : {})}
+        style={refined ? { '--teal-border-strong': 'color-mix(in srgb, var(--teal-color-outline) 50%, transparent)' } : undefined}
+        className="min-h-screen bg-teal-surface text-teal-on-surface"
+      >
+        {refined ? <style>{refinedMotionCss}</style> : null}
         <div className="relative mx-auto max-w-6xl px-4 pb-28 pt-8 sm:px-6 lg:px-8">
           <header className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <div className="max-w-2xl">
@@ -547,7 +486,7 @@ export function ShowcasePage() {
 
           <div className="grid gap-5">
             {sections.map(({ id, title, hint, Body }) => (
-              <Section key={id} variantKey={current} title={title} hint={hint}>
+              <Section key={id} title={title} hint={hint}>
                 <Body />
               </Section>
             ))}
