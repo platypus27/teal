@@ -1,0 +1,56 @@
+# Disposable Authentik fixture for the Teal adapter visual contracts.
+# Bootstrap credentials are fixture-only values for a throwaway local stack.
+services:
+  postgresql:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: authentik
+      POSTGRES_USER: authentik
+      POSTGRES_PASSWORD: authentik-fixture
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U authentik -d authentik']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  server:
+    image: ghcr.io/goauthentik/server:2026.5.6
+    command: server
+    environment:
+      AUTHENTIK_SECRET_KEY: authentik-fixture-secret-key
+      AUTHENTIK_BOOTSTRAP_PASSWORD: authentik-fixture-admin
+      AUTHENTIK_BOOTSTRAP_EMAIL: admin@kryvlabs.example
+      AUTHENTIK_BOOTSTRAP_TOKEN: authentik-fixture-token
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: authentik-fixture
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_REDIS__HOST: redis
+    ports:
+      - '127.0.0.1:19000:9000'
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  worker:
+    image: ghcr.io/goauthentik/server:2026.5.6
+    command: worker
+    environment:
+      AUTHENTIK_SECRET_KEY: authentik-fixture-secret-key
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__USER: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: authentik-fixture
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_REDIS__HOST: redis
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
