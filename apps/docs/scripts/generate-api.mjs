@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { withCustomConfig } from 'react-docgen-typescript'
 
@@ -15,66 +15,12 @@ const parser = withCustomConfig(resolve(root, 'packages/teal/tsconfig.json'), {
   propFilter: (prop) => prop.name !== 'ref' && !prop.parent?.fileName.includes('node_modules'),
 })
 
-const files = [
-  'Accordion.tsx',
-  'Alert.tsx',
-  'Avatar.tsx',
-  'Badge.tsx',
-  'Breadcrumb.tsx',
-  'Button.tsx',
-  'Card.tsx',
-  'Checkbox.tsx',
-  'Dialog.tsx',
-  'EcosystemRail.tsx',
-  'EmptyState.tsx',
-  'Field.tsx',
-  'Input.tsx',
-  'LoadingState.tsx',
-  'Menu.tsx',
-  'PageHeader.tsx',
-  'Pagination.tsx',
-  'Popover.tsx',
-  'Select.tsx',
-  'Separator.tsx',
-  'Switch.tsx',
-  'Table.tsx',
-  'Tabs.tsx',
-  'Toast.tsx',
-  'Tooltip.tsx',
-  'TopBar.tsx',
-  'VerticalNav.tsx',
-  'Meter.tsx',
-  'Rating.tsx',
-  'Announcer.tsx',
-  'PinInput.tsx',
-  'TagsInput.tsx',
-  'InputGroup.tsx',
-  'Editable.tsx',
-  'TimePicker.tsx',
-  'DateRangePicker.tsx',
-  'ColorPicker.tsx',
-  'AlertDialog.tsx',
-  'Popconfirm.tsx',
-  'ContextMenu.tsx',
-  'Tour.tsx',
-  'Menubar.tsx',
-  'NavigationMenu.tsx',
-  'NavRail.tsx',
-  'BackTop.tsx',
-  'Stat.tsx',
-  'List.tsx',
-  'Sparkline.tsx',
-  'Calendar.tsx',
-  'Result.tsx',
-  'Stack.tsx',
-  'Grid.tsx',
-  'Resizable.tsx',
-  'AspectRatio.tsx',
-  'VisuallyHidden.tsx',
-  'CopyButton.tsx',
-  'ThemeToggle.tsx',
-  'Carousel.tsx',
-].map((file) => resolve(source, file))
+// Parse every component source file so new modules can never be left out of
+// the generated interface tables. Only .tsx files are components; helpers
+// (cn, form-semantics, polymorphic) are plain .ts.
+const files = (await readdir(source))
+  .filter((file) => file.endsWith('.tsx'))
+  .map((file) => resolve(source, file))
 
 // react-docgen-typescript also reports plain function exports (toast,
 // dismissToast, mergeDescriptionIds, useFieldControl) as pseudo-components.

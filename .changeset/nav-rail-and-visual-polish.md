@@ -16,3 +16,5 @@ Add NavRail and refine the shared visual language:
 - ProgressCircle indeterminate state spins smoothly without snapping back.
 - AppSwitcher plays its open animation; ScrollArea constrains its viewport correctly and supports horizontal scrolling.
 - VerticalNav items use a full-row rounded active/hover treatment instead of a separate icon chip.
+- Nested items inside padded containers now use a true concentric radius (`--teal-radius-nested`), and the light page background is pure white instead of mint.
+- Docs interface tables are generated for every module: the API generator now scans all component sources instead of a hardcoded list, and the registry validator fails if any module's `apiNames` lack a generated entry.

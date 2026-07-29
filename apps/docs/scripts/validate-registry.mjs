@@ -29,6 +29,11 @@ for (const module of modules) {
 const indexSource = await readFile(resolve(workspaceRoot, 'packages/teal/src/index.ts'), 'utf8')
 const api = JSON.parse(await readFile(resolve(docsRoot, 'src/generated/api.json'), 'utf8'))
 const documented = new Set(modules.flatMap((module) => module.apiNames))
+// Every registered apiName must resolve to a generated interface-table entry;
+// otherwise the module page silently renders no props documentation.
+for (const name of documented) {
+  if (!api.some((entry) => entry.displayName === name)) errors.push(`registry apiName ${name} has no api.json entry`)
+}
 const exported = new Set()
 for (const match of indexSource.matchAll(/export\s+(?:type\s+)?\{([^}]+)\}/g)) {
   for (const name of match[1].split(',').map((part) => part.trim().split(/\s+as\s+/)[0]).filter(Boolean)) exported.add(name)

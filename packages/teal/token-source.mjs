@@ -21,7 +21,7 @@ export const colorTokens = {
   'teal-color-surface-bright': { light: [255, 255, 255], dark: [33, 73, 71] },
   'teal-color-tertiary-container': { light: [209, 250, 229], dark: [6, 78, 59] },
   'teal-color-primary': { light: [0, 106, 108], dark: [45, 212, 191] },
-  'teal-color-background': { light: [239, 246, 244], dark: [3, 22, 23] },
+  'teal-color-background': { light: [255, 255, 255], dark: [3, 22, 23] },
   'teal-color-surface-container': { light: [248, 252, 250], dark: [14, 46, 46] },
   'teal-color-tertiary-fixed': { light: [167, 243, 208], dark: [45, 212, 191] },
   'teal-color-surface-dim': { light: [230, 240, 238], dark: [2, 26, 26] },
@@ -60,10 +60,11 @@ export const sharedTokens = {
   '--teal-font-body': "'Manrope', ui-sans-serif, system-ui, sans-serif",
   '--teal-font-headline': "'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif",
   /* Radius scale: controls and boxes share the control radius (0.75rem); nested
-     items inside padded containers use concentric 0.5rem; pill is reserved for
-     icon-only controls (IconButton and friends), tags, and avatars. */
+     items inside padded containers use the concentric nested radius; pill is
+     reserved for icon-only controls (IconButton and friends), tags, and avatars. */
   '--teal-radius-control': '0.75rem',
   '--teal-radius-surface': '0.75rem',
+  '--teal-radius-nested': 'calc(var(--teal-radius-control) - 0.25rem)',
   '--teal-radius-pill': '9999px',
   '--teal-border-subtle': 'color-mix(in srgb, var(--teal-color-outline-variant) 55%, transparent)',
   '--teal-border-strong': 'var(--teal-color-outline)',

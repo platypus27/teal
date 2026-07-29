@@ -375,6 +375,14 @@ export function ButtonGroupDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### ButtonGroup
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orientation` | `enum` | `horizontal` | Stack direction of the attached buttons. |
+
 ---
 
 # Segmented Control
@@ -491,6 +499,20 @@ export function SegmentedControlDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### SegmentedControl
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `aria-label` (required) | `string` | - | Accessible name for the control. |
+| `className` | `string` | - | - |
+| `defaultValue` | `string` | - | Initially selected value when uncontrolled. Defaults to the first enabled option. |
+| `onValueChange` | `(value: string) => void` | - | Called with the new value when the selection changes. |
+| `options` (required) | `SegmentedControlOption[]` | - | Options rendered by the control. |
+| `size` | `enum` | `md` | Density of the control. |
+| `value` | `string` | - | Controlled selected value. |
+
 ---
 
 # Link
@@ -590,6 +612,16 @@ export function LinkDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### Link
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `asChild` | `boolean` | `false` | Composes the link styles onto a single child element instead of rendering an anchor. |
+| `external` | `boolean` | `false` | Opens the link in a new tab with `rel="noreferrer"` and appends an external-link indicator. |
+| `variant` | `"inline" \| "standalone" \| null` | - | - |
 
 ---
 
@@ -727,6 +759,15 @@ export function ToggleDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### Toggle
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `size` | `enum` | `md` | Control size. |
+| `asChild` | `boolean` | - | - |
 
 ---
 
@@ -963,6 +1004,20 @@ export function ToolbarDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### Toolbar
+
+_This module forwards native element properties._
+
+### ToolbarGroup
+
+_This module forwards native element properties._
+
+### ToolbarSeparator
+
+_This module forwards native element properties._
+
 ---
 
 # Split Button
@@ -1089,6 +1144,21 @@ export function SplitButtonDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### SplitButton
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | - | - |
+| `disabled` | `boolean` | `false` | Disables both the main action and the menu trigger. |
+| `items` (required) | `MenuItem[]` | - | Secondary actions rendered in the attached menu. |
+| `label` (required) | `ReactNode` | - | Content of the main action button. |
+| `menuLabel` | `string` | `More actions` | Accessible label for the menu trigger button and the menu itself. |
+| `onClick` (required) | `() => void` | - | Called when the main action is clicked. |
+| `size` | `"sm" \| "md" \| "lg" \| null` | - | Size of both buttons. |
+| `variant` | `enum` | `primary` | Color treatment shared by both buttons. |
 
 ---
 
@@ -1830,6 +1900,18 @@ export function RadioGroupDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### RadioGroup
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `description` | `ReactNode` | - | Supporting text rendered below the group and linked to it for assistive technology. |
+| `label` | `ReactNode` | - | Visible label for the whole group. |
+| `options` (required) | `RadioGroupOption[]` | - | Options rendered as radios inside the group. |
+| `orientation` | `enum` | `vertical` | Layout direction of the options. |
+| `asChild` | `boolean` | - | - |
+
 ---
 
 # Slider
@@ -1926,6 +2008,17 @@ export function SliderDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### Slider
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `description` | `ReactNode` | - | Supporting text rendered below the slider and linked to it for assistive technology. |
+| `label` | `ReactNode` | - | Visible label rendered above the slider. |
+| `showValue` | `boolean` | `false` | Renders the current value right-aligned above the track. |
+| `asChild` | `boolean` | - | - |
 
 ---
 
@@ -2039,6 +2132,20 @@ export function SearchInputDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### SearchInput
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `description` | `ReactNode` | - | Supporting text rendered below the input and linked to it for assistive technology. |
+| `label` | `ReactNode` | - | Visible label rendered above the input. |
+| `value` | `string` | - | Controlled value. |
+| `defaultValue` | `string` | - | Initial value for uncontrolled usage. |
+| `onValueChange` | `(value: string) => void` | - | Called with the new string whenever the value changes, including clears. |
+| `onClear` | `() => void` | - | Called when the clear button is pressed, after the value is cleared. |
+| `loading` | `boolean` | `false` | Replaces the clear button with a spinner. |
 
 ---
 
@@ -2187,6 +2294,28 @@ export function ComboboxDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### Combobox
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `aria-describedby` | `string` | - | - |
+| `aria-label` | `string` | - | Accessible name when there is no visible label. |
+| `aria-invalid` | `boolean \| "true" \| "false"` | - | Marks the input invalid for form validation and screen readers. |
+| `id` | `string` | - | Explicit id; otherwise Field or an internal id is used. |
+| `className` | `string` | - | - |
+| `defaultValue` | `string` | - | Initial selected value when uncontrolled. |
+| `description` | `ReactNode` | - | Supporting text rendered below the input. |
+| `disabled` | `boolean` | - | Prevents interaction with the input. |
+| `emptyMessage` | `ReactNode` | `No matches` | Message shown when no option matches the typed text. |
+| `label` | `ReactNode` | - | Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used. |
+| `onValueChange` | `(value: string) => void` | - | Called with the value of the selected option. |
+| `options` (required) | `ComboboxOption[]` | - | Options rendered in the filtered listbox. |
+| `placeholder` | `string` | `Search…` | Text shown when no value is selected. |
+| `required` | `boolean` | - | Marks the input as required. |
+| `value` | `string` | - | Controlled selected value. |
+
 ---
 
 # Multi Select
@@ -2331,6 +2460,27 @@ export function MultiSelectDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### MultiSelect
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `aria-describedby` | `string` | - | - |
+| `aria-label` | `string` | - | Accessible name when there is no visible label. |
+| `aria-invalid` | `boolean \| "true" \| "false"` | - | Marks the control invalid for form validation and screen readers. |
+| `id` | `string` | - | Explicit id; otherwise Field or an internal id is used. |
+| `className` | `string` | - | - |
+| `defaultValue` | `string[]` | - | Initial selected values when uncontrolled. |
+| `description` | `ReactNode` | - | Supporting text rendered below the control. |
+| `disabled` | `boolean` | `false` | Prevents interaction with the control. |
+| `label` | `ReactNode` | - | Visible label rendered above the control. Required outside a Field; inside a Field the Field's label is used. |
+| `onValueChange` | `(values: string[]) => void` | - | Called with the full list of selected values whenever it changes. |
+| `options` (required) | `MultiSelectOption[]` | - | Options rendered in the popover listbox. |
+| `placeholder` | `string` | `Select…` | Text shown when nothing is selected. |
+| `required` | `boolean` | - | Marks the control as required. |
+| `value` | `string[]` | - | Controlled selected values. |
+
 ---
 
 # Date Picker
@@ -2452,6 +2602,28 @@ export function DatePickerDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### DatePicker
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `aria-describedby` | `string` | - | - |
+| `aria-label` | `string` | - | Accessible name when there is no visible label. |
+| `aria-invalid` | `boolean \| "true" \| "false"` | - | Marks the input invalid for form validation and screen readers. |
+| `className` | `string` | - | - |
+| `defaultValue` | `Date` | - | Initial selected date when uncontrolled. |
+| `description` | `ReactNode` | - | Supporting text rendered below the input. |
+| `disabled` | `boolean` | - | Prevents interaction with the input. |
+| `id` | `string` | - | Explicit id; otherwise Field or an internal id is used. |
+| `label` | `ReactNode` | - | Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used. |
+| `maxDate` | `Date` | - | Latest selectable date (inclusive). |
+| `minDate` | `Date` | - | Earliest selectable date (inclusive). |
+| `onValueChange` | `(date: Date) => void` | - | Called with the selected date. |
+| `placeholder` | `string` | `Pick a date` | Text shown when no date is selected. |
+| `required` | `boolean` | - | Marks the input as required. |
+| `value` | `Date` | - | Controlled selected date. |
+
 ---
 
 # Number Input
@@ -2571,6 +2743,29 @@ export function NumberInputDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### NumberInput
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `aria-describedby` | `string` | - | - |
+| `aria-label` | `string` | - | Accessible name when there is no visible label. |
+| `aria-invalid` | `boolean \| "true" \| "false"` | - | Marks the input invalid for form validation and screen readers. |
+| `className` | `string` | - | - |
+| `defaultValue` | `number` | - | Initial value when uncontrolled. |
+| `description` | `ReactNode` | - | Supporting text rendered below the input. |
+| `disabled` | `boolean` | - | Prevents interaction with the input. |
+| `id` | `string` | - | Explicit id; otherwise Field or an internal id is used. |
+| `label` | `ReactNode` | - | Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used. |
+| `max` | `number` | - | Largest allowed value; stepper clamps to it. |
+| `min` | `number` | - | Smallest allowed value; stepper clamps to it. |
+| `onValueChange` | `(value: number) => void` | - | Called with the parsed number, or undefined when the field is emptied. |
+| `placeholder` | `string` | - | Text shown when the field is empty. |
+| `required` | `boolean` | - | Marks the input as required. |
+| `step` | `number` | `1` | Amount added or removed by the stepper buttons. |
+| `value` | `number` | - | Controlled value. |
+
 ---
 
 # Password Input
@@ -2684,6 +2879,18 @@ export function PasswordInputDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### PasswordInput
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `description` | `ReactNode` | - | Supporting text rendered below the input and linked to it for assistive technology. |
+| `label` | `ReactNode` | - | Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used. |
+| `value` | `string` | - | Controlled value. |
+| `defaultValue` | `string` | - | Initial value for uncontrolled usage. |
+| `onValueChange` | `(value: string) => void` | - | Called with the new string whenever the value changes. |
+
 ---
 
 # File Upload
@@ -2784,6 +2991,26 @@ export function FileUploadDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### FileUpload
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `aria-describedby` | `string` | - | - |
+| `aria-invalid` | `boolean \| "true" \| "false"` | - | Marks the control invalid for form validation and screen readers. |
+| `id` | `string` | - | Explicit id; otherwise Field or an internal id is used. |
+| `accept` | `string` | - | Comma-separated list of accepted file types, forwarded to the file input. |
+| `className` | `string` | - | - |
+| `description` | `ReactNode` | - | Supporting text rendered below the dropzone. |
+| `disabled` | `boolean` | `false` | Prevents adding or removing files. |
+| `label` | `ReactNode` | - | Visible label rendered above the dropzone. Required outside a Field; inside a Field the Field's label is used. |
+| `multiple` | `boolean` | `false` | Allows selecting more than one file at a time. |
+| `onFilesAdded` | `(files: File[]) => void` | - | Called with the raw File objects each time files are added. |
+| `onValueChange` | `(files: FileUploadFile[]) => void` | - | Called with the next file list whenever files are added or removed. |
+| `required` | `boolean` | - | Marks the control as required. |
+| `value` | `FileUploadFile[]` | - | Controlled file list. When omitted the component tracks the list internally. |
 
 ---
 
@@ -3770,6 +3997,20 @@ export function LauncherCardDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### LauncherCard
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | - | - |
+| `description` | `ReactNode` | - | Short supporting line shown under the label. |
+| `disabled` | `boolean` | `false` | Renders the card unavailable and blocks navigation. |
+| `href` (required) | `string` | - | URL the card navigates to. |
+| `icon` | `ReactNode` | - | Icon rendered beside the label. |
+| `label` (required) | `ReactNode` | - | Visible application label. |
+| `status` | `ReactNode` | - | Status content rendered below the description, such as a health Badge. |
+
 ---
 
 # Badge
@@ -4091,6 +4332,19 @@ export function ChipDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### Chip
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | - | - |
+| `disabled` | `boolean` | `false` | Dims the chip and disables the remove button. |
+| `label` (required) | `ReactNode` | - | Content rendered inside the chip. |
+| `onRemove` | `() => void` | - | When provided, renders a remove button that calls this handler. |
+| `selected` | `boolean` | `false` | Highlights the chip with the primary tint, same as variant="primary". |
+| `variant` | `enum` | `neutral` | Color treatment of the chip. |
+
 ---
 
 # Kbd
@@ -4167,6 +4421,12 @@ export function KbdDemo() {
   )
 }
 ```
+
+## Interface
+
+### Kbd
+
+_This module forwards native element properties._
 
 ---
 
@@ -4303,6 +4563,16 @@ export function ScrollAreaDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### ScrollArea
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `ReactNode` | - | Content rendered inside the scrollable viewport. |
+| `className` | `string` | - | - |
+| `maxHeight` | `string \| number` | - | Caps the viewport height; content beyond it scrolls. |
+
 ---
 
 # Code Block
@@ -4397,6 +4667,16 @@ export function CodeBlockDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### CodeBlock
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `code` (required) | `string` | - | Source text to display. |
+| `language` | `string` | - | Language name shown in the header; also used for the copy feedback. |
+| `showLineNumbers` | `boolean` | `false` | Renders a line-number gutter when true. |
 
 ---
 
@@ -5184,6 +5464,24 @@ export function DrawerDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### Drawer
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `ReactNode` | - | Body content of the drawer. |
+| `className` | `string` | - | - |
+| `closeLabel` | `string` | `Close` | Accessible label for the close button. |
+| `defaultOpen` | `boolean` | - | Initial open state when uncontrolled. |
+| `description` | `ReactNode` | - | Supporting text rendered under the title. |
+| `footer` | `ReactNode` | - | Action area rendered at the bottom of the drawer. |
+| `onOpenChange` | `(open: boolean) => void` | - | Called when the drawer opens or closes. |
+| `open` | `boolean` | - | Controlled open state. |
+| `side` | `enum` | `right` | Edge of the viewport the drawer slides in from. |
+| `title` | `ReactNode` | - | Title rendered at the top; also the accessible name of the drawer. |
+| `width` | `string` | `min(28rem,calc(100vw - 1.5rem))` | Width of the drawer surface. |
+
 ---
 
 # Hover Card
@@ -5274,6 +5572,20 @@ export function HoverCardDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### HoverCard
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `align` | `enum` | `center` | Horizontal alignment of the content relative to the trigger. |
+| `children` (required) | `ReactNode` | - | Content rendered inside the hover card surface. |
+| `className` | `string` | - | - |
+| `closeDelay` | `number` | - | Delay in milliseconds before the card closes after the pointer leaves. |
+| `openDelay` | `number` | - | Delay in milliseconds before the card opens on hover. |
+| `side` | `enum` | `bottom` | Side of the trigger the content opens on. |
+| `trigger` (required) | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | - | Element that opens the card on hover or focus; receives trigger props automatically. |
 
 ---
 
@@ -5471,6 +5783,18 @@ export function CommandDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### Command
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `emptyMessage` | `ReactNode` | `No results` | Message shown when no item matches the query. |
+| `groups` (required) | `CommandGroup[]` | - | Groups of commands rendered in the palette. |
+| `onOpenChange` (required) | `(open: boolean) => void` | - | Called when the palette opens or closes. |
+| `open` (required) | `boolean` | - | Controlled open state. |
+| `placeholder` | `string` | `Type a command…` | Placeholder of the search input. |
 
 ---
 
@@ -6571,6 +6895,22 @@ export function NotificationItemDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### NotificationItem
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `appLabel` (required) | `ReactNode` | - | Label of the source application, supplied sanitized by the caller. |
+| `className` | `string` | - | - |
+| `href` (required) | `string` | - | URL of the source application deep link. |
+| `onArchive` | `() => void` | - | Renders an archive control and calls this when pressed. Never mutates the source event. |
+| `onMute` | `() => void` | - | Renders a mute control and calls this when pressed. Never mutates the source event. |
+| `read` | `boolean` | `false` | Marks the item as read; unread items are emphasized and announce an unread marker. |
+| `severity` | `enum` | `info` | Severity drives the indicator and icon. |
+| `timestamp` (required) | `ReactNode` | - | Human-readable timestamp supplied by the caller. |
+| `title` (required) | `ReactNode` | - | Notification title, supplied sanitized by the caller. |
+
 ---
 
 # Health Indicator
@@ -6652,6 +6992,16 @@ export function HealthIndicatorDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### HealthIndicator
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | - | - |
+| `label` | `ReactNode` | - | Application name rendered beside the status. |
+| `status` (required) | `enum` | - | Current health evidence. Missing evidence must be reported as 'unknown', never inferred as healthy. |
 
 ---
 
@@ -6736,6 +7086,18 @@ export function StepUpNoticeDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### StepUpNotice
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `action` | `ReactNode` | - | Caller-supplied verification control, such as a passkey button. The notice never starts verification itself. |
+| `children` (required) | `ReactNode` | - | Explanation of why fresh verification is required. |
+| `className` | `string` | - | - |
+| `onDismiss` | `() => void` | - | Renders a dismiss control and calls this when pressed. |
+| `title` (required) | `ReactNode` | - | Bold leading text of the notice. |
 
 ---
 
@@ -6848,6 +7210,17 @@ export function BannerDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### Banner
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `title` | `ReactNode` | - | Bold leading text of the banner. |
+| `action` | `ReactNode` | - | Optional action (for example a Button) rendered at the trailing edge of the strip. |
+| `onDismiss` | `() => void` | - | Renders a dismiss button and calls this when it is pressed. |
+| `variant` | `"info" \| "success" \| "warning" \| "danger" \| null` | - | - |
+
 ---
 
 # Progress Circle
@@ -6936,6 +7309,17 @@ export function ProgressCircleDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### ProgressCircle
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `number` | - | Completion percentage between 0 and 100. Omit for an indeterminate spinner. |
+| `size` | `number` | `48` | Diameter of the circle in pixels. |
+| `strokeWidth` | `number` | `5` | Width of the track and fill strokes in pixels. |
+| `label` | `string` | - | Accessible name applied as `aria-label`. |
 
 ---
 
@@ -7049,6 +7433,14 @@ export function TimelineDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### Timeline
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `items` (required) | `TimelineItem[]` | - | Entries to render, in display order. |
 
 ---
 
@@ -7468,6 +7860,22 @@ export function AppSwitcherDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### AppSwitcher
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `align` | `enum` | `end` | Horizontal alignment of the switcher relative to the trigger. |
+| `apps` (required) | `AppSwitcherItem[]` | - | Applications to show. The caller filters by entitlement first; the switcher renders only what it is given. |
+| `className` | `string` | - | - |
+| `homeCurrent` | `boolean` | `false` | Marks the Home destination as the application the person is currently using. |
+| `homeHref` (required) | `string` | - | URL of the explicit Home destination. |
+| `homeLabel` (required) | `ReactNode` | - | Visible label of the Home destination. |
+| `label` | `string` | - | Accessible name for the switcher menu. |
+| `onNavigate` | `(id: string) => void` | - | Called with the application id, or 'home', when a destination is selected. |
+| `trigger` (required) | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | - | Element that opens the switcher; receives trigger props automatically. |
+
 ---
 
 # Account Menu
@@ -7553,6 +7961,20 @@ export function AccountMenuDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### AccountMenu
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `align` | `enum` | `end` | Horizontal alignment of the menu relative to the trigger. |
+| `appSignOut` | `AccountMenuAction` | - | Sign-out that ends only the current application session. |
+| `className` | `string` | - | - |
+| `items` | `MenuItem[]` | `[]` | Additional product-supplied items rendered above the sign-out actions. |
+| `label` | `string` | - | Accessible name for the menu. |
+| `ssoSignOut` | `AccountMenuAction` | - | Sign-out that ends the shared single-sign-on session. |
+| `user` (required) | `AccountMenuUser` | - | Signed-in household identity shown in the trigger and menu header. |
 
 ---
 
@@ -8722,6 +9144,16 @@ export function StepsDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### Steps
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `steps` (required) | `StepItem[]` | - | Steps to render, in order. |
+| `current` (required) | `number` | - | Zero-based index of the current step. Earlier steps render as completed. |
+| `onStepClick` | `(index: number) => void` | - | When provided, completed steps render as buttons and call this with their index. |
+
 ---
 
 # Tree View
@@ -8905,6 +9337,21 @@ export function TreeViewDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### TreeView
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `aria-label` (required) | `string` | - | Accessible name for the tree. |
+| `className` | `string` | - | - |
+| `defaultExpandedIds` | `string[]` | - | Initial expanded item ids when uncontrolled. |
+| `expandedIds` | `string[]` | - | Controlled expanded item ids. |
+| `items` (required) | `TreeViewItem[]` | - | Items rendered at the root of the tree. |
+| `onExpandedChange` | `(expandedIds: string[]) => void` | - | Called with the full list of expanded ids whenever expansion changes. |
+| `onSelect` | `(id: string) => void` | - | Called with the id of the selected item. |
+| `selectedId` | `string` | - | Currently selected item id. |
 
 ---
 
@@ -9501,6 +9948,19 @@ export function PermissionMatrixDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### PermissionMatrix
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `caption` (required) | `string` | - | Accessible caption describing the matrix. |
+| `className` | `string` | - | - |
+| `columns` (required) | `PermissionMatrixColumn[]` | - | Application columns rendered in header order. |
+| `emptyCell` | `ReactNode` | `—` | Content shown when a row has no entry for a column. Defaults to an em dash. |
+| `rows` (required) | `PermissionMatrixRow[]` | - | Rows of people or capabilities. |
+| `rowHeader` | `ReactNode` | `Name` | Accessible name for the row-label column, rendered visually hidden. Defaults to 'Name'. |
+
 ---
 
 # Table
@@ -9965,6 +10425,15 @@ export function DescriptionListDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### DescriptionList
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `items` (required) | `DescriptionListItem[]` | - | Rows to render, in order. |
+| `layout` | `enum` | `stacked` | `stacked` fills the container width; `grid` splits rows into two columns on small screens and up. |
+
 ---
 
 # Data Table
@@ -10146,6 +10615,27 @@ export function DataTableDemo({ exampleIndex = 0 }) {
 }
 ```
 
+## Interface
+
+### DataTable
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `caption` (required) | `string` | - | Accessible caption describing the table, announced to screen readers. |
+| `className` | `string` | - | - |
+| `columns` (required) | `DataTableColumn<Row>[]` | - | Column definitions rendered in header order. |
+| `density` | `enum` | - | Vertical padding of cells. |
+| `empty` | `ReactNode` | - | Content shown when `rows` is empty and the table is not loading. |
+| `getRowKey` (required) | `(row: Row) => string` | - | Returns a stable, unique key for each row. |
+| `loading` | `boolean` | - | Renders skeleton rows in place of data and marks the region busy. |
+| `loadingLabel` | `string` | - | Accessible label announced while skeleton rows are shown. |
+| `onSortChange` | `(sort: DataTableSort) => void` | - | Called with the next sort state when a sortable header is activated. Sorting itself stays caller-owned. |
+| `onSelectionChange` | `(keys: string[]) => void` | - | Called with the full list of selected row keys whenever the selection changes. |
+| `rows` (required) | `Row[]` | - | Data rows rendered in the table body. |
+| `selectable` | `boolean` | - | Adds a selection column with a header checkbox and per-row checkboxes. |
+| `selectedKeys` | `string[] \| Set<string>` | - | Controlled set of selected row keys. |
+| `sort` | `DataTableSort` | - | Controlled sort state; drives the header icons and `aria-sort`. |
+
 ---
 
 # Avatar Group
@@ -10234,6 +10724,16 @@ export function AvatarGroupDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+## Interface
+
+### AvatarGroup
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `names` (required) | `string[]` | - | Names to render as avatars, in order. |
+| `max` | `number` | `4` | Maximum number of avatars shown before collapsing the rest into a count bubble. |
+| `size` | `enum` | `md` | Avatar size. |
 
 ---
 

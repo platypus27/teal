@@ -22,7 +22,7 @@
   --teal-color-surface-bright: rgb(255 255 255);
   --teal-color-tertiary-container: rgb(209 250 229);
   --teal-color-primary: rgb(0 106 108);
-  --teal-color-background: rgb(239 246 244);
+  --teal-color-background: rgb(255 255 255);
   --teal-color-surface-container: rgb(248 252 250);
   --teal-color-tertiary-fixed: rgb(167 243 208);
   --teal-color-surface-dim: rgb(230 240 238);
@@ -59,6 +59,7 @@
   --teal-font-headline: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
   --teal-radius-control: 0.75rem;
   --teal-radius-surface: 0.75rem;
+  --teal-radius-nested: calc(var(--teal-radius-control) - 0.25rem);
   --teal-radius-pill: 9999px;
   --teal-border-subtle: color-mix(in srgb, var(--teal-color-outline-variant) 55%, transparent);
   --teal-border-strong: var(--teal-color-outline);

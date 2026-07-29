@@ -24,7 +24,7 @@ export default {
         sm: '0.375rem',
         DEFAULT: '0.5rem',
         md: '0.625rem',
-        lg: '0.75rem',
+        lg: 'var(--teal-radius-nested)',
         xl: 'var(--teal-radius-control)',
         '2xl': 'var(--teal-radius-surface)',
         '3xl': '1.5rem',

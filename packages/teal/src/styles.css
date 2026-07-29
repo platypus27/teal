@@ -125,7 +125,8 @@
 @keyframes teal-progress-dash {
   0% { stroke-dasharray: 1 100; stroke-dashoffset: 0; }
   50% { stroke-dasharray: 78 100; stroke-dashoffset: -12; }
-  100% { stroke-dasharray: 78 100; stroke-dashoffset: -98; }
+  /* Shrink back to a 1-unit arc before the loop restarts so there is no snap. */
+  100% { stroke-dasharray: 1 100; stroke-dashoffset: -99; }
 }
 
 .teal-dialog-overlay[data-state='open'] {
