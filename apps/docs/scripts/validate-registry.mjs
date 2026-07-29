@@ -12,7 +12,7 @@ function pascalCase(value) {
 }
 
 if (new Set(modules.map((module) => module.id)).size !== modules.length) errors.push('module ids must be unique')
-if (modules.length !== 48) errors.push(`expected 48 module pages, found ${modules.length}`)
+if (modules.length !== 63) errors.push(`expected 63 module pages, found ${modules.length}`)
 
 for (const module of modules) {
   if (module.examples.length < 2) errors.push(`${module.id} needs at least two examples`)
@@ -52,7 +52,7 @@ const intentionallyUndocumented = new Set([
   'useFieldControl',
 ])
 for (const name of exported) {
-  const isDocumentedTypeCompanion = name.endsWith('Props') || /(?:Option|Item|Column|Variant|Input|Action|User|Row|Status)$/.test(name)
+  const isDocumentedTypeCompanion = name.endsWith('Props') || /(?:Option|Item|Column|Variant|Input|Action|User|Row|Status|Group|Tone)$/.test(name)
   if (!documented.has(name) && !intentionallyUndocumented.has(name) && !isDocumentedTypeCompanion && !api.some((entry) => entry.displayName === name)) {
     errors.push(`public export ${name} has no registry representation`)
   }

@@ -593,6 +593,505 @@ export function LinkDemo({ exampleIndex = 0 }) {
 
 ---
 
+# Toggle
+
+A pressed-state button for binary preferences in toolbars and filter rows.
+
+## Usage
+
+```js
+import { Toggle } from '@kryv/teal'
+```
+
+```jsx
+<Toggle aria-label="Bold"><Bold /></Toggle>
+```
+
+## Design guidance
+
+### Use when
+
+A preference flips between two states inside a toolbar or filter row.
+### Avoid when
+
+The choice needs a label with explanation; use Switch or Checkbox.
+### Behavior
+
+aria-pressed reflects the value and the pressed tint follows.
+### Responsive
+
+Keep toggle content icon-sized so rows stay compact.
+
+## Examples
+
+### Pressed state
+
+aria-pressed and data-state reflect the current value; tint follows.
+
+```jsx
+import { useState } from 'react'
+import { Toggle } from '@kryv/teal'
+import { Bold, Italic, List, Underline } from 'lucide-react'
+
+export function ToggleDemo({ exampleIndex = 0 }) {
+  const [formats, setFormats] = useState({ bold: true, italic: false, underline: false })
+  const [filters, setFilters] = useState({ starred: false, archived: false })
+
+  const toggleFormat = (key) => setFormats((current) => ({ ...current, [key]: !current[key] }))
+  const toggleFilter = (key) => setFilters((current) => ({ ...current, [key]: !current[key] }))
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex flex-wrap items-center gap-2">
+        <Toggle size="sm" pressed={filters.starred} onPressedChange={() => toggleFilter('starred')}>
+          Starred
+        </Toggle>
+        <Toggle size="sm" pressed={filters.archived} onPressedChange={() => toggleFilter('archived')}>
+          Archived
+        </Toggle>
+        <Toggle size="sm" disabled>
+          Locked
+        </Toggle>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Toggle aria-label="Bold" pressed={formats.bold} onPressedChange={() => toggleFormat('bold')}>
+        <Bold aria-hidden="true" className="size-4" />
+      </Toggle>
+      <Toggle aria-label="Italic" pressed={formats.italic} onPressedChange={() => toggleFormat('italic')}>
+        <Italic aria-hidden="true" className="size-4" />
+      </Toggle>
+      <Toggle aria-label="Underline" pressed={formats.underline} onPressedChange={() => toggleFormat('underline')}>
+        <Underline aria-hidden="true" className="size-4" />
+      </Toggle>
+      <Toggle aria-label="Bulleted list">
+        <List aria-hidden="true" className="size-4" />
+        List
+      </Toggle>
+    </div>
+  )
+}
+```
+
+### Filter rows
+
+Use toggles in a toolbar for independent on/off preferences.
+
+```jsx
+import { useState } from 'react'
+import { Toggle } from '@kryv/teal'
+import { Bold, Italic, List, Underline } from 'lucide-react'
+
+export function ToggleDemo({ exampleIndex = 0 }) {
+  const [formats, setFormats] = useState({ bold: true, italic: false, underline: false })
+  const [filters, setFilters] = useState({ starred: false, archived: false })
+
+  const toggleFormat = (key) => setFormats((current) => ({ ...current, [key]: !current[key] }))
+  const toggleFilter = (key) => setFilters((current) => ({ ...current, [key]: !current[key] }))
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex flex-wrap items-center gap-2">
+        <Toggle size="sm" pressed={filters.starred} onPressedChange={() => toggleFilter('starred')}>
+          Starred
+        </Toggle>
+        <Toggle size="sm" pressed={filters.archived} onPressedChange={() => toggleFilter('archived')}>
+          Archived
+        </Toggle>
+        <Toggle size="sm" disabled>
+          Locked
+        </Toggle>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Toggle aria-label="Bold" pressed={formats.bold} onPressedChange={() => toggleFormat('bold')}>
+        <Bold aria-hidden="true" className="size-4" />
+      </Toggle>
+      <Toggle aria-label="Italic" pressed={formats.italic} onPressedChange={() => toggleFormat('italic')}>
+        <Italic aria-hidden="true" className="size-4" />
+      </Toggle>
+      <Toggle aria-label="Underline" pressed={formats.underline} onPressedChange={() => toggleFormat('underline')}>
+        <Underline aria-hidden="true" className="size-4" />
+      </Toggle>
+      <Toggle aria-label="Bulleted list">
+        <List aria-hidden="true" className="size-4" />
+        List
+      </Toggle>
+    </div>
+  )
+}
+```
+
+---
+
+# Toolbar
+
+A horizontal action bar with grouped controls and hairline separators.
+
+## Usage
+
+```js
+import { Toolbar, ToolbarGroup, ToolbarSeparator, IconButton } from '@kryv/teal'
+```
+
+```jsx
+<Toolbar>
+  <ToolbarGroup>
+    <IconButton label="Undo"><Undo2 /></IconButton>
+  </ToolbarGroup>
+  <ToolbarSeparator />
+  <ToolbarGroup>
+    <IconButton label="Bold"><Bold /></IconButton>
+  </ToolbarGroup>
+</Toolbar>
+```
+
+## Design guidance
+
+### Use when
+
+Several small controls act on one editor or view.
+### Avoid when
+
+The actions are unrelated page actions; use a header action area.
+### Behavior
+
+role="toolbar" groups controls; separators are decorative hairlines.
+### Responsive
+
+Let groups wrap or scroll horizontally on narrow screens.
+
+## Examples
+
+### Editor actions
+
+role="toolbar" with groups keeps related controls navigable.
+
+```jsx
+import { useState } from 'react'
+import { IconButton, Toolbar, ToolbarGroup, ToolbarSeparator } from '@kryv/teal'
+import { AlignCenter, AlignLeft, AlignRight, Bold, Italic, Link2, List, Redo2, Underline, Undo2 } from 'lucide-react'
+
+const alignments = [
+  { key: 'left', label: 'Align left', icon: AlignLeft },
+  { key: 'center', label: 'Align center', icon: AlignCenter },
+  { key: 'right', label: 'Align right', icon: AlignRight },
+]
+
+export function ToolbarDemo({ exampleIndex = 0 }) {
+  const [alignment, setAlignment] = useState('left')
+  const [active, setActive] = useState({ bold: true, italic: false, underline: false })
+
+  const toggleFormat = (key) => setActive((current) => ({ ...current, [key]: !current[key] }))
+  const pressedClasses = 'teal-u-bg-primary/10 teal-u-text-primary'
+
+  if (exampleIndex === 1) {
+    return (
+      <Toolbar aria-label="Text formatting">
+        <ToolbarGroup>
+          <IconButton
+            size="sm"
+            label="Bold"
+            aria-pressed={active.bold}
+            className={active.bold ? pressedClasses : undefined}
+            onClick={() => toggleFormat('bold')}
+          >
+            <Bold aria-hidden="true" />
+          </IconButton>
+          <IconButton
+            size="sm"
+            label="Italic"
+            aria-pressed={active.italic}
+            className={active.italic ? pressedClasses : undefined}
+            onClick={() => toggleFormat('italic')}
+          >
+            <Italic aria-hidden="true" />
+          </IconButton>
+          <IconButton
+            size="sm"
+            label="Underline"
+            aria-pressed={active.underline}
+            className={active.underline ? pressedClasses : undefined}
+            onClick={() => toggleFormat('underline')}
+          >
+            <Underline aria-hidden="true" />
+          </IconButton>
+        </ToolbarGroup>
+        <ToolbarSeparator />
+        <ToolbarGroup>
+          <IconButton size="sm" label="Insert link">
+            <Link2 aria-hidden="true" />
+          </IconButton>
+          <IconButton size="sm" label="Bulleted list">
+            <List aria-hidden="true" />
+          </IconButton>
+        </ToolbarGroup>
+      </Toolbar>
+    )
+  }
+
+  return (
+    <Toolbar aria-label="Editor actions">
+      <ToolbarGroup>
+        <IconButton size="sm" label="Undo">
+          <Undo2 aria-hidden="true" />
+        </IconButton>
+        <IconButton size="sm" label="Redo" disabled>
+          <Redo2 aria-hidden="true" />
+        </IconButton>
+      </ToolbarGroup>
+      <ToolbarSeparator />
+      <ToolbarGroup>
+        {alignments.map(({ key, label, icon: Icon }) => (
+          <IconButton
+            key={key}
+            size="sm"
+            label={label}
+            aria-pressed={alignment === key}
+            className={alignment === key ? pressedClasses : undefined}
+            onClick={() => setAlignment(key)}
+          >
+            <Icon aria-hidden="true" />
+          </IconButton>
+        ))}
+      </ToolbarGroup>
+    </Toolbar>
+  )
+}
+```
+
+### Formatting groups
+
+Group related controls and separate them with hairlines.
+
+```jsx
+import { useState } from 'react'
+import { IconButton, Toolbar, ToolbarGroup, ToolbarSeparator } from '@kryv/teal'
+import { AlignCenter, AlignLeft, AlignRight, Bold, Italic, Link2, List, Redo2, Underline, Undo2 } from 'lucide-react'
+
+const alignments = [
+  { key: 'left', label: 'Align left', icon: AlignLeft },
+  { key: 'center', label: 'Align center', icon: AlignCenter },
+  { key: 'right', label: 'Align right', icon: AlignRight },
+]
+
+export function ToolbarDemo({ exampleIndex = 0 }) {
+  const [alignment, setAlignment] = useState('left')
+  const [active, setActive] = useState({ bold: true, italic: false, underline: false })
+
+  const toggleFormat = (key) => setActive((current) => ({ ...current, [key]: !current[key] }))
+  const pressedClasses = 'teal-u-bg-primary/10 teal-u-text-primary'
+
+  if (exampleIndex === 1) {
+    return (
+      <Toolbar aria-label="Text formatting">
+        <ToolbarGroup>
+          <IconButton
+            size="sm"
+            label="Bold"
+            aria-pressed={active.bold}
+            className={active.bold ? pressedClasses : undefined}
+            onClick={() => toggleFormat('bold')}
+          >
+            <Bold aria-hidden="true" />
+          </IconButton>
+          <IconButton
+            size="sm"
+            label="Italic"
+            aria-pressed={active.italic}
+            className={active.italic ? pressedClasses : undefined}
+            onClick={() => toggleFormat('italic')}
+          >
+            <Italic aria-hidden="true" />
+          </IconButton>
+          <IconButton
+            size="sm"
+            label="Underline"
+            aria-pressed={active.underline}
+            className={active.underline ? pressedClasses : undefined}
+            onClick={() => toggleFormat('underline')}
+          >
+            <Underline aria-hidden="true" />
+          </IconButton>
+        </ToolbarGroup>
+        <ToolbarSeparator />
+        <ToolbarGroup>
+          <IconButton size="sm" label="Insert link">
+            <Link2 aria-hidden="true" />
+          </IconButton>
+          <IconButton size="sm" label="Bulleted list">
+            <List aria-hidden="true" />
+          </IconButton>
+        </ToolbarGroup>
+      </Toolbar>
+    )
+  }
+
+  return (
+    <Toolbar aria-label="Editor actions">
+      <ToolbarGroup>
+        <IconButton size="sm" label="Undo">
+          <Undo2 aria-hidden="true" />
+        </IconButton>
+        <IconButton size="sm" label="Redo" disabled>
+          <Redo2 aria-hidden="true" />
+        </IconButton>
+      </ToolbarGroup>
+      <ToolbarSeparator />
+      <ToolbarGroup>
+        {alignments.map(({ key, label, icon: Icon }) => (
+          <IconButton
+            key={key}
+            size="sm"
+            label={label}
+            aria-pressed={alignment === key}
+            className={alignment === key ? pressedClasses : undefined}
+            onClick={() => setAlignment(key)}
+          >
+            <Icon aria-hidden="true" />
+          </IconButton>
+        ))}
+      </ToolbarGroup>
+    </Toolbar>
+  )
+}
+```
+
+---
+
+# Split Button
+
+A primary action joined to a menu of related alternatives.
+
+## Usage
+
+```js
+import { SplitButton } from '@kryv/teal'
+```
+
+```jsx
+<SplitButton
+  label="Deploy"
+  onClick={() => undefined}
+  items={[{ id: 'staging', label: 'Deploy to staging', onSelect: () => undefined }]}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+One default action has a few close alternatives.
+### Avoid when
+
+The actions are unrelated; use separate buttons or a plain Menu.
+### Behavior
+
+The main button fires the default; the chevron owns the menu.
+### Responsive
+
+Keep the label short so the joined control stays one line.
+
+## Examples
+
+### Default plus alternatives
+
+The main action fires directly; the chevron opens the related menu.
+
+```jsx
+import { useState } from 'react'
+import { SplitButton } from '@kryv/teal'
+
+export function SplitButtonDemo({ exampleIndex = 0 }) {
+  const [message, setMessage] = useState('')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex flex-col items-start gap-3">
+        <SplitButton
+          label="Save draft"
+          variant="secondary"
+          onClick={() => setMessage('Draft saved')}
+          items={[
+            { id: 'save-exit', label: 'Save and exit', onSelect: () => setMessage('Saved and exited') },
+            { id: 'discard', label: 'Discard draft', variant: 'danger', separatorBefore: true, onSelect: () => setMessage('Draft discarded') },
+          ]}
+        />
+        {message ? <p className="text-sm text-on-surface-variant">{message}</p> : null}
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col items-start gap-3">
+      <SplitButton
+        label="Deploy"
+        onClick={() => setMessage('Deploying to production')}
+        items={[
+          { id: 'staging', label: 'Deploy to staging', onSelect: () => setMessage('Deploying to staging') },
+          { id: 'preview', label: 'Create preview deployment', onSelect: () => setMessage('Creating preview deployment') },
+          { id: 'schedule', label: 'Schedule deployment', separatorBefore: true, onSelect: () => setMessage('Deployment scheduled') },
+        ]}
+      />
+      {message ? <p className="text-sm text-on-surface-variant">{message}</p> : null}
+    </div>
+  )
+}
+```
+
+### Secondary and danger variants
+
+The menu can carry a danger item behind the separator.
+
+```jsx
+import { useState } from 'react'
+import { SplitButton } from '@kryv/teal'
+
+export function SplitButtonDemo({ exampleIndex = 0 }) {
+  const [message, setMessage] = useState('')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex flex-col items-start gap-3">
+        <SplitButton
+          label="Save draft"
+          variant="secondary"
+          onClick={() => setMessage('Draft saved')}
+          items={[
+            { id: 'save-exit', label: 'Save and exit', onSelect: () => setMessage('Saved and exited') },
+            { id: 'discard', label: 'Discard draft', variant: 'danger', separatorBefore: true, onSelect: () => setMessage('Draft discarded') },
+          ]}
+        />
+        {message ? <p className="text-sm text-on-surface-variant">{message}</p> : null}
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col items-start gap-3">
+      <SplitButton
+        label="Deploy"
+        onClick={() => setMessage('Deploying to production')}
+        items={[
+          { id: 'staging', label: 'Deploy to staging', onSelect: () => setMessage('Deploying to staging') },
+          { id: 'preview', label: 'Create preview deployment', onSelect: () => setMessage('Creating preview deployment') },
+          { id: 'schedule', label: 'Schedule deployment', separatorBefore: true, onSelect: () => setMessage('Deployment scheduled') },
+        ]}
+      />
+      {message ? <p className="text-sm text-on-surface-variant">{message}</p> : null}
+    </div>
+  )
+}
+```
+
+---
+
 # Field
 
 A deep form seam that connects labels, descriptions, errors, and required state.
@@ -1690,6 +2189,604 @@ export function ComboboxDemo({ exampleIndex = 0 }) {
 
 ---
 
+# Multi Select
+
+A filterable picker for several values, shown as removable pills.
+
+## Usage
+
+```js
+import { MultiSelect } from '@kryv/teal'
+```
+
+```jsx
+<MultiSelect
+  label="Project roles"
+  options={[
+    { value: 'admin', label: 'Administrator' },
+    { value: 'editor', label: 'Editor' },
+    { value: 'viewer', label: 'Viewer' },
+  ]}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+Users pick several values from a filterable list.
+### Avoid when
+
+Only one value is allowed; use Select or Combobox.
+### Behavior
+
+Options toggle without closing and pills remove single values.
+### Responsive
+
+Pills wrap inside the control as values accumulate.
+
+## Examples
+
+### Multiple values
+
+Options toggle without closing; pills remove individual values.
+
+```jsx
+import { useState } from 'react'
+import { MultiSelect } from '@kryv/teal'
+
+export function MultiSelectDemo({ exampleIndex = 0 }) {
+  const [roles, setRoles] = useState(['editor'])
+  const [labels, setLabels] = useState([])
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-xs">
+        <MultiSelect
+          label="Filter by label"
+          description="Cards matching any selected label are shown"
+          placeholder="Select labels…"
+          value={labels}
+          onValueChange={setLabels}
+          options={[
+            { value: 'bug', label: 'Bug' },
+            { value: 'design', label: 'Design' },
+            { value: 'docs', label: 'Documentation' },
+            { value: 'infra', label: 'Infrastructure', disabled: true },
+            { value: 'research', label: 'Research' },
+          ]}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-xs">
+      <MultiSelect
+        label="Project roles"
+        placeholder="Select roles…"
+        value={roles}
+        onValueChange={setRoles}
+        options={[
+          { value: 'admin', label: 'Administrator' },
+          { value: 'editor', label: 'Editor' },
+          { value: 'reviewer', label: 'Reviewer' },
+          { value: 'viewer', label: 'Viewer' },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+### Disabled options
+
+Individual options can be disabled while the rest stay selectable.
+
+```jsx
+import { useState } from 'react'
+import { MultiSelect } from '@kryv/teal'
+
+export function MultiSelectDemo({ exampleIndex = 0 }) {
+  const [roles, setRoles] = useState(['editor'])
+  const [labels, setLabels] = useState([])
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-xs">
+        <MultiSelect
+          label="Filter by label"
+          description="Cards matching any selected label are shown"
+          placeholder="Select labels…"
+          value={labels}
+          onValueChange={setLabels}
+          options={[
+            { value: 'bug', label: 'Bug' },
+            { value: 'design', label: 'Design' },
+            { value: 'docs', label: 'Documentation' },
+            { value: 'infra', label: 'Infrastructure', disabled: true },
+            { value: 'research', label: 'Research' },
+          ]}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-xs">
+      <MultiSelect
+        label="Project roles"
+        placeholder="Select roles…"
+        value={roles}
+        onValueChange={setRoles}
+        options={[
+          { value: 'admin', label: 'Administrator' },
+          { value: 'editor', label: 'Editor' },
+          { value: 'reviewer', label: 'Reviewer' },
+          { value: 'viewer', label: 'Viewer' },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+---
+
+# Date Picker
+
+A single-date field with a keyboard-navigable calendar popover.
+
+## Usage
+
+```js
+import { DatePicker } from '@kryv/teal'
+```
+
+```jsx
+<DatePicker label="Start date" onValueChange={(date) => undefined} />
+```
+
+## Design guidance
+
+### Use when
+
+Users pick a single calendar date.
+### Avoid when
+
+The value is free-form or a range; use Input or a dedicated range flow.
+### Behavior
+
+The calendar supports full keyboard navigation and min/max bounds.
+### Responsive
+
+The popover collision-handles; the field keeps its layout width.
+
+## Examples
+
+### Calendar selection
+
+Arrows move between days, Enter selects, min and max bound the range.
+
+```jsx
+import { useState } from 'react'
+import { DatePicker } from '@kryv/teal'
+
+export function DatePickerDemo({ exampleIndex = 0 }) {
+  const [dueDate, setDueDate] = useState(/** @type {Date | undefined} */ (undefined))
+  const [sprintStart, setSprintStart] = useState(new Date())
+
+  if (exampleIndex === 1) {
+    const quarterStart = new Date()
+    quarterStart.setDate(quarterStart.getDate() - 14)
+    const quarterEnd = new Date()
+    quarterEnd.setDate(quarterEnd.getDate() + 60)
+    return (
+      <div className="w-full max-w-xs">
+        <DatePicker
+          label="Sprint start"
+          description="Limited to the current planning window"
+          value={sprintStart}
+          onValueChange={setSprintStart}
+          minDate={quarterStart}
+          maxDate={quarterEnd}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-xs">
+      <DatePicker
+        label="Due date"
+        description="Used for the project milestone"
+        value={dueDate}
+        onValueChange={setDueDate}
+      />
+    </div>
+  )
+}
+```
+
+### Bounded dates
+
+Use minDate and maxDate for booking-style windows.
+
+```jsx
+import { useState } from 'react'
+import { DatePicker } from '@kryv/teal'
+
+export function DatePickerDemo({ exampleIndex = 0 }) {
+  const [dueDate, setDueDate] = useState(/** @type {Date | undefined} */ (undefined))
+  const [sprintStart, setSprintStart] = useState(new Date())
+
+  if (exampleIndex === 1) {
+    const quarterStart = new Date()
+    quarterStart.setDate(quarterStart.getDate() - 14)
+    const quarterEnd = new Date()
+    quarterEnd.setDate(quarterEnd.getDate() + 60)
+    return (
+      <div className="w-full max-w-xs">
+        <DatePicker
+          label="Sprint start"
+          description="Limited to the current planning window"
+          value={sprintStart}
+          onValueChange={setSprintStart}
+          minDate={quarterStart}
+          maxDate={quarterEnd}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-xs">
+      <DatePicker
+        label="Due date"
+        description="Used for the project milestone"
+        value={dueDate}
+        onValueChange={setDueDate}
+      />
+    </div>
+  )
+}
+```
+
+---
+
+# Number Input
+
+A numeric field with stepper buttons and min/max clamping.
+
+## Usage
+
+```js
+import { NumberInput } from '@kryv/teal'
+```
+
+```jsx
+<NumberInput label="Seats" defaultValue={4} min={1} max={12} />
+```
+
+## Design guidance
+
+### Use when
+
+A numeric value benefits from quick stepping.
+### Avoid when
+
+The value is an identifier, not a quantity; use Input.
+### Behavior
+
+Steppers and blur clamp to min/max; empty means undefined.
+### Responsive
+
+The field fills its container; constrain it in the form layout.
+
+## Examples
+
+### Steppers and bounds
+
+Steppers disable at the bounds; typing re-clamps on blur.
+
+```jsx
+import { useState } from 'react'
+import { NumberInput } from '@kryv/teal'
+
+export function NumberInputDemo({ exampleIndex = 0 }) {
+  const [teamSize, setTeamSize] = useState(4)
+  const [velocity, setVelocity] = useState(20)
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-xs">
+        <NumberInput
+          label="Sprint velocity"
+          description="Story points, in steps of 5 (0–100)"
+          value={velocity}
+          onValueChange={setVelocity}
+          min={0}
+          max={100}
+          step={5}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-xs">
+      <NumberInput
+        label="Team size"
+        description="How many people join this workspace"
+        value={teamSize}
+        onValueChange={setTeamSize}
+        min={1}
+        max={20}
+      />
+    </div>
+  )
+}
+```
+
+### Custom steps
+
+Set step for increments that match the domain, like 0.5 or 10.
+
+```jsx
+import { useState } from 'react'
+import { NumberInput } from '@kryv/teal'
+
+export function NumberInputDemo({ exampleIndex = 0 }) {
+  const [teamSize, setTeamSize] = useState(4)
+  const [velocity, setVelocity] = useState(20)
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-xs">
+        <NumberInput
+          label="Sprint velocity"
+          description="Story points, in steps of 5 (0–100)"
+          value={velocity}
+          onValueChange={setVelocity}
+          min={0}
+          max={100}
+          step={5}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-xs">
+      <NumberInput
+        label="Team size"
+        description="How many people join this workspace"
+        value={teamSize}
+        onValueChange={setTeamSize}
+        min={1}
+        max={20}
+      />
+    </div>
+  )
+}
+```
+
+---
+
+# Password Input
+
+A secret field with an accessible visibility toggle.
+
+## Usage
+
+```js
+import { PasswordInput } from '@kryv/teal'
+```
+
+```jsx
+<PasswordInput label="Password" />
+```
+
+## Design guidance
+
+### Use when
+
+The user enters a secret they may want to verify visually.
+### Avoid when
+
+The content is not sensitive; use Input or SearchInput.
+### Behavior
+
+The visibility toggle reports state through aria-pressed.
+### Responsive
+
+The toggle stays pinned inside the field at any width.
+
+## Examples
+
+### Visibility toggle
+
+The eye button exposes its state through aria-pressed.
+
+```jsx
+import { useState } from 'react'
+import { PasswordInput } from '@kryv/teal'
+
+export function PasswordInputDemo({ exampleIndex = 0 }) {
+  const [password, setPassword] = useState('')
+  const [currentPassword, setCurrentPassword] = useState('')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-xs">
+        <PasswordInput
+          label="Current password"
+          description="Required to change workspace security settings"
+          autoComplete="current-password"
+          value={currentPassword}
+          onValueChange={setCurrentPassword}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-xs">
+      <PasswordInput
+        label="Password"
+        description="Use at least 12 characters"
+        autoComplete="new-password"
+        value={password}
+        onValueChange={setPassword}
+      />
+    </div>
+  )
+}
+```
+
+### Current password
+
+Pair with autocomplete="current-password" for sign-in forms.
+
+```jsx
+import { useState } from 'react'
+import { PasswordInput } from '@kryv/teal'
+
+export function PasswordInputDemo({ exampleIndex = 0 }) {
+  const [password, setPassword] = useState('')
+  const [currentPassword, setCurrentPassword] = useState('')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-xs">
+        <PasswordInput
+          label="Current password"
+          description="Required to change workspace security settings"
+          autoComplete="current-password"
+          value={currentPassword}
+          onValueChange={setCurrentPassword}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-xs">
+      <PasswordInput
+        label="Password"
+        description="Use at least 12 characters"
+        autoComplete="new-password"
+        value={password}
+        onValueChange={setPassword}
+      />
+    </div>
+  )
+}
+```
+
+---
+
+# File Upload
+
+A drag-and-drop zone with a browse action and a removable file list.
+
+## Usage
+
+```js
+import { FileUpload } from '@kryv/teal'
+```
+
+```jsx
+<FileUpload label="Attachments" multiple onFilesAdded={(files) => undefined} />
+```
+
+## Design guidance
+
+### Use when
+
+Users attach files to a form.
+### Avoid when
+
+A single URL or text reference suffices; use Input.
+### Behavior
+
+Drag-over highlights the zone; the list mirrors the caller-owned value.
+### Responsive
+
+The zone fills its container and the file list wraps below.
+
+## Examples
+
+### Drop or browse
+
+Drag-over highlights the zone; files list with sizes and remove actions.
+
+```jsx
+import { useState } from 'react'
+import { FileUpload } from '@kryv/teal'
+
+export function FileUploadDemo({ exampleIndex = 0 }) {
+  const [files, setFiles] = useState([{ name: 'roadmap-q3.pdf', size: 482_304 }])
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-md">
+        <FileUpload
+          label="Project attachments"
+          description="Design docs, spreadsheets, or archives"
+          multiple
+          value={files}
+          onValueChange={setFiles}
+          onFilesAdded={(added) => console.log('Added', added.map((file) => file.name))}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-md">
+      <FileUpload label="Profile photo" description="PNG or JPG, up to 5 MB" accept="image/*" />
+    </div>
+  )
+}
+```
+
+### Accepted types
+
+Constrain with accept when only certain file types are valid.
+
+```jsx
+import { useState } from 'react'
+import { FileUpload } from '@kryv/teal'
+
+export function FileUploadDemo({ exampleIndex = 0 }) {
+  const [files, setFiles] = useState([{ name: 'roadmap-q3.pdf', size: 482_304 }])
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-md">
+        <FileUpload
+          label="Project attachments"
+          description="Design docs, spreadsheets, or archives"
+          multiple
+          value={files}
+          onValueChange={setFiles}
+          onFilesAdded={(added) => console.log('Added', added.map((file) => file.name))}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-md">
+      <FileUpload label="Profile photo" description="PNG or JPG, up to 5 MB" accept="image/*" />
+    </div>
+  )
+}
+```
+
+---
+
 # Card
 
 A structural surface for related content without ambiguous interactive behavior.
@@ -2445,6 +3542,101 @@ export function ScrollAreaDemo({ exampleIndex = 0 }) {
         ))}
       </ul>
     </ScrollArea>
+  )
+}
+```
+
+---
+
+# Code Block
+
+A code panel with a language label, optional line numbers, and copy-to-clipboard.
+
+## Usage
+
+```js
+import { CodeBlock } from '@kryv/teal'
+```
+
+```jsx
+<CodeBlock language="bash" code="npm install @kryv/teal" />
+```
+
+## Design guidance
+
+### Use when
+
+Code or commands should be readable and copyable.
+### Avoid when
+
+A single identifier in prose; use inline code styling.
+### Behavior
+
+The copy action confirms with an icon swap and announces via its label.
+### Responsive
+
+Long lines scroll horizontally instead of wrapping.
+
+## Examples
+
+### Copy affordance
+
+The copy button confirms with a check icon for two seconds.
+
+```jsx
+import { CodeBlock } from '@kryv/teal'
+
+export function CodeBlockDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-lg">
+        <CodeBlock
+          language="tsx"
+          showLineNumbers
+          code={`import { Button } from '@kryv/teal'\n\nexport function SaveAction() {\n  return <Button variant="primary">Save changes</Button>\n}`}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-lg">
+      <CodeBlock
+        language="bash"
+        code={`npm install @kryv/teal\nnpm run dev`}
+      />
+    </div>
+  )
+}
+```
+
+### Line numbers
+
+Enable line numbers for walkthroughs that reference specific lines.
+
+```jsx
+import { CodeBlock } from '@kryv/teal'
+
+export function CodeBlockDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-lg">
+        <CodeBlock
+          language="tsx"
+          showLineNumbers
+          code={`import { Button } from '@kryv/teal'\n\nexport function SaveAction() {\n  return <Button variant="primary">Save changes</Button>\n}`}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-lg">
+      <CodeBlock
+        language="bash"
+        code={`npm install @kryv/teal\nnpm run dev`}
+      />
+    </div>
   )
 }
 ```
@@ -3328,6 +4520,203 @@ export function HoverCardDemo({ exampleIndex = 0 }) {
 
 ---
 
+# Command
+
+A command palette dialog with grouped, filterable actions and keyboard navigation.
+
+## Usage
+
+```js
+import { Command, Button } from '@kryv/teal'
+```
+
+```jsx
+<Command
+  open={open}
+  onOpenChange={setOpen}
+  groups={[
+    { label: 'Projects', items: [{ id: 'orion', label: 'Open Orion', onSelect: () => undefined }] },
+  ]}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+Power users need fast keyboard access to many actions.
+### Avoid when
+
+There are few actions; use visible buttons or a Menu.
+### Behavior
+
+Filtering, highlight, and selection reset on every open.
+### Responsive
+
+The panel caps at viewport width with its own internal scroll.
+
+## Examples
+
+### Palette
+
+Arrows cycle filtered items, Enter runs the action, state resets on open.
+
+```jsx
+import { useState } from 'react'
+import { Button, Command } from '@kryv/teal'
+import { FilePlus2, FolderPen, Rocket, Settings, Trash2, UserPlus } from 'lucide-react'
+
+export function CommandDemo({ exampleIndex = 0 }) {
+  const [open, setOpen] = useState(false)
+  const [lastAction, setLastAction] = useState('')
+
+  function run(label) {
+    setLastAction(label)
+  }
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex flex-col items-start gap-3">
+        <Button variant="secondary" onClick={() => setOpen(true)}>
+          Open admin commands
+        </Button>
+        {lastAction ? <p className="text-sm text-on-surface-variant">Last action: {lastAction}</p> : null}
+        <Command
+          open={open}
+          onOpenChange={setOpen}
+          placeholder="Search admin commands…"
+          emptyMessage="No admin commands match"
+          groups={[
+            {
+              label: 'Workspace',
+              items: [
+                { id: 'invite', label: 'Invite member', hint: '⌘I', icon: <UserPlus />, onSelect: () => run('Invite member') },
+                { id: 'settings', label: 'Workspace settings', icon: <Settings />, onSelect: () => run('Workspace settings') },
+              ],
+            },
+            {
+              label: 'Danger zone',
+              items: [
+                { id: 'delete', label: 'Delete workspace', icon: <Trash2 />, onSelect: () => run('Delete workspace') },
+              ],
+            },
+          ]}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col items-start gap-3">
+      <Button onClick={() => setOpen(true)}>Open command palette</Button>
+      {lastAction ? <p className="text-sm text-on-surface-variant">Last action: {lastAction}</p> : null}
+      <Command
+        open={open}
+        onOpenChange={setOpen}
+        groups={[
+          {
+            label: 'Project',
+            items: [
+              { id: 'new', label: 'New project', hint: '⌘N', icon: <FilePlus2 />, onSelect: () => run('New project') },
+              { id: 'rename', label: 'Rename project', icon: <FolderPen />, onSelect: () => run('Rename project') },
+              { id: 'deploy', label: 'Deploy to production', hint: '⌘D', icon: <Rocket />, onSelect: () => run('Deploy to production') },
+            ],
+          },
+          {
+            label: 'Workspace',
+            items: [
+              { id: 'invite', label: 'Invite member', hint: '⌘I', icon: <UserPlus />, onSelect: () => run('Invite member') },
+              { id: 'settings', label: 'Workspace settings', icon: <Settings />, onSelect: () => run('Workspace settings') },
+            ],
+          },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+### Keyboard first
+
+Bind a global shortcut to open the palette; keep item hints scannable.
+
+```jsx
+import { useState } from 'react'
+import { Button, Command } from '@kryv/teal'
+import { FilePlus2, FolderPen, Rocket, Settings, Trash2, UserPlus } from 'lucide-react'
+
+export function CommandDemo({ exampleIndex = 0 }) {
+  const [open, setOpen] = useState(false)
+  const [lastAction, setLastAction] = useState('')
+
+  function run(label) {
+    setLastAction(label)
+  }
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex flex-col items-start gap-3">
+        <Button variant="secondary" onClick={() => setOpen(true)}>
+          Open admin commands
+        </Button>
+        {lastAction ? <p className="text-sm text-on-surface-variant">Last action: {lastAction}</p> : null}
+        <Command
+          open={open}
+          onOpenChange={setOpen}
+          placeholder="Search admin commands…"
+          emptyMessage="No admin commands match"
+          groups={[
+            {
+              label: 'Workspace',
+              items: [
+                { id: 'invite', label: 'Invite member', hint: '⌘I', icon: <UserPlus />, onSelect: () => run('Invite member') },
+                { id: 'settings', label: 'Workspace settings', icon: <Settings />, onSelect: () => run('Workspace settings') },
+              ],
+            },
+            {
+              label: 'Danger zone',
+              items: [
+                { id: 'delete', label: 'Delete workspace', icon: <Trash2 />, onSelect: () => run('Delete workspace') },
+              ],
+            },
+          ]}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col items-start gap-3">
+      <Button onClick={() => setOpen(true)}>Open command palette</Button>
+      {lastAction ? <p className="text-sm text-on-surface-variant">Last action: {lastAction}</p> : null}
+      <Command
+        open={open}
+        onOpenChange={setOpen}
+        groups={[
+          {
+            label: 'Project',
+            items: [
+              { id: 'new', label: 'New project', hint: '⌘N', icon: <FilePlus2 />, onSelect: () => run('New project') },
+              { id: 'rename', label: 'Rename project', icon: <FolderPen />, onSelect: () => run('Rename project') },
+              { id: 'deploy', label: 'Deploy to production', hint: '⌘D', icon: <Rocket />, onSelect: () => run('Deploy to production') },
+            ],
+          },
+          {
+            label: 'Workspace',
+            items: [
+              { id: 'invite', label: 'Invite member', hint: '⌘I', icon: <UserPlus />, onSelect: () => run('Invite member') },
+              { id: 'settings', label: 'Workspace settings', icon: <Settings />, onSelect: () => run('Workspace settings') },
+            ],
+          },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+---
+
 # Toast
 
 Imperative, announced feedback with semantic variants, optional actions, and dismissal.
@@ -4139,6 +5528,208 @@ export function BannerDemo({ exampleIndex = 0 }) {
       <Banner variant="danger" title="Storage limit reached" onDismiss={() => undefined}>
         New uploads are paused until you free up space or upgrade the plan.
       </Banner>
+    </div>
+  )
+}
+```
+
+---
+
+# Progress Circle
+
+A radial progress indicator with determinate and indeterminate modes.
+
+## Usage
+
+```js
+import { ProgressCircle } from '@kryv/teal'
+```
+
+```jsx
+<ProgressCircle value={64} label="Import progress" />
+```
+
+## Design guidance
+
+### Use when
+
+Progress needs a compact radial treatment.
+### Avoid when
+
+A precise value matters in a table; use Progress.
+### Behavior
+
+Determinate mode exposes aria-valuenow; omit value for indeterminate.
+### Responsive
+
+Set an explicit size per context instead of scaling.
+
+## Examples
+
+### Radial progress
+
+role="progressbar" carries the value; omit value for a spinning indeterminate arc.
+
+```jsx
+import { ProgressCircle } from '@kryv/teal'
+
+export function ProgressCircleDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-6">
+        <ProgressCircle size={72} strokeWidth={7} value={82} label="Storage used" />
+        <ProgressCircle size={72} strokeWidth={7} label="Syncing files" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-6">
+      <ProgressCircle value={25} label="Quarter progress" />
+      <ProgressCircle value={64} label="Upload progress" />
+      <ProgressCircle value={100} label="Backup complete" />
+      <ProgressCircle label="Loading reports" />
+    </div>
+  )
+}
+```
+
+### Indeterminate work
+
+Omit value while progress cannot be measured.
+
+```jsx
+import { ProgressCircle } from '@kryv/teal'
+
+export function ProgressCircleDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-6">
+        <ProgressCircle size={72} strokeWidth={7} value={82} label="Storage used" />
+        <ProgressCircle size={72} strokeWidth={7} label="Syncing files" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-6">
+      <ProgressCircle value={25} label="Quarter progress" />
+      <ProgressCircle value={64} label="Upload progress" />
+      <ProgressCircle value={100} label="Backup complete" />
+      <ProgressCircle label="Loading reports" />
+    </div>
+  )
+}
+```
+
+---
+
+# Timeline
+
+A vertical activity feed with tone dots, connectors, and timestamps.
+
+## Usage
+
+```js
+import { Timeline } from '@kryv/teal'
+```
+
+```jsx
+<Timeline
+  items={[
+    { id: '1', title: 'Deploy finished', timestamp: '2 min ago', tone: 'success' },
+  ]}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+Events form a chronological feed.
+### Avoid when
+
+Items are peers without time order; use a plain list.
+### Behavior
+
+Tone dots carry semantics; connectors skip the last item.
+### Responsive
+
+Content wraps while the rail stays fixed width.
+
+## Examples
+
+### Activity feed
+
+Tone dots mark event semantics; connectors link the sequence.
+
+```jsx
+import { Timeline } from '@kryv/teal'
+
+export function TimelineDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-sm">
+        <Timeline
+          items={[
+            { id: 'queued', title: 'Deploy queued', description: 'Release 2.4.0 · web-app', timestamp: '09:41', tone: 'neutral' },
+            { id: 'building', title: 'Build completed', description: '412 modules in 3m 12s', timestamp: '09:46', tone: 'primary' },
+            { id: 'live', title: 'Release is live', description: 'Health checks passing', timestamp: '09:52', tone: 'success' },
+          ]}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-sm">
+      <Timeline
+        items={[
+          { id: 'commit', title: 'Jonas pushed 3 commits', description: 'feat: billing usage export', timestamp: '08:15', tone: 'neutral' },
+          { id: 'review', title: 'Review approved', description: 'Priya approved #482', timestamp: '08:47', tone: 'primary' },
+          { id: 'deploy', title: 'Deployed to production', description: 'Release 2.4.0 is live', timestamp: '09:52', tone: 'success' },
+          { id: 'alert', title: 'Error budget warning', description: 'checkout-api above 2% errors', timestamp: '10:03', tone: 'warning' },
+          { id: 'rollback', title: 'Rollback triggered', description: 'Reverted to 2.3.9', timestamp: '10:11', tone: 'danger' },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+### Event tones
+
+Use success and warning tones to mark outcomes in a feed.
+
+```jsx
+import { Timeline } from '@kryv/teal'
+
+export function TimelineDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-sm">
+        <Timeline
+          items={[
+            { id: 'queued', title: 'Deploy queued', description: 'Release 2.4.0 · web-app', timestamp: '09:41', tone: 'neutral' },
+            { id: 'building', title: 'Build completed', description: '412 modules in 3m 12s', timestamp: '09:46', tone: 'primary' },
+            { id: 'live', title: 'Release is live', description: 'Health checks passing', timestamp: '09:52', tone: 'success' },
+          ]}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-sm">
+      <Timeline
+        items={[
+          { id: 'commit', title: 'Jonas pushed 3 commits', description: 'feat: billing usage export', timestamp: '08:15', tone: 'neutral' },
+          { id: 'review', title: 'Review approved', description: 'Priya approved #482', timestamp: '08:47', tone: 'primary' },
+          { id: 'deploy', title: 'Deployed to production', description: 'Release 2.4.0 is live', timestamp: '09:52', tone: 'success' },
+          { id: 'alert', title: 'Error budget warning', description: 'checkout-api above 2% errors', timestamp: '10:03', tone: 'warning' },
+          { id: 'rollback', title: 'Rollback triggered', description: 'Reverted to 2.3.9', timestamp: '10:11', tone: 'danger' },
+        ]}
+      />
     </div>
   )
 }
@@ -5380,6 +6971,190 @@ export function StepsDemo({ exampleIndex = 0 }) {
 
 ---
 
+# Tree View
+
+A hierarchical disclosure list with keyboard navigation and selection.
+
+## Usage
+
+```js
+import { TreeView } from '@kryv/teal'
+```
+
+```jsx
+<TreeView
+  aria-label="Project files"
+  items={[
+    { id: 'src', label: 'src', children: [{ id: 'app', label: 'App.tsx' }] },
+  ]}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+Content is genuinely hierarchical, like files or nested categories.
+### Avoid when
+
+The list is flat; use a plain list or Tabs.
+### Behavior
+
+Arrow keys expand, collapse, and move; Enter selects.
+### Responsive
+
+Indent scales with depth; keep labels truncating, not wrapping.
+
+## Examples
+
+### Hierarchy
+
+Arrows expand, collapse, and move; Enter selects with aria-selected.
+
+```jsx
+import { useState } from 'react'
+import { FileText, Folder } from 'lucide-react'
+import { TreeView } from '@kryv/teal'
+
+const workspaceFiles = [
+  {
+    id: 'apps',
+    label: 'apps',
+    icon: <Folder className="size-4" />,
+    children: [
+      {
+        id: 'web',
+        label: 'web',
+        icon: <Folder className="size-4" />,
+        children: [
+          { id: 'web-src', label: 'Dashboard.tsx', icon: <FileText className="size-4" /> },
+          { id: 'web-settings', label: 'Settings.tsx', icon: <FileText className="size-4" /> },
+        ],
+      },
+      { id: 'mobile', label: 'Mobile.tsx', icon: <FileText className="size-4" /> },
+    ],
+  },
+  {
+    id: 'packages',
+    label: 'packages',
+    icon: <Folder className="size-4" />,
+    children: [
+      { id: 'ui-kit', label: 'ui-kit', icon: <Folder className="size-4" />, children: [
+        { id: 'button', label: 'Button.tsx', icon: <FileText className="size-4" /> },
+        { id: 'input', label: 'Input.tsx', icon: <FileText className="size-4" /> },
+      ] },
+    ],
+  },
+  { id: 'readme', label: 'README.md', icon: <FileText className="size-4" /> },
+]
+
+export function TreeViewDemo({ exampleIndex = 0 }) {
+  const [expandedIds, setExpandedIds] = useState(['apps'])
+  const [selectedId, setSelectedId] = useState('web-src')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-xs rounded-xl border border-[color:var(--teal-border-subtle)] p-2">
+        <TreeView
+          aria-label="Workspace file tree"
+          items={workspaceFiles}
+          expandedIds={expandedIds}
+          onExpandedChange={setExpandedIds}
+          selectedId={selectedId}
+          onSelect={setSelectedId}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-xs rounded-xl border border-[color:var(--teal-border-subtle)] p-2">
+      <TreeView
+        aria-label="Workspace file tree"
+        items={workspaceFiles}
+        defaultExpandedIds={['apps', 'web']}
+        onSelect={() => undefined}
+      />
+    </div>
+  )
+}
+```
+
+### Default expansion
+
+Open key branches on first render with defaultExpandedIds.
+
+```jsx
+import { useState } from 'react'
+import { FileText, Folder } from 'lucide-react'
+import { TreeView } from '@kryv/teal'
+
+const workspaceFiles = [
+  {
+    id: 'apps',
+    label: 'apps',
+    icon: <Folder className="size-4" />,
+    children: [
+      {
+        id: 'web',
+        label: 'web',
+        icon: <Folder className="size-4" />,
+        children: [
+          { id: 'web-src', label: 'Dashboard.tsx', icon: <FileText className="size-4" /> },
+          { id: 'web-settings', label: 'Settings.tsx', icon: <FileText className="size-4" /> },
+        ],
+      },
+      { id: 'mobile', label: 'Mobile.tsx', icon: <FileText className="size-4" /> },
+    ],
+  },
+  {
+    id: 'packages',
+    label: 'packages',
+    icon: <Folder className="size-4" />,
+    children: [
+      { id: 'ui-kit', label: 'ui-kit', icon: <Folder className="size-4" />, children: [
+        { id: 'button', label: 'Button.tsx', icon: <FileText className="size-4" /> },
+        { id: 'input', label: 'Input.tsx', icon: <FileText className="size-4" /> },
+      ] },
+    ],
+  },
+  { id: 'readme', label: 'README.md', icon: <FileText className="size-4" /> },
+]
+
+export function TreeViewDemo({ exampleIndex = 0 }) {
+  const [expandedIds, setExpandedIds] = useState(['apps'])
+  const [selectedId, setSelectedId] = useState('web-src')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-xs rounded-xl border border-[color:var(--teal-border-subtle)] p-2">
+        <TreeView
+          aria-label="Workspace file tree"
+          items={workspaceFiles}
+          expandedIds={expandedIds}
+          onExpandedChange={setExpandedIds}
+          selectedId={selectedId}
+          onSelect={setSelectedId}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-xs rounded-xl border border-[color:var(--teal-border-subtle)] p-2">
+      <TreeView
+        aria-label="Workspace file tree"
+        items={workspaceFiles}
+        defaultExpandedIds={['apps', 'web']}
+        onSelect={() => undefined}
+      />
+    </div>
+  )
+}
+```
+
+---
+
 # Permission Matrix
 
 A people-by-applications access matrix with caller-supplied cell content and explicit no-access cells.
@@ -5991,6 +7766,276 @@ export function DescriptionListDemo({ exampleIndex = 0 }) {
   }
 
   return <DescriptionList className="w-full max-w-sm" items={project} />
+}
+```
+
+---
+
+# Data Table
+
+A data grid with sortable columns and row selection, built on the Table contract.
+
+## Usage
+
+```js
+import { DataTable } from '@kryv/teal'
+```
+
+```jsx
+<DataTable
+  caption="Projects"
+  columns={[{ key: 'name', header: 'Name', cell: (row) => row.name, sortable: true }]}
+  rows={rows}
+  getRowKey={(row) => row.id}
+  sort={sort}
+  onSortChange={setSort}
+  selectable
+/>
+```
+
+## Design guidance
+
+### Use when
+
+Rows need sorting or bulk selection beyond Table.
+### Avoid when
+
+The data is read-only and simple; use Table.
+### Behavior
+
+Sorting is caller-owned; the header checkbox tracks indeterminate state.
+### Responsive
+
+The region scrolls horizontally like Table on narrow screens.
+
+## Examples
+
+### Sorting and selection
+
+Sortable headers set aria-sort; the header checkbox handles indeterminate bulk state.
+
+```jsx
+import { useMemo, useState } from 'react'
+import { DataTable } from '@kryv/teal'
+
+const projects = [
+  { id: 'atlas', name: 'Atlas redesign', owner: 'Mira Chen', status: 'Active', updated: '2026-07-24' },
+  { id: 'billing', name: 'Billing migration', owner: 'Jonas Weber', status: 'Paused', updated: '2026-07-21' },
+  { id: 'docs', name: 'Docs overhaul', owner: 'Priya Nair', status: 'Active', updated: '2026-07-27' },
+  { id: 'mobile', name: 'Mobile app', owner: 'Sam Ortiz', status: 'Review', updated: '2026-07-18' },
+  { id: 'onboarding', name: 'Onboarding revamp', owner: 'Lena Fischer', status: 'Active', updated: '2026-07-25' },
+]
+
+const columns = [
+  { key: 'name', header: 'Project', sortable: true, cell: (row) => row.name },
+  { key: 'owner', header: 'Owner', sortable: true, cell: (row) => row.owner },
+  { key: 'status', header: 'Status', cell: (row) => row.status },
+  { key: 'updated', header: 'Last updated', sortable: true, cell: (row) => row.updated },
+]
+
+export function DataTableDemo({ exampleIndex = 0 }) {
+  const [sort, setSort] = useState(/** @type {{ key: string, direction: 'asc' | 'desc' }} */ ({ key: 'updated', direction: 'desc' }))
+  const [selectedKeys, setSelectedKeys] = useState(['atlas'])
+
+  const sortedRows = useMemo(() => {
+    const copy = [...projects]
+    copy.sort((a, b) => {
+      const order = String(a[sort.key]).localeCompare(String(b[sort.key]))
+      return sort.direction === 'asc' ? order : -order
+    })
+    return copy
+  }, [sort])
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-2xl">
+        <DataTable
+          caption="Projects with row selection"
+          columns={columns}
+          rows={sortedRows}
+          getRowKey={(row) => row.id}
+          sort={sort}
+          onSortChange={setSort}
+          selectable
+          selectedKeys={selectedKeys}
+          onSelectionChange={setSelectedKeys}
+          density="compact"
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-2xl">
+      <DataTable
+        caption="Workspace projects"
+        columns={columns}
+        rows={sortedRows}
+        getRowKey={(row) => row.id}
+        sort={sort}
+        onSortChange={setSort}
+      />
+    </div>
+  )
+}
+```
+
+### Bulk selection
+
+Combine selectable rows with a toolbar for bulk actions.
+
+```jsx
+import { useMemo, useState } from 'react'
+import { DataTable } from '@kryv/teal'
+
+const projects = [
+  { id: 'atlas', name: 'Atlas redesign', owner: 'Mira Chen', status: 'Active', updated: '2026-07-24' },
+  { id: 'billing', name: 'Billing migration', owner: 'Jonas Weber', status: 'Paused', updated: '2026-07-21' },
+  { id: 'docs', name: 'Docs overhaul', owner: 'Priya Nair', status: 'Active', updated: '2026-07-27' },
+  { id: 'mobile', name: 'Mobile app', owner: 'Sam Ortiz', status: 'Review', updated: '2026-07-18' },
+  { id: 'onboarding', name: 'Onboarding revamp', owner: 'Lena Fischer', status: 'Active', updated: '2026-07-25' },
+]
+
+const columns = [
+  { key: 'name', header: 'Project', sortable: true, cell: (row) => row.name },
+  { key: 'owner', header: 'Owner', sortable: true, cell: (row) => row.owner },
+  { key: 'status', header: 'Status', cell: (row) => row.status },
+  { key: 'updated', header: 'Last updated', sortable: true, cell: (row) => row.updated },
+]
+
+export function DataTableDemo({ exampleIndex = 0 }) {
+  const [sort, setSort] = useState(/** @type {{ key: string, direction: 'asc' | 'desc' }} */ ({ key: 'updated', direction: 'desc' }))
+  const [selectedKeys, setSelectedKeys] = useState(['atlas'])
+
+  const sortedRows = useMemo(() => {
+    const copy = [...projects]
+    copy.sort((a, b) => {
+      const order = String(a[sort.key]).localeCompare(String(b[sort.key]))
+      return sort.direction === 'asc' ? order : -order
+    })
+    return copy
+  }, [sort])
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-2xl">
+        <DataTable
+          caption="Projects with row selection"
+          columns={columns}
+          rows={sortedRows}
+          getRowKey={(row) => row.id}
+          sort={sort}
+          onSortChange={setSort}
+          selectable
+          selectedKeys={selectedKeys}
+          onSelectionChange={setSelectedKeys}
+          density="compact"
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-2xl">
+      <DataTable
+        caption="Workspace projects"
+        columns={columns}
+        rows={sortedRows}
+        getRowKey={(row) => row.id}
+        sort={sort}
+        onSortChange={setSort}
+      />
+    </div>
+  )
+}
+```
+
+---
+
+# Avatar Group
+
+An overlapping identity stack with an overflow count.
+
+## Usage
+
+```js
+import { AvatarGroup } from '@kryv/teal'
+```
+
+```jsx
+<AvatarGroup names={["Avery Chen", "Morgan Reyes", "Riley Okafor"]} />
+```
+
+## Design guidance
+
+### Use when
+
+Several identities belong to one row or card.
+### Avoid when
+
+One identity needs emphasis; use Avatar.
+### Behavior
+
+Overflow collapses into a +N bubble; the group label names everyone.
+### Responsive
+
+Lower max in dense contexts like tables.
+
+## Examples
+
+### Overflow
+
+Past max, a +N bubble summarizes the rest; the group label lists everyone.
+
+```jsx
+import { AvatarGroup } from '@kryv/teal'
+
+const projectTeam = ['Avery Chen', 'Morgan Diaz', 'Priya Nair', 'Sam Okafor', 'June Park', 'Lee Ramos', 'Noor Haddad']
+
+export function AvatarGroupDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex flex-col items-start gap-3">
+        <AvatarGroup names={projectTeam.slice(0, 3)} size="sm" />
+        <AvatarGroup names={projectTeam} max={2} size="sm" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col items-start gap-3">
+      <AvatarGroup names={projectTeam} />
+      <AvatarGroup names={projectTeam.slice(0, 3)} />
+    </div>
+  )
+}
+```
+
+### Compact stacks
+
+Use the small size and a lower max inside table rows.
+
+```jsx
+import { AvatarGroup } from '@kryv/teal'
+
+const projectTeam = ['Avery Chen', 'Morgan Diaz', 'Priya Nair', 'Sam Okafor', 'June Park', 'Lee Ramos', 'Noor Haddad']
+
+export function AvatarGroupDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex flex-col items-start gap-3">
+        <AvatarGroup names={projectTeam.slice(0, 3)} size="sm" />
+        <AvatarGroup names={projectTeam} max={2} size="sm" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col items-start gap-3">
+      <AvatarGroup names={projectTeam} />
+      <AvatarGroup names={projectTeam.slice(0, 3)} />
+    </div>
+  )
 }
 ```
 

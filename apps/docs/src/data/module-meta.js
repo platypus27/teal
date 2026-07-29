@@ -75,6 +75,58 @@ export const moduleGroups = [
           },
         ],
       },
+      {
+        id: 'toggle',
+        name: 'Toggle',
+        apiNames: ['Toggle'],
+        description: 'A pressed-state button for binary preferences in toolbars and filter rows.',
+        usage: `<Toggle aria-label="Bold"><Bold /></Toggle>`,
+        examples: [
+          {
+            title: 'Pressed state',
+            description: 'aria-pressed and data-state reflect the current value; tint follows.',
+          },
+        ],
+      },
+      {
+        id: 'toolbar',
+        name: 'Toolbar',
+        apiNames: ['Toolbar', 'ToolbarGroup', 'ToolbarSeparator'],
+        imports: ['Toolbar', 'ToolbarGroup', 'ToolbarSeparator', 'IconButton'],
+        description: 'A horizontal action bar with grouped controls and hairline separators.',
+        usage: `<Toolbar>
+  <ToolbarGroup>
+    <IconButton label="Undo"><Undo2 /></IconButton>
+  </ToolbarGroup>
+  <ToolbarSeparator />
+  <ToolbarGroup>
+    <IconButton label="Bold"><Bold /></IconButton>
+  </ToolbarGroup>
+</Toolbar>`,
+        examples: [
+          {
+            title: 'Editor actions',
+            description: 'role="toolbar" with groups keeps related controls navigable.',
+          },
+        ],
+      },
+      {
+        id: 'split-button',
+        name: 'Split Button',
+        apiNames: ['SplitButton'],
+        description: 'A primary action joined to a menu of related alternatives.',
+        usage: `<SplitButton
+  label="Deploy"
+  onClick={() => undefined}
+  items={[{ id: 'staging', label: 'Deploy to staging', onSelect: () => undefined }]}
+/>`,
+        examples: [
+          {
+            title: 'Default plus alternatives',
+            description: 'The main action fires directly; the chevron opens the related menu.',
+          },
+        ],
+      },
     ],
   },
   {
@@ -226,6 +278,78 @@ export const moduleGroups = [
           },
         ],
       },
+      {
+        id: 'multi-select',
+        name: 'Multi Select',
+        apiNames: ['MultiSelect'],
+        description: 'A filterable picker for several values, shown as removable pills.',
+        usage: `<MultiSelect
+  label="Project roles"
+  options={[
+    { value: 'admin', label: 'Administrator' },
+    { value: 'editor', label: 'Editor' },
+    { value: 'viewer', label: 'Viewer' },
+  ]}
+/>`,
+        examples: [
+          {
+            title: 'Multiple values',
+            description: 'Options toggle without closing; pills remove individual values.',
+          },
+        ],
+      },
+      {
+        id: 'date-picker',
+        name: 'Date Picker',
+        apiNames: ['DatePicker'],
+        description: 'A single-date field with a keyboard-navigable calendar popover.',
+        usage: '<DatePicker label="Start date" onValueChange={(date) => undefined} />',
+        examples: [
+          {
+            title: 'Calendar selection',
+            description: 'Arrows move between days, Enter selects, min and max bound the range.',
+          },
+        ],
+      },
+      {
+        id: 'number-input',
+        name: 'Number Input',
+        apiNames: ['NumberInput'],
+        description: 'A numeric field with stepper buttons and min/max clamping.',
+        usage: '<NumberInput label="Seats" defaultValue={4} min={1} max={12} />',
+        examples: [
+          {
+            title: 'Steppers and bounds',
+            description: 'Steppers disable at the bounds; typing re-clamps on blur.',
+          },
+        ],
+      },
+      {
+        id: 'password-input',
+        name: 'Password Input',
+        apiNames: ['PasswordInput'],
+        description: 'A secret field with an accessible visibility toggle.',
+        usage: '<PasswordInput label="Password" />',
+        examples: [
+          {
+            title: 'Visibility toggle',
+            description: 'The eye button exposes its state through aria-pressed.',
+          },
+        ],
+      },
+      {
+        id: 'file-upload',
+        name: 'File Upload',
+        apiNames: ['FileUpload'],
+        description: 'A drag-and-drop zone with a browse action and a removable file list.',
+        usage: '<FileUpload label="Attachments" multiple onFilesAdded={(files) => undefined} />',
+        examples: [
+          {
+            title: 'Drop or browse',
+            description: 'Drag-over highlights the zone; files list with sizes and remove actions.',
+          },
+        ],
+      },
     ],
   },
   {
@@ -346,6 +470,19 @@ export const moduleGroups = [
           {
             title: 'Bounded lists',
             description: 'Cap the height and the custom scrollbar appears only while scrolling is possible.',
+          },
+        ],
+      },
+      {
+        id: 'code-block',
+        name: 'Code Block',
+        apiNames: ['CodeBlock'],
+        description: 'A code panel with a language label, optional line numbers, and copy-to-clipboard.',
+        usage: '<CodeBlock language="bash" code="npm install @kryv/teal" />',
+        examples: [
+          {
+            title: 'Copy affordance',
+            description: 'The copy button confirms with a check icon for two seconds.',
           },
         ],
       },
@@ -477,6 +614,26 @@ export const moduleGroups = [
           {
             title: 'Preview on hover',
             description: 'Delays are tunable; keyboard focus opens the card too.',
+          },
+        ],
+      },
+      {
+        id: 'command',
+        name: 'Command',
+        apiNames: ['Command'],
+        imports: ['Command', 'Button'],
+        description: 'A command palette dialog with grouped, filterable actions and keyboard navigation.',
+        usage: `<Command
+  open={open}
+  onOpenChange={setOpen}
+  groups={[
+    { label: 'Projects', items: [{ id: 'orion', label: 'Open Orion', onSelect: () => undefined }] },
+  ]}
+/>`,
+        examples: [
+          {
+            title: 'Palette',
+            description: 'Arrows cycle filtered items, Enter runs the action, state resets on open.',
           },
         ],
       },
@@ -639,6 +796,36 @@ toast({ title: 'Changes saved', variant: 'success' })`,
           {
             title: 'Page-level feedback',
             description: 'A stronger accent than Alert, for notices that apply to the whole view.',
+          },
+        ],
+      },
+      {
+        id: 'progress-circle',
+        name: 'Progress Circle',
+        apiNames: ['ProgressCircle'],
+        description: 'A radial progress indicator with determinate and indeterminate modes.',
+        usage: '<ProgressCircle value={64} label="Import progress" />',
+        examples: [
+          {
+            title: 'Radial progress',
+            description: 'role="progressbar" carries the value; omit value for a spinning indeterminate arc.',
+          },
+        ],
+      },
+      {
+        id: 'timeline',
+        name: 'Timeline',
+        apiNames: ['Timeline'],
+        description: 'A vertical activity feed with tone dots, connectors, and timestamps.',
+        usage: `<Timeline
+  items={[
+    { id: '1', title: 'Deploy finished', timestamp: '2 min ago', tone: 'success' },
+  ]}
+/>`,
+        examples: [
+          {
+            title: 'Activity feed',
+            description: 'Tone dots mark event semantics; connectors link the sequence.',
           },
         ],
       },
@@ -833,6 +1020,24 @@ toast({ title: 'Changes saved', variant: 'success' })`,
           },
         ],
       },
+      {
+        id: 'tree-view',
+        name: 'Tree View',
+        apiNames: ['TreeView'],
+        description: 'A hierarchical disclosure list with keyboard navigation and selection.',
+        usage: `<TreeView
+  aria-label="Project files"
+  items={[
+    { id: 'src', label: 'src', children: [{ id: 'app', label: 'App.tsx' }] },
+  ]}
+/>`,
+        examples: [
+          {
+            title: 'Hierarchy',
+            description: 'Arrows expand, collapse, and move; Enter selects with aria-selected.',
+          },
+        ],
+      },
     ],
   },
   {
@@ -930,6 +1135,40 @@ toast({ title: 'Changes saved', variant: 'success' })`,
           },
         ],
       },
+      {
+        id: 'data-table',
+        name: 'Data Table',
+        apiNames: ['DataTable'],
+        description: 'A data grid with sortable columns and row selection, built on the Table contract.',
+        usage: `<DataTable
+  caption="Projects"
+  columns={[{ key: 'name', header: 'Name', cell: (row) => row.name, sortable: true }]}
+  rows={rows}
+  getRowKey={(row) => row.id}
+  sort={sort}
+  onSortChange={setSort}
+  selectable
+/>`,
+        examples: [
+          {
+            title: 'Sorting and selection',
+            description: 'Sortable headers set aria-sort; the header checkbox handles indeterminate bulk state.',
+          },
+        ],
+      },
+      {
+        id: 'avatar-group',
+        name: 'Avatar Group',
+        apiNames: ['AvatarGroup'],
+        description: 'An overlapping identity stack with an overflow count.',
+        usage: '<AvatarGroup names={["Avery Chen", "Morgan Reyes", "Riley Okafor"]} />',
+        examples: [
+          {
+            title: 'Overflow',
+            description: 'Past max, a +N bubble summarizes the rest; the group label lists everyone.',
+          },
+        ],
+      },
     ],
   },
 ]
@@ -979,6 +1218,21 @@ const additionalExamples = {
   banner: [{ title: 'Dismissible notices', description: 'Pass onDismiss for notices the user can clear for the session.' }],
   steps: [{ title: 'Clickable completed steps', description: 'Allow returning to completed steps with onStepClick.' }],
   'description-list': [{ title: 'Two-column details', description: 'Use the grid layout for wider detail panels.' }],
+  toggle: [{ title: 'Filter rows', description: 'Use toggles in a toolbar for independent on/off preferences.' }],
+  toolbar: [{ title: 'Formatting groups', description: 'Group related controls and separate them with hairlines.' }],
+  'split-button': [{ title: 'Secondary and danger variants', description: 'The menu can carry a danger item behind the separator.' }],
+  'multi-select': [{ title: 'Disabled options', description: 'Individual options can be disabled while the rest stay selectable.' }],
+  'date-picker': [{ title: 'Bounded dates', description: 'Use minDate and maxDate for booking-style windows.' }],
+  'number-input': [{ title: 'Custom steps', description: 'Set step for increments that match the domain, like 0.5 or 10.' }],
+  'password-input': [{ title: 'Current password', description: 'Pair with autocomplete="current-password" for sign-in forms.' }],
+  'file-upload': [{ title: 'Accepted types', description: 'Constrain with accept when only certain file types are valid.' }],
+  'data-table': [{ title: 'Bulk selection', description: 'Combine selectable rows with a toolbar for bulk actions.' }],
+  'avatar-group': [{ title: 'Compact stacks', description: 'Use the small size and a lower max inside table rows.' }],
+  'tree-view': [{ title: 'Default expansion', description: 'Open key branches on first render with defaultExpandedIds.' }],
+  command: [{ title: 'Keyboard first', description: 'Bind a global shortcut to open the palette; keep item hints scannable.' }],
+  'progress-circle': [{ title: 'Indeterminate work', description: 'Omit value while progress cannot be measured.' }],
+  timeline: [{ title: 'Event tones', description: 'Use success and warning tones to mark outcomes in a feed.' }],
+  'code-block': [{ title: 'Line numbers', description: 'Enable line numbers for walkthroughs that reference specific lines.' }],
 }
 
 for (const module of modules) {
@@ -1036,6 +1290,21 @@ const guidanceById = {
   banner: { useWhen: 'Feedback applies to the entire view, not one field or task.', avoidWhen: 'The message is local to a control or a transient confirmation; use Field, Alert, or Toast.', behavior: 'Danger renders role="alert" for immediate announcement; other variants render role="status".', responsive: 'The action wraps beneath the message on narrow screens.' },
   steps: { useWhen: 'A flow has a clear sequence and the user benefits from seeing progress.', avoidWhen: 'Steps are independent views; use Tabs or navigation.', behavior: 'The current step sets aria-current and completed steps can be made clickable.', responsive: 'Steps wrap with their labels on narrow screens; keep labels short.' },
   'description-list': { useWhen: 'A detail view lists labeled values for one entity.', avoidWhen: 'Records need column comparison; use Table.', behavior: 'Real dl/dt/dd markup keeps the relationship semantic.', responsive: 'Stacked layout is default; grid splits to two columns on wider screens.' },
+  toggle: { useWhen: 'A preference flips between two states inside a toolbar or filter row.', avoidWhen: 'The choice needs a label with explanation; use Switch or Checkbox.', behavior: 'aria-pressed reflects the value and the pressed tint follows.', responsive: 'Keep toggle content icon-sized so rows stay compact.' },
+  toolbar: { useWhen: 'Several small controls act on one editor or view.', avoidWhen: 'The actions are unrelated page actions; use a header action area.', behavior: 'role="toolbar" groups controls; separators are decorative hairlines.', responsive: 'Let groups wrap or scroll horizontally on narrow screens.' },
+  'split-button': { useWhen: 'One default action has a few close alternatives.', avoidWhen: 'The actions are unrelated; use separate buttons or a plain Menu.', behavior: 'The main button fires the default; the chevron owns the menu.', responsive: 'Keep the label short so the joined control stays one line.' },
+  'multi-select': { useWhen: 'Users pick several values from a filterable list.', avoidWhen: 'Only one value is allowed; use Select or Combobox.', behavior: 'Options toggle without closing and pills remove single values.', responsive: 'Pills wrap inside the control as values accumulate.' },
+  'date-picker': { useWhen: 'Users pick a single calendar date.', avoidWhen: 'The value is free-form or a range; use Input or a dedicated range flow.', behavior: 'The calendar supports full keyboard navigation and min/max bounds.', responsive: 'The popover collision-handles; the field keeps its layout width.' },
+  'number-input': { useWhen: 'A numeric value benefits from quick stepping.', avoidWhen: 'The value is an identifier, not a quantity; use Input.', behavior: 'Steppers and blur clamp to min/max; empty means undefined.', responsive: 'The field fills its container; constrain it in the form layout.' },
+  'password-input': { useWhen: 'The user enters a secret they may want to verify visually.', avoidWhen: 'The content is not sensitive; use Input or SearchInput.', behavior: 'The visibility toggle reports state through aria-pressed.', responsive: 'The toggle stays pinned inside the field at any width.' },
+  'file-upload': { useWhen: 'Users attach files to a form.', avoidWhen: 'A single URL or text reference suffices; use Input.', behavior: 'Drag-over highlights the zone; the list mirrors the caller-owned value.', responsive: 'The zone fills its container and the file list wraps below.' },
+  'data-table': { useWhen: 'Rows need sorting or bulk selection beyond Table.', avoidWhen: 'The data is read-only and simple; use Table.', behavior: 'Sorting is caller-owned; the header checkbox tracks indeterminate state.', responsive: 'The region scrolls horizontally like Table on narrow screens.' },
+  'avatar-group': { useWhen: 'Several identities belong to one row or card.', avoidWhen: 'One identity needs emphasis; use Avatar.', behavior: 'Overflow collapses into a +N bubble; the group label names everyone.', responsive: 'Lower max in dense contexts like tables.' },
+  'tree-view': { useWhen: 'Content is genuinely hierarchical, like files or nested categories.', avoidWhen: 'The list is flat; use a plain list or Tabs.', behavior: 'Arrow keys expand, collapse, and move; Enter selects.', responsive: 'Indent scales with depth; keep labels truncating, not wrapping.' },
+  command: { useWhen: 'Power users need fast keyboard access to many actions.', avoidWhen: 'There are few actions; use visible buttons or a Menu.', behavior: 'Filtering, highlight, and selection reset on every open.', responsive: 'The panel caps at viewport width with its own internal scroll.' },
+  'progress-circle': { useWhen: 'Progress needs a compact radial treatment.', avoidWhen: 'A precise value matters in a table; use Progress.', behavior: 'Determinate mode exposes aria-valuenow; omit value for indeterminate.', responsive: 'Set an explicit size per context instead of scaling.' },
+  timeline: { useWhen: 'Events form a chronological feed.', avoidWhen: 'Items are peers without time order; use a plain list.', behavior: 'Tone dots carry semantics; connectors skip the last item.', responsive: 'Content wraps while the rail stays fixed width.' },
+  'code-block': { useWhen: 'Code or commands should be readable and copyable.', avoidWhen: 'A single identifier in prose; use inline code styling.', behavior: 'The copy action confirms with an icon swap and announces via its label.', responsive: 'Long lines scroll horizontally instead of wrapping.' },
 }
 
 export const moduleGuidance = Object.fromEntries(

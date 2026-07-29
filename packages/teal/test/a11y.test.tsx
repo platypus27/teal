@@ -7,6 +7,7 @@ import {
   Alert,
   AppSwitcher,
   Avatar,
+  AvatarGroup,
   Badge,
   Banner,
   Breadcrumb,
@@ -18,12 +19,17 @@ import {
   CardTitle,
   Checkbox,
   Chip,
+  CodeBlock,
   Combobox,
+  Command,
+  DataTable,
+  DatePicker,
   DescriptionList,
   Dialog,
   Drawer,
   EmptyState,
   Field,
+  FileUpload,
   HealthIndicator,
   HoverCard,
   IconButton,
@@ -33,12 +39,16 @@ import {
   Link,
   LoadingState,
   Menu,
+  MultiSelect,
   NotificationItem,
+  NumberInput,
   PageHeader,
   Pagination,
+  PasswordInput,
   PermissionMatrix,
   Popover,
   Progress,
+  ProgressCircle,
   RadioGroup,
   ScrollArea,
   SearchInput,
@@ -48,13 +58,20 @@ import {
   Skeleton,
   Slider,
   Spinner,
+  SplitButton,
   StepUpNotice,
   Steps,
   Switch,
   Table,
   Tabs,
   TextArea,
+  Timeline,
   Toaster,
+  Toggle,
+  Toolbar,
+  ToolbarGroup,
+  ToolbarSeparator,
+  TreeView,
   Tooltip,
   TooltipProvider,
   TopBar,
@@ -670,6 +687,90 @@ describe('axe: second catalog expansion', () => {
         <ScrollArea maxHeight="8rem">
           <p>Scrollable content region.</p>
         </ScrollArea>
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+})
+
+describe('axe: third catalog expansion', () => {
+  it('new form controls have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <DatePicker label="Start date" defaultValue={new Date(2026, 6, 15)} />
+        <NumberInput label="Seats" defaultValue={4} min={1} max={12} />
+        <PasswordInput label="Password" defaultValue="hunter2" />
+        <MultiSelect
+          label="Project roles"
+          defaultValue={['editor']}
+          options={[
+            { value: 'admin', label: 'Administrator' },
+            { value: 'editor', label: 'Editor' },
+            { value: 'viewer', label: 'Viewer' },
+          ]}
+        />
+        <FileUpload label="Attachments" value={[{ name: 'report.pdf', size: 240_000 }]} />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new actions and display modules have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <Toolbar>
+          <ToolbarGroup>
+            <IconButton label="Undo"><span>U</span></IconButton>
+          </ToolbarGroup>
+          <ToolbarSeparator />
+          <Toggle aria-label="Bold">B</Toggle>
+        </Toolbar>
+        <SplitButton
+          label="Deploy"
+          onClick={() => {}}
+          items={[{ id: 'staging', label: 'Deploy to staging', onSelect: () => {} }]}
+        />
+        <AvatarGroup names={['Avery Chen', 'Morgan Reyes', 'Riley Okafor', 'Sam Whitfield', 'Jo Park']} />
+        <Timeline
+          items={[
+            { id: '1', title: 'Deploy finished', timestamp: '2 min ago', tone: 'success' },
+            { id: '2', title: 'Deploy started', timestamp: '9 min ago', tone: 'primary' },
+          ]}
+        />
+        <ProgressCircle value={64} label="Import progress" />
+        <ProgressCircle label="Loading" />
+        <CodeBlock language="bash" code="npm install @kryv/teal" showLineNumbers />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new data and overlay modules have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <DataTable
+          caption="Projects"
+          columns={[
+            { key: 'name', header: 'Name', cell: (row: { id: string; name: string }) => row.name, sortable: true },
+          ]}
+          rows={[{ id: 'orion', name: 'Orion' }]}
+          getRowKey={(row: { id: string }) => row.id}
+          sort={{ key: 'name', direction: 'asc' }}
+          selectable
+          selectedKeys={['orion']}
+        />
+        <TreeView
+          aria-label="Project files"
+          defaultExpandedIds={['src']}
+          items={[{ id: 'src', label: 'src', children: [{ id: 'app', label: 'App.tsx' }] }]}
+        />
+        <Command
+          open
+          onOpenChange={() => {}}
+          groups={[
+            { label: 'Projects', items: [{ id: 'orion', label: 'Open Orion', onSelect: () => {} }] },
+          ]}
+        />
       </>,
     )
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
