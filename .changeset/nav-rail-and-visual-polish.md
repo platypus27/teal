@@ -5,7 +5,8 @@
 Add NavRail and refine the shared visual language:
 
 - New `NavRail`/`NavRailItem`: a fully rounded floating icon rail with tooltips, active tint, and optional badge dots.
-- Standardized radius scale: all controls and boxes use the 0.75rem control radius (buttons and button groups lose their pill shape), nested items use concentric 0.5rem, pill is reserved for tags and avatars.
+- Standardized radius scale: all controls and boxes use the 0.75rem control radius (buttons and button groups lose their pill shape), nested items use concentric 0.5rem, pill is reserved for icon-only controls, tags, and avatars.
+- Icon-only controls are circular: IconButton (including Dialog/Drawer close, Calendar and Carousel arrows, BackTop, dismiss buttons), CopyButton, ThemeToggle, Rating stars, and NumberInput steppers; tooltips are pill-shaped.
 - Flush focus ring: the highlight now sits directly on the control border with no offset gap.
 - Alert and Banner use opaque tinted surfaces; Banner drops its thick left accent border.
 - InputGroup highlights as one control on focus instead of only the editable section.
