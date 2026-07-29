@@ -28,6 +28,7 @@ import {
   Dialog,
   Drawer,
   EmptyState,
+  EcosystemRail,
   Field,
   FileUpload,
   HealthIndicator,
@@ -318,6 +319,20 @@ describe('axe: data and navigation', () => {
     )
     await user.click(screen.getByRole('button', { name: 'Apps' }))
     await screen.findByRole('menu')
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('ecosystem rail has no violations with status and account controls', async () => {
+    const { baseElement } = render(
+      <EcosystemRail
+        home={{ href: '/', label: 'Home', current: true }}
+        destinations={[
+          { id: 'yang', href: '/yang', label: 'Yang', status: 'degraded' },
+          { id: 'photos', href: '/photos', label: 'Photos', status: 'healthy' },
+        ]}
+        footer={<button type="button">Avery account</button>}
+      />,
+    )
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
   })
 

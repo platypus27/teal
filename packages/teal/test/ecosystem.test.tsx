@@ -1,8 +1,72 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { AccountMenu, AppSwitcher, HealthIndicator, LauncherCard, NotificationItem, PermissionMatrix, StepUpNotice } from '../src/index'
+import {
+  AccountMenu,
+  AppSwitcher,
+  EcosystemRail,
+  HealthIndicator,
+  LauncherCard,
+  NotificationItem,
+  PermissionMatrix,
+  StepUpNotice,
+} from '../src/index'
 
 describe('ecosystem modules', () => {
+  describe('EcosystemRail', () => {
+    it('keeps Home first and renders only caller-supplied destinations', () => {
+      render(
+        <EcosystemRail
+          home={{ href: 'https://home.example', label: 'Home', current: true }}
+          destinations={[
+            {
+              id: 'yang',
+              href: 'https://yang.example',
+              label: 'Yang',
+              status: 'degraded',
+            },
+            { id: 'photos', href: 'https://photos.example', label: 'Photos' },
+          ]}
+        />,
+      )
+
+      const navigation = screen.getByRole('navigation', { name: 'Kryv ecosystem' })
+      const links = within(navigation).getAllByRole('link')
+      expect(links.map((link) => link.textContent)).toEqual([
+        expect.stringContaining('Home'),
+        expect.stringContaining('Yang'),
+        expect.stringContaining('Photos'),
+      ])
+      expect(screen.queryByRole('link', { name: /Trict/ })).not.toBeInTheDocument()
+      expect(screen.getByRole('link', { name: /Home/ })).toHaveAttribute('aria-current', 'page')
+      expect(screen.getByText('Degraded')).toBeInTheDocument()
+    })
+
+    it('reports navigation and provides a stable account footer', async () => {
+      const user = userEvent.setup()
+      const onNavigate = vi.fn()
+      render(
+        <EcosystemRail
+          home={{ href: 'https://home.example', label: 'Home' }}
+          destinations={[
+            {
+              id: 'trict',
+              href: 'https://trict.example',
+              label: 'Trict',
+              current: true,
+            },
+          ]}
+          footer={<button type="button">Avery account</button>}
+          onNavigate={onNavigate}
+        />,
+      )
+
+      await user.click(screen.getByRole('link', { name: /Trict/ }))
+      expect(onNavigate).toHaveBeenCalledWith('trict')
+      expect(screen.getByRole('link', { name: /Trict/ })).toHaveAttribute('aria-current', 'page')
+      expect(screen.getByRole('button', { name: 'Avery account' })).toBeInTheDocument()
+    })
+  })
+
   describe('AppSwitcher', () => {
     it('lists only the given applications plus an explicit Home destination', async () => {
       const user = userEvent.setup()

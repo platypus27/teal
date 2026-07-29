@@ -1,0 +1,107 @@
+import type { ReactNode } from 'react'
+import { HealthIndicator, type HealthIndicatorStatus } from './HealthIndicator'
+import {
+  VerticalNav,
+  VerticalNavBrand,
+  VerticalNavFooter,
+  VerticalNavItem,
+  VerticalNavList,
+  VerticalNavSection,
+} from './VerticalNav'
+
+export interface EcosystemRailHome {
+  /** Marks Home as the current product. */
+  current?: boolean
+  /** URL of the stable Home destination. */
+  href: string
+  /** Icon rendered beside the Home label. */
+  icon?: ReactNode
+  /** Visible Home label. */
+  label: ReactNode
+}
+
+export interface EcosystemRailDestination {
+  /** Marks this destination as the current product. */
+  current?: boolean
+  /** URL supplied by the consuming product. */
+  href: string
+  /** Icon rendered beside the destination label. */
+  icon?: ReactNode
+  /** Stable product identifier. */
+  id: string
+  /** Visible product label. */
+  label: ReactNode
+  /** Optional honest health state. Missing evidence should be omitted or unknown. */
+  status?: HealthIndicatorStatus
+}
+
+export interface EcosystemRailProps {
+  /** Accessible name for the product navigation. */
+  ariaLabel?: string
+  /** Optional product-family brand content. */
+  brand?: ReactNode
+  className?: string
+  /** Caller-filtered destinations. The rail never derives entitlements. */
+  destinations: EcosystemRailDestination[]
+  /** Stable Home destination, always rendered first. */
+  home: EcosystemRailHome
+  /** Optional account or session controls pinned to the bottom. */
+  footer?: ReactNode
+  /** Rail collapses labels until hover or focus; full keeps labels visible. */
+  mode?: 'rail' | 'full'
+  /** Called before ordinary anchor navigation. */
+  onNavigate?: (id: string) => void
+  /** Edge where the rail is attached. */
+  side?: 'left' | 'right'
+}
+
+export function EcosystemRail({
+  ariaLabel = 'Kryv ecosystem',
+  brand,
+  className,
+  destinations,
+  footer,
+  home,
+  mode = 'rail',
+  onNavigate,
+  side = 'left',
+}: EcosystemRailProps) {
+  const reportNavigation = (id: string) => () => {
+    onNavigate?.(id)
+  }
+
+  return (
+    <VerticalNav aria-label={ariaLabel} className={className} mode={mode} side={side}>
+      {brand ? <VerticalNavBrand>{brand}</VerticalNavBrand> : null}
+      <VerticalNavList>
+        <VerticalNavSection label="Ecosystem">
+          <VerticalNavItem
+            active={home.current ?? false}
+            href={home.href}
+            icon={home.icon}
+            onClick={reportNavigation('home')}
+          >
+            {home.label}
+          </VerticalNavItem>
+          {destinations.map((destination) => (
+            <VerticalNavItem
+              key={destination.id}
+              active={destination.current ?? false}
+              href={destination.href}
+              icon={destination.icon}
+              onClick={reportNavigation(destination.id)}
+            >
+              <span className="teal-u-flex teal-u-min-w-0 teal-u-flex-1 teal-u-items-center teal-u-justify-between teal-u-gap-2">
+                <span className="teal-u-truncate">{destination.label}</span>
+                {destination.status ? (
+                  <HealthIndicator className="teal-u-shrink-0" status={destination.status} />
+                ) : null}
+              </span>
+            </VerticalNavItem>
+          ))}
+        </VerticalNavSection>
+      </VerticalNavList>
+      {footer ? <VerticalNavFooter>{footer}</VerticalNavFooter> : null}
+    </VerticalNav>
+  )
+}

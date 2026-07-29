@@ -32,6 +32,12 @@ export { Menu } from './Menu'
 export type { MenuItem, MenuProps } from './Menu'
 export { AppSwitcher } from './AppSwitcher'
 export type { AppSwitcherItem, AppSwitcherProps } from './AppSwitcher'
+export { EcosystemRail } from './EcosystemRail'
+export type {
+  EcosystemRailDestination,
+  EcosystemRailHome,
+  EcosystemRailProps,
+} from './EcosystemRail'
 export { AccountMenu } from './AccountMenu'
 export type { AccountMenuAction, AccountMenuProps, AccountMenuUser } from './AccountMenu'
 export { LauncherCard } from './LauncherCard'
