@@ -59,12 +59,16 @@ export const colorTokens = {
 export const sharedTokens = {
   '--teal-font-body': "'Manrope', ui-sans-serif, system-ui, sans-serif",
   '--teal-font-headline': "'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif",
-  '--teal-radius-control': '0.5rem',
+  /* Radius scale: controls and boxes share the control radius (0.75rem); nested
+     items inside padded containers use concentric 0.5rem; pill is reserved for
+     tags and avatars (Badge, Chip, Avatar, NavRail). */
+  '--teal-radius-control': '0.75rem',
   '--teal-radius-surface': '0.75rem',
   '--teal-radius-pill': '9999px',
   '--teal-border-subtle': 'color-mix(in srgb, var(--teal-color-outline-variant) 55%, transparent)',
   '--teal-border-strong': 'var(--teal-color-outline)',
-  '--teal-focus-ring': '0 0 0 2px var(--teal-color-surface), 0 0 0 4px var(--teal-color-primary)',
+  /* Flush focus ring: no gap between the control border and the highlight. */
+  '--teal-focus-ring': '0 0 0 2px var(--teal-color-primary)',
   '--teal-shadow-raised': '0 1px 2px rgba(0, 35, 36, 0.04), 0 10px 28px -18px rgba(0, 84, 84, 0.22)',
   '--teal-shadow-card': 'var(--teal-shadow-raised)',
   '--teal-shadow-overlay': '0 2px 6px rgba(0, 20, 21, 0.1), 0 20px 56px -20px rgba(0, 20, 21, 0.38)',
