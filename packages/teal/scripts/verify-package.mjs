@@ -79,7 +79,7 @@ async function verifyCompiledConsumer(consumer) {
     if (styles.badgeHeight !== '20px') throw new Error(`Compiled Badge height changed: ${styles.badgeHeight}`)
     if (styles.tabsHeight !== '44px') throw new Error(`Compiled Tabs height changed: ${styles.tabsHeight}`)
     if (styles.inputBackground === 'rgba(0, 0, 0, 0)') throw new Error('Compiled Input background is transparent')
-    if (styles.controlRadius !== '.5rem') throw new Error(`Compiled token value is incorrect: ${styles.controlRadius}`)
+    if (styles.controlRadius !== '.75rem') throw new Error(`Compiled token value is incorrect: ${styles.controlRadius}`)
     if (styles.genericBackground !== 'rgb(255, 0, 255)') {
       throw new Error(`Application utility did not retain its own primary color: ${styles.genericBackground}`)
     }
