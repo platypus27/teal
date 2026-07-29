@@ -5,14 +5,14 @@ import { IconButton } from './Button'
 import { cn } from './cn'
 
 const bannerVariants = cva(
-  'teal-u-flex teal-u-w-full teal-u-items-start teal-u-gap-3 teal-u-rounded-2xl teal-u-border teal-u-border-l-4 teal-u-p-4 teal-u-text-sm sm:teal-u-p-5',
+  'teal-u-flex teal-u-w-full teal-u-items-start teal-u-gap-3 teal-u-rounded-xl teal-u-border teal-u-p-4 teal-u-text-sm sm:teal-u-p-5',
   {
     variants: {
       variant: {
-        info: 'teal-u-border-primary/40 teal-u-border-l-primary teal-u-bg-primary/10 teal-u-text-on-surface',
-        success: 'teal-u-border-tertiary/40 teal-u-border-l-tertiary teal-u-bg-tertiary/10 teal-u-text-on-surface',
-        warning: 'teal-u-border-warning/40 teal-u-border-l-warning teal-u-bg-warning/10 teal-u-text-on-surface',
-        danger: 'teal-u-border-error/40 teal-u-border-l-error teal-u-bg-error/10 teal-u-text-on-surface',
+        info: 'teal-u-border-[color:color-mix(in_srgb,var(--teal-color-primary)_40%,var(--teal-color-surface))] teal-u-bg-[color:color-mix(in_srgb,var(--teal-color-primary)_12%,var(--teal-color-surface))] teal-u-text-on-surface',
+        success: 'teal-u-border-[color:color-mix(in_srgb,var(--teal-color-tertiary)_40%,var(--teal-color-surface))] teal-u-bg-[color:color-mix(in_srgb,var(--teal-color-tertiary)_12%,var(--teal-color-surface))] teal-u-text-on-surface',
+        warning: 'teal-u-border-[color:color-mix(in_srgb,var(--teal-color-warning)_45%,var(--teal-color-surface))] teal-u-bg-[color:color-mix(in_srgb,var(--teal-color-warning)_14%,var(--teal-color-surface))] teal-u-text-on-surface',
+        danger: 'teal-u-border-[color:color-mix(in_srgb,var(--teal-color-error)_40%,var(--teal-color-surface))] teal-u-bg-[color:color-mix(in_srgb,var(--teal-color-error)_12%,var(--teal-color-surface))] teal-u-text-on-surface',
       },
     },
     defaultVariants: { variant: 'info' },

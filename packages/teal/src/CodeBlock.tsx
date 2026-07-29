@@ -43,7 +43,7 @@ export const CodeBlock = forwardRef<HTMLDivElement, CodeBlockProps>(function Cod
     <div
       ref={ref}
       className={cn(
-        'teal-u-overflow-hidden teal-u-rounded-2xl teal-u-border teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-bg-[color:var(--teal-color-inverse-surface)] teal-u-text-[color:var(--teal-color-inverse-on-surface)]',
+        'teal-u-overflow-hidden teal-u-rounded-xl teal-u-border teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-bg-[color:var(--teal-color-inverse-surface)] teal-u-text-[color:var(--teal-color-inverse-on-surface)]',
         className,
       )}
       {...props}

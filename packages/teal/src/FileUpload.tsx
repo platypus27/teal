@@ -117,7 +117,7 @@ export function FileUpload({
         onDragLeave={() => setDragOver(false)}
         onDrop={handleDrop}
         className={cn(
-          'teal-u-grid teal-u-justify-items-center teal-u-gap-2 teal-u-rounded-2xl teal-u-border-2 teal-u-border-dashed teal-u-border-[color:var(--teal-border-subtle)] teal-u-p-6 teal-u-text-center teal-u-transition-colors teal-u-duration-[var(--teal-motion-fast)] motion-reduce:teal-u-transition-none',
+          'teal-u-grid teal-u-justify-items-center teal-u-gap-2 teal-u-rounded-xl teal-u-border-2 teal-u-border-dashed teal-u-border-[color:var(--teal-border-subtle)] teal-u-p-6 teal-u-text-center teal-u-transition-colors teal-u-duration-[var(--teal-motion-fast)] motion-reduce:teal-u-transition-none',
           dragOver && 'teal-u-border-primary teal-u-bg-primary/5',
           disabled && 'teal-u-opacity-55',
         )}

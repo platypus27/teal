@@ -21,8 +21,8 @@ export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(function
       className={cn(
         'teal-u-inline-flex [&_button]:teal-u-rounded-none',
         orientation === 'horizontal'
-          ? '-teal-u-space-x-px [&>:first-child]:teal-u-rounded-l-full [&>:last-child]:teal-u-rounded-r-full'
-          : 'teal-u-flex-col -teal-u-space-y-px [&>:first-child]:teal-u-rounded-t-full [&>:last-child]:teal-u-rounded-b-full',
+          ? '-teal-u-space-x-px [&>:first-child]:teal-u-rounded-l-xl [&>:last-child]:teal-u-rounded-r-xl'
+          : 'teal-u-flex-col -teal-u-space-y-px [&>:first-child]:teal-u-rounded-t-xl [&>:last-child]:teal-u-rounded-b-xl',
         className,
       )}
       {...props}

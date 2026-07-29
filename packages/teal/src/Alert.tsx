@@ -7,11 +7,11 @@ import { cn } from './cn'
 const alertVariants = cva('teal-raised-surface teal-u-flex teal-u-items-start teal-u-gap-3 teal-u-border teal-u-p-4 teal-u-text-sm teal-u-shadow-none', {
   variants: {
     variant: {
-      neutral: 'teal-u-border-outline-variant/70 teal-u-bg-surface-container-high teal-u-text-on-surface',
-      info: 'teal-u-border-primary/40 teal-u-bg-primary/10 teal-u-text-on-surface',
-      success: 'teal-u-border-tertiary/40 teal-u-bg-tertiary/10 teal-u-text-on-surface',
-      warning: 'teal-u-border-warning/40 teal-u-bg-warning/10 teal-u-text-on-surface',
-      danger: 'teal-u-border-error/40 teal-u-bg-error/10 teal-u-text-on-surface',
+      neutral: 'teal-u-border-outline-variant teal-u-bg-surface-container-high teal-u-text-on-surface',
+      info: 'teal-u-border-[color:color-mix(in_srgb,var(--teal-color-primary)_40%,var(--teal-color-surface))] teal-u-bg-[color:color-mix(in_srgb,var(--teal-color-primary)_12%,var(--teal-color-surface))] teal-u-text-on-surface',
+      success: 'teal-u-border-[color:color-mix(in_srgb,var(--teal-color-tertiary)_40%,var(--teal-color-surface))] teal-u-bg-[color:color-mix(in_srgb,var(--teal-color-tertiary)_12%,var(--teal-color-surface))] teal-u-text-on-surface',
+      warning: 'teal-u-border-[color:color-mix(in_srgb,var(--teal-color-warning)_45%,var(--teal-color-surface))] teal-u-bg-[color:color-mix(in_srgb,var(--teal-color-warning)_14%,var(--teal-color-surface))] teal-u-text-on-surface',
+      danger: 'teal-u-border-[color:color-mix(in_srgb,var(--teal-color-error)_40%,var(--teal-color-surface))] teal-u-bg-[color:color-mix(in_srgb,var(--teal-color-error)_12%,var(--teal-color-surface))] teal-u-text-on-surface',
     },
   },
   defaultVariants: { variant: 'info' },

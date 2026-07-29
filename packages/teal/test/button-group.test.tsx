@@ -29,8 +29,8 @@ describe('ButtonGroup', () => {
     const group = screen.getByRole('group')
     expect(group.className).toContain('[&_button]:teal-u-rounded-none')
     expect(group.className).toContain('-teal-u-space-x-px')
-    expect(group.className).toContain('[&>:first-child]:teal-u-rounded-l-full')
-    expect(group.className).toContain('[&>:last-child]:teal-u-rounded-r-full')
+    expect(group.className).toContain('[&>:first-child]:teal-u-rounded-l-xl')
+    expect(group.className).toContain('[&>:last-child]:teal-u-rounded-r-xl')
   })
 
   it('applies vertical stacking classes for orientation="vertical"', () => {
@@ -44,8 +44,8 @@ describe('ButtonGroup', () => {
     const group = screen.getByRole('group')
     expect(group.className).toContain('teal-u-flex-col')
     expect(group.className).toContain('-teal-u-space-y-px')
-    expect(group.className).toContain('[&>:first-child]:teal-u-rounded-t-full')
-    expect(group.className).toContain('[&>:last-child]:teal-u-rounded-b-full')
+    expect(group.className).toContain('[&>:first-child]:teal-u-rounded-t-xl')
+    expect(group.className).toContain('[&>:last-child]:teal-u-rounded-b-xl')
   })
 
   it('merges a caller className', () => {

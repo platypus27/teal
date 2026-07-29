@@ -127,7 +127,7 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(function T
               disabled={disabled}
               onClick={() => handlePeriod(option)}
               className={cn(
-                'teal-focus-ring teal-u-rounded-full teal-u-px-3 teal-u-py-1.5 teal-u-text-xs teal-u-font-semibold disabled:teal-u-cursor-not-allowed disabled:teal-u-opacity-55',
+                'teal-focus-ring teal-u-rounded-xl teal-u-px-3 teal-u-py-1.5 teal-u-text-xs teal-u-font-semibold disabled:teal-u-cursor-not-allowed disabled:teal-u-opacity-55',
                 period === option
                   ? 'teal-u-bg-primary teal-u-text-on-primary'
                   : 'teal-u-text-on-surface-variant hover:teal-u-bg-surface-container-high',

@@ -8,7 +8,7 @@ const secondaryActionClasses =
   'teal-u-box-border teal-u-border teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-bg-surface teal-u-shadow-sm hover:teal-u-border-[color:var(--teal-border-strong)] hover:teal-u-bg-surface-container-low'
 
 const buttonVariants = cva(
-  'teal-focus-ring teal-u-inline-flex teal-u-items-center teal-u-justify-center teal-u-gap-2 teal-u-whitespace-nowrap teal-u-rounded-full teal-u-font-bold active:teal-u-scale-[0.98] disabled:teal-u-pointer-events-none disabled:teal-u-opacity-55 motion-reduce:teal-u-transform-none',
+  'teal-focus-ring teal-u-inline-flex teal-u-items-center teal-u-justify-center teal-u-gap-2 teal-u-whitespace-nowrap teal-u-rounded-xl teal-u-font-bold active:teal-u-scale-[0.98] disabled:teal-u-pointer-events-none disabled:teal-u-opacity-55 motion-reduce:teal-u-transform-none',
   {
     variants: {
       variant: {
@@ -80,7 +80,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 })
 
 const iconButtonVariants = cva(
-  'teal-focus-ring teal-u-inline-flex teal-u-shrink-0 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-text-on-surface-variant active:teal-u-scale-95 disabled:teal-u-pointer-events-none disabled:teal-u-opacity-55 motion-reduce:teal-u-transform-none',
+  'teal-focus-ring teal-u-inline-flex teal-u-shrink-0 teal-u-items-center teal-u-justify-center teal-u-rounded-xl teal-u-text-on-surface-variant active:teal-u-scale-95 disabled:teal-u-pointer-events-none disabled:teal-u-opacity-55 motion-reduce:teal-u-transform-none',
   {
     variants: {
       variant: {
