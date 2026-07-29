@@ -10,6 +10,8 @@ import {
 } from './VerticalNav'
 
 export interface EcosystemRailHome {
+  /** Accessible destination name when the visible label is collapsed. */
+  ariaLabel?: string
   /** Marks Home as the current product. */
   current?: boolean
   /** URL of the stable Home destination. */
@@ -21,6 +23,8 @@ export interface EcosystemRailHome {
 }
 
 export interface EcosystemRailDestination {
+  /** Accessible destination name when the visible label is collapsed. */
+  ariaLabel?: string
   /** Marks this destination as the current product. */
   current?: boolean
   /** URL supplied by the consuming product. */
@@ -77,6 +81,7 @@ export function EcosystemRail({
         <VerticalNavSection label="Ecosystem">
           <VerticalNavItem
             active={home.current ?? false}
+            aria-label={home.ariaLabel ?? (typeof home.label === 'string' ? home.label : undefined)}
             href={home.href}
             icon={home.icon}
             onClick={reportNavigation('home')}
@@ -87,6 +92,10 @@ export function EcosystemRail({
             <VerticalNavItem
               key={destination.id}
               active={destination.current ?? false}
+              aria-label={
+                destination.ariaLabel
+                ?? (typeof destination.label === 'string' ? destination.label : undefined)
+              }
               href={destination.href}
               icon={destination.icon}
               onClick={reportNavigation(destination.id)}

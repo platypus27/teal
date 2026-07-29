@@ -38,6 +38,8 @@ describe('ecosystem modules', () => {
       ])
       expect(screen.queryByRole('link', { name: /Trict/ })).not.toBeInTheDocument()
       expect(screen.getByRole('link', { name: /Home/ })).toHaveAttribute('aria-current', 'page')
+      expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('aria-label', 'Home')
+      expect(screen.getByRole('link', { name: 'Yang' })).toHaveAttribute('aria-label', 'Yang')
       expect(screen.getByText('Degraded')).toBeInTheDocument()
     })
 
