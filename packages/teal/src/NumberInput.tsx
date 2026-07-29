@@ -113,7 +113,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(functi
   const atMin = number !== undefined && min !== undefined && number <= min
 
   const stepperClasses =
-    'teal-focus-ring teal-u-inline-flex teal-u-size-4 teal-u-items-center teal-u-justify-center teal-u-rounded teal-u-text-on-surface-variant hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface disabled:teal-u-pointer-events-none disabled:teal-u-opacity-40 [&_svg]:teal-u-size-3'
+    'teal-focus-ring teal-u-inline-flex teal-u-size-4 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-text-on-surface-variant hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface disabled:teal-u-pointer-events-none disabled:teal-u-opacity-40 [&_svg]:teal-u-size-3'
 
   return (
     <div className={cn('teal-u-grid teal-u-gap-1.5', className)}>

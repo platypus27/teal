@@ -61,7 +61,7 @@ export const sharedTokens = {
   '--teal-font-headline': "'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif",
   /* Radius scale: controls and boxes share the control radius (0.75rem); nested
      items inside padded containers use concentric 0.5rem; pill is reserved for
-     tags and avatars (Badge, Chip, Avatar, NavRail). */
+     icon-only controls (IconButton and friends), tags, and avatars. */
   '--teal-radius-control': '0.75rem',
   '--teal-radius-surface': '0.75rem',
   '--teal-radius-pill': '9999px',

@@ -80,7 +80,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 })
 
 const iconButtonVariants = cva(
-  'teal-focus-ring teal-u-inline-flex teal-u-shrink-0 teal-u-items-center teal-u-justify-center teal-u-rounded-xl teal-u-text-on-surface-variant active:teal-u-scale-95 disabled:teal-u-pointer-events-none disabled:teal-u-opacity-55 motion-reduce:teal-u-transform-none',
+  'teal-focus-ring teal-u-inline-flex teal-u-shrink-0 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-text-on-surface-variant active:teal-u-scale-95 disabled:teal-u-pointer-events-none disabled:teal-u-opacity-55 motion-reduce:teal-u-transform-none',
   {
     variants: {
       variant: {

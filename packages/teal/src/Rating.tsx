@@ -108,7 +108,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
           aria-label={`${index} star${index > 1 ? 's' : ''}`}
           tabIndex={index === tabStop ? 0 : -1}
           onClick={() => commit(index)}
-          className="teal-focus-ring teal-u-inline-flex teal-u-items-center teal-u-justify-center teal-u-rounded-xl teal-u-p-0.5 hover:teal-u-bg-surface-container-high"
+          className="teal-focus-ring teal-u-inline-flex teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-p-0.5 hover:teal-u-bg-surface-container-high"
         >
           {renderStar(index, index <= rating)}
         </button>

@@ -41,7 +41,7 @@ export function Tooltip({ children, className, content, delayDuration, side = 't
           side={side}
           sideOffset={6}
           className={cn(
-            'teal-popper-content teal-u-box-border teal-u-z-[var(--teal-z-tooltip)] teal-u-max-w-xs teal-u-rounded-lg teal-u-border teal-u-border-solid teal-u-border-inverse-on-surface/15 teal-u-px-2.5 teal-u-py-1.5 teal-u-text-xs teal-u-font-medium teal-u-shadow-overlay motion-reduce:teal-u-transition-none',
+            'teal-popper-content teal-u-box-border teal-u-z-[var(--teal-z-tooltip)] teal-u-max-w-xs teal-u-rounded-full teal-u-border teal-u-border-solid teal-u-border-inverse-on-surface/15 teal-u-px-2.5 teal-u-py-1.5 teal-u-text-xs teal-u-font-medium teal-u-shadow-overlay motion-reduce:teal-u-transition-none',
             'teal-u-bg-inverse-surface teal-u-text-inverse-on-surface',
             className,
           )}
