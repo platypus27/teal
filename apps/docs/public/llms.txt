@@ -11,19 +11,31 @@
 ## Modules
 
 - [Button](/modules/button) (Actions): Actions with consistent hierarchy, sizing, loading, and accessible icon treatment.
+- [Button Group](/modules/button-group) (Actions): An attached cluster of related actions with hairline seams and shared corner radius.
+- [Segmented Control](/modules/segmented-control) (Actions): A mutually exclusive option switcher with a sliding selection pill.
+- [Link](/modules/link) (Actions): Themed inline and standalone links with an external indicator.
 - [Field](/modules/field) (Forms): A deep form seam that connects labels, descriptions, errors, and required state.
 - [Input and TextArea](/modules/input) (Forms): Native text controls with Teal sizing, invalid states, and forwarded refs.
 - [Select](/modules/select) (Forms): An accessible single-value picker with keyboard navigation, typeahead, and collision-aware positioning.
 - [Checkbox](/modules/checkbox) (Forms): Boolean and indeterminate selection with an integrated label and description.
 - [Switch](/modules/switch) (Forms): An immediate boolean setting with explicit labeling and controlled or uncontrolled state.
+- [Radio Group](/modules/radio-group) (Forms): A single-choice option set with an integrated label, description, and subtle borders.
+- [Slider](/modules/slider) (Forms): A numeric value scrubber with an optional live value readout.
+- [Search Input](/modules/search-input) (Forms): A text field with a leading search affordance, clear action, and loading state.
+- [Combobox](/modules/combobox) (Forms): A filterable single-value picker combining free text with a suggestion list.
 - [Card](/modules/card) (Surfaces): A structural surface for related content without ambiguous interactive behavior.
 - [Launcher Card](/modules/launcher-card) (Surfaces): An interactive application destination card with an icon, description, optional status, and an honest unavailable state.
 - [Badge](/modules/badge) (Surfaces): A compact semantic status indicator using canonical information variants.
 - [Accordion](/modules/accordion) (Surfaces): A stacked disclosure list with single and multi-open modes driven by a compact item interface.
+- [Chip](/modules/chip) (Surfaces): A compact filter or selection token with an optional remove affordance.
+- [Kbd](/modules/kbd) (Surfaces): An inline keyboard shortcut hint with a raised keycap treatment.
+- [Scroll Area](/modules/scroll-area) (Surfaces): A scrollable region with styled, theme-consistent scrollbars.
 - [Dialog](/modules/dialog) (Overlays): A modal surface that owns focus management, naming, dismissal, and scroll locking.
 - [Tooltip](/modules/tooltip) (Overlays): A short contextual hint with accessible trigger association and collision handling.
 - [Menu](/modules/menu) (Overlays): A structured action menu with keyboard navigation, disabled items, icons, and danger styling.
 - [Popover](/modules/popover) (Overlays): An anchored surface for arbitrary controls and supplemental content.
+- [Drawer](/modules/drawer) (Overlays): A slide-over panel for focused side tasks, built on the dialog focus model.
+- [Hover Card](/modules/hover-card) (Overlays): A rich preview surface revealed on hover or focus, for context without navigation.
 - [Toast](/modules/toast) (Feedback): Imperative, announced feedback with semantic variants, optional actions, and dismissal.
 - [Empty State](/modules/empty-state) (Feedback): An explanatory empty result with an optional action and SVG icon.
 - [Loading](/modules/loading) (Feedback): Named progress and loading treatments for local, skeleton, and full-surface states.
@@ -31,6 +43,7 @@
 - [Notification Item](/modules/notification-item) (Feedback): A sanitized ecosystem inbox row with severity, source application, read state, deep link, and delivery-state controls.
 - [Health Indicator](/modules/health-indicator) (Feedback): An explicit ecosystem health status that reports unknown and stale evidence instead of implying health.
 - [Step-Up Notice](/modules/step-up-notice) (Feedback): An inline warning that explains a required fresh verification and hosts the caller’s verification action.
+- [Banner](/modules/banner) (Feedback): A page-level notice strip for workspace-wide feedback that owns the top of a view.
 - [App Switcher](/modules/app-switcher) (Navigation): An entitlement-filtered application switcher with an explicit Home destination and keyboard navigation.
 - [Account Menu](/modules/account-menu) (Navigation): A household account menu with an identity header, product items, and distinct app and SSO sign-out actions.
 - [Tabs](/modules/tabs) (Navigation): Keyboard-navigable content switching through a compact item interface.
@@ -39,10 +52,12 @@
 - [Vertical Nav](/modules/vertical-nav) (Navigation): A compound vertical navigation with icon-rail and full-text modes.
 - [Top Bar](/modules/top-bar) (Navigation): A sticky top bar with brand, search, and action slots.
 - [Breadcrumb](/modules/breadcrumb) (Navigation): A hierarchical trail with router-ready items and automatic middle-item collapse.
+- [Steps](/modules/steps) (Navigation): A numbered flow indicator with done, current, and upcoming states.
 - [Permission Matrix](/modules/permission-matrix) (Data): A people-by-applications access matrix with caller-supplied cell content and explicit no-access cells.
 - [Table](/modules/table) (Data): Accessible data presentation driven by column definitions, density, loading, and empty state.
 - [Separator](/modules/separator) (Data): A semantic or decorative divider for related content.
 - [Avatar](/modules/avatar) (Data): A compact identity image with initials and icon fallbacks.
+- [Description List](/modules/description-list) (Data): A label/value definition list for detail pages, stacked or two-column.
 
 ## Patterns
 

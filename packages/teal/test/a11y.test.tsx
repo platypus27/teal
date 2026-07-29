@@ -8,20 +8,29 @@ import {
   AppSwitcher,
   Avatar,
   Badge,
+  Banner,
   Breadcrumb,
   Button,
+  ButtonGroup,
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   Checkbox,
+  Chip,
+  Combobox,
+  DescriptionList,
   Dialog,
+  Drawer,
   EmptyState,
   Field,
   HealthIndicator,
+  HoverCard,
   IconButton,
   Input,
+  Kbd,
   LauncherCard,
+  Link,
   LoadingState,
   Menu,
   NotificationItem,
@@ -30,11 +39,17 @@ import {
   PermissionMatrix,
   Popover,
   Progress,
+  RadioGroup,
+  ScrollArea,
+  SearchInput,
+  SegmentedControl,
   Select,
   Separator,
   Skeleton,
+  Slider,
   Spinner,
   StepUpNotice,
+  Steps,
   Switch,
   Table,
   Tabs,
@@ -571,6 +586,91 @@ describe('axe: catalog expansion', () => {
           { value: 'three', title: 'Locked', content: 'Hidden panel', disabled: true },
         ]}
       />,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+})
+
+describe('axe: second catalog expansion', () => {
+  it('new form controls have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <RadioGroup
+          label="Home region"
+          defaultValue="eu"
+          options={[
+            { value: 'eu', label: 'Europe (Frankfurt)' },
+            { value: 'us', label: 'United States (Virginia)' },
+          ]}
+        />
+        <Slider label="Notification volume" defaultValue={[60]} showValue />
+        <SearchInput label="Search projects" defaultValue="orion" />
+        <Combobox
+          label="Assignee"
+          options={[
+            { value: 'avery', label: 'Avery Chen' },
+            { value: 'morgan', label: 'Morgan Reyes' },
+          ]}
+        />
+        <Chip label="Active only" selected onRemove={() => {}} />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new actions and display modules have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <ButtonGroup>
+          <Button variant="secondary">Day</Button>
+          <Button variant="secondary">Week</Button>
+        </ButtonGroup>
+        <SegmentedControl
+          aria-label="Billing period"
+          defaultValue="monthly"
+          options={[
+            { value: 'monthly', label: 'Monthly' },
+            { value: 'yearly', label: 'Yearly' },
+          ]}
+        />
+        <p>
+          Read the <Link href="/docs">documentation</Link> or visit the{' '}
+          <Link href="https://status.example" external>
+            status page
+          </Link>
+          . Save with <Kbd>Ctrl</Kbd> + <Kbd>S</Kbd>.
+        </p>
+        <DescriptionList
+          items={[
+            { label: 'Owner', value: 'Avery Chen' },
+            { label: 'Created', value: 'March 4, 2026' },
+          ]}
+        />
+        <Steps current={1} steps={[{ label: 'Workspace' }, { label: 'Members' }, { label: 'Review' }]} />
+        <Banner variant="warning" title="Scheduled maintenance">
+          The workspace is read-only on Saturday.
+        </Banner>
+        <Banner variant="danger" title="Sign-in blocked" onDismiss={() => {}}>
+          We stopped a sign-in attempt.
+        </Banner>
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new overlay modules have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <Drawer open onOpenChange={() => {}} title="Project settings">
+          <p>Drawer body content.</p>
+        </Drawer>
+        <HoverCard trigger={<button type="button">@avery</button>} openDelay={0} closeDelay={0}>
+          <p>Avery Chen, workspace owner.</p>
+        </HoverCard>
+        <ScrollArea maxHeight="8rem">
+          <p>Scrollable content region.</p>
+        </ScrollArea>
+      </>,
     )
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
   })

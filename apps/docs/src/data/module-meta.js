@@ -23,6 +23,58 @@ export const moduleGroups = [
           },
         ],
       },
+      {
+        id: 'button-group',
+        name: 'Button Group',
+        apiNames: ['ButtonGroup'],
+        imports: ['ButtonGroup', 'Button'],
+        description: 'An attached cluster of related actions with hairline seams and shared corner radius.',
+        usage: `<ButtonGroup>
+  <Button variant="secondary">Day</Button>
+  <Button variant="secondary">Week</Button>
+  <Button variant="secondary">Month</Button>
+</ButtonGroup>`,
+        examples: [
+          {
+            title: 'Attached actions',
+            description: 'Buttons butt together with shared seams; vertical stacks work too.',
+          },
+        ],
+      },
+      {
+        id: 'segmented-control',
+        name: 'Segmented Control',
+        apiNames: ['SegmentedControl'],
+        description: 'A mutually exclusive option switcher with a sliding selection pill.',
+        usage: `<SegmentedControl
+  aria-label="Billing period"
+  defaultValue="monthly"
+  options={[
+    { value: 'monthly', label: 'Monthly' },
+    { value: 'yearly', label: 'Yearly' },
+  ]}
+/>`,
+        examples: [
+          {
+            title: 'View switcher',
+            description: 'A measured pill slides behind the active option, honoring reduced motion.',
+          },
+        ],
+      },
+      {
+        id: 'link',
+        name: 'Link',
+        apiNames: ['Link'],
+        description: 'Themed inline and standalone links with an external indicator.',
+        usage: `<Link href="/projects">View projects</Link>
+<Link href="https://status.example" external>Status page</Link>`,
+        examples: [
+          {
+            title: 'Inline and external',
+            description: 'Inline links underline within prose; external links open a new tab with an icon.',
+          },
+        ],
+      },
     ],
   },
   {
@@ -109,6 +161,71 @@ export const moduleGroups = [
           },
         ],
       },
+      {
+        id: 'radio-group',
+        name: 'Radio Group',
+        apiNames: ['RadioGroup'],
+        description: 'A single-choice option set with an integrated label, description, and subtle borders.',
+        usage: `<RadioGroup
+  label="Home region"
+  defaultValue="eu"
+  options={[
+    { value: 'eu', label: 'Europe (Frankfurt)' },
+    { value: 'us', label: 'United States (Virginia)' },
+  ]}
+/>`,
+        examples: [
+          {
+            title: 'Single choice',
+            description: 'Keyboard arrows move and select within the group following the roving-focus pattern.',
+          },
+        ],
+      },
+      {
+        id: 'slider',
+        name: 'Slider',
+        apiNames: ['Slider'],
+        description: 'A numeric value scrubber with an optional live value readout.',
+        usage: '<Slider label="Notification volume" defaultValue={[60]} showValue />',
+        examples: [
+          {
+            title: 'Value selection',
+            description: 'Pointer and keyboard both adjust the value; showValue mirrors it as text.',
+          },
+        ],
+      },
+      {
+        id: 'search-input',
+        name: 'Search Input',
+        apiNames: ['SearchInput'],
+        description: 'A text field with a leading search affordance, clear action, and loading state.',
+        usage: '<SearchInput label="Search projects" placeholder="Name or owner…" />',
+        examples: [
+          {
+            title: 'Clearable search',
+            description: 'The clear button appears once the field has a value; loading swaps in a spinner.',
+          },
+        ],
+      },
+      {
+        id: 'combobox',
+        name: 'Combobox',
+        apiNames: ['Combobox'],
+        description: 'A filterable single-value picker combining free text with a suggestion list.',
+        usage: `<Combobox
+  label="Assignee"
+  options={[
+    { value: 'avery', label: 'Avery Chen' },
+    { value: 'morgan', label: 'Morgan Reyes' },
+  ]}
+/>`,
+        examples: [
+          {
+            title: 'Filter and select',
+            description: 'Type to filter, arrows to highlight, Enter to select; Escape keeps the current value.',
+          },
+        ],
+      },
     ],
   },
   {
@@ -188,6 +305,47 @@ export const moduleGroups = [
           {
             title: 'Single-open',
             description: 'At most one item is open, and the open item can be collapsed again.',
+          },
+        ],
+      },
+      {
+        id: 'chip',
+        name: 'Chip',
+        apiNames: ['Chip'],
+        description: 'A compact filter or selection token with an optional remove affordance.',
+        usage: `<Chip label="Active only" selected onRemove={() => undefined} />`,
+        examples: [
+          {
+            title: 'Removable filters',
+            description: 'Selected chips tint primary; the remove button is labeled from the chip text.',
+          },
+        ],
+      },
+      {
+        id: 'kbd',
+        name: 'Kbd',
+        apiNames: ['Kbd'],
+        description: 'An inline keyboard shortcut hint with a raised keycap treatment.',
+        usage: 'Save with <Kbd>Ctrl</Kbd> + <Kbd>S</Kbd>',
+        examples: [
+          {
+            title: 'Shortcut hints',
+            description: 'Kbd scales with surrounding text through em-based sizing.',
+          },
+        ],
+      },
+      {
+        id: 'scroll-area',
+        name: 'Scroll Area',
+        apiNames: ['ScrollArea'],
+        description: 'A scrollable region with styled, theme-consistent scrollbars.',
+        usage: `<ScrollArea maxHeight="16rem">
+  <LongList />
+</ScrollArea>`,
+        examples: [
+          {
+            title: 'Bounded lists',
+            description: 'Cap the height and the custom scrollbar appears only while scrolling is possible.',
           },
         ],
       },
@@ -282,6 +440,43 @@ export const moduleGroups = [
           {
             title: 'Filter panel',
             description: 'Popover anchors interactive content to a trigger with collision-aware placement.',
+          },
+        ],
+      },
+      {
+        id: 'drawer',
+        name: 'Drawer',
+        apiNames: ['Drawer'],
+        imports: ['Drawer', 'Button'],
+        description: 'A slide-over panel for focused side tasks, built on the dialog focus model.',
+        usage: `<Drawer
+  open={open}
+  onOpenChange={setOpen}
+  title="Project settings"
+  side="right"
+>
+  <SettingsForm />
+</Drawer>`,
+        examples: [
+          {
+            title: 'Side panel',
+            description: 'The drawer slides from either edge and traps focus like a dialog.',
+          },
+        ],
+      },
+      {
+        id: 'hover-card',
+        name: 'Hover Card',
+        apiNames: ['HoverCard'],
+        imports: ['HoverCard', 'Link'],
+        description: 'A rich preview surface revealed on hover or focus, for context without navigation.',
+        usage: `<HoverCard trigger={<Link href="/projects/orion">Orion</Link>}>
+  <ProjectSummary />
+</HoverCard>`,
+        examples: [
+          {
+            title: 'Preview on hover',
+            description: 'Delays are tunable; keyboard focus opens the card too.',
           },
         ],
       },
@@ -428,6 +623,22 @@ toast({ title: 'Changes saved', variant: 'success' })`,
           {
             title: 'Dismissible',
             description: 'Pass onDismiss when the notice is informational rather than blocking.',
+          },
+        ],
+      },
+      {
+        id: 'banner',
+        name: 'Banner',
+        apiNames: ['Banner'],
+        imports: ['Banner', 'Button'],
+        description: 'A page-level notice strip for workspace-wide feedback that owns the top of a view.',
+        usage: `<Banner variant="warning" title="Scheduled maintenance">
+  The workspace is read-only on Saturday, 02:00–03:00 UTC.
+</Banner>`,
+        examples: [
+          {
+            title: 'Page-level feedback',
+            description: 'A stronger accent than Alert, for notices that apply to the whole view.',
           },
         ],
       },
@@ -602,6 +813,26 @@ toast({ title: 'Changes saved', variant: 'success' })`,
           },
         ],
       },
+      {
+        id: 'steps',
+        name: 'Steps',
+        apiNames: ['Steps'],
+        description: 'A numbered flow indicator with done, current, and upcoming states.',
+        usage: `<Steps
+  current={1}
+  steps={[
+    { label: 'Workspace' },
+    { label: 'Members' },
+    { label: 'Review' },
+  ]}
+/>`,
+        examples: [
+          {
+            title: 'Flow progress',
+            description: 'Completed steps can be clickable; the current step sets aria-current.',
+          },
+        ],
+      },
     ],
   },
   {
@@ -681,6 +912,24 @@ toast({ title: 'Changes saved', variant: 'success' })`,
           },
         ],
       },
+      {
+        id: 'description-list',
+        name: 'Description List',
+        apiNames: ['DescriptionList'],
+        description: 'A label/value definition list for detail pages, stacked or two-column.',
+        usage: `<DescriptionList
+  items={[
+    { label: 'Owner', value: 'Avery Chen' },
+    { label: 'Created', value: 'March 4, 2026' },
+  ]}
+/>`,
+        examples: [
+          {
+            title: 'Detail summary',
+            description: 'Real dl markup; grid layout splits into two columns on wider screens.',
+          },
+        ],
+      },
     ],
   },
 ]
@@ -715,6 +964,21 @@ const additionalExamples = {
   table: [{ title: 'Loading rows', description: 'Skeleton rows stand in for data while loading; the region is marked busy and announced through loadingLabel.' }],
   separator: [{ title: 'Vertical grouping', description: 'Use a vertical separator only when adjacent controls form one horizontal group.' }],
   avatar: [{ title: 'Fallbacks', description: 'Initials replace a missing or failed image; a generic icon covers unnamed users.' }],
+  'button-group': [{ title: 'Vertical cluster', description: 'Use vertical orientation when the actions stack in a narrow panel.' }],
+  'segmented-control': [{ title: 'Compact periods', description: 'The small size keeps dense toolbars scannable.' }],
+  link: [{ title: 'Standalone navigation', description: 'Use the standalone variant outside prose, where underline-on-hover signals the affordance.' }],
+  'radio-group': [{ title: 'Horizontal options', description: 'Use horizontal orientation for two or three short options.' }],
+  slider: [{ title: 'Bounded ranges', description: 'Set min, max, and step when the meaningful range is narrower than 0–100.' }],
+  'search-input': [{ title: 'Loading results', description: 'The loading state replaces the clear action while results refresh.' }],
+  combobox: [{ title: 'Disabled options', description: 'Options can be disabled with an explanatory empty message for no matches.' }],
+  chip: [{ title: 'Locked filters', description: 'Disabled chips communicate filters managed elsewhere.' }],
+  kbd: [{ title: 'Combinations', description: 'Join keys with plain-text separators for multi-key shortcuts.' }],
+  'scroll-area': [{ title: 'Panel lists', description: 'Pair with a fixed maxHeight so the page itself keeps its own scroll.' }],
+  drawer: [{ title: 'Left edge', description: 'Use side="left" when the panel continues a left-side navigation context.' }],
+  'hover-card': [{ title: 'Identity preview', description: 'Show a person or project summary without leaving the list.' }],
+  banner: [{ title: 'Dismissible notices', description: 'Pass onDismiss for notices the user can clear for the session.' }],
+  steps: [{ title: 'Clickable completed steps', description: 'Allow returning to completed steps with onStepClick.' }],
+  'description-list': [{ title: 'Two-column details', description: 'Use the grid layout for wider detail panels.' }],
 }
 
 for (const module of modules) {
@@ -757,6 +1021,21 @@ const guidanceById = {
   table: { useWhen: 'Rows and columns are the clearest way to compare records.', avoidWhen: 'The content is a single object or needs a narrative layout.', behavior: 'Columns own rendering and rows require stable keys.', responsive: 'Keep the table readable with horizontal scrolling or a deliberate compact projection.' },
   separator: { useWhen: 'Related groups need a clear visual or semantic boundary.', avoidWhen: 'Spacing alone communicates hierarchy.', behavior: 'Use decorative mode when the divider carries no document meaning.', responsive: 'Prefer horizontal separators in stacked mobile layouts.' },
   avatar: { useWhen: 'A person or entity needs a compact visual identity.', avoidWhen: 'The image carries information beyond identity and needs a caption.', behavior: 'Falls back from image to initials to a generic icon; alt text defaults to the name.', responsive: 'Pick one size per context and keep it fixed across breakpoints.' },
+  'button-group': { useWhen: 'Two to four tightly related actions belong to one decision.', avoidWhen: 'The actions are unrelated or need distinct visual priority; space them normally.', behavior: 'Seams collapse to hairlines and only the outer corners keep their radius.', responsive: 'Let the cluster wrap or switch to vertical orientation on narrow screens.' },
+  'segmented-control': { useWhen: 'Users switch one setting between a few mutually exclusive options.', avoidWhen: 'Options navigate to different views; use Tabs, or toggle independent flags with Checkbox.', behavior: 'A measured pill slides behind the active option and the group behaves as radiogroup semantics.', responsive: 'Keep option labels short so the control never wraps.' },
+  link: { useWhen: 'Navigation happens inline in prose or as a lightweight standalone action.', avoidWhen: 'The affordance performs an action; use Button instead.', behavior: 'External links open a new tab with rel="noreferrer" and an indicator icon.', responsive: 'Let inline links wrap naturally with their surrounding text.' },
+  'radio-group': { useWhen: 'Users pick exactly one option from a small visible set.', avoidWhen: 'The list is long or needs filtering; use Select or Combobox.', behavior: 'Arrow keys move and select within the group; the label is wired through aria-labelledby.', responsive: 'Switch to horizontal orientation only when labels stay on one line.' },
+  slider: { useWhen: 'A value inside a known range is more natural to scrub than to type.', avoidWhen: 'Precision matters more than speed; pair with or use Input instead.', behavior: 'Pointer and keyboard adjust the value and showValue mirrors it live.', responsive: 'The track fills its container width, so constrain it in the layout.' },
+  'search-input': { useWhen: 'A field exists specifically to query a collection.', avoidWhen: 'The input is general-purpose text entry; use Input.', behavior: 'The clear action appears only with a value, and loading swaps it for a spinner.', responsive: 'Icons stay pinned inside the field at any width.' },
+  combobox: { useWhen: 'Users choose one value from a list long enough to need filtering.', avoidWhen: 'The list is short; use Select, or the value is free text; use Input.', behavior: 'Typing filters, arrows highlight, Enter selects, Escape preserves the current value.', responsive: 'The suggestion list matches the field width and collision-handles vertically.' },
+  chip: { useWhen: 'Active filters or selections need compact, removable tokens.', avoidWhen: 'The status is informational only; use Badge.', behavior: 'The remove action is labeled from the chip text for screen readers.', responsive: 'Chips wrap in rows; keep labels to one or two words.' },
+  kbd: { useWhen: 'A keyboard shortcut is referenced in help or onboarding copy.', avoidWhen: 'The key is part of a form value; use plain text.', behavior: 'Sizing is em-based so the keycap scales with its context.', responsive: 'Keep combinations short; wrap groups of keys with separators as text.' },
+  'scroll-area': { useWhen: 'A panel needs a bounded height with theme-consistent scrollbars.', avoidWhen: 'The page itself should scroll; do not nest page-level scrolling.', behavior: 'The custom thumb appears over a transparent track only where scrolling is possible.', responsive: 'Set maxHeight in relative units so the region adapts to viewport height.' },
+  drawer: { useWhen: 'A focused side task needs more room than a dialog but should not navigate away.', avoidWhen: 'The task is a simple confirmation; use Dialog.', behavior: 'Focus is trapped and restored, Escape dismisses, and the panel slides from the chosen edge.', responsive: 'The default width caps at the viewport; forms inside own their own scroll.' },
+  'hover-card': { useWhen: 'Rich preview context helps before committing to navigation.', avoidWhen: 'The content is a short hint; use Tooltip, or must be interacted with on touch; use Popover.', behavior: 'Hover and keyboard focus open the card after a tunable delay.', responsive: 'Provide the same content through another path on touch layouts.' },
+  banner: { useWhen: 'Feedback applies to the entire view, not one field or task.', avoidWhen: 'The message is local to a control or a transient confirmation; use Field, Alert, or Toast.', behavior: 'Danger renders role="alert" for immediate announcement; other variants render role="status".', responsive: 'The action wraps beneath the message on narrow screens.' },
+  steps: { useWhen: 'A flow has a clear sequence and the user benefits from seeing progress.', avoidWhen: 'Steps are independent views; use Tabs or navigation.', behavior: 'The current step sets aria-current and completed steps can be made clickable.', responsive: 'Steps wrap with their labels on narrow screens; keep labels short.' },
+  'description-list': { useWhen: 'A detail view lists labeled values for one entity.', avoidWhen: 'Records need column comparison; use Table.', behavior: 'Real dl/dt/dd markup keeps the relationship semantic.', responsive: 'Stacked layout is default; grid splits to two columns on wider screens.' },
 }
 
 export const moduleGuidance = Object.fromEntries(

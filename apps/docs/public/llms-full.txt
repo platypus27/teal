@@ -284,6 +284,315 @@ export function ButtonDemo() {
 
 ---
 
+# Button Group
+
+An attached cluster of related actions with hairline seams and shared corner radius.
+
+## Usage
+
+```js
+import { ButtonGroup, Button } from '@kryv/teal'
+```
+
+```jsx
+<ButtonGroup>
+  <Button variant="secondary">Day</Button>
+  <Button variant="secondary">Week</Button>
+  <Button variant="secondary">Month</Button>
+</ButtonGroup>
+```
+
+## Design guidance
+
+### Use when
+
+Two to four tightly related actions belong to one decision.
+### Avoid when
+
+The actions are unrelated or need distinct visual priority; space them normally.
+### Behavior
+
+Seams collapse to hairlines and only the outer corners keep their radius.
+### Responsive
+
+Let the cluster wrap or switch to vertical orientation on narrow screens.
+
+## Examples
+
+### Attached actions
+
+Buttons butt together with shared seams; vertical stacks work too.
+
+```jsx
+import { Button, ButtonGroup } from '@kryv/teal'
+
+export function ButtonGroupDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <ButtonGroup orientation="vertical">
+        <Button variant="secondary">Project settings</Button>
+        <Button variant="secondary">Members</Button>
+        <Button variant="secondary">Danger zone</Button>
+      </ButtonGroup>
+    )
+  }
+
+  return (
+    <ButtonGroup>
+      <Button variant="secondary">Day</Button>
+      <Button variant="secondary">Week</Button>
+      <Button variant="secondary">Month</Button>
+    </ButtonGroup>
+  )
+}
+```
+
+### Vertical cluster
+
+Use vertical orientation when the actions stack in a narrow panel.
+
+```jsx
+import { Button, ButtonGroup } from '@kryv/teal'
+
+export function ButtonGroupDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <ButtonGroup orientation="vertical">
+        <Button variant="secondary">Project settings</Button>
+        <Button variant="secondary">Members</Button>
+        <Button variant="secondary">Danger zone</Button>
+      </ButtonGroup>
+    )
+  }
+
+  return (
+    <ButtonGroup>
+      <Button variant="secondary">Day</Button>
+      <Button variant="secondary">Week</Button>
+      <Button variant="secondary">Month</Button>
+    </ButtonGroup>
+  )
+}
+```
+
+---
+
+# Segmented Control
+
+A mutually exclusive option switcher with a sliding selection pill.
+
+## Usage
+
+```js
+import { SegmentedControl } from '@kryv/teal'
+```
+
+```jsx
+<SegmentedControl
+  aria-label="Billing period"
+  defaultValue="monthly"
+  options={[
+    { value: 'monthly', label: 'Monthly' },
+    { value: 'yearly', label: 'Yearly' },
+  ]}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+Users switch one setting between a few mutually exclusive options.
+### Avoid when
+
+Options navigate to different views; use Tabs, or toggle independent flags with Checkbox.
+### Behavior
+
+A measured pill slides behind the active option and the group behaves as radiogroup semantics.
+### Responsive
+
+Keep option labels short so the control never wraps.
+
+## Examples
+
+### View switcher
+
+A measured pill slides behind the active option, honoring reduced motion.
+
+```jsx
+import { SegmentedControl } from '@kryv/teal'
+import { CalendarDays, KanbanSquare, List } from 'lucide-react'
+
+export function SegmentedControlDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <SegmentedControl
+        aria-label="Billing period"
+        size="sm"
+        defaultValue="monthly"
+        options={[
+          { value: 'weekly', label: 'Weekly' },
+          { value: 'monthly', label: 'Monthly' },
+          { value: 'yearly', label: 'Yearly' },
+        ]}
+      />
+    )
+  }
+
+  return (
+    <SegmentedControl
+      aria-label="Project view"
+      defaultValue="board"
+      options={[
+        { value: 'list', label: 'List', icon: <List /> },
+        { value: 'board', label: 'Board', icon: <KanbanSquare /> },
+        { value: 'calendar', label: 'Calendar', icon: <CalendarDays />, disabled: true },
+      ]}
+    />
+  )
+}
+```
+
+### Compact periods
+
+The small size keeps dense toolbars scannable.
+
+```jsx
+import { SegmentedControl } from '@kryv/teal'
+import { CalendarDays, KanbanSquare, List } from 'lucide-react'
+
+export function SegmentedControlDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <SegmentedControl
+        aria-label="Billing period"
+        size="sm"
+        defaultValue="monthly"
+        options={[
+          { value: 'weekly', label: 'Weekly' },
+          { value: 'monthly', label: 'Monthly' },
+          { value: 'yearly', label: 'Yearly' },
+        ]}
+      />
+    )
+  }
+
+  return (
+    <SegmentedControl
+      aria-label="Project view"
+      defaultValue="board"
+      options={[
+        { value: 'list', label: 'List', icon: <List /> },
+        { value: 'board', label: 'Board', icon: <KanbanSquare /> },
+        { value: 'calendar', label: 'Calendar', icon: <CalendarDays />, disabled: true },
+      ]}
+    />
+  )
+}
+```
+
+---
+
+# Link
+
+Themed inline and standalone links with an external indicator.
+
+## Usage
+
+```js
+import { Link } from '@kryv/teal'
+```
+
+```jsx
+<Link href="/projects">View projects</Link>
+<Link href="https://status.example" external>Status page</Link>
+```
+
+## Design guidance
+
+### Use when
+
+Navigation happens inline in prose or as a lightweight standalone action.
+### Avoid when
+
+The affordance performs an action; use Button instead.
+### Behavior
+
+External links open a new tab with rel="noreferrer" and an indicator icon.
+### Responsive
+
+Let inline links wrap naturally with their surrounding text.
+
+## Examples
+
+### Inline and external
+
+Inline links underline within prose; external links open a new tab with an icon.
+
+```jsx
+import { Link } from '@kryv/teal'
+
+export function LinkDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Link href="#" variant="standalone">
+        View all projects
+      </Link>
+    )
+  }
+
+  if (exampleIndex === 2) {
+    return (
+      <Link href="https://example.com/status" external>
+        System status
+      </Link>
+    )
+  }
+
+  return (
+    <p className="max-w-md text-sm">
+      Your workspace is shared with the design team. <Link href="#">Manage access</Link> to change who
+      can see this project.
+    </p>
+  )
+}
+```
+
+### Standalone navigation
+
+Use the standalone variant outside prose, where underline-on-hover signals the affordance.
+
+```jsx
+import { Link } from '@kryv/teal'
+
+export function LinkDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Link href="#" variant="standalone">
+        View all projects
+      </Link>
+    )
+  }
+
+  if (exampleIndex === 2) {
+    return (
+      <Link href="https://example.com/status" external>
+        System status
+      </Link>
+    )
+  }
+
+  return (
+    <p className="max-w-md text-sm">
+      Your workspace is shared with the design team. <Link href="#">Manage access</Link> to change who
+      can see this project.
+    </p>
+  )
+}
+```
+
+---
+
 # Field
 
 A deep form seam that connects labels, descriptions, errors, and required state.
@@ -910,6 +1219,477 @@ export function SwitchDemo() {
 
 ---
 
+# Radio Group
+
+A single-choice option set with an integrated label, description, and subtle borders.
+
+## Usage
+
+```js
+import { RadioGroup } from '@kryv/teal'
+```
+
+```jsx
+<RadioGroup
+  label="Home region"
+  defaultValue="eu"
+  options={[
+    { value: 'eu', label: 'Europe (Frankfurt)' },
+    { value: 'us', label: 'United States (Virginia)' },
+  ]}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+Users pick exactly one option from a small visible set.
+### Avoid when
+
+The list is long or needs filtering; use Select or Combobox.
+### Behavior
+
+Arrow keys move and select within the group; the label is wired through aria-labelledby.
+### Responsive
+
+Switch to horizontal orientation only when labels stay on one line.
+
+## Examples
+
+### Single choice
+
+Keyboard arrows move and select within the group following the roving-focus pattern.
+
+```jsx
+import { RadioGroup } from '@kryv/teal'
+
+export function RadioGroupDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <RadioGroup
+        label="Digest frequency"
+        orientation="horizontal"
+        defaultValue="weekly"
+        options={[
+          { value: 'daily', label: 'Daily' },
+          { value: 'weekly', label: 'Weekly' },
+          { value: 'monthly', label: 'Monthly' },
+        ]}
+      />
+    )
+  }
+  return (
+    <RadioGroup
+      label="Project visibility"
+      description="Choose who can open this project"
+      defaultValue="team"
+      options={[
+        { value: 'private', label: 'Private', description: 'Only invited members can view' },
+        { value: 'team', label: 'Team', description: 'Everyone in the workspace can view' },
+        { value: 'public', label: 'Public', description: 'Available after launch review', disabled: true },
+      ]}
+    />
+  )
+}
+```
+
+### Horizontal options
+
+Use horizontal orientation for two or three short options.
+
+```jsx
+import { RadioGroup } from '@kryv/teal'
+
+export function RadioGroupDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <RadioGroup
+        label="Digest frequency"
+        orientation="horizontal"
+        defaultValue="weekly"
+        options={[
+          { value: 'daily', label: 'Daily' },
+          { value: 'weekly', label: 'Weekly' },
+          { value: 'monthly', label: 'Monthly' },
+        ]}
+      />
+    )
+  }
+  return (
+    <RadioGroup
+      label="Project visibility"
+      description="Choose who can open this project"
+      defaultValue="team"
+      options={[
+        { value: 'private', label: 'Private', description: 'Only invited members can view' },
+        { value: 'team', label: 'Team', description: 'Everyone in the workspace can view' },
+        { value: 'public', label: 'Public', description: 'Available after launch review', disabled: true },
+      ]}
+    />
+  )
+}
+```
+
+---
+
+# Slider
+
+A numeric value scrubber with an optional live value readout.
+
+## Usage
+
+```js
+import { Slider } from '@kryv/teal'
+```
+
+```jsx
+<Slider label="Notification volume" defaultValue={[60]} showValue />
+```
+
+## Design guidance
+
+### Use when
+
+A value inside a known range is more natural to scrub than to type.
+### Avoid when
+
+Precision matters more than speed; pair with or use Input instead.
+### Behavior
+
+Pointer and keyboard adjust the value and showValue mirrors it live.
+### Responsive
+
+The track fills its container width, so constrain it in the layout.
+
+## Examples
+
+### Value selection
+
+Pointer and keyboard both adjust the value; showValue mirrors it as text.
+
+```jsx
+import { useState } from 'react'
+import { Slider } from '@kryv/teal'
+
+export function SliderDemo({ exampleIndex = 0 }) {
+  const [quota, setQuota] = useState([40])
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid w-full max-w-md gap-4">
+        <Slider label="Storage quota" description="Applies to the whole workspace" defaultValue={[65]} showValue />
+        <Slider label="Archived projects" defaultValue={[20]} disabled />
+      </div>
+    )
+  }
+  return (
+    <Slider
+      label="Storage quota"
+      description="Drag or use the arrow keys to adjust the workspace limit"
+      value={quota}
+      onValueChange={setQuota}
+      showValue
+      className="w-full max-w-md"
+    />
+  )
+}
+```
+
+### Bounded ranges
+
+Set min, max, and step when the meaningful range is narrower than 0–100.
+
+```jsx
+import { useState } from 'react'
+import { Slider } from '@kryv/teal'
+
+export function SliderDemo({ exampleIndex = 0 }) {
+  const [quota, setQuota] = useState([40])
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid w-full max-w-md gap-4">
+        <Slider label="Storage quota" description="Applies to the whole workspace" defaultValue={[65]} showValue />
+        <Slider label="Archived projects" defaultValue={[20]} disabled />
+      </div>
+    )
+  }
+  return (
+    <Slider
+      label="Storage quota"
+      description="Drag or use the arrow keys to adjust the workspace limit"
+      value={quota}
+      onValueChange={setQuota}
+      showValue
+      className="w-full max-w-md"
+    />
+  )
+}
+```
+
+---
+
+# Search Input
+
+A text field with a leading search affordance, clear action, and loading state.
+
+## Usage
+
+```js
+import { SearchInput } from '@kryv/teal'
+```
+
+```jsx
+<SearchInput label="Search projects" placeholder="Name or owner…" />
+```
+
+## Design guidance
+
+### Use when
+
+A field exists specifically to query a collection.
+### Avoid when
+
+The input is general-purpose text entry; use Input.
+### Behavior
+
+The clear action appears only with a value, and loading swaps it for a spinner.
+### Responsive
+
+Icons stay pinned inside the field at any width.
+
+## Examples
+
+### Clearable search
+
+The clear button appears once the field has a value; loading swaps in a spinner.
+
+```jsx
+import { useState } from 'react'
+import { SearchInput } from '@kryv/teal'
+
+export function SearchInputDemo({ exampleIndex = 0 }) {
+  const [query, setQuery] = useState('')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid w-full max-w-md gap-4">
+        <SearchInput
+          label="Search projects"
+          description="Results update as you type"
+          placeholder="Type a project name"
+          defaultValue="Quarterly report"
+          onClear={() => undefined}
+        />
+        <SearchInput label="Loading results" defaultValue="Design review" loading />
+        <SearchInput label="Archived projects" placeholder="Unavailable" disabled />
+      </div>
+    )
+  }
+  return (
+    <SearchInput
+      label="Search projects"
+      description="Matches project names and descriptions"
+      placeholder="Type to filter projects"
+      value={query}
+      onValueChange={setQuery}
+      onClear={() => undefined}
+      className="w-full max-w-md"
+    />
+  )
+}
+```
+
+### Loading results
+
+The loading state replaces the clear action while results refresh.
+
+```jsx
+import { useState } from 'react'
+import { SearchInput } from '@kryv/teal'
+
+export function SearchInputDemo({ exampleIndex = 0 }) {
+  const [query, setQuery] = useState('')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid w-full max-w-md gap-4">
+        <SearchInput
+          label="Search projects"
+          description="Results update as you type"
+          placeholder="Type a project name"
+          defaultValue="Quarterly report"
+          onClear={() => undefined}
+        />
+        <SearchInput label="Loading results" defaultValue="Design review" loading />
+        <SearchInput label="Archived projects" placeholder="Unavailable" disabled />
+      </div>
+    )
+  }
+  return (
+    <SearchInput
+      label="Search projects"
+      description="Matches project names and descriptions"
+      placeholder="Type to filter projects"
+      value={query}
+      onValueChange={setQuery}
+      onClear={() => undefined}
+      className="w-full max-w-md"
+    />
+  )
+}
+```
+
+---
+
+# Combobox
+
+A filterable single-value picker combining free text with a suggestion list.
+
+## Usage
+
+```js
+import { Combobox } from '@kryv/teal'
+```
+
+```jsx
+<Combobox
+  label="Assignee"
+  options={[
+    { value: 'avery', label: 'Avery Chen' },
+    { value: 'morgan', label: 'Morgan Reyes' },
+  ]}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+Users choose one value from a list long enough to need filtering.
+### Avoid when
+
+The list is short; use Select, or the value is free text; use Input.
+### Behavior
+
+Typing filters, arrows highlight, Enter selects, Escape preserves the current value.
+### Responsive
+
+The suggestion list matches the field width and collision-handles vertically.
+
+## Examples
+
+### Filter and select
+
+Type to filter, arrows to highlight, Enter to select; Escape keeps the current value.
+
+```jsx
+import { useState } from 'react'
+import { Combobox } from '@kryv/teal'
+
+export function ComboboxDemo({ exampleIndex = 0 }) {
+  const [assignee, setAssignee] = useState('mira')
+  const [project, setProject] = useState('')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-xs">
+        <Combobox
+          label="Move to project"
+          description="Start typing to filter your projects"
+          placeholder="Search projects…"
+          emptyMessage="No projects match"
+          value={project}
+          onValueChange={setProject}
+          options={[
+            { value: 'atlas', label: 'Atlas redesign' },
+            { value: 'billing', label: 'Billing migration' },
+            { value: 'docs', label: 'Docs overhaul' },
+            { value: 'mobile', label: 'Mobile app', disabled: true },
+            { value: 'onboarding', label: 'Onboarding revamp' },
+          ]}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-xs">
+      <Combobox
+        label="Assignee"
+        placeholder="Search people…"
+        value={assignee}
+        onValueChange={setAssignee}
+        options={[
+          { value: 'mira', label: 'Mira Chen' },
+          { value: 'jonas', label: 'Jonas Weber' },
+          { value: 'priya', label: 'Priya Nair' },
+          { value: 'sam', label: 'Sam Ortiz' },
+          { value: 'lena', label: 'Lena Fischer' },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+### Disabled options
+
+Options can be disabled with an explanatory empty message for no matches.
+
+```jsx
+import { useState } from 'react'
+import { Combobox } from '@kryv/teal'
+
+export function ComboboxDemo({ exampleIndex = 0 }) {
+  const [assignee, setAssignee] = useState('mira')
+  const [project, setProject] = useState('')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-xs">
+        <Combobox
+          label="Move to project"
+          description="Start typing to filter your projects"
+          placeholder="Search projects…"
+          emptyMessage="No projects match"
+          value={project}
+          onValueChange={setProject}
+          options={[
+            { value: 'atlas', label: 'Atlas redesign' },
+            { value: 'billing', label: 'Billing migration' },
+            { value: 'docs', label: 'Docs overhaul' },
+            { value: 'mobile', label: 'Mobile app', disabled: true },
+            { value: 'onboarding', label: 'Onboarding revamp' },
+          ]}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-xs">
+      <Combobox
+        label="Assignee"
+        placeholder="Search people…"
+        value={assignee}
+        onValueChange={setAssignee}
+        options={[
+          { value: 'mira', label: 'Mira Chen' },
+          { value: 'jonas', label: 'Jonas Weber' },
+          { value: 'priya', label: 'Priya Nair' },
+          { value: 'sam', label: 'Sam Ortiz' },
+          { value: 'lena', label: 'Lena Fischer' },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+---
+
 # Card
 
 A structural surface for related content without ambiguous interactive behavior.
@@ -1353,6 +2133,321 @@ export function AccordionDemo({ exampleIndex = 0 }) {
 - Implements the ARIA accordion pattern through the Radix primitive, with state exposed as aria-expanded on each trigger.
 - Disabled items are skipped and cannot be toggled.
 - The chevron is decorative and hidden from assistive technology.
+
+---
+
+# Chip
+
+A compact filter or selection token with an optional remove affordance.
+
+## Usage
+
+```js
+import { Chip } from '@kryv/teal'
+```
+
+```jsx
+<Chip label="Active only" selected onRemove={() => undefined} />
+```
+
+## Design guidance
+
+### Use when
+
+Active filters or selections need compact, removable tokens.
+### Avoid when
+
+The status is informational only; use Badge.
+### Behavior
+
+The remove action is labeled from the chip text for screen readers.
+### Responsive
+
+Chips wrap in rows; keep labels to one or two words.
+
+## Examples
+
+### Removable filters
+
+Selected chips tint primary; the remove button is labeled from the chip text.
+
+```jsx
+import { useState } from 'react'
+import { Chip } from '@kryv/teal'
+
+const initialTags = ['Design', 'Research', 'Planning']
+
+export function ChipDemo({ exampleIndex = 0 }) {
+  const [tags, setTags] = useState(initialTags)
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex flex-wrap items-center gap-2">
+        {tags.map((tag) => (
+          <Chip key={tag} label={tag} onRemove={() => setTags((current) => current.filter((t) => t !== tag))} />
+        ))}
+        <Chip label="Locked" onRemove={() => undefined} disabled />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Chip label="In progress" />
+      <Chip label="Active filter" selected />
+      <Chip label="Featured" variant="primary" />
+      <Chip label="Archived" disabled />
+    </div>
+  )
+}
+```
+
+### Locked filters
+
+Disabled chips communicate filters managed elsewhere.
+
+```jsx
+import { useState } from 'react'
+import { Chip } from '@kryv/teal'
+
+const initialTags = ['Design', 'Research', 'Planning']
+
+export function ChipDemo({ exampleIndex = 0 }) {
+  const [tags, setTags] = useState(initialTags)
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex flex-wrap items-center gap-2">
+        {tags.map((tag) => (
+          <Chip key={tag} label={tag} onRemove={() => setTags((current) => current.filter((t) => t !== tag))} />
+        ))}
+        <Chip label="Locked" onRemove={() => undefined} disabled />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Chip label="In progress" />
+      <Chip label="Active filter" selected />
+      <Chip label="Featured" variant="primary" />
+      <Chip label="Archived" disabled />
+    </div>
+  )
+}
+```
+
+---
+
+# Kbd
+
+An inline keyboard shortcut hint with a raised keycap treatment.
+
+## Usage
+
+```js
+import { Kbd } from '@kryv/teal'
+```
+
+```jsx
+Save with <Kbd>Ctrl</Kbd> + <Kbd>S</Kbd>
+```
+
+## Design guidance
+
+### Use when
+
+A keyboard shortcut is referenced in help or onboarding copy.
+### Avoid when
+
+The key is part of a form value; use plain text.
+### Behavior
+
+Sizing is em-based so the keycap scales with its context.
+### Responsive
+
+Keep combinations short; wrap groups of keys with separators as text.
+
+## Examples
+
+### Shortcut hints
+
+Kbd scales with surrounding text through em-based sizing.
+
+```jsx
+import { Kbd } from '@kryv/teal'
+
+export function KbdDemo() {
+  return (
+    <div className="flex flex-col items-start gap-3 text-sm">
+      <p>
+        Press <Kbd>⌘</Kbd> + <Kbd>K</Kbd> to open the command palette.
+      </p>
+      <p>
+        Use <Kbd>Esc</Kbd> to close dialogs and <Kbd>Shift</Kbd> + <Kbd>Enter</Kbd> to add a new
+        line.
+      </p>
+    </div>
+  )
+}
+```
+
+### Combinations
+
+Join keys with plain-text separators for multi-key shortcuts.
+
+```jsx
+import { Kbd } from '@kryv/teal'
+
+export function KbdDemo() {
+  return (
+    <div className="flex flex-col items-start gap-3 text-sm">
+      <p>
+        Press <Kbd>⌘</Kbd> + <Kbd>K</Kbd> to open the command palette.
+      </p>
+      <p>
+        Use <Kbd>Esc</Kbd> to close dialogs and <Kbd>Shift</Kbd> + <Kbd>Enter</Kbd> to add a new
+        line.
+      </p>
+    </div>
+  )
+}
+```
+
+---
+
+# Scroll Area
+
+A scrollable region with styled, theme-consistent scrollbars.
+
+## Usage
+
+```js
+import { ScrollArea } from '@kryv/teal'
+```
+
+```jsx
+<ScrollArea maxHeight="16rem">
+  <LongList />
+</ScrollArea>
+```
+
+## Design guidance
+
+### Use when
+
+A panel needs a bounded height with theme-consistent scrollbars.
+### Avoid when
+
+The page itself should scroll; do not nest page-level scrolling.
+### Behavior
+
+The custom thumb appears over a transparent track only where scrolling is possible.
+### Responsive
+
+Set maxHeight in relative units so the region adapts to viewport height.
+
+## Examples
+
+### Bounded lists
+
+Cap the height and the custom scrollbar appears only while scrolling is possible.
+
+```jsx
+import { ScrollArea } from '@kryv/teal'
+
+const lists = [
+  [
+    'Avery Stone',
+    'Blake Moreno',
+    'Casey Nguyen',
+    'Devon Patel',
+    'Emery Kim',
+    'Finley Ortiz',
+    'Gray Lindqvist',
+    'Harper Adeyemi',
+    'Indigo Sato',
+    'Jordan Ellis',
+  ],
+  [
+    'Orion redesign',
+    'Billing migration',
+    'Mobile shell',
+    'Reporting v2',
+    'Access reviews',
+    'Onboarding flow',
+    'API gateway',
+    'Design tokens',
+    'Audit logging',
+    'Search indexing',
+  ],
+]
+
+export function ScrollAreaDemo({ exampleIndex = 0 }) {
+  const items = lists[exampleIndex % lists.length]
+  return (
+    <ScrollArea maxHeight={220} className="w-72 rounded-xl border border-teal-outline-variant/40">
+      <ul className="divide-y divide-teal-outline-variant/40">
+        {items.map((item) => (
+          <li key={item} className="px-4 py-2.5 text-sm text-teal-on-surface">
+            {item}
+          </li>
+        ))}
+      </ul>
+    </ScrollArea>
+  )
+}
+```
+
+### Panel lists
+
+Pair with a fixed maxHeight so the page itself keeps its own scroll.
+
+```jsx
+import { ScrollArea } from '@kryv/teal'
+
+const lists = [
+  [
+    'Avery Stone',
+    'Blake Moreno',
+    'Casey Nguyen',
+    'Devon Patel',
+    'Emery Kim',
+    'Finley Ortiz',
+    'Gray Lindqvist',
+    'Harper Adeyemi',
+    'Indigo Sato',
+    'Jordan Ellis',
+  ],
+  [
+    'Orion redesign',
+    'Billing migration',
+    'Mobile shell',
+    'Reporting v2',
+    'Access reviews',
+    'Onboarding flow',
+    'API gateway',
+    'Design tokens',
+    'Audit logging',
+    'Search indexing',
+  ],
+]
+
+export function ScrollAreaDemo({ exampleIndex = 0 }) {
+  const items = lists[exampleIndex % lists.length]
+  return (
+    <ScrollArea maxHeight={220} className="w-72 rounded-xl border border-teal-outline-variant/40">
+      <ul className="divide-y divide-teal-outline-variant/40">
+        {items.map((item) => (
+          <li key={item} className="px-4 py-2.5 text-sm text-teal-on-surface">
+            {item}
+          </li>
+        ))}
+      </ul>
+    </ScrollArea>
+  )
+}
+```
 
 ---
 
@@ -2019,6 +3114,217 @@ export function PopoverDemo({ exampleIndex = 0 }) {
 - The trigger exposes aria-expanded and aria-controls for the popover content.
 - Focus is not trapped; popovers suit small control panels, not multi-step flows.
 - Placement flips automatically to stay inside the viewport.
+
+---
+
+# Drawer
+
+A slide-over panel for focused side tasks, built on the dialog focus model.
+
+## Usage
+
+```js
+import { Drawer, Button } from '@kryv/teal'
+```
+
+```jsx
+<Drawer
+  open={open}
+  onOpenChange={setOpen}
+  title="Project settings"
+  side="right"
+>
+  <SettingsForm />
+</Drawer>
+```
+
+## Design guidance
+
+### Use when
+
+A focused side task needs more room than a dialog but should not navigate away.
+### Avoid when
+
+The task is a simple confirmation; use Dialog.
+### Behavior
+
+Focus is trapped and restored, Escape dismisses, and the panel slides from the chosen edge.
+### Responsive
+
+The default width caps at the viewport; forms inside own their own scroll.
+
+## Examples
+
+### Side panel
+
+The drawer slides from either edge and traps focus like a dialog.
+
+```jsx
+import { useState } from 'react'
+import { Button, Drawer } from '@kryv/teal'
+
+export function DrawerDemo({ exampleIndex = 0 }) {
+  const [open, setOpen] = useState(false)
+  const side = exampleIndex ? 'left' : 'right'
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>
+        {exampleIndex ? 'Open left drawer' : 'Open drawer'}
+      </Button>
+      <Drawer
+        open={open}
+        onOpenChange={setOpen}
+        side={side}
+        title="Project details"
+        description="Orion workspace — updated 2 hours ago"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={() => setOpen(false)}>Save changes</Button>
+          </>
+        }
+      >
+        <p className="text-sm text-teal-on-surface-variant">
+          Manage members, integrations, and archive rules for this project without leaving the current page.
+        </p>
+      </Drawer>
+    </>
+  )
+}
+```
+
+### Left edge
+
+Use side="left" when the panel continues a left-side navigation context.
+
+```jsx
+import { useState } from 'react'
+import { Button, Drawer } from '@kryv/teal'
+
+export function DrawerDemo({ exampleIndex = 0 }) {
+  const [open, setOpen] = useState(false)
+  const side = exampleIndex ? 'left' : 'right'
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>
+        {exampleIndex ? 'Open left drawer' : 'Open drawer'}
+      </Button>
+      <Drawer
+        open={open}
+        onOpenChange={setOpen}
+        side={side}
+        title="Project details"
+        description="Orion workspace — updated 2 hours ago"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={() => setOpen(false)}>Save changes</Button>
+          </>
+        }
+      >
+        <p className="text-sm text-teal-on-surface-variant">
+          Manage members, integrations, and archive rules for this project without leaving the current page.
+        </p>
+      </Drawer>
+    </>
+  )
+}
+```
+
+---
+
+# Hover Card
+
+A rich preview surface revealed on hover or focus, for context without navigation.
+
+## Usage
+
+```js
+import { HoverCard, Link } from '@kryv/teal'
+```
+
+```jsx
+<HoverCard trigger={<Link href="/projects/orion">Orion</Link>}>
+  <ProjectSummary />
+</HoverCard>
+```
+
+## Design guidance
+
+### Use when
+
+Rich preview context helps before committing to navigation.
+### Avoid when
+
+The content is a short hint; use Tooltip, or must be interacted with on touch; use Popover.
+### Behavior
+
+Hover and keyboard focus open the card after a tunable delay.
+### Responsive
+
+Provide the same content through another path on touch layouts.
+
+## Examples
+
+### Preview on hover
+
+Delays are tunable; keyboard focus opens the card too.
+
+```jsx
+import { HoverCard } from '@kryv/teal'
+
+export function HoverCardDemo({ exampleIndex = 0 }) {
+  const person = exampleIndex
+    ? { handle: '@blake', name: 'Blake Moreno', role: 'Engineering — Platform team' }
+    : { handle: '@avery', name: 'Avery Stone', role: 'Design lead — Workspace team' }
+  return (
+    <HoverCard
+      trigger={
+        <button type="button" className="font-semibold text-teal-primary underline underline-offset-2">
+          {person.handle}
+        </button>
+      }
+    >
+      <div className="space-y-1">
+        <p className="text-sm font-bold text-teal-on-surface">{person.name}</p>
+        <p className="text-sm text-teal-on-surface-variant">{person.role}</p>
+      </div>
+    </HoverCard>
+  )
+}
+```
+
+### Identity preview
+
+Show a person or project summary without leaving the list.
+
+```jsx
+import { HoverCard } from '@kryv/teal'
+
+export function HoverCardDemo({ exampleIndex = 0 }) {
+  const person = exampleIndex
+    ? { handle: '@blake', name: 'Blake Moreno', role: 'Engineering — Platform team' }
+    : { handle: '@avery', name: 'Avery Stone', role: 'Design lead — Workspace team' }
+  return (
+    <HoverCard
+      trigger={
+        <button type="button" className="font-semibold text-teal-primary underline underline-offset-2">
+          {person.handle}
+        </button>
+      }
+    >
+      <div className="space-y-1">
+        <p className="text-sm font-bold text-teal-on-surface">{person.name}</p>
+        <p className="text-sm text-teal-on-surface-variant">{person.role}</p>
+      </div>
+    </HoverCard>
+  )
+}
+```
 
 ---
 
@@ -2723,6 +4029,117 @@ export function StepUpNoticeDemo({ exampleIndex = 0 }) {
     >
       Approving a repair requires fresh verification before Yang continues.
     </StepUpNotice>
+  )
+}
+```
+
+---
+
+# Banner
+
+A page-level notice strip for workspace-wide feedback that owns the top of a view.
+
+## Usage
+
+```js
+import { Banner, Button } from '@kryv/teal'
+```
+
+```jsx
+<Banner variant="warning" title="Scheduled maintenance">
+  The workspace is read-only on Saturday, 02:00–03:00 UTC.
+</Banner>
+```
+
+## Design guidance
+
+### Use when
+
+Feedback applies to the entire view, not one field or task.
+### Avoid when
+
+The message is local to a control or a transient confirmation; use Field, Alert, or Toast.
+### Behavior
+
+Danger renders role="alert" for immediate announcement; other variants render role="status".
+### Responsive
+
+The action wraps beneath the message on narrow screens.
+
+## Examples
+
+### Page-level feedback
+
+A stronger accent than Alert, for notices that apply to the whole view.
+
+```jsx
+import { Banner, Button } from '@kryv/teal'
+
+export function BannerDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Banner
+        variant="warning"
+        title="Trial ends in 7 days"
+        action={<Button size="sm">Upgrade plan</Button>}
+        onDismiss={() => undefined}
+        className="max-w-2xl"
+      >
+        Upgrade to keep unlimited projects and priority support for the whole workspace.
+      </Banner>
+    )
+  }
+
+  return (
+    <div className="grid w-full max-w-2xl gap-3">
+      <Banner variant="info" title="Scheduled maintenance">
+        The workspace will be read-only on Sunday from 02:00 to 03:00 UTC.
+      </Banner>
+      <Banner variant="success" title="Migration complete">
+        All projects were moved to the new region without downtime.
+      </Banner>
+      <Banner variant="danger" title="Storage limit reached" onDismiss={() => undefined}>
+        New uploads are paused until you free up space or upgrade the plan.
+      </Banner>
+    </div>
+  )
+}
+```
+
+### Dismissible notices
+
+Pass onDismiss for notices the user can clear for the session.
+
+```jsx
+import { Banner, Button } from '@kryv/teal'
+
+export function BannerDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Banner
+        variant="warning"
+        title="Trial ends in 7 days"
+        action={<Button size="sm">Upgrade plan</Button>}
+        onDismiss={() => undefined}
+        className="max-w-2xl"
+      >
+        Upgrade to keep unlimited projects and priority support for the whole workspace.
+      </Banner>
+    )
+  }
+
+  return (
+    <div className="grid w-full max-w-2xl gap-3">
+      <Banner variant="info" title="Scheduled maintenance">
+        The workspace will be read-only on Sunday from 02:00 to 03:00 UTC.
+      </Banner>
+      <Banner variant="success" title="Migration complete">
+        All projects were moved to the new region without downtime.
+      </Banner>
+      <Banner variant="danger" title="Storage limit reached" onDismiss={() => undefined}>
+        New uploads are paused until you free up space or upgrade the plan.
+      </Banner>
+    </div>
   )
 }
 ```
@@ -3849,6 +5266,120 @@ export function BreadcrumbDemo({ exampleIndex = 0 }) {
 
 ---
 
+# Steps
+
+A numbered flow indicator with done, current, and upcoming states.
+
+## Usage
+
+```js
+import { Steps } from '@kryv/teal'
+```
+
+```jsx
+<Steps
+  current={1}
+  steps={[
+    { label: 'Workspace' },
+    { label: 'Members' },
+    { label: 'Review' },
+  ]}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+A flow has a clear sequence and the user benefits from seeing progress.
+### Avoid when
+
+Steps are independent views; use Tabs or navigation.
+### Behavior
+
+The current step sets aria-current and completed steps can be made clickable.
+### Responsive
+
+Steps wrap with their labels on narrow screens; keep labels short.
+
+## Examples
+
+### Flow progress
+
+Completed steps can be clickable; the current step sets aria-current.
+
+```jsx
+import { useState } from 'react'
+import { Steps } from '@kryv/teal'
+
+export function StepsDemo({ exampleIndex = 0 }) {
+  const [current, setCurrent] = useState(1)
+
+  if (exampleIndex === 1) {
+    return (
+      <Steps
+        className="w-full max-w-2xl"
+        current={current}
+        onStepClick={setCurrent}
+        steps={[
+          { label: 'Account', description: 'Basic details' },
+          { label: 'Workspace', description: 'Name and region' },
+          { label: 'Members', description: 'Invite your team' },
+          { label: 'Review', description: 'Confirm and finish' },
+        ]}
+      />
+    )
+  }
+
+  return (
+    <Steps
+      className="w-full max-w-xl"
+      current={2}
+      steps={[{ label: 'Draft' }, { label: 'Review' }, { label: 'Approved' }, { label: 'Published' }]}
+    />
+  )
+}
+```
+
+### Clickable completed steps
+
+Allow returning to completed steps with onStepClick.
+
+```jsx
+import { useState } from 'react'
+import { Steps } from '@kryv/teal'
+
+export function StepsDemo({ exampleIndex = 0 }) {
+  const [current, setCurrent] = useState(1)
+
+  if (exampleIndex === 1) {
+    return (
+      <Steps
+        className="w-full max-w-2xl"
+        current={current}
+        onStepClick={setCurrent}
+        steps={[
+          { label: 'Account', description: 'Basic details' },
+          { label: 'Workspace', description: 'Name and region' },
+          { label: 'Members', description: 'Invite your team' },
+          { label: 'Review', description: 'Confirm and finish' },
+        ]}
+      />
+    )
+  }
+
+  return (
+    <Steps
+      className="w-full max-w-xl"
+      current={2}
+      steps={[{ label: 'Draft' }, { label: 'Review' }, { label: 'Approved' }, { label: 'Published' }]}
+    />
+  )
+}
+```
+
+---
+
 # Permission Matrix
 
 A people-by-applications access matrix with caller-supplied cell content and explicit no-access cells.
@@ -4358,6 +5889,110 @@ export function AvatarDemo({ exampleIndex = 0 }) {
 
 - Image alt text defaults to the name; pass an empty alt for decorative avatars.
 - Initials and icon fallbacks render role="img" with the name as the accessible label.
+
+---
+
+# Description List
+
+A label/value definition list for detail pages, stacked or two-column.
+
+## Usage
+
+```js
+import { DescriptionList } from '@kryv/teal'
+```
+
+```jsx
+<DescriptionList
+  items={[
+    { label: 'Owner', value: 'Avery Chen' },
+    { label: 'Created', value: 'March 4, 2026' },
+  ]}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+A detail view lists labeled values for one entity.
+### Avoid when
+
+Records need column comparison; use Table.
+### Behavior
+
+Real dl/dt/dd markup keeps the relationship semantic.
+### Responsive
+
+Stacked layout is default; grid splits to two columns on wider screens.
+
+## Examples
+
+### Detail summary
+
+Real dl markup; grid layout splits into two columns on wider screens.
+
+```jsx
+import { DescriptionList } from '@kryv/teal'
+
+export function DescriptionListDemo({ exampleIndex = 0 }) {
+  const project = [
+    { label: 'Owner', value: 'Avery Stone' },
+    { label: 'Status', value: 'Active' },
+    { label: 'Visibility', value: 'Workspace' },
+    { label: 'Created', value: 'Mar 4, 2026' },
+  ]
+
+  if (exampleIndex === 1) {
+    return (
+      <DescriptionList
+        layout="grid"
+        className="w-full max-w-2xl"
+        items={[
+          ...project,
+          { label: 'Members', value: '12' },
+          { label: 'Storage used', value: '4.2 GB' },
+        ]}
+      />
+    )
+  }
+
+  return <DescriptionList className="w-full max-w-sm" items={project} />
+}
+```
+
+### Two-column details
+
+Use the grid layout for wider detail panels.
+
+```jsx
+import { DescriptionList } from '@kryv/teal'
+
+export function DescriptionListDemo({ exampleIndex = 0 }) {
+  const project = [
+    { label: 'Owner', value: 'Avery Stone' },
+    { label: 'Status', value: 'Active' },
+    { label: 'Visibility', value: 'Workspace' },
+    { label: 'Created', value: 'Mar 4, 2026' },
+  ]
+
+  if (exampleIndex === 1) {
+    return (
+      <DescriptionList
+        layout="grid"
+        className="w-full max-w-2xl"
+        items={[
+          ...project,
+          { label: 'Members', value: '12' },
+          { label: 'Storage used', value: '4.2 GB' },
+        ]}
+      />
+    )
+  }
+
+  return <DescriptionList className="w-full max-w-sm" items={project} />
+}
+```
 
 ---
 

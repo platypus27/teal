@@ -12,7 +12,7 @@ function pascalCase(value) {
 }
 
 if (new Set(modules.map((module) => module.id)).size !== modules.length) errors.push('module ids must be unique')
-if (modules.length !== 33) errors.push(`expected 33 module pages, found ${modules.length}`)
+if (modules.length !== 48) errors.push(`expected 48 module pages, found ${modules.length}`)
 
 for (const module of modules) {
   if (module.examples.length < 2) errors.push(`${module.id} needs at least two examples`)
@@ -43,6 +43,7 @@ const intentionallyUndocumented = new Set([
   'topBarVariants',
   'verticalNavVariants',
   'notificationItemVariants',
+  'bannerVariants',
   // Function and hook exports are documented in module usage snippets, not in
   // generated interface tables, so they have no api.json entry by design.
   'toast',
