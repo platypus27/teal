@@ -5,52 +5,78 @@ import {
   Accordion,
   AccountMenu,
   Alert,
+  AlertDialog,
+  Announcer,
   AppSwitcher,
+  AspectRatio,
   Avatar,
   AvatarGroup,
+  BackTop,
   Badge,
   Banner,
   Breadcrumb,
   Button,
   ButtonGroup,
+  Calendar,
   Card,
   CardContent,
   CardHeader,
   CardTitle,
+  Carousel,
   Checkbox,
   Chip,
   CodeBlock,
+  ColorPicker,
   Combobox,
   Command,
+  ContextMenu,
+  CopyButton,
   DataTable,
   DatePicker,
+  DateRangePicker,
   DescriptionList,
   Dialog,
   Drawer,
+  Editable,
   EmptyState,
   EcosystemRail,
   Field,
   FileUpload,
+  Grid,
   HealthIndicator,
   HoverCard,
   IconButton,
   Input,
+  InputAddon,
+  InputGroup,
   Kbd,
   LauncherCard,
   Link,
+  List,
+  ListItem,
   LoadingState,
+  Menubar,
   Menu,
+  Meter,
   MultiSelect,
+  NavigationMenu,
   NotificationItem,
   NumberInput,
   PageHeader,
   Pagination,
   PasswordInput,
   PermissionMatrix,
+  PinInput,
+  Popconfirm,
   Popover,
   Progress,
   ProgressCircle,
   RadioGroup,
+  Rating,
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+  Result,
   ScrollArea,
   SearchInput,
   SegmentedControl,
@@ -58,20 +84,27 @@ import {
   Separator,
   Skeleton,
   Slider,
+  Sparkline,
   Spinner,
   SplitButton,
+  Stack,
+  Stat,
   StepUpNotice,
   Steps,
   Switch,
   Table,
   Tabs,
+  TagsInput,
   TextArea,
+  ThemeToggle,
   Timeline,
+  TimePicker,
   Toaster,
   Toggle,
   Toolbar,
   ToolbarGroup,
   ToolbarSeparator,
+  Tour,
   TreeView,
   Tooltip,
   TooltipProvider,
@@ -84,6 +117,7 @@ import {
   VerticalNavItem,
   VerticalNavList,
   VerticalNavSection,
+  VisuallyHidden,
   dismissToast,
   toast,
 } from '../src/index'
@@ -786,6 +820,188 @@ describe('axe: third catalog expansion', () => {
             { label: 'Projects', items: [{ id: 'orion', label: 'Open Orion', onSelect: () => {} }] },
           ]}
         />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+})
+
+describe('axe: fourth catalog expansion', () => {
+  it('new feedback modules have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <Meter label="Storage used" value={72} low={60} high={85} optimum={20} />
+        <Meter label="Bandwidth" value={0.4} max={1} formatValue={(v) => `${Math.round(v * 100)}%`} />
+        <Rating label="Rate this report" defaultValue={3} />
+        <Rating readOnly value={4} aria-label="Rated 4 out of 5" />
+        <Announcer message="Changes saved" />
+        <Announcer message="Saving failed" politeness="assertive" />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new form controls have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <PinInput label="Verification code" length={6} defaultValue="123" />
+        <PinInput label="Security PIN" length={4} masked />
+        <TagsInput label="Add label" value={['design', 'security']} onChange={() => {}} placeholder="Add a label…" />
+        <InputGroup>
+          <InputAddon position="leading">https://</InputAddon>
+          <Input aria-label="Domain" placeholder="workspace.example" />
+        </InputGroup>
+        <Editable label="Project name" defaultValue="Orion" />
+        <TimePicker label="Start time" defaultValue="09:30" />
+        <TimePicker label="Reminder time" hourCycle={12} defaultValue="18:45" />
+        <DateRangePicker label="Report period" />
+        <ColorPicker label="Brand color" defaultValue="#006a6c" />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('alert dialog, popconfirm, and tour have no violations when open', async () => {
+    const { baseElement } = render(
+      <>
+        <AlertDialog
+          defaultOpen
+          trigger={<button type="button">Delete project</button>}
+          title="Delete project?"
+          description="This removes Orion permanently."
+          tone="danger"
+          confirmText="Delete"
+        />
+        <Popconfirm
+          defaultOpen
+          trigger={<button type="button">Remove member</button>}
+          title="Remove Avery?"
+          message="They lose access immediately."
+        />
+        <Tour
+          open
+          onOpenChange={() => {}}
+          steps={[{ target: '#not-in-dom', title: 'Welcome', content: 'This walkthrough introduces the workspace.' }]}
+        />
+      </>,
+    )
+    await screen.findByRole('alertdialog')
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('context menu has no violations when open', async () => {
+    const user = userEvent.setup()
+    const { baseElement } = render(
+      <ContextMenu
+        label="Project actions"
+        items={[
+          { id: 'rename', label: 'Rename', onSelect: () => {} },
+          { id: 'delete', label: 'Delete', variant: 'danger', separatorBefore: true, onSelect: () => {} },
+        ]}
+      >
+        <div>Right-click area</div>
+      </ContextMenu>,
+    )
+    await user.pointer({ keys: '[MouseRight]', target: screen.getByText('Right-click area') })
+    await screen.findByRole('menu')
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('menubar and navigation menu have no violations', async () => {
+    const user = userEvent.setup()
+    const { baseElement } = render(
+      <>
+        <Menubar
+          label="Application"
+          menus={[
+            { label: 'File', items: [{ id: 'new', label: 'New project', onSelect: () => {} }] },
+            { label: 'Edit', items: [{ id: 'undo', label: 'Undo', onSelect: () => {} }] },
+          ]}
+        />
+        <NavigationMenu
+          label="Primary"
+          items={[
+            { type: 'link', label: 'Overview', href: '/', active: true },
+            { type: 'panel', label: 'Products', content: <p>Product panel content</p> },
+          ]}
+        />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+
+    await user.click(screen.getByRole('menuitem', { name: 'File' }))
+    await screen.findByRole('menu')
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new data modules have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <Stat label="Monthly recurring revenue" value="$48.2k" delta={{ direction: 'up', value: '+12.4%' }} description="vs. previous month" />
+        <Stat label="Open reports" value="14" delta={{ direction: 'flat', value: '0' }} />
+        <List>
+          <ListItem title="Reports" secondary="12 files" trailing="2 GB" />
+          <ListItem title="Archive" onClick={() => {}} />
+        </List>
+        <List dense>
+          <ListItem title="Compact row" onClick={() => {}} />
+        </List>
+        <Sparkline aria-label="Sign-ups trending up" data={[4, 8, 6, 12, 9, 14]} variant="area" />
+        <Sparkline aria-label="Deploys per day" data={[2, 5, 3, 8]} variant="bar" />
+        <Calendar value={new Date(2026, 6, 15)} onSelect={() => {}} visibleMonth={new Date(2026, 6, 1)} />
+        <Result status="success" title="Report published" description="Visible to all members." />
+        <Result status="404" title="Page not found" actions={<Button>Back to projects</Button>} />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('layout primitives have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <Stack direction="row" gap={4} align="center">
+          <span>First</span>
+          <span>Second</span>
+        </Stack>
+        <Grid columns={3} gap={3}>
+          <span>One</span>
+          <span>Two</span>
+          <span>Three</span>
+        </Grid>
+        <div style={{ height: 160, width: 480 }}>
+          <ResizablePanelGroup direction="horizontal">
+            <ResizablePanel defaultSize={30} minSize={15}>
+              <p>Sidebar</p>
+            </ResizablePanel>
+            <ResizableHandle />
+            <ResizablePanel minSize={30}>
+              <p>Content</p>
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        </div>
+        <AspectRatio ratio={16 / 9}>
+          <p>Media area</p>
+        </AspectRatio>
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('utility modules have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <button type="button">
+          <svg aria-hidden="true" />
+          <VisuallyHidden>Delete report</VisuallyHidden>
+        </button>
+        <CopyButton value="npm install @kryv/teal" />
+        <CopyButton iconOnly value="npm install @kryv/teal" label="Copy install command" />
+        <ThemeToggle />
+        <Carousel label="Quarterly reports">
+          <p>Q1 security</p>
+          <p>Q2 reliability</p>
+        </Carousel>
+        <BackTop threshold={-1} />
       </>,
     )
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()

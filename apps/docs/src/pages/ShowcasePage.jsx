@@ -10,38 +10,71 @@ import {
 } from 'lucide-react'
 import {
   Alert,
+  AlertDialog,
+  Announcer,
+  AspectRatio,
   Avatar,
+  BackTop,
   Badge,
   Breadcrumb,
   Button,
+  Calendar,
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
+  Carousel,
   Checkbox,
+  ColorPicker,
+  CopyButton,
+  DateRangePicker,
   Dialog,
+  Editable,
   EmptyState,
   Field,
+  Grid,
   HealthIndicator,
   IconButton,
   Input,
+  InputAddon,
+  InputGroup,
+  List,
+  ListItem,
+  Menubar,
   Menu,
+  Meter,
+  NavigationMenu,
   Pagination,
+  PinInput,
+  Popconfirm,
   Popover,
   Progress,
+  Rating,
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+  Result,
   Select,
   Separator,
   Skeleton,
+  Sparkline,
   Spinner,
+  Stack,
+  Stat,
   Switch,
   Table,
   Tabs,
+  TagsInput,
   TextArea,
+  ThemeToggle as TealThemeToggle,
+  TimePicker,
   Toaster,
   Tooltip,
   TooltipProvider,
+  Tour,
+  VisuallyHidden,
   toast,
 } from '@kryv/teal'
 import changelog from '../generated/changelog.json'
@@ -133,6 +166,7 @@ function StatusSection() {
 
 function FormsSection() {
   const [region, setRegion] = useState('eu')
+  const [tags, setTags] = useState(['design', 'security'])
   return (
     <div className="grid gap-8 lg:grid-cols-2">
       <div className="grid content-start gap-5">
@@ -154,6 +188,13 @@ function FormsSection() {
         <Field label="Announcement" error="Keep announcements under 240 characters">
           <TextArea defaultValue="Scheduled maintenance on Saturday, 02:00–03:00 UTC." />
         </Field>
+        <Field label="Workspace domain">
+          <InputGroup>
+            <InputAddon position="leading">https://</InputAddon>
+            <Input aria-label="Workspace domain" placeholder="kryv.example" />
+          </InputGroup>
+        </Field>
+        <DateRangePicker label="Report period" onChange={() => undefined} />
       </div>
       <div className="grid content-start gap-6">
         <div className="grid gap-4">
@@ -167,6 +208,16 @@ function FormsSection() {
           <Switch label="Weekly digest" />
           <Switch label="Billing alerts" description="Managed by your administrator" disabled />
         </div>
+        <Separator />
+        <div className="grid gap-5">
+          <TagsInput label="Add label" value={tags} onChange={setTags} placeholder="Add a label…" />
+          <div className="flex flex-wrap items-center gap-6">
+            <TimePicker label="Start time" defaultValue="09:30" onChange={() => undefined} />
+            <ColorPicker label="Accent color" defaultValue="#065a60" onChange={() => undefined} />
+          </div>
+          <Editable label="Workspace name" defaultValue="Kryv Labs" onSubmit={() => undefined} />
+          <PinInput label="Verification code" length={6} onComplete={() => undefined} />
+        </div>
       </div>
     </div>
   )
@@ -174,18 +225,42 @@ function FormsSection() {
 
 function DataSection() {
   const [page, setPage] = useState(3)
+  const [date, setDate] = useState(() => new Date())
   return (
     <div className="grid gap-6">
+      <div className="grid gap-6 sm:grid-cols-3">
+        <Stat label="Monthly recurring revenue" value="$48.2k" delta={{ direction: 'up', value: '+12.4%' }} description="vs. previous month">
+          <Sparkline aria-label="Revenue trending up" data={[4, 8, 6, 12, 9, 14]} variant="area" width={180} />
+        </Stat>
+        <Stat label="Active incidents" value="3" delta={{ direction: 'down', value: '-2' }} description="vs. previous week" />
+        <Stat label="Open reports" value="14" delta={{ direction: 'flat', value: '0' }} description="unchanged" />
+      </div>
+      <Separator />
       <Table caption="Projects" rows={projectRows} getRowKey={(row) => row.id} columns={projectColumns} />
       <div className="flex flex-wrap items-center justify-between gap-4">
         <Progress label="Import progress" value={64} className="w-full max-w-xs" />
         <Pagination page={page} pageCount={8} onPageChange={setPage} />
+      </div>
+      <Separator />
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid content-start gap-2">
+          <Calendar value={date} onSelect={setDate} />
+          <span className="text-sm text-teal-on-surface-variant">Selected: {date.toLocaleDateString()}</span>
+        </div>
+        <div className="rounded-lg border border-teal-outline-variant/50">
+          <List>
+            <ListItem title="Security report.pdf" secondary="240 KB · Updated 5 min ago" onClick={() => undefined} />
+            <ListItem title="Reliability review.pdf" secondary="128 KB · Updated 1 h ago" onClick={() => undefined} />
+            <ListItem title="Usage metrics.csv" secondary="64 KB · Updated yesterday" onClick={() => undefined} />
+          </List>
+        </div>
       </div>
     </div>
   )
 }
 
 function FeedbackSection() {
+  const [announcement, setAnnouncement] = useState('')
   return (
     <div className="grid gap-6">
       <div className="grid gap-3 lg:grid-cols-2">
@@ -197,15 +272,24 @@ function FeedbackSection() {
         </Alert>
       </div>
       <Separator />
+      <div className="grid gap-5">
+        <Meter label="Storage used" value={72} low={60} high={85} optimum={20} className="max-w-sm" />
+        <Rating label="Rate this workspace" defaultValue={4} />
+      </div>
+      <Separator />
       <div className="flex flex-wrap items-center gap-6">
         <Spinner label="Loading example" />
         <Skeleton className="h-14 w-full max-w-sm" />
         <Button
           variant="secondary"
-          onClick={() => toast({ title: 'Changes saved', description: 'Your settings are up to date.', variant: 'success' })}
+          onClick={() => {
+            setAnnouncement('Changes saved')
+            toast({ title: 'Changes saved', description: 'Your settings are up to date.', variant: 'success' })
+          }}
         >
           Show toast
         </Button>
+        <Announcer message={announcement} />
       </div>
     </div>
   )
@@ -234,6 +318,23 @@ function NavigationSection() {
           ]}
         />
       </div>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <Menubar
+          label="Application"
+          menus={[
+            { label: 'File', items: [{ id: 'new', label: 'New project', onSelect: () => undefined }, { id: 'export', label: 'Export…', onSelect: () => undefined }] },
+            { label: 'Edit', items: [{ id: 'undo', label: 'Undo', onSelect: () => undefined }, { id: 'redo', label: 'Redo', disabled: true, onSelect: () => undefined }] },
+          ]}
+        />
+        <NavigationMenu
+          label="Primary"
+          items={[
+            { type: 'link', label: 'Overview', href: '#', active: true },
+            { type: 'link', label: 'Reports', href: '#' },
+            { type: 'link', label: 'Members', href: '#' },
+          ]}
+        />
+      </div>
       <Tabs
         aria-label="Project details"
         defaultValue="overview"
@@ -249,9 +350,10 @@ function NavigationSection() {
 
 function OverlaysSection() {
   const [open, setOpen] = useState(false)
+  const [tourOpen, setTourOpen] = useState(false)
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <Button onClick={() => setOpen(true)}>Open dialog</Button>
+      <Button id="showcase-open-dialog" onClick={() => setOpen(true)}>Open dialog</Button>
       <Dialog
         open={open}
         onOpenChange={setOpen}
@@ -272,10 +374,26 @@ function OverlaysSection() {
           Project Orion and its reports will leave the active workspace.
         </p>
       </Dialog>
+      <AlertDialog
+        trigger={<Button variant="danger">Delete project</Button>}
+        title="Delete project?"
+        description="This removes Orion and its reports permanently."
+        tone="danger"
+        confirmText="Delete"
+        onConfirm={() => undefined}
+      />
+      <Popconfirm
+        trigger={<Button variant="secondary">Remove member</Button>}
+        title="Remove Avery?"
+        message="They lose access to this workspace immediately."
+        tone="danger"
+        confirmText="Remove"
+        onConfirm={() => undefined}
+      />
       <Popover
         label="Filter projects"
         trigger={
-          <Button variant="secondary">
+          <Button id="showcase-filters" variant="secondary">
             <Filter /> Filters
           </Button>
         }
@@ -292,6 +410,15 @@ function OverlaysSection() {
           <Search />
         </IconButton>
       </Tooltip>
+      <Button variant="ghost" onClick={() => setTourOpen(true)}>Start tour</Button>
+      <Tour
+        open={tourOpen}
+        onOpenChange={setTourOpen}
+        steps={[
+          { target: '#showcase-open-dialog', title: 'Blocking decisions', content: 'Dialogs and alert dialogs own focus for decisions that must wait.' },
+          { target: '#showcase-filters', title: 'Anchored controls', content: 'Popovers and popconfirms keep supplemental controls near their trigger.' },
+        ]}
+      />
     </div>
   )
 }
@@ -318,6 +445,90 @@ function SurfacesSection() {
         description="Create a report to begin tracking results."
         action={<Button>Create report</Button>}
       />
+      <div className="lg:col-span-2">
+        <Result
+          status="404"
+          title="Page not found"
+          description="The report may have been moved or deleted."
+          actions={<Button variant="secondary">Back to projects</Button>}
+          className="rounded-teal-surface border border-teal-outline-variant/50"
+        />
+      </div>
+    </div>
+  )
+}
+
+function LayoutSection() {
+  return (
+    <div className="grid gap-6">
+      <Stack direction="row" gap={3} align="center" wrap>
+        <Avatar name="Avery Chen" />
+        <Stack gap={0}>
+          <strong className="text-sm">Avery Chen</strong>
+          <span className="text-xs text-teal-on-surface-variant">Workspace owner</span>
+        </Stack>
+        <Badge variant="success">Active</Badge>
+      </Stack>
+      <Grid minChildWidth="10rem" gap={3}>
+        {['Reports', 'Members', 'Security', 'Billing'].map((tile) => (
+          <span key={tile} className="rounded-lg border border-teal-outline-variant/50 px-3 py-4 text-center text-sm">
+            {tile}
+          </span>
+        ))}
+      </Grid>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div className="h-36">
+          <ResizablePanelGroup direction="horizontal" className="gap-1">
+            <ResizablePanel defaultSize={30} minSize={15}>
+              <div className="flex h-full items-center justify-center rounded-lg border border-teal-outline-variant/50 bg-teal-surface-container-low text-sm text-teal-on-surface-variant">
+                Sidebar
+              </div>
+            </ResizablePanel>
+            <ResizableHandle />
+            <ResizablePanel minSize={30}>
+              <div className="flex h-full items-center justify-center rounded-lg border border-teal-outline-variant/50 bg-teal-surface-container-low text-sm text-teal-on-surface-variant">
+                Content
+              </div>
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        </div>
+        <AspectRatio ratio={16 / 9}>
+          <div className="flex size-full items-center justify-center bg-teal-surface-container-high text-sm text-teal-on-surface-variant">
+            16 : 9 media area
+          </div>
+        </AspectRatio>
+      </div>
+    </div>
+  )
+}
+
+function UtilitiesSection() {
+  return (
+    <div className="grid gap-6">
+      <div className="flex flex-wrap items-center gap-4">
+        <CopyButton value="npm install @kryv/teal" label="Copy install command" />
+        <CopyButton iconOnly value="npm install @kryv/teal" label="Copy install command" />
+        <TealThemeToggle />
+        <button
+          type="button"
+          className="inline-flex size-9 items-center justify-center rounded-lg border border-teal-outline-variant/50 hover:bg-teal-surface-container-high"
+        >
+          <Archive aria-hidden="true" className="size-4" />
+          <VisuallyHidden>Archive project</VisuallyHidden>
+        </button>
+      </div>
+      <div className="max-w-md">
+        <Carousel label="Quarterly reports">
+          {['Q1 security', 'Q2 reliability', 'Q3 usage'].map((title) => (
+            <div
+              key={title}
+              className="flex h-36 items-center justify-center rounded-lg border border-teal-outline-variant/50 bg-teal-surface-container-low text-sm font-semibold"
+            >
+              {title}
+            </div>
+          ))}
+        </Carousel>
+      </div>
     </div>
   )
 }
@@ -330,11 +541,13 @@ const sections = [
   { id: 'actions', title: 'Actions', hint: 'Button · IconButton', Body: ActionsSection },
   { id: 'status', title: 'Status & identity', hint: 'Badge · Avatar · HealthIndicator', Body: StatusSection },
   { id: 'forms', title: 'Forms', hint: 'Field · Input · Select · Checkbox · Switch', Body: FormsSection },
-  { id: 'data', title: 'Data display', hint: 'Table · Progress · Pagination', Body: DataSection },
-  { id: 'feedback', title: 'Feedback', hint: 'Alert · Skeleton · Toast', Body: FeedbackSection },
-  { id: 'navigation', title: 'Navigation', hint: 'Tabs · Breadcrumb · Menu', Body: NavigationSection },
-  { id: 'overlays', title: 'Overlays', hint: 'Dialog · Popover · Tooltip', Body: OverlaysSection },
-  { id: 'surfaces', title: 'Surfaces', hint: 'Card · EmptyState', Body: SurfacesSection },
+  { id: 'data', title: 'Data display', hint: 'Table · Progress · Pagination · Stat · Calendar · List', Body: DataSection },
+  { id: 'feedback', title: 'Feedback', hint: 'Alert · Skeleton · Toast · Meter · Rating', Body: FeedbackSection },
+  { id: 'navigation', title: 'Navigation', hint: 'Tabs · Breadcrumb · Menu · Menubar', Body: NavigationSection },
+  { id: 'overlays', title: 'Overlays', hint: 'Dialog · AlertDialog · Popconfirm · Tour', Body: OverlaysSection },
+  { id: 'surfaces', title: 'Surfaces', hint: 'Card · EmptyState · Result', Body: SurfacesSection },
+  { id: 'layout', title: 'Layout', hint: 'Stack · Grid · Resizable · AspectRatio', Body: LayoutSection },
+  { id: 'utilities', title: 'Utilities', hint: 'CopyButton · ThemeToggle · Carousel · VisuallyHidden', Body: UtilitiesSection },
 ]
 
 function Section({ title, hint, children }) {
@@ -397,6 +610,7 @@ export function ShowcasePage() {
           </div>
         </div>
         <Toaster />
+        <BackTop />
       </div>
     </TooltipProvider>
   )

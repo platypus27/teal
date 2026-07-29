@@ -2787,6 +2787,763 @@ export function FileUploadDemo({ exampleIndex = 0 }) {
 
 ---
 
+# PIN Input
+
+A segmented one-time code field with per-cell navigation, paste support, and masking.
+
+## Usage
+
+```js
+import { PinInput } from '@kryv/teal'
+```
+
+```jsx
+<PinInput label="Verification code" length={6} onComplete={(code) => undefined} />
+```
+
+## Design guidance
+
+### Use when
+
+The user enters a fixed-length numeric code.
+### Avoid when
+
+The value is free-form text; use Input.
+### Behavior
+
+Typing, Backspace, arrows, and paste move between cells; onComplete fires when full.
+### Responsive
+
+Cells keep a fixed tap size; reduce length on narrow screens.
+
+## Examples
+
+### One-time code
+
+Typing advances to the next cell, Backspace retreats, and paste fills from the focused cell.
+
+```jsx
+import { useState } from 'react'
+import { PinInput } from '@kryv/teal'
+
+export function PinInputDemo({ exampleIndex = 0 }) {
+  const [completed, setCompleted] = useState('')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid gap-2">
+        <PinInput label="Security PIN" length={4} masked />
+        <span className="text-sm text-teal-on-surface-variant">Masked cells hide the code like a password.</span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid gap-2">
+      <PinInput label="Verification code" length={6} onComplete={setCompleted} />
+      <span className="text-sm text-teal-on-surface-variant">
+        {completed ? `Completed code: ${completed}` : 'Type or paste a six-digit code.'}
+      </span>
+    </div>
+  )
+}
+```
+
+### Masked codes
+
+masked renders password-style cells for codes that should not linger on screen.
+
+```jsx
+import { useState } from 'react'
+import { PinInput } from '@kryv/teal'
+
+export function PinInputDemo({ exampleIndex = 0 }) {
+  const [completed, setCompleted] = useState('')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid gap-2">
+        <PinInput label="Security PIN" length={4} masked />
+        <span className="text-sm text-teal-on-surface-variant">Masked cells hide the code like a password.</span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid gap-2">
+      <PinInput label="Verification code" length={6} onComplete={setCompleted} />
+      <span className="text-sm text-teal-on-surface-variant">
+        {completed ? `Completed code: ${completed}` : 'Type or paste a six-digit code.'}
+      </span>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### PinInput
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `defaultValue` | `string` | - | Initial code when uncontrolled. |
+| `disabled` | `boolean` | `false` | Prevents interaction with every cell. |
+| `label` | `string` | `One-time code` | Accessible name for the cell group. |
+| `length` | `number` | `6` | Number of cells; each cell holds one digit. |
+| `masked` | `boolean` | `false` | Masks each cell like a password field. |
+| `onChange` | `(code: string) => void` | - | Called with the current code (may contain gaps) after every edit. |
+| `onComplete` | `(code: string) => void` | - | Called with the full code once every cell is filled. |
+| `value` | `string` | - | Controlled code value. |
+
+---
+
+# Tags Input
+
+A token entry field that turns typed text into removable chips.
+
+## Usage
+
+```js
+import { TagsInput } from '@kryv/teal'
+```
+
+```jsx
+const [tags, setTags] = useState(['design'])
+
+<TagsInput label="Add label" value={tags} onChange={setTags} placeholder="Add a label…" />
+```
+
+## Design guidance
+
+### Use when
+
+A field collects an open-ended list of short tokens.
+### Avoid when
+
+Values come from a fixed set; use MultiSelect.
+### Behavior
+
+Enter or comma commits; duplicates are ignored and chips remove individually.
+### Responsive
+
+Chips wrap inside the field as the list grows.
+
+## Examples
+
+### Token entry
+
+Enter or comma commits a tag; Backspace on an empty draft removes the last one.
+
+```jsx
+import { useState } from 'react'
+import { TagsInput } from '@kryv/teal'
+
+export function TagsInputDemo({ exampleIndex = 0 }) {
+  const [tags, setTags] = useState(['design', 'accessibility'])
+  const [reviewers, setReviewers] = useState(['avery'])
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid w-full max-w-md gap-2">
+        <TagsInput label="Add reviewer" value={reviewers} onChange={setReviewers} max={3} placeholder="Add a reviewer…" />
+        <span className="text-sm text-teal-on-surface-variant">At most three reviewers are allowed.</span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid w-full max-w-md gap-2">
+      <TagsInput label="Add label" value={tags} onChange={setTags} placeholder="Add a label…" />
+      <span className="text-sm text-teal-on-surface-variant">Press Enter or comma to add; Backspace removes the last tag.</span>
+    </div>
+  )
+}
+```
+
+### Capped lists
+
+Set max when the domain allows only a fixed number of tags.
+
+```jsx
+import { useState } from 'react'
+import { TagsInput } from '@kryv/teal'
+
+export function TagsInputDemo({ exampleIndex = 0 }) {
+  const [tags, setTags] = useState(['design', 'accessibility'])
+  const [reviewers, setReviewers] = useState(['avery'])
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid w-full max-w-md gap-2">
+        <TagsInput label="Add reviewer" value={reviewers} onChange={setReviewers} max={3} placeholder="Add a reviewer…" />
+        <span className="text-sm text-teal-on-surface-variant">At most three reviewers are allowed.</span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid w-full max-w-md gap-2">
+      <TagsInput label="Add label" value={tags} onChange={setTags} placeholder="Add a label…" />
+      <span className="text-sm text-teal-on-surface-variant">Press Enter or comma to add; Backspace removes the last tag.</span>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### TagsInput
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `disabled` | `boolean` | `false` | Prevents adding or removing tags. |
+| `label` | `string` | `Add tag` | Accessible name for the text entry. |
+| `max` | `number` | - | Maximum number of tags; further entries are ignored. |
+| `onChange` | `(tags: string[]) => void` | - | Called with the next tag list after every add or remove. |
+| `placeholder` | `string` | - | Placeholder shown in the text entry. |
+| `value` (required) | `string[]` | - | Current tags. |
+
+---
+
+# Input Group
+
+An input joined with leading or trailing addons such as protocols and units.
+
+## Usage
+
+```js
+import { InputGroup, InputAddon, Input } from '@kryv/teal'
+```
+
+```jsx
+<InputGroup>
+  <InputAddon position="leading">https://</InputAddon>
+  <Input aria-label="Domain" placeholder="workspace.example" />
+</InputGroup>
+```
+
+## Design guidance
+
+### Use when
+
+An input needs a fixed prefix or suffix such as a protocol or unit.
+### Avoid when
+
+The accessory is interactive; use separate controls instead.
+### Behavior
+
+The group detects addons and squares the matching input corners.
+### Responsive
+
+Addons stay fixed width while the input flexes.
+
+## Examples
+
+### Addons
+
+The group squares the joined input corners automatically on the attached side.
+
+```jsx
+import { Input, InputAddon, InputGroup } from '@kryv/teal'
+
+export function InputGroupDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid w-full max-w-xs gap-4">
+        <InputGroup>
+          <Input aria-label="Storage quota" defaultValue="50" />
+          <InputAddon position="trailing">GB</InputAddon>
+        </InputGroup>
+        <InputGroup>
+          <Input aria-label="Hourly rate" defaultValue="120" />
+          <InputAddon position="trailing">USD/h</InputAddon>
+        </InputGroup>
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-sm">
+      <InputGroup>
+        <InputAddon position="leading">https://</InputAddon>
+        <Input aria-label="Workspace domain" placeholder="workspace.example" />
+      </InputGroup>
+    </div>
+  )
+}
+```
+
+### Trailing units
+
+A trailing addon works for units like GB or currency codes.
+
+```jsx
+import { Input, InputAddon, InputGroup } from '@kryv/teal'
+
+export function InputGroupDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid w-full max-w-xs gap-4">
+        <InputGroup>
+          <Input aria-label="Storage quota" defaultValue="50" />
+          <InputAddon position="trailing">GB</InputAddon>
+        </InputGroup>
+        <InputGroup>
+          <Input aria-label="Hourly rate" defaultValue="120" />
+          <InputAddon position="trailing">USD/h</InputAddon>
+        </InputGroup>
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-sm">
+      <InputGroup>
+        <InputAddon position="leading">https://</InputAddon>
+        <Input aria-label="Workspace domain" placeholder="workspace.example" />
+      </InputGroup>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### InputGroup
+
+_This module forwards native element properties._
+
+### InputAddon
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `position` (required) | `enum` | - | Which end of the input the addon attaches to. |
+
+---
+
+# Editable
+
+Click-to-edit text that commits on Enter or blur and cancels with Escape.
+
+## Usage
+
+```js
+import { Editable } from '@kryv/teal'
+```
+
+```jsx
+<Editable label="Project name" defaultValue="Orion" onSubmit={(value) => undefined} />
+```
+
+## Design guidance
+
+### Use when
+
+A displayed value is renamed or corrected in place.
+### Avoid when
+
+The value is edited alongside others in a form; use Field and Input.
+### Behavior
+
+Enter and blur commit, Escape cancels, and the draft is preselected.
+### Responsive
+
+The preview truncates within its container width.
+
+## Examples
+
+### Inline rename
+
+Preview stays a button; editing autofocuses and selects the draft.
+
+```jsx
+import { useState } from 'react'
+import { Editable } from '@kryv/teal'
+
+export function EditableDemo({ exampleIndex = 0 }) {
+  const [name, setName] = useState('Project Orion')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid gap-2">
+        <Editable label="Short description" placeholder="Add a description" />
+        <span className="text-sm text-teal-on-surface-variant">Empty values stay discoverable through the placeholder.</span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid gap-2">
+      <Editable label="Project name" value={name} onSubmit={setName} />
+      <span className="text-sm text-teal-on-surface-variant">Click the text to rename; Enter commits, Escape cancels.</span>
+    </div>
+  )
+}
+```
+
+### Empty values
+
+The placeholder keeps an empty value discoverable and clickable.
+
+```jsx
+import { useState } from 'react'
+import { Editable } from '@kryv/teal'
+
+export function EditableDemo({ exampleIndex = 0 }) {
+  const [name, setName] = useState('Project Orion')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid gap-2">
+        <Editable label="Short description" placeholder="Add a description" />
+        <span className="text-sm text-teal-on-surface-variant">Empty values stay discoverable through the placeholder.</span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid gap-2">
+      <Editable label="Project name" value={name} onSubmit={setName} />
+      <span className="text-sm text-teal-on-surface-variant">Click the text to rename; Enter commits, Escape cancels.</span>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Editable
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `defaultValue` | `string` | - | Initial text when uncontrolled. |
+| `disabled` | `boolean` | `false` | Prevents switching to edit mode. |
+| `label` | `string` | `text` | Accessible name describing the edited text. |
+| `onChange` | `(value: string) => void` | - | Called with the draft text on every keystroke while editing. |
+| `onSubmit` | `(value: string) => void` | - | Called with the final text when a draft is committed (Enter or blur). |
+| `placeholder` | `string` | `Empty` | Text shown in preview mode when the value is empty. |
+| `value` | `string` | - | Controlled text shown in preview mode. |
+
+---
+
+# Time Picker
+
+A segmented hour and minute field with 12- and 24-hour cycles.
+
+## Usage
+
+```js
+import { TimePicker } from '@kryv/teal'
+```
+
+```jsx
+<TimePicker label="Start time" defaultValue="09:30" onChange={(value) => undefined} />
+```
+
+## Design guidance
+
+### Use when
+
+The user enters a time of day.
+### Avoid when
+
+A date or a date range is needed; use DatePicker or DateRangePicker.
+### Behavior
+
+Hour and minute fields clamp while typing; the 12-hour cycle adds a period toggle.
+### Responsive
+
+The segmented group stays inline and fits compact forms.
+
+## Examples
+
+### Segmented time
+
+Fields clamp as you type; the 12-hour cycle adds an AM/PM toggle.
+
+```jsx
+import { useState } from 'react'
+import { TimePicker } from '@kryv/teal'
+
+export function TimePickerDemo({ exampleIndex = 0 }) {
+  const [value, setValue] = useState('09:30')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid gap-2">
+        <TimePicker label="Reminder time" defaultValue="18:45" hourCycle={12} />
+        <span className="text-sm text-teal-on-surface-variant">The 12-hour cycle adds an AM/PM toggle.</span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid gap-2">
+      <TimePicker label="Start time" value={value} onChange={setValue} />
+      <span className="text-sm text-teal-on-surface-variant">Current value: {value}</span>
+    </div>
+  )
+}
+```
+
+### 12-hour cycle
+
+hourCycle={12} swaps the 0–23 hour field for 1–12 with an AM/PM toggle.
+
+```jsx
+import { useState } from 'react'
+import { TimePicker } from '@kryv/teal'
+
+export function TimePickerDemo({ exampleIndex = 0 }) {
+  const [value, setValue] = useState('09:30')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid gap-2">
+        <TimePicker label="Reminder time" defaultValue="18:45" hourCycle={12} />
+        <span className="text-sm text-teal-on-surface-variant">The 12-hour cycle adds an AM/PM toggle.</span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid gap-2">
+      <TimePicker label="Start time" value={value} onChange={setValue} />
+      <span className="text-sm text-teal-on-surface-variant">Current value: {value}</span>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### TimePicker
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `defaultValue` | `string` | - | Initial time in "HH:mm" (24h) when uncontrolled. Defaults to "00:00". |
+| `disabled` | `boolean` | `false` | Prevents interaction with every field. |
+| `hourCycle` | `enum` | `24` | 12 shows a 1–12 hour field with an AM/PM toggle; 24 shows a 0–23 hour field. |
+| `label` | `string` | `Time` | Accessible name for the time field group. |
+| `onChange` | `(value: string) => void` | - | Called with the 24-hour "HH:mm" value after every valid edit. |
+| `value` | `string` | - | Controlled time in "HH:mm" (24h). |
+
+---
+
+# Date Range Picker
+
+A two-click range field with presets and a keyboard-navigable calendar popover.
+
+## Usage
+
+```js
+import { DateRangePicker } from '@kryv/teal'
+```
+
+```jsx
+<DateRangePicker label="Report period" onChange={(range) => undefined} />
+```
+
+## Design guidance
+
+### Use when
+
+The user picks a start and end date.
+### Avoid when
+
+Only one date is needed; use DatePicker.
+### Behavior
+
+Two clicks define the range; presets fill common windows and arrows move by day or week.
+### Responsive
+
+The popover collision-handles; the field keeps its layout width.
+
+## Examples
+
+### Range selection
+
+The first click starts the range and the second completes it; presets fill common windows.
+
+```jsx
+import { DateRangePicker } from '@kryv/teal'
+
+export function DateRangePickerDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    const isWeekend = (date) => date.getDay() === 0 || date.getDay() === 6
+    return (
+      <div className="w-full max-w-xs">
+        <DateRangePicker
+          label="Maintenance window"
+          isDateDisabled={isWeekend}
+          placeholder="Weekdays only"
+          onChange={() => undefined}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-xs">
+      <DateRangePicker label="Report period" onChange={() => undefined} />
+    </div>
+  )
+}
+```
+
+### Bounded ranges
+
+Use isDateDisabled to exclude days such as weekends or past dates.
+
+```jsx
+import { DateRangePicker } from '@kryv/teal'
+
+export function DateRangePickerDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    const isWeekend = (date) => date.getDay() === 0 || date.getDay() === 6
+    return (
+      <div className="w-full max-w-xs">
+        <DateRangePicker
+          label="Maintenance window"
+          isDateDisabled={isWeekend}
+          placeholder="Weekdays only"
+          onChange={() => undefined}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-xs">
+      <DateRangePicker label="Report period" onChange={() => undefined} />
+    </div>
+  )
+}
+```
+
+## Interface
+
+### DateRangePicker
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `aria-label` | `string` | - | Accessible name when there is no visible label. |
+| `className` | `string` | - | - |
+| `defaultValue` | `DateRange` | - | Initial range when uncontrolled. |
+| `disabled` | `boolean` | - | Prevents interaction with the input. |
+| `id` | `string` | - | Explicit id; otherwise Field or an internal id is used. |
+| `isDateDisabled` | `(date: Date) => boolean` | - | Disables specific days in the calendar grid. |
+| `label` | `ReactNode` | - | Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used. |
+| `onChange` | `(range: DateRange) => void` | - | Called with the range after every selection step. |
+| `placeholder` | `string` | `Pick a date range` | Text shown when no range is selected. |
+| `value` | `DateRange` | - | Controlled range. |
+
+---
+
+# Color Picker
+
+A swatch trigger with preset colors and a validated hex field.
+
+## Usage
+
+```js
+import { ColorPicker } from '@kryv/teal'
+```
+
+```jsx
+<ColorPicker label="Brand color" defaultValue="#006a6c" onChange={(value) => undefined} />
+```
+
+## Design guidance
+
+### Use when
+
+The user picks a color from presets or a hex value.
+### Avoid when
+
+A full design-token editor is required.
+### Behavior
+
+Presets commit immediately; hex input validates and normalizes on Enter or blur.
+### Responsive
+
+The trigger fits toolbars; the panel caps at the preset grid width.
+
+## Examples
+
+### Presets and hex
+
+Presets commit immediately; the hex field normalizes #rgb and #rrggbb on Enter or blur.
+
+```jsx
+import { useState } from 'react'
+import { ColorPicker } from '@kryv/teal'
+
+export function ColorPickerDemo({ exampleIndex = 0 }) {
+  const [color, setColor] = useState('#006a6c')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-3">
+        <ColorPicker label="Brand color" value={color} onChange={setColor} />
+        <span
+          className="inline-flex size-10 items-center justify-center rounded-lg border border-teal-outline-variant text-xs font-semibold"
+          style={{ backgroundColor: color, color: '#ffffff' }}
+        >
+          {color}
+        </span>
+      </div>
+    )
+  }
+
+  return <ColorPicker label="Accent color" defaultValue="#065a60" onChange={() => undefined} />
+}
+```
+
+### Controlled color
+
+Pair value with onChange when the color drives other UI.
+
+```jsx
+import { useState } from 'react'
+import { ColorPicker } from '@kryv/teal'
+
+export function ColorPickerDemo({ exampleIndex = 0 }) {
+  const [color, setColor] = useState('#006a6c')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-3">
+        <ColorPicker label="Brand color" value={color} onChange={setColor} />
+        <span
+          className="inline-flex size-10 items-center justify-center rounded-lg border border-teal-outline-variant text-xs font-semibold"
+          style={{ backgroundColor: color, color: '#ffffff' }}
+        >
+          {color}
+        </span>
+      </div>
+    )
+  }
+
+  return <ColorPicker label="Accent color" defaultValue="#065a60" onChange={() => undefined} />
+}
+```
+
+## Interface
+
+### ColorPicker
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `string` | `Choose color` | Accessible name for the trigger button. |
+| `className` | `string` | - | - |
+| `defaultValue` | `string` | `#006a6c` | Initial hex color when uncontrolled. Defaults to the teal primary. |
+| `disabled` | `boolean` | `false` | Prevents opening the picker. |
+| `onChange` | `(value: string) => void` | - | Called with the normalized "#rrggbb" value after every selection. |
+| `value` | `string` | - | Controlled hex color value. |
+
+---
+
 # Card
 
 A structural surface for related content without ambiguous interactive behavior.
@@ -4717,6 +5474,564 @@ export function CommandDemo({ exampleIndex = 0 }) {
 
 ---
 
+# Alert Dialog
+
+A blocking confirmation that holds focus until an explicit choice is made.
+
+## Usage
+
+```js
+import { AlertDialog, Button } from '@kryv/teal'
+```
+
+```jsx
+<AlertDialog
+  trigger={<Button variant="danger">Delete project</Button>}
+  title="Delete project?"
+  description="This removes Orion and its reports permanently."
+  tone="danger"
+  confirmText="Delete"
+  onConfirm={() => undefined}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+An action needs an explicit, blocking confirmation.
+### Avoid when
+
+The consequence is minor; use Popconfirm or inline feedback.
+### Behavior
+
+Focus stays trapped until cancel or confirm; tone styles the confirm action.
+### Responsive
+
+The panel caps at the viewport with its own scroll.
+
+## Examples
+
+### Destructive confirmation
+
+Alertdialog semantics keep focus inside; tone="danger" styles the confirm action.
+
+```jsx
+import { AlertDialog, Button } from '@kryv/teal'
+
+export function AlertDialogDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <AlertDialog
+        trigger={<Button variant="secondary">Publish report</Button>}
+        title="Publish report?"
+        description="The quarterly security report becomes visible to all workspace members."
+        confirmText="Publish"
+        onConfirm={() => undefined}
+      />
+    )
+  }
+
+  return (
+    <AlertDialog
+      trigger={<Button variant="danger">Delete project</Button>}
+      title="Delete project?"
+      description="This removes Orion and its reports permanently. This action cannot be undone."
+      tone="danger"
+      confirmText="Delete"
+      onConfirm={() => undefined}
+    />
+  )
+}
+```
+
+### Custom actions
+
+Pass actions to replace the default cancel and confirm buttons entirely.
+
+```jsx
+import { AlertDialog, Button } from '@kryv/teal'
+
+export function AlertDialogDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <AlertDialog
+        trigger={<Button variant="secondary">Publish report</Button>}
+        title="Publish report?"
+        description="The quarterly security report becomes visible to all workspace members."
+        confirmText="Publish"
+        onConfirm={() => undefined}
+      />
+    )
+  }
+
+  return (
+    <AlertDialog
+      trigger={<Button variant="danger">Delete project</Button>}
+      title="Delete project?"
+      description="This removes Orion and its reports permanently. This action cannot be undone."
+      tone="danger"
+      confirmText="Delete"
+      onConfirm={() => undefined}
+    />
+  )
+}
+```
+
+## Interface
+
+### AlertDialog
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `actions` | `ReactNode` | - | Custom action area rendered at the bottom; overrides the default cancel/confirm buttons. |
+| `cancelText` | `string` | `Cancel` | Label of the cancel button. |
+| `className` | `string` | - | - |
+| `confirmText` | `string` | `Confirm` | Label of the confirm button. |
+| `defaultOpen` | `boolean` | - | Initial open state when uncontrolled. |
+| `description` | `ReactNode` | - | Supporting text rendered under the title; also the accessible description of the dialog. |
+| `onCancel` | `() => void` | - | Called when the cancel button is pressed. |
+| `onConfirm` | `() => void` | - | Called when the confirm button is pressed. |
+| `onOpenChange` | `(open: boolean) => void` | - | Called when the dialog opens or closes. |
+| `open` | `boolean` | - | Controlled open state. |
+| `tone` | `enum` | `default` | 'danger' styles the confirm button as destructive. |
+| `title` (required) | `ReactNode` | - | Title rendered at the top; also the accessible name of the dialog. |
+| `trigger` (required) | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | - | Element that opens the dialog; receives trigger props automatically. |
+
+---
+
+# Popconfirm
+
+A lightweight anchored confirmation for small destructive or irreversible actions.
+
+## Usage
+
+```js
+import { Popconfirm, Button } from '@kryv/teal'
+```
+
+```jsx
+<Popconfirm
+  trigger={<Button variant="secondary">Remove member</Button>}
+  title="Remove Avery?"
+  message="They lose access to this workspace."
+  tone="danger"
+  confirmText="Remove"
+  onConfirm={() => undefined}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+A small action benefits from confirmation without a modal.
+### Avoid when
+
+The consequence is severe; use AlertDialog.
+### Behavior
+
+Anchored to its trigger and dismisses on confirm, cancel, or Escape.
+### Responsive
+
+The panel stays within the viewport near the trigger.
+
+## Examples
+
+### Inline confirmation
+
+Built on Popover, so it anchors to the trigger without taking over the page.
+
+```jsx
+import { Button, Popconfirm } from '@kryv/teal'
+
+export function PopconfirmDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Popconfirm
+        trigger={<Button variant="secondary">Publish report</Button>}
+        title="Publish now?"
+        message="The report becomes visible to all workspace members."
+        confirmText="Publish"
+        onConfirm={() => undefined}
+      />
+    )
+  }
+
+  return (
+    <Popconfirm
+      trigger={<Button variant="secondary">Remove member</Button>}
+      title="Remove Avery?"
+      message="They lose access to this workspace immediately."
+      tone="danger"
+      confirmText="Remove"
+      onConfirm={() => undefined}
+    />
+  )
+}
+```
+
+### Default tone
+
+Use the default tone for non-destructive confirmations such as publishing.
+
+```jsx
+import { Button, Popconfirm } from '@kryv/teal'
+
+export function PopconfirmDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Popconfirm
+        trigger={<Button variant="secondary">Publish report</Button>}
+        title="Publish now?"
+        message="The report becomes visible to all workspace members."
+        confirmText="Publish"
+        onConfirm={() => undefined}
+      />
+    )
+  }
+
+  return (
+    <Popconfirm
+      trigger={<Button variant="secondary">Remove member</Button>}
+      title="Remove Avery?"
+      message="They lose access to this workspace immediately."
+      tone="danger"
+      confirmText="Remove"
+      onConfirm={() => undefined}
+    />
+  )
+}
+```
+
+## Interface
+
+### Popconfirm
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `cancelText` | `string` | `Cancel` | Label of the cancel button. |
+| `className` | `string` | - | - |
+| `confirmText` | `string` | `Confirm` | Label of the confirm button. |
+| `defaultOpen` | `boolean` | `false` | Initial open state when uncontrolled. |
+| `message` | `ReactNode` | - | Supporting text rendered under the title. |
+| `onCancel` | `() => void` | - | Called when the cancel button is pressed. |
+| `onConfirm` | `() => void` | - | Called when the confirm button is pressed. |
+| `onOpenChange` | `(open: boolean) => void` | - | Called when the popconfirm opens or closes. |
+| `open` | `boolean` | - | Controlled open state. |
+| `title` (required) | `string` | - | Short question rendered next to the icon; also the accessible name of the popover. |
+| `tone` | `enum` | `default` | 'danger' styles the confirm button and icon as destructive. |
+| `trigger` (required) | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | - | Element that toggles the popconfirm; receives trigger props automatically. |
+
+---
+
+# Context Menu
+
+A right-click action menu attached to any element, sharing the Menu item contract.
+
+## Usage
+
+```js
+import { ContextMenu } from '@kryv/teal'
+```
+
+```jsx
+<ContextMenu
+  label="Project actions"
+  items={[{ id: 'rename', label: 'Rename', onSelect: () => undefined }]}
+>
+  <div>Right-click this project row</div>
+</ContextMenu>
+```
+
+## Design guidance
+
+### Use when
+
+An element has secondary actions discoverable on right-click.
+### Avoid when
+
+The actions are primary; keep them visible instead.
+### Behavior
+
+Shares the Menu item contract with icons, separators, and danger styling.
+### Responsive
+
+Provide a visible alternative on touch layouts.
+
+## Examples
+
+### Right-click actions
+
+Items support icons, separators, disabled states, and the danger variant like Menu.
+
+```jsx
+import { ContextMenu } from '@kryv/teal'
+import { Archive, Pencil, Share2, Trash2 } from 'lucide-react'
+
+export function ContextMenuDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <ContextMenu
+        label="Report actions"
+        items={[
+          { id: 'open', label: 'Open', onSelect: () => undefined },
+          { id: 'duplicate', label: 'Duplicate', disabled: true, onSelect: () => undefined },
+          { id: 'delete', label: 'Delete', variant: 'danger', separatorBefore: true, onSelect: () => undefined },
+        ]}
+      >
+        <div className="flex h-24 w-full max-w-sm items-center justify-center rounded-lg border border-dashed border-teal-outline-variant text-sm text-teal-on-surface-variant">
+          Right-click the Q2 reliability report
+        </div>
+      </ContextMenu>
+    )
+  }
+
+  return (
+    <ContextMenu
+      label="Project actions"
+      items={[
+        { id: 'rename', label: 'Rename', icon: <Pencil />, onSelect: () => undefined },
+        { id: 'share', label: 'Share', icon: <Share2 />, onSelect: () => undefined },
+        { id: 'archive', label: 'Archive', icon: <Archive />, onSelect: () => undefined },
+        { id: 'delete', label: 'Delete', icon: <Trash2 />, variant: 'danger', separatorBefore: true, onSelect: () => undefined },
+      ]}
+    >
+      <div className="flex h-24 w-full max-w-sm items-center justify-center rounded-lg border border-dashed border-teal-outline-variant text-sm text-teal-on-surface-variant">
+        Right-click this project card
+      </div>
+    </ContextMenu>
+  )
+}
+```
+
+### Separated danger
+
+Keep destructive context actions at the end behind a separator.
+
+```jsx
+import { ContextMenu } from '@kryv/teal'
+import { Archive, Pencil, Share2, Trash2 } from 'lucide-react'
+
+export function ContextMenuDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <ContextMenu
+        label="Report actions"
+        items={[
+          { id: 'open', label: 'Open', onSelect: () => undefined },
+          { id: 'duplicate', label: 'Duplicate', disabled: true, onSelect: () => undefined },
+          { id: 'delete', label: 'Delete', variant: 'danger', separatorBefore: true, onSelect: () => undefined },
+        ]}
+      >
+        <div className="flex h-24 w-full max-w-sm items-center justify-center rounded-lg border border-dashed border-teal-outline-variant text-sm text-teal-on-surface-variant">
+          Right-click the Q2 reliability report
+        </div>
+      </ContextMenu>
+    )
+  }
+
+  return (
+    <ContextMenu
+      label="Project actions"
+      items={[
+        { id: 'rename', label: 'Rename', icon: <Pencil />, onSelect: () => undefined },
+        { id: 'share', label: 'Share', icon: <Share2 />, onSelect: () => undefined },
+        { id: 'archive', label: 'Archive', icon: <Archive />, onSelect: () => undefined },
+        { id: 'delete', label: 'Delete', icon: <Trash2 />, variant: 'danger', separatorBefore: true, onSelect: () => undefined },
+      ]}
+    >
+      <div className="flex h-24 w-full max-w-sm items-center justify-center rounded-lg border border-dashed border-teal-outline-variant text-sm text-teal-on-surface-variant">
+        Right-click this project card
+      </div>
+    </ContextMenu>
+  )
+}
+```
+
+## Interface
+
+### ContextMenu
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `ReactElement<unknown, string \| JSXElementConstructor<any>>` | - | Element the menu is attached to; opens on right-click and receives trigger props automatically. |
+| `className` | `string` | - | - |
+| `items` (required) | `MenuItem[]` | - | Items rendered in the menu. |
+| `label` | `string` | - | Accessible name for the menu. |
+
+---
+
+# Tour
+
+A guided walkthrough that highlights target elements step by step.
+
+## Usage
+
+```js
+import { Tour, Button } from '@kryv/teal'
+```
+
+```jsx
+const [open, setOpen] = useState(false)
+
+<Tour
+  open={open}
+  onOpenChange={setOpen}
+  steps={[
+    { target: '#search-field', title: 'Search everything', content: 'Find projects and people from one field.' },
+  ]}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+New users need a guided introduction to key areas.
+### Avoid when
+
+The hint is local to one control; use Tooltip.
+### Behavior
+
+Steps anchor to selectors, Escape or Skip closes, and missing targets center the dialog.
+### Responsive
+
+Steps scroll targets into view; keep step content short.
+
+## Examples
+
+### Onboarding steps
+
+Each step anchors to a selector; missing targets fall back to a centered dialog.
+
+```jsx
+import { useState } from 'react'
+import { Button, Tour } from '@kryv/teal'
+
+export function TourDemo({ exampleIndex = 0 }) {
+  const [open, setOpen] = useState(false)
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-4">
+        <Button variant="secondary" onClick={() => setOpen(true)}>
+          Replay the hint
+        </Button>
+        <span id="tour-demo-anchor" className="rounded-lg border border-teal-outline-variant/50 px-3 py-2 text-sm">
+          Usage metrics
+        </span>
+        <Tour
+          open={open}
+          onOpenChange={setOpen}
+          steps={[
+            {
+              target: '#tour-demo-anchor',
+              placement: 'top',
+              title: 'Metrics move here',
+              content: 'Weekly usage moved into this panel during the redesign.',
+            },
+          ]}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-4">
+      <Button onClick={() => setOpen(true)}>Start tour</Button>
+      <span id="tour-demo-search" className="rounded-lg border border-teal-outline-variant/50 px-3 py-2 text-sm">
+        Search field
+      </span>
+      <span id="tour-demo-filters" className="rounded-lg border border-teal-outline-variant/50 px-3 py-2 text-sm">
+        Filters
+      </span>
+      <Tour
+        open={open}
+        onOpenChange={setOpen}
+        onFinish={() => undefined}
+        steps={[
+          { target: '#tour-demo-search', title: 'Search everything', content: 'Find projects, people, and reports from one field.' },
+          { target: '#tour-demo-filters', title: 'Narrow results', content: 'Combine filters to focus the current view.' },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+### Placement
+
+Use placement="top" when the step target sits near the bottom of the viewport.
+
+```jsx
+import { useState } from 'react'
+import { Button, Tour } from '@kryv/teal'
+
+export function TourDemo({ exampleIndex = 0 }) {
+  const [open, setOpen] = useState(false)
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-4">
+        <Button variant="secondary" onClick={() => setOpen(true)}>
+          Replay the hint
+        </Button>
+        <span id="tour-demo-anchor" className="rounded-lg border border-teal-outline-variant/50 px-3 py-2 text-sm">
+          Usage metrics
+        </span>
+        <Tour
+          open={open}
+          onOpenChange={setOpen}
+          steps={[
+            {
+              target: '#tour-demo-anchor',
+              placement: 'top',
+              title: 'Metrics move here',
+              content: 'Weekly usage moved into this panel during the redesign.',
+            },
+          ]}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-4">
+      <Button onClick={() => setOpen(true)}>Start tour</Button>
+      <span id="tour-demo-search" className="rounded-lg border border-teal-outline-variant/50 px-3 py-2 text-sm">
+        Search field
+      </span>
+      <span id="tour-demo-filters" className="rounded-lg border border-teal-outline-variant/50 px-3 py-2 text-sm">
+        Filters
+      </span>
+      <Tour
+        open={open}
+        onOpenChange={setOpen}
+        onFinish={() => undefined}
+        steps={[
+          { target: '#tour-demo-search', title: 'Search everything', content: 'Find projects, people, and reports from one field.' },
+          { target: '#tour-demo-filters', title: 'Narrow results', content: 'Combine filters to focus the current view.' },
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Tour
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `steps` (required) | `TourStep[]` | - | Ordered walkthrough steps. |
+| `open` (required) | `boolean` | - | Controls whether the tour is visible. |
+| `onOpenChange` (required) | `(open: boolean) => void` | - | Called when the tour closes via Skip, Done or Escape. |
+| `onFinish` | `() => void` | - | Called after the final step completes. |
+
+---
+
 # Toast
 
 Imperative, announced feedback with semantic variants, optional actions, and dismissal.
@@ -5734,6 +7049,327 @@ export function TimelineDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+---
+
+# Meter
+
+A scalar gauge for a known range with optimum-zone coloring.
+
+## Usage
+
+```js
+import { Meter } from '@kryv/teal'
+```
+
+```jsx
+<Meter label="Storage used" value={72} low={60} high={85} optimum={20} />
+```
+
+## Design guidance
+
+### Use when
+
+A quantity within a known range needs a glanceable gauge.
+### Avoid when
+
+Progress toward completing a task is shown; use Progress.
+### Behavior
+
+role="meter" carries min, max, and now; zones color the fill from low, high, and optimum.
+### Responsive
+
+The track fills its container, so constrain width in the layout.
+
+## Examples
+
+### Zones
+
+low, high, and optimum map the value onto neutral, success, warning, and danger fills.
+
+```jsx
+import { Meter } from '@kryv/teal'
+
+export function MeterDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid w-full max-w-sm gap-5">
+        <Meter label="Storage used" value={68} max={120} formatValue={(v) => `${Math.round(v)} GB of 120 GB`} />
+        <Meter label="Bandwidth" value={0.82} max={1} formatValue={(v) => `${Math.round(v * 100)}%`} />
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid w-full max-w-sm gap-5">
+      <Meter label="Storage used" value={42} low={60} high={85} optimum={20} />
+      <Meter label="Memory pressure" value={72} low={60} high={85} optimum={20} />
+      <Meter label="CPU load" value={93} low={60} high={85} optimum={20} />
+    </div>
+  )
+}
+```
+
+### Custom formatting
+
+formatValue renders units such as GB in the readout and the accessible value text.
+
+```jsx
+import { Meter } from '@kryv/teal'
+
+export function MeterDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid w-full max-w-sm gap-5">
+        <Meter label="Storage used" value={68} max={120} formatValue={(v) => `${Math.round(v)} GB of 120 GB`} />
+        <Meter label="Bandwidth" value={0.82} max={1} formatValue={(v) => `${Math.round(v * 100)}%`} />
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid w-full max-w-sm gap-5">
+      <Meter label="Storage used" value={42} low={60} high={85} optimum={20} />
+      <Meter label="Memory pressure" value={72} low={60} high={85} optimum={20} />
+      <Meter label="CPU load" value={93} low={60} high={85} optimum={20} />
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Meter
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `formatValue` | `(value: number) => string` | `(v) => String(Math.round(v))` | Formats the visible value text. Defaults to the rounded raw value. |
+| `high` | `number` | - | Upper boundary of the middle range; used with `low` and `optimum` to color the fill. |
+| `label` (required) | `string` | - | Accessible name describing what the meter measures. |
+| `low` | `number` | - | Lower boundary of the middle range; used with `high` and `optimum` to color the fill. |
+| `max` | `number` | `100` | Largest value the meter can show. |
+| `min` | `number` | `0` | Smallest value the meter can show. |
+| `optimum` | `number` | - | The value considered ideal; determines whether low or high readings are good. |
+| `value` (required) | `number` | - | Current value; clamped between `min` and `max`. |
+
+---
+
+# Rating
+
+A star rating input with radio semantics, arrow keys, and a read-only display mode.
+
+## Usage
+
+```js
+import { Rating } from '@kryv/teal'
+```
+
+```jsx
+<Rating label="Rate this report" defaultValue={3} onChange={(value) => undefined} />
+```
+
+## Design guidance
+
+### Use when
+
+Users score something on a small fixed scale.
+### Avoid when
+
+The input is numeric but not a rating; use Slider or NumberInput.
+### Behavior
+
+Stars form a radiogroup with roving tab index and arrow-key selection.
+### Responsive
+
+Pick a size per context; the inline group never wraps.
+
+## Examples
+
+### Interactive rating
+
+Stars behave as a radiogroup with roving tab index; arrows move and select.
+
+```jsx
+import { Rating } from '@kryv/teal'
+
+export function RatingDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-6">
+        <Rating readOnly value={4} aria-label="Rated 4 out of 5" />
+        <Rating readOnly value={3} size="sm" aria-label="Rated 3 out of 5" />
+        <Rating readOnly value={5} size="lg" aria-label="Rated 5 out of 5" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-6">
+      <Rating label="Rate this report" defaultValue={3} />
+      <Rating label="Rate the onboarding" defaultValue={4} size="lg" />
+    </div>
+  )
+}
+```
+
+### Read-only display
+
+readOnly renders static stars with an img role for review summaries.
+
+```jsx
+import { Rating } from '@kryv/teal'
+
+export function RatingDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-6">
+        <Rating readOnly value={4} aria-label="Rated 4 out of 5" />
+        <Rating readOnly value={3} size="sm" aria-label="Rated 3 out of 5" />
+        <Rating readOnly value={5} size="lg" aria-label="Rated 5 out of 5" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-6">
+      <Rating label="Rate this report" defaultValue={3} />
+      <Rating label="Rate the onboarding" defaultValue={4} size="lg" />
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Rating
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `defaultValue` | `number` | `0` | Initial rating when uncontrolled. |
+| `label` | `string` | `Rating` | Accessible name for the rating group. |
+| `max` | `number` | `5` | Number of stars shown. |
+| `onChange` | `(value: number) => void` | - | Called with the new rating when a star is chosen. |
+| `readOnly` | `boolean` | `false` | Renders static stars without any interaction. |
+| `size` | `enum` | `md` | Star size. |
+| `value` | `number` | - | Controlled rating between 0 and `max`. |
+
+---
+
+# Announcer
+
+A visually hidden live region that re-announces a message whenever it changes.
+
+## Usage
+
+```js
+import { Announcer, Button } from '@kryv/teal'
+```
+
+```jsx
+<Announcer message={statusMessage} politeness="polite" />
+```
+
+## Design guidance
+
+### Use when
+
+State changes off-screen must reach screen-reader users.
+### Avoid when
+
+The change is already visible and focused; announcement would duplicate it.
+### Behavior
+
+The region clears and rewrites so identical messages re-announce.
+### Responsive
+
+The region is visually hidden and has no layout impact.
+
+## Examples
+
+### Status updates
+
+The region clears and rewrites so a repeated message is announced again.
+
+```jsx
+import { useState } from 'react'
+import { Announcer, Button } from '@kryv/teal'
+
+export function AnnouncerDemo({ exampleIndex = 0 }) {
+  const [saved, setSaved] = useState(0)
+  const [failed, setFailed] = useState(0)
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-3">
+        <Button variant="secondary" onClick={() => setFailed((count) => count + 1)}>
+          Simulate failure
+        </Button>
+        <Announcer message={failed > 0 ? 'Saving failed. Try again.' : ''} politeness="assertive" />
+        <span className="text-sm text-teal-on-surface-variant">
+          {failed > 0 ? `Announced ${failed} time(s) — assertively.` : 'Failures announce with politeness="assertive".'}
+        </span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-3">
+      <Button onClick={() => setSaved((count) => count + 1)}>Save changes</Button>
+      <Announcer message={saved > 0 ? 'Changes saved' : ''} />
+      <span className="text-sm text-teal-on-surface-variant">
+        {saved > 0 ? `Announced "Changes saved" ${saved} time(s).` : 'Saving announces through a hidden live region.'}
+      </span>
+    </div>
+  )
+}
+```
+
+### Assertive updates
+
+Use politeness="assertive" only for urgent changes that should interrupt.
+
+```jsx
+import { useState } from 'react'
+import { Announcer, Button } from '@kryv/teal'
+
+export function AnnouncerDemo({ exampleIndex = 0 }) {
+  const [saved, setSaved] = useState(0)
+  const [failed, setFailed] = useState(0)
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-3">
+        <Button variant="secondary" onClick={() => setFailed((count) => count + 1)}>
+          Simulate failure
+        </Button>
+        <Announcer message={failed > 0 ? 'Saving failed. Try again.' : ''} politeness="assertive" />
+        <span className="text-sm text-teal-on-surface-variant">
+          {failed > 0 ? `Announced ${failed} time(s) — assertively.` : 'Failures announce with politeness="assertive".'}
+        </span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-3">
+      <Button onClick={() => setSaved((count) => count + 1)}>Save changes</Button>
+      <Announcer message={saved > 0 ? 'Changes saved' : ''} />
+      <span className="text-sm text-teal-on-surface-variant">
+        {saved > 0 ? `Announced "Changes saved" ${saved} time(s).` : 'Saving announces through a hidden live region.'}
+      </span>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Announcer
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `message` (required) | `string` | - | Text announced to screen readers; re-announced whenever it changes. |
+| `politeness` | `enum` | `polite` | Urgency of the live region. |
 
 ---
 
@@ -7155,6 +8791,449 @@ export function TreeViewDemo({ exampleIndex = 0 }) {
 
 ---
 
+# Menubar
+
+An application command bar of labeled dropdown menus with full keyboard navigation.
+
+## Usage
+
+```js
+import { Menubar } from '@kryv/teal'
+```
+
+```jsx
+<Menubar
+  label="Application"
+  menus={[
+    { label: 'File', items: [{ id: 'new', label: 'New project', onSelect: () => undefined }] },
+    { label: 'Edit', items: [{ id: 'undo', label: 'Undo', onSelect: () => undefined }] },
+  ]}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+A desktop-style application exposes many commands in labeled menus.
+### Avoid when
+
+There are few actions; use a Toolbar or Menu.
+### Behavior
+
+Arrows traverse triggers and items following the menubar pattern.
+### Responsive
+
+Collapse into a single menu on narrow screens.
+
+## Examples
+
+### Application commands
+
+Arrows move across menus and through items following the menubar pattern.
+
+```jsx
+import { Menubar } from '@kryv/teal'
+import { Copy, FilePlus2, Scissors } from 'lucide-react'
+
+export function MenubarDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Menubar
+        label="Editor"
+        menus={[
+          {
+            label: 'Edit',
+            items: [
+              { id: 'cut', label: 'Cut', icon: <Scissors />, onSelect: () => undefined },
+              { id: 'copy', label: 'Copy', icon: <Copy />, onSelect: () => undefined },
+              { id: 'paste', label: 'Paste', disabled: true, onSelect: () => undefined },
+            ],
+          },
+          {
+            label: 'Project',
+            items: [
+              { id: 'archive', label: 'Archive', onSelect: () => undefined },
+              { id: 'delete', label: 'Delete', variant: 'danger', separatorBefore: true, onSelect: () => undefined },
+            ],
+          },
+        ]}
+      />
+    )
+  }
+
+  return (
+    <Menubar
+      label="Application"
+      menus={[
+        {
+          label: 'File',
+          items: [
+            { id: 'new', label: 'New project', icon: <FilePlus2 />, onSelect: () => undefined },
+            { id: 'duplicate', label: 'Duplicate', onSelect: () => undefined },
+            { id: 'export', label: 'Export…', onSelect: () => undefined },
+          ],
+        },
+        {
+          label: 'View',
+          items: [
+            { id: 'density', label: 'Toggle density', onSelect: () => undefined },
+            { id: 'reload', label: 'Reload data', onSelect: () => undefined },
+          ],
+        },
+      ]}
+    />
+  )
+}
+```
+
+### Menu items
+
+Items share the Menu contract, including icons, disabled states, and danger.
+
+```jsx
+import { Menubar } from '@kryv/teal'
+import { Copy, FilePlus2, Scissors } from 'lucide-react'
+
+export function MenubarDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Menubar
+        label="Editor"
+        menus={[
+          {
+            label: 'Edit',
+            items: [
+              { id: 'cut', label: 'Cut', icon: <Scissors />, onSelect: () => undefined },
+              { id: 'copy', label: 'Copy', icon: <Copy />, onSelect: () => undefined },
+              { id: 'paste', label: 'Paste', disabled: true, onSelect: () => undefined },
+            ],
+          },
+          {
+            label: 'Project',
+            items: [
+              { id: 'archive', label: 'Archive', onSelect: () => undefined },
+              { id: 'delete', label: 'Delete', variant: 'danger', separatorBefore: true, onSelect: () => undefined },
+            ],
+          },
+        ]}
+      />
+    )
+  }
+
+  return (
+    <Menubar
+      label="Application"
+      menus={[
+        {
+          label: 'File',
+          items: [
+            { id: 'new', label: 'New project', icon: <FilePlus2 />, onSelect: () => undefined },
+            { id: 'duplicate', label: 'Duplicate', onSelect: () => undefined },
+            { id: 'export', label: 'Export…', onSelect: () => undefined },
+          ],
+        },
+        {
+          label: 'View',
+          items: [
+            { id: 'density', label: 'Toggle density', onSelect: () => undefined },
+            { id: 'reload', label: 'Reload data', onSelect: () => undefined },
+          ],
+        },
+      ]}
+    />
+  )
+}
+```
+
+## Interface
+
+### Menubar
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | - | - |
+| `label` | `string` | - | Accessible name for the menubar. |
+| `menus` (required) | `MenubarMenu[]` | - | Menus rendered left to right, e.g. File/Edit/View. |
+
+---
+
+# Navigation Menu
+
+A top-level navigation bar mixing links with rich content panels in a shared viewport.
+
+## Usage
+
+```js
+import { NavigationMenu } from '@kryv/teal'
+```
+
+```jsx
+<NavigationMenu
+  label="Primary"
+  items={[
+    { type: 'link', label: 'Overview', href: '/', active: true },
+    { type: 'panel', label: 'Products', content: <ProductsPanel /> },
+  ]}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+Top-level destinations mix links with rich preview panels.
+### Avoid when
+
+The navigation is flat links only; use simpler link styling.
+### Behavior
+
+Panels open in a shared viewport; the active link sets aria-current.
+### Responsive
+
+Fall back to a vertical nav or drawer on narrow screens.
+
+## Examples
+
+### Links and panels
+
+Link items navigate with aria-current; panel items reveal content in one viewport.
+
+```jsx
+import { NavigationMenu } from '@kryv/teal'
+import { BarChart3, ShieldCheck, Users } from 'lucide-react'
+
+const panelLinks = [
+  { icon: BarChart3, title: 'Reports', description: 'Usage and reliability trends' },
+  { icon: ShieldCheck, title: 'Security', description: 'Audit logs and policies' },
+  { icon: Users, title: 'Members', description: 'Roles and invitations' },
+]
+
+export function NavigationMenuDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <NavigationMenu
+        label="Documentation"
+        items={[
+          { type: 'link', label: 'Getting started', href: '#', active: true },
+          { type: 'link', label: 'Components', href: '#' },
+          { type: 'link', label: 'Recipes', href: '#' },
+          { type: 'link', label: 'Changelog', href: '#' },
+        ]}
+      />
+    )
+  }
+
+  return (
+    <NavigationMenu
+      label="Primary"
+      items={[
+        { type: 'link', label: 'Overview', href: '#', active: true },
+        {
+          type: 'panel',
+          label: 'Workspace',
+          content: (
+            <ul className="grid w-80 list-none gap-1 p-0">
+              {panelLinks.map(({ icon: Icon, title, description }) => (
+                <li key={title}>
+                  <a href="#" className="flex items-start gap-3 rounded-lg px-3 py-2 no-underline hover:bg-teal-surface-container-high">
+                    <Icon aria-hidden="true" className="mt-0.5 size-4 text-teal-primary" />
+                    <span>
+                      <span className="block text-sm font-semibold text-teal-on-surface">{title}</span>
+                      <span className="block text-xs text-teal-on-surface-variant">{description}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ),
+        },
+        { type: 'link', label: 'Billing', href: '#' },
+      ]}
+    />
+  )
+}
+```
+
+### Panel content
+
+Panel items accept arbitrary content such as feature grids or promoted links.
+
+```jsx
+import { NavigationMenu } from '@kryv/teal'
+import { BarChart3, ShieldCheck, Users } from 'lucide-react'
+
+const panelLinks = [
+  { icon: BarChart3, title: 'Reports', description: 'Usage and reliability trends' },
+  { icon: ShieldCheck, title: 'Security', description: 'Audit logs and policies' },
+  { icon: Users, title: 'Members', description: 'Roles and invitations' },
+]
+
+export function NavigationMenuDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <NavigationMenu
+        label="Documentation"
+        items={[
+          { type: 'link', label: 'Getting started', href: '#', active: true },
+          { type: 'link', label: 'Components', href: '#' },
+          { type: 'link', label: 'Recipes', href: '#' },
+          { type: 'link', label: 'Changelog', href: '#' },
+        ]}
+      />
+    )
+  }
+
+  return (
+    <NavigationMenu
+      label="Primary"
+      items={[
+        { type: 'link', label: 'Overview', href: '#', active: true },
+        {
+          type: 'panel',
+          label: 'Workspace',
+          content: (
+            <ul className="grid w-80 list-none gap-1 p-0">
+              {panelLinks.map(({ icon: Icon, title, description }) => (
+                <li key={title}>
+                  <a href="#" className="flex items-start gap-3 rounded-lg px-3 py-2 no-underline hover:bg-teal-surface-container-high">
+                    <Icon aria-hidden="true" className="mt-0.5 size-4 text-teal-primary" />
+                    <span>
+                      <span className="block text-sm font-semibold text-teal-on-surface">{title}</span>
+                      <span className="block text-xs text-teal-on-surface-variant">{description}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ),
+        },
+        { type: 'link', label: 'Billing', href: '#' },
+      ]}
+    />
+  )
+}
+```
+
+## Interface
+
+### NavigationMenu
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `className` | `string` | - | - |
+| `items` (required) | `NavigationMenuItem[]` | - | Items rendered left to right; links navigate, panels open a content panel. |
+| `label` (required) | `string` | - | Accessible name for the navigation landmark. |
+
+---
+
+# Back Top
+
+A floating button that appears after scrolling and returns to the top of the page.
+
+## Usage
+
+```js
+import { BackTop } from '@kryv/teal'
+```
+
+```jsx
+<BackTop threshold={400} />
+```
+
+## Design guidance
+
+### Use when
+
+Pages grow long enough that returning to the top is tedious.
+### Avoid when
+
+The page is short or has its own scroll container.
+### Behavior
+
+Appears past the threshold and scrolls smoothly unless reduced motion is preferred.
+### Responsive
+
+The floating position clears content on all viewport sizes.
+
+## Examples
+
+### Scroll recovery
+
+Appears past the threshold and honors reduced motion when scrolling back up.
+
+```jsx
+import { BackTop } from '@kryv/teal'
+
+export function BackTopDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid gap-2">
+        <p className="text-sm text-teal-on-surface-variant">
+          A low threshold keeps the control visible even on shorter pages.
+        </p>
+        {/* Negative threshold forces the demo to render without scrolling. */}
+        <BackTop threshold={-1} label="Back to top of reports" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid gap-2">
+      <p className="text-sm text-teal-on-surface-variant">
+        Scroll this page and the button floats in at the bottom-right corner.
+      </p>
+      {/* Negative threshold forces the demo to render without scrolling. */}
+      <BackTop threshold={-1} />
+    </div>
+  )
+}
+```
+
+### Custom threshold
+
+Lower the threshold on short pages so the control still appears.
+
+```jsx
+import { BackTop } from '@kryv/teal'
+
+export function BackTopDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="grid gap-2">
+        <p className="text-sm text-teal-on-surface-variant">
+          A low threshold keeps the control visible even on shorter pages.
+        </p>
+        {/* Negative threshold forces the demo to render without scrolling. */}
+        <BackTop threshold={-1} label="Back to top of reports" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid gap-2">
+      <p className="text-sm text-teal-on-surface-variant">
+        Scroll this page and the button floats in at the bottom-right corner.
+      </p>
+      {/* Negative threshold forces the demo to render without scrolling. */}
+      <BackTop threshold={-1} />
+    </div>
+  )
+}
+```
+
+## Interface
+
+### BackTop
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `threshold` | `number` | `400` | Scrolled distance in pixels after which the button appears; defaults to 400. |
+| `label` | `string` | `Back to top` | Accessible label for the button; defaults to 'Back to top'. |
+| `className` | `string` | - | - |
+
+---
+
 # Permission Matrix
 
 A people-by-applications access matrix with caller-supplied cell content and explicit no-access cells.
@@ -8038,6 +10117,1491 @@ export function AvatarGroupDemo({ exampleIndex = 0 }) {
   )
 }
 ```
+
+---
+
+# Stat
+
+A labeled metric with a trend delta and optional supporting content.
+
+## Usage
+
+```js
+import { Stat } from '@kryv/teal'
+```
+
+```jsx
+<Stat
+  label="Monthly recurring revenue"
+  value="$48.2k"
+  delta={{ direction: 'up', value: '+12.4%' }}
+  description="vs. previous month"
+/>
+```
+
+## Design guidance
+
+### Use when
+
+A headline metric needs a label and trend context.
+### Avoid when
+
+Several metrics compare in rows; use Table.
+### Behavior
+
+Delta direction picks the icon and tone; an sr-only prefix states the direction.
+### Responsive
+
+Value and delta wrap together; let stats stack in narrow grids.
+
+## Examples
+
+### Trend delta
+
+Direction picks the icon and default tone; assistive technology hears an explicit up or down prefix.
+
+```jsx
+import { Sparkline, Stat } from '@kryv/teal'
+
+export function StatDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-xs">
+        <Stat label="Weekly sign-ups" value="1,284" delta={{ direction: 'up', value: '+8.1%' }}>
+          <Sparkline aria-label="Sign-ups trending up over twelve weeks" data={[4, 6, 5, 8, 7, 9, 8, 10, 9, 12, 11, 14]} variant="area" width={220} />
+        </Stat>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-wrap gap-10">
+      <Stat label="Monthly recurring revenue" value="$48.2k" delta={{ direction: 'up', value: '+12.4%' }} description="vs. previous month" />
+      <Stat label="Active incidents" value="3" delta={{ direction: 'down', value: '-2' }} description="vs. previous week" />
+      <Stat label="Open reports" value="14" delta={{ direction: 'flat', value: '0' }} description="unchanged" />
+    </div>
+  )
+}
+```
+
+### With a sparkline
+
+Pass a Sparkline as children when the metric benefits from a trend shape.
+
+```jsx
+import { Sparkline, Stat } from '@kryv/teal'
+
+export function StatDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-xs">
+        <Stat label="Weekly sign-ups" value="1,284" delta={{ direction: 'up', value: '+8.1%' }}>
+          <Sparkline aria-label="Sign-ups trending up over twelve weeks" data={[4, 6, 5, 8, 7, 9, 8, 10, 9, 12, 11, 14]} variant="area" width={220} />
+        </Stat>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-wrap gap-10">
+      <Stat label="Monthly recurring revenue" value="$48.2k" delta={{ direction: 'up', value: '+12.4%' }} description="vs. previous month" />
+      <Stat label="Active incidents" value="3" delta={{ direction: 'down', value: '-2' }} description="vs. previous week" />
+      <Stat label="Open reports" value="14" delta={{ direction: 'flat', value: '0' }} description="unchanged" />
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Stat
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | - | Optional extra content rendered below the value, e.g. a Sparkline. |
+| `delta` | `StatDelta` | - | Change indicator rendered next to the value. |
+| `description` | `ReactNode` | - | Supporting text rendered below the value. |
+| `label` (required) | `ReactNode` | - | Name of the metric. |
+| `value` (required) | `ReactNode` | - | Metric value, rendered large. |
+
+---
+
+# List
+
+A vertical item list with leading and trailing slots, secondary text, and a dense mode.
+
+## Usage
+
+```js
+import { List, ListItem } from '@kryv/teal'
+```
+
+```jsx
+<List>
+  <ListItem leading={<Folder />} title="Reports" secondary="12 files" trailing="2 GB" />
+  <ListItem title="Archive" onClick={() => undefined} />
+</List>
+```
+
+## Design guidance
+
+### Use when
+
+Items share one row structure with optional leading and trailing content.
+### Avoid when
+
+Records need column alignment; use Table.
+### Behavior
+
+onClick rows become buttons; dense reduces padding via context.
+### Responsive
+
+Text truncates rather than wrapping; trailing content stays pinned.
+
+## Examples
+
+### Slots and actions
+
+onClick turns the row into a button; dense tightens every item.
+
+```jsx
+import { List, ListItem } from '@kryv/teal'
+import { FileText, Folder, Image } from 'lucide-react'
+
+export function ListDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-md rounded-lg border border-teal-outline-variant/50">
+        <List dense>
+          <ListItem title="Security report.pdf" secondary="240 KB" onClick={() => undefined} />
+          <ListItem title="Reliability review.pdf" secondary="128 KB" onClick={() => undefined} />
+          <ListItem title="Usage metrics.csv" secondary="64 KB" onClick={() => undefined} />
+        </List>
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-md rounded-lg border border-teal-outline-variant/50">
+      <List>
+        <ListItem leading={<Folder />} title="Reports" secondary="12 files" trailing="2 GB" />
+        <ListItem leading={<Image />} title="Screenshots" secondary="48 files" trailing="640 MB" />
+        <ListItem leading={<FileText />} title="Q2 security report" secondary="Updated 5 min ago" trailing="240 KB" onClick={() => undefined} />
+      </List>
+    </div>
+  )
+}
+```
+
+### Dense lists
+
+Use dense inside popovers and panels where vertical space is tight.
+
+```jsx
+import { List, ListItem } from '@kryv/teal'
+import { FileText, Folder, Image } from 'lucide-react'
+
+export function ListDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-md rounded-lg border border-teal-outline-variant/50">
+        <List dense>
+          <ListItem title="Security report.pdf" secondary="240 KB" onClick={() => undefined} />
+          <ListItem title="Reliability review.pdf" secondary="128 KB" onClick={() => undefined} />
+          <ListItem title="Usage metrics.csv" secondary="64 KB" onClick={() => undefined} />
+        </List>
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-md rounded-lg border border-teal-outline-variant/50">
+      <List>
+        <ListItem leading={<Folder />} title="Reports" secondary="12 files" trailing="2 GB" />
+        <ListItem leading={<Image />} title="Screenshots" secondary="48 files" trailing="640 MB" />
+        <ListItem leading={<FileText />} title="Q2 security report" secondary="Updated 5 min ago" trailing="240 KB" onClick={() => undefined} />
+      </List>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### List
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `dense` | `boolean` | `false` | Reduces the vertical padding of every item. |
+
+### ListItem
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `leading` | `ReactNode` | - | Content rendered before the text, e.g. an icon or avatar. |
+| `onClick` | `() => void` | - | Called when the item is activated; makes the item a button. |
+| `secondary` | `ReactNode` | - | Supporting text rendered under the title. |
+| `title` (required) | `ReactNode` | - | Primary text of the item. |
+| `trailing` | `ReactNode` | - | Content rendered after the text, e.g. metadata or an action. |
+
+---
+
+# Sparkline
+
+A tiny inline trend chart in line, area, or bar form with an accessible summary.
+
+## Usage
+
+```js
+import { Sparkline } from '@kryv/teal'
+```
+
+```jsx
+<Sparkline aria-label="Sign-ups trending up" data={[4, 8, 6, 12, 9, 14]} variant="area" />
+```
+
+## Design guidance
+
+### Use when
+
+A trend shape adds context next to a metric.
+### Avoid when
+
+Precise values matter; pair with Stat or use a full chart.
+### Behavior
+
+role="img" with an aria-label plus a hidden min, max, and last summary.
+### Responsive
+
+Set explicit width and height per context.
+
+## Examples
+
+### Trends at a glance
+
+role="img" carries the label; a visually hidden min, max, and last summary backs it up.
+
+```jsx
+import { Sparkline } from '@kryv/teal'
+
+export function SparklineDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-8">
+        <Sparkline aria-label="Daily deployments, eight per day at most" data={[2, 5, 3, 8, 4, 7, 6]} variant="bar" width={140} height={40} />
+        <Sparkline aria-label="Queue depth falling" data={[14, 12, 13, 9, 10, 6, 4]} variant="area" width={140} height={40} />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-8">
+      <Sparkline aria-label="Sign-ups trending up" data={[4, 8, 6, 12, 9, 14]} variant="line" />
+      <Sparkline aria-label="Revenue trending up" data={[4, 8, 6, 12, 9, 14]} variant="area" />
+      <Sparkline aria-label="Deploys per day" data={[4, 8, 6, 12, 9, 14]} variant="bar" />
+    </div>
+  )
+}
+```
+
+### Bar variant
+
+Use variant="bar" for discrete periods such as daily totals.
+
+```jsx
+import { Sparkline } from '@kryv/teal'
+
+export function SparklineDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-8">
+        <Sparkline aria-label="Daily deployments, eight per day at most" data={[2, 5, 3, 8, 4, 7, 6]} variant="bar" width={140} height={40} />
+        <Sparkline aria-label="Queue depth falling" data={[14, 12, 13, 9, 10, 6, 4]} variant="area" width={140} height={40} />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-8">
+      <Sparkline aria-label="Sign-ups trending up" data={[4, 8, 6, 12, 9, 14]} variant="line" />
+      <Sparkline aria-label="Revenue trending up" data={[4, 8, 6, 12, 9, 14]} variant="area" />
+      <Sparkline aria-label="Deploys per day" data={[4, 8, 6, 12, 9, 14]} variant="bar" />
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Sparkline
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `aria-label` (required) | `string` | - | Accessible description of the trend, applied as aria-label. |
+| `data` (required) | `number[]` | - | Values to plot, in order. |
+| `height` | `number` | `32` | SVG height in pixels. |
+| `variant` | `enum` | `line` | Chart style: line, filled area, or bars. |
+| `width` | `number` | `120` | SVG width in pixels. |
+
+---
+
+# Calendar
+
+A month grid for picking a single date with bounds and disabled days.
+
+## Usage
+
+```js
+import { Calendar } from '@kryv/teal'
+```
+
+```jsx
+const [date, setDate] = useState(new Date())
+
+<Calendar value={date} onSelect={setDate} />
+```
+
+## Design guidance
+
+### Use when
+
+The user picks one date directly from a month grid.
+### Avoid when
+
+A date typed in a field is enough, or a range is needed.
+### Behavior
+
+min, max, and disabledDates constrain days; the month label is announced.
+### Responsive
+
+The grid keeps a fixed comfortable cell size.
+
+## Examples
+
+### Date grid
+
+min, max, and disabledDates constrain selection; the month label announces changes.
+
+```jsx
+import { useState } from 'react'
+import { Calendar } from '@kryv/teal'
+
+export function CalendarDemo({ exampleIndex = 0 }) {
+  const [date, setDate] = useState(() => new Date())
+
+  if (exampleIndex === 1) {
+    const today = new Date()
+    const inThirtyDays = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 30)
+    return (
+      <div className="grid gap-2">
+        <Calendar value={date} onSelect={setDate} min={today} max={inThirtyDays} />
+        <span className="text-sm text-teal-on-surface-variant">Bookable for the next thirty days only.</span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid gap-2">
+      <Calendar value={date} onSelect={setDate} />
+      <span className="text-sm text-teal-on-surface-variant">Selected: {date.toLocaleDateString()}</span>
+    </div>
+  )
+}
+```
+
+### Bounded dates
+
+Use min and max for booking-style windows like Calendar inside pickers.
+
+```jsx
+import { useState } from 'react'
+import { Calendar } from '@kryv/teal'
+
+export function CalendarDemo({ exampleIndex = 0 }) {
+  const [date, setDate] = useState(() => new Date())
+
+  if (exampleIndex === 1) {
+    const today = new Date()
+    const inThirtyDays = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 30)
+    return (
+      <div className="grid gap-2">
+        <Calendar value={date} onSelect={setDate} min={today} max={inThirtyDays} />
+        <span className="text-sm text-teal-on-surface-variant">Bookable for the next thirty days only.</span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid gap-2">
+      <Calendar value={date} onSelect={setDate} />
+      <span className="text-sm text-teal-on-surface-variant">Selected: {date.toLocaleDateString()}</span>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Calendar
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `disabledDates` | `(date: Date) => boolean` | - | Disables specific dates when it returns true. |
+| `max` | `Date` | - | Latest selectable date (inclusive). |
+| `min` | `Date` | - | Earliest selectable date (inclusive). |
+| `onMonthChange` | `(month: Date) => void` | - | Called when the visible month changes. |
+| `onSelect` (required) | `(date: Date) => void` | - | Called with the date the user picks. |
+| `value` (required) | `Date \| null` | - | Currently selected date, or null for none. |
+| `visibleMonth` | `Date` | - | Controlled visible month; any day within the month is accepted. |
+
+---
+
+# Result
+
+A full-area outcome state for success, error, and HTTP results with a standard icon and actions.
+
+## Usage
+
+```js
+import { Result, Button } from '@kryv/teal'
+```
+
+```jsx
+<Result
+  status="404"
+  title="Page not found"
+  description="The report may have been moved or deleted."
+  actions={<Button>Back to projects</Button>}
+/>
+```
+
+## Design guidance
+
+### Use when
+
+A route or panel resolves to a single outcome such as success, error, or 404.
+### Avoid when
+
+The message is local to a field or task; use Alert or Field.
+### Behavior
+
+The icon is decorative; title and description carry the meaning with optional actions.
+### Responsive
+
+Content centers and wraps within a readable measure.
+
+## Examples
+
+### Outcome states
+
+Seven statuses pair a standard icon with a matching tint and optional actions.
+
+```jsx
+import { Button, Result } from '@kryv/teal'
+
+export function ResultDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Result
+        status="404"
+        title="Page not found"
+        description="The report may have been moved or deleted."
+        actions={<Button variant="secondary">Back to projects</Button>}
+      />
+    )
+  }
+
+  return (
+    <Result
+      status="success"
+      title="Report published"
+      description="The quarterly security report is now visible to all workspace members."
+      actions={
+        <>
+          <Button>View report</Button>
+          <Button variant="secondary">Back to reports</Button>
+        </>
+      }
+    />
+  )
+}
+```
+
+### HTTP states
+
+404, 403, and 500 statuses cover routing and server outcomes.
+
+```jsx
+import { Button, Result } from '@kryv/teal'
+
+export function ResultDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Result
+        status="404"
+        title="Page not found"
+        description="The report may have been moved or deleted."
+        actions={<Button variant="secondary">Back to projects</Button>}
+      />
+    )
+  }
+
+  return (
+    <Result
+      status="success"
+      title="Report published"
+      description="The quarterly security report is now visible to all workspace members."
+      actions={
+        <>
+          <Button>View report</Button>
+          <Button variant="secondary">Back to reports</Button>
+        </>
+      }
+    />
+  )
+}
+```
+
+## Interface
+
+### Result
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `actions` | `ReactNode` | - | Action area rendered below the description, typically Buttons. |
+| `description` | `ReactNode` | - | Supporting text that explains the outcome. |
+| `icon` | `ReactNode` | - | Icon override; defaults to the status's standard icon. Always hidden from assistive technology. |
+| `status` (required) | `enum` | - | Outcome shown; picks the default icon and its tint. |
+| `title` (required) | `ReactNode` | - | Short heading for the outcome. |
+
+---
+
+# Stack
+
+A flex primitive that stacks children along one axis with consistent spacing and alignment.
+
+## Usage
+
+```js
+import { Stack, Badge } from '@kryv/teal'
+```
+
+```jsx
+<Stack direction="row" gap={4} align="center">
+  <Badge variant="success">Ready</Badge>
+  <Badge>Paused</Badge>
+</Stack>
+```
+
+## Design guidance
+
+### Use when
+
+Children flow along one axis with even spacing.
+### Avoid when
+
+The layout needs two-dimensional tracks; use Grid.
+### Behavior
+
+Numeric gaps follow the spacing scale; alignment maps to flexbox values.
+### Responsive
+
+Combine wrap with row direction for adaptive toolbars.
+
+## Examples
+
+### Axis and spacing
+
+Numeric gaps follow the spacing scale; direction, align, justify, and wrap map to flexbox.
+
+```jsx
+import { Avatar, Badge, Stack } from '@kryv/teal'
+
+export function StackDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Stack gap={3} className="w-full max-w-sm">
+        <span className="rounded-lg border border-teal-outline-variant/50 px-3 py-2 text-sm">Header</span>
+        <span className="rounded-lg border border-teal-outline-variant/50 px-3 py-2 text-sm">Content</span>
+        <span className="rounded-lg border border-teal-outline-variant/50 px-3 py-2 text-sm">Footer</span>
+      </Stack>
+    )
+  }
+
+  return (
+    <Stack direction="row" gap={4} align="center" wrap>
+      <Avatar name="Avery Chen" />
+      <Stack gap={0}>
+        <strong className="text-sm">Avery Chen</strong>
+        <span className="text-xs text-teal-on-surface-variant">Workspace owner</span>
+      </Stack>
+      <Badge variant="success">Active</Badge>
+    </Stack>
+  )
+}
+```
+
+### Wrapping rows
+
+wrap lets a row flow onto multiple lines on narrow screens.
+
+```jsx
+import { Avatar, Badge, Stack } from '@kryv/teal'
+
+export function StackDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Stack gap={3} className="w-full max-w-sm">
+        <span className="rounded-lg border border-teal-outline-variant/50 px-3 py-2 text-sm">Header</span>
+        <span className="rounded-lg border border-teal-outline-variant/50 px-3 py-2 text-sm">Content</span>
+        <span className="rounded-lg border border-teal-outline-variant/50 px-3 py-2 text-sm">Footer</span>
+      </Stack>
+    )
+  }
+
+  return (
+    <Stack direction="row" gap={4} align="center" wrap>
+      <Avatar name="Avery Chen" />
+      <Stack gap={0}>
+        <strong className="text-sm">Avery Chen</strong>
+        <span className="text-xs text-teal-on-surface-variant">Workspace owner</span>
+      </Stack>
+      <Badge variant="success">Active</Badge>
+    </Stack>
+  )
+}
+```
+
+## Interface
+
+### Stack
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `direction` | `enum` | `column` | Main axis direction; defaults to 'column'. |
+| `gap` | `string \| number` | - | Spacing between children. Numbers follow the Tailwind spacing scale (n × 0.25rem); strings are used as-is. |
+| `align` | `enum` | - | Cross-axis alignment of children. |
+| `justify` | `enum` | - | Main-axis distribution of children. |
+| `wrap` | `boolean` | `false` | Allows children to wrap onto multiple lines when true. |
+| `as` | `ElementType` | `div` | - |
+
+---
+
+# Grid
+
+A grid primitive with fixed columns or responsive auto-fit tracks.
+
+## Usage
+
+```js
+import { Grid, Card } from '@kryv/teal'
+```
+
+```jsx
+<Grid minChildWidth="14rem" gap={4}>
+  <Card>...</Card>
+  <Card>...</Card>
+</Grid>
+```
+
+## Design guidance
+
+### Use when
+
+Children distribute across columns, fixed or responsive.
+### Avoid when
+
+Items flow in one line; use Stack.
+### Behavior
+
+minChildWidth enables auto-fit tracks; columns fixes the count.
+### Responsive
+
+Auto-fit collapses tracks as the container narrows.
+
+## Examples
+
+### Responsive tracks
+
+minChildWidth collapses columns automatically as the container narrows.
+
+```jsx
+import { Grid } from '@kryv/teal'
+
+const tiles = ['Reports', 'Members', 'Security', 'Billing', 'Usage', 'Audit log']
+
+export function GridDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Grid minChildWidth="9rem" gap={3} className="w-full">
+        {tiles.map((tile) => (
+          <span key={tile} className="rounded-lg border border-teal-outline-variant/50 px-3 py-4 text-center text-sm">
+            {tile}
+          </span>
+        ))}
+      </Grid>
+    )
+  }
+
+  return (
+    <Grid columns={3} gap={3} className="w-full">
+      {tiles.map((tile) => (
+        <span key={tile} className="rounded-lg border border-teal-outline-variant/50 px-3 py-4 text-center text-sm">
+          {tile}
+        </span>
+      ))}
+    </Grid>
+  )
+}
+```
+
+### Fixed columns
+
+Use columns when the layout must hold an exact track count.
+
+```jsx
+import { Grid } from '@kryv/teal'
+
+const tiles = ['Reports', 'Members', 'Security', 'Billing', 'Usage', 'Audit log']
+
+export function GridDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <Grid minChildWidth="9rem" gap={3} className="w-full">
+        {tiles.map((tile) => (
+          <span key={tile} className="rounded-lg border border-teal-outline-variant/50 px-3 py-4 text-center text-sm">
+            {tile}
+          </span>
+        ))}
+      </Grid>
+    )
+  }
+
+  return (
+    <Grid columns={3} gap={3} className="w-full">
+      {tiles.map((tile) => (
+        <span key={tile} className="rounded-lg border border-teal-outline-variant/50 px-3 py-4 text-center text-sm">
+          {tile}
+        </span>
+      ))}
+    </Grid>
+  )
+}
+```
+
+## Interface
+
+### Grid
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `columns` | `number` | - | Fixed column count, rendered as `repeat(n, minmax(0, 1fr))`. Ignored when `minChildWidth` is set. |
+| `minChildWidth` | `string \| number` | - | Minimum child width (e.g. '16rem' or 256 for pixels); enables `auto-fit` responsive columns. |
+| `gap` | `string \| number` | - | Gap between tracks. Numbers follow the Tailwind spacing scale (n × 0.25rem); strings are used as-is. |
+| `as` | `ElementType` | `div` | - |
+
+---
+
+# Resizable
+
+Pointer- and keyboard-resizable panes with percentage sizing and double-click reset.
+
+## Usage
+
+```js
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@kryv/teal'
+```
+
+```jsx
+<ResizablePanelGroup direction="horizontal">
+  <ResizablePanel defaultSize={30}>Sidebar</ResizablePanel>
+  <ResizableHandle />
+  <ResizablePanel>Content</ResizablePanel>
+</ResizablePanelGroup>
+```
+
+## Design guidance
+
+### Use when
+
+Users adjust the split between two panes.
+### Avoid when
+
+The layout is fixed; do not add interaction without a need.
+### Behavior
+
+Handles drag, step with arrow keys, and reset on double-click; sizes are percentages.
+### Responsive
+
+Set min sizes so panes stay usable on narrow screens.
+
+## Examples
+
+### Split panes
+
+The handle exposes separator semantics with arrow-key steps and aria-valuenow.
+
+```jsx
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@kryv/teal'
+
+const paneClasses =
+  'flex h-full items-center justify-center rounded-lg border border-teal-outline-variant/50 bg-teal-surface-container-low text-sm text-teal-on-surface-variant'
+
+export function ResizableDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="h-56 w-full max-w-lg">
+        <ResizablePanelGroup direction="vertical" className="gap-1">
+          <ResizablePanel defaultSize={40} minSize={20}>
+            <div className={paneClasses}>Summary</div>
+          </ResizablePanel>
+          <ResizableHandle />
+          <ResizablePanel minSize={20}>
+            <div className={paneClasses}>Details</div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    )
+  }
+
+  return (
+    <div className="h-40 w-full max-w-2xl">
+      <ResizablePanelGroup direction="horizontal" className="gap-1">
+        <ResizablePanel defaultSize={30} minSize={15}>
+          <div className={paneClasses}>Sidebar</div>
+        </ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel minSize={30}>
+          <div className={paneClasses}>Content — drag the handle or focus it and use arrow keys</div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
+  )
+}
+```
+
+### Vertical stacks
+
+direction="vertical" splits panes top to bottom with the same handle behavior.
+
+```jsx
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@kryv/teal'
+
+const paneClasses =
+  'flex h-full items-center justify-center rounded-lg border border-teal-outline-variant/50 bg-teal-surface-container-low text-sm text-teal-on-surface-variant'
+
+export function ResizableDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="h-56 w-full max-w-lg">
+        <ResizablePanelGroup direction="vertical" className="gap-1">
+          <ResizablePanel defaultSize={40} minSize={20}>
+            <div className={paneClasses}>Summary</div>
+          </ResizablePanel>
+          <ResizableHandle />
+          <ResizablePanel minSize={20}>
+            <div className={paneClasses}>Details</div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    )
+  }
+
+  return (
+    <div className="h-40 w-full max-w-2xl">
+      <ResizablePanelGroup direction="horizontal" className="gap-1">
+        <ResizablePanel defaultSize={30} minSize={15}>
+          <div className={paneClasses}>Sidebar</div>
+        </ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel minSize={30}>
+          <div className={paneClasses}>Content — drag the handle or focus it and use arrow keys</div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### ResizablePanelGroup
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `direction` | `enum` | `horizontal` | Axis along which panels are laid out; 'horizontal' (default) places panels side by side. |
+
+### ResizablePanel
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `defaultSize` | `number` | - | Initial size as a percentage of the group (0–100). Panels without one share the remaining space. |
+| `minSize` | `number` | - | Smallest size the panel can be resized to, in percent; defaults to 0. |
+| `maxSize` | `number` | - | Largest size the panel can be resized to, in percent; defaults to 100. |
+
+### ResizableHandle
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `disabled` | `boolean` | `false` | Disables pointer, keyboard and double-click resizing when true. |
+| `step` | `number` | `5` | Percentage step applied by arrow-key resizing; defaults to 5. |
+
+---
+
+# Aspect Ratio
+
+Keeps media or content at a consistent width-to-height ratio.
+
+## Usage
+
+```js
+import { AspectRatio } from '@kryv/teal'
+```
+
+```jsx
+<AspectRatio ratio={16 / 9}>
+  <img src="/charts/usage.png" alt="Weekly usage chart" />
+</AspectRatio>
+```
+
+## Design guidance
+
+### Use when
+
+Media must hold a consistent shape across widths.
+### Avoid when
+
+Content should size naturally.
+### Behavior
+
+The wrapper reserves the ratio and clips overflow with rounded corners.
+### Responsive
+
+The box scales with its container while holding the ratio.
+
+## Examples
+
+### Consistent media
+
+The box holds its ratio while content stays clipped with rounded corners.
+
+```jsx
+import { AspectRatio } from '@kryv/teal'
+
+export function AspectRatioDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-40">
+        <AspectRatio ratio={1}>
+          <div className="flex size-full items-center justify-center bg-teal-surface-container-high text-sm text-teal-on-surface-variant">
+            1 : 1
+          </div>
+        </AspectRatio>
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-md">
+      <AspectRatio ratio={16 / 9}>
+        <div className="flex size-full items-center justify-center bg-teal-surface-container-high text-sm text-teal-on-surface-variant">
+          16 : 9 media area
+        </div>
+      </AspectRatio>
+    </div>
+  )
+}
+```
+
+### Media placeholders
+
+Reserve space for media that has not loaded to avoid layout shift.
+
+```jsx
+import { AspectRatio } from '@kryv/teal'
+
+export function AspectRatioDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-40">
+        <AspectRatio ratio={1}>
+          <div className="flex size-full items-center justify-center bg-teal-surface-container-high text-sm text-teal-on-surface-variant">
+            1 : 1
+          </div>
+        </AspectRatio>
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-md">
+      <AspectRatio ratio={16 / 9}>
+        <div className="flex size-full items-center justify-center bg-teal-surface-container-high text-sm text-teal-on-surface-variant">
+          16 : 9 media area
+        </div>
+      </AspectRatio>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### AspectRatio
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `asChild` | `boolean` | - | - |
+
+---
+
+# Visually Hidden
+
+Hides content visually while keeping it available to assistive technology.
+
+## Usage
+
+```js
+import { VisuallyHidden } from '@kryv/teal'
+```
+
+```jsx
+<button type="button">
+  <Trash aria-hidden="true" />
+  <VisuallyHidden>Delete report</VisuallyHidden>
+</button>
+```
+
+## Design guidance
+
+### Use when
+
+Assistive technology needs context the visual design omits.
+### Avoid when
+
+The text should be visible; show it instead.
+### Behavior
+
+Content stays in the accessibility tree without layout impact.
+### Responsive
+
+No visual footprint at any viewport.
+
+## Examples
+
+### Screen-reader text
+
+Use for extra context that would clutter the visual design.
+
+```jsx
+import { VisuallyHidden } from '@kryv/teal'
+import { Trash2 } from 'lucide-react'
+
+export function VisuallyHiddenDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <p className="text-sm">
+        <a href="#" className="text-teal-primary underline">
+          Status page
+          <VisuallyHidden>(opens in a new tab)</VisuallyHidden>
+        </a>
+        <span className="text-teal-on-surface-variant"> — the parenthetical note is announced, not shown.</span>
+      </p>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-3">
+      <button
+        type="button"
+        className="inline-flex size-9 items-center justify-center rounded-lg border border-teal-outline-variant/50 hover:bg-teal-surface-container-high"
+      >
+        <Trash2 aria-hidden="true" className="size-4" />
+        <VisuallyHidden>Delete report</VisuallyHidden>
+      </button>
+      <span className="text-sm text-teal-on-surface-variant">
+        The button shows only an icon; screen readers hear “Delete report”.
+      </span>
+    </div>
+  )
+}
+```
+
+### Extra context
+
+Add location or status context to links whose visible text stays short.
+
+```jsx
+import { VisuallyHidden } from '@kryv/teal'
+import { Trash2 } from 'lucide-react'
+
+export function VisuallyHiddenDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <p className="text-sm">
+        <a href="#" className="text-teal-primary underline">
+          Status page
+          <VisuallyHidden>(opens in a new tab)</VisuallyHidden>
+        </a>
+        <span className="text-teal-on-surface-variant"> — the parenthetical note is announced, not shown.</span>
+      </p>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-3">
+      <button
+        type="button"
+        className="inline-flex size-9 items-center justify-center rounded-lg border border-teal-outline-variant/50 hover:bg-teal-surface-container-high"
+      >
+        <Trash2 aria-hidden="true" className="size-4" />
+        <VisuallyHidden>Delete report</VisuallyHidden>
+      </button>
+      <span className="text-sm text-teal-on-surface-variant">
+        The button shows only an icon; screen readers hear “Delete report”.
+      </span>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### VisuallyHidden
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `asChild` | `boolean` | - | - |
+
+---
+
+# Copy Button
+
+A button that copies a value to the clipboard and confirms with an icon swap and live feedback.
+
+## Usage
+
+```js
+import { CopyButton } from '@kryv/teal'
+```
+
+```jsx
+<CopyButton value="npm install @kryv/teal" />
+```
+
+## Design guidance
+
+### Use when
+
+A value such as a command or id is copied often.
+### Avoid when
+
+The value is editable; use an Input with a copy recipe.
+### Behavior
+
+Clipboard failures still give feedback; a hidden live region announces the copy.
+### Responsive
+
+iconOnly mode fits dense rows and headers.
+
+## Examples
+
+### Copy feedback
+
+The label swaps to the copied text briefly and announces through a hidden live region.
+
+```jsx
+import { CopyButton } from '@kryv/teal'
+
+export function CopyButtonDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-3">
+        <code className="rounded-md bg-teal-surface-container-high px-2 py-1 text-sm">sk_live_4eC39HqLyjWDarj</code>
+        <CopyButton iconOnly value="sk_live_4eC39HqLyjWDarj" label="Copy API key" copiedLabel="API key copied" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      <CopyButton value="npm install @kryv/teal" label="Copy install command" copiedLabel="Copied" />
+      <CopyButton value="npm install @kryv/teal" variant="secondary" size="sm" />
+    </div>
+  )
+}
+```
+
+### Icon-only copy
+
+iconOnly fits copy actions inside table rows and code headers.
+
+```jsx
+import { CopyButton } from '@kryv/teal'
+
+export function CopyButtonDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-3">
+        <code className="rounded-md bg-teal-surface-container-high px-2 py-1 text-sm">sk_live_4eC39HqLyjWDarj</code>
+        <CopyButton iconOnly value="sk_live_4eC39HqLyjWDarj" label="Copy API key" copiedLabel="API key copied" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      <CopyButton value="npm install @kryv/teal" label="Copy install command" copiedLabel="Copied" />
+      <CopyButton value="npm install @kryv/teal" variant="secondary" size="sm" />
+    </div>
+  )
+}
+```
+
+## Interface
+
+### CopyButton
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` (required) | `string` | - | Text written to the clipboard when the button is clicked. |
+| `label` | `string` | `Copy` | Label shown before copying; doubles as the accessible name in icon-only mode. Defaults to 'Copy'. |
+| `copiedLabel` | `string` | `Copied` | Feedback label shown briefly after a successful copy. Defaults to 'Copied'. |
+| `iconOnly` | `boolean` | `false` | Renders an icon-only IconButton instead of a Button with text. |
+| `variant` | `enum` | - | Visual style forwarded to the underlying button. |
+| `size` | `enum` | - | Size forwarded to the underlying button. |
+| `className` | `string` | - | - |
+
+---
+
+# Theme Toggle
+
+An icon button that toggles the dark class on the document root and reports its state.
+
+## Usage
+
+```js
+import { ThemeToggle } from '@kryv/teal'
+```
+
+```jsx
+<ThemeToggle onChange={(theme) => persistTheme(theme)} />
+```
+
+## Design guidance
+
+### Use when
+
+The app offers a light and dark theme switch.
+### Avoid when
+
+Theme follows the system only.
+### Behavior
+
+Toggles the dark class on the document root and reports state through aria-pressed.
+### Responsive
+
+Icon-sized control fits any header.
+
+## Examples
+
+### Light and dark
+
+aria-pressed reflects the current theme; persisting the choice stays with the app.
+
+```jsx
+import { useState } from 'react'
+import { ThemeToggle } from '@kryv/teal'
+
+export function ThemeToggleDemo({ exampleIndex = 0 }) {
+  const [theme, setTheme] = useState('light')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-3">
+        <ThemeToggle onChange={setTheme} />
+        <span className="text-sm text-teal-on-surface-variant">
+          onChange reported: {theme} — persist this in your app shell.
+        </span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-3">
+      <ThemeToggle />
+      <span className="text-sm text-teal-on-surface-variant">Toggles the dark class on the document root.</span>
+    </div>
+  )
+}
+```
+
+### Persisting choice
+
+Store the theme in onChange and reapply the class on load.
+
+```jsx
+import { useState } from 'react'
+import { ThemeToggle } from '@kryv/teal'
+
+export function ThemeToggleDemo({ exampleIndex = 0 }) {
+  const [theme, setTheme] = useState('light')
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-3">
+        <ThemeToggle onChange={setTheme} />
+        <span className="text-sm text-teal-on-surface-variant">
+          onChange reported: {theme} — persist this in your app shell.
+        </span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center gap-3">
+      <ThemeToggle />
+      <span className="text-sm text-teal-on-surface-variant">Toggles the dark class on the document root.</span>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### ThemeToggle
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `string` | `Toggle dark mode` | Accessible label for the button; defaults to 'Toggle dark mode'. |
+| `onChange` | `(theme: Theme) => void` | - | Called with the new theme after toggling; the app is responsible for persisting it. |
+| `className` | `string` | - | - |
+
+---
+
+# Carousel
+
+A scroll-snap carousel with previous and next controls, dot indicators, and arrow-key support.
+
+## Usage
+
+```js
+import { Carousel, CarouselSlide } from '@kryv/teal'
+```
+
+```jsx
+<Carousel label="Featured reports">
+  <ReportCard title="Q1 security" />
+  <ReportCard title="Q2 reliability" />
+</Carousel>
+```
+
+## Design guidance
+
+### Use when
+
+Peer items page through a bounded region.
+### Avoid when
+
+All content should be visible at once; use Grid.
+### Behavior
+
+Scroll-snap track with buttons, dots, and arrow keys; slides announce their position.
+### Responsive
+
+Slides take full track width; keep content readable at mobile widths.
+
+## Examples
+
+### Paged content
+
+Slides announce their position; loop wraps around at the ends.
+
+```jsx
+import { Carousel } from '@kryv/teal'
+
+const slides = [
+  { title: 'Q1 security', detail: '14 checks, no critical findings' },
+  { title: 'Q2 reliability', detail: '99.98% uptime across services' },
+  { title: 'Q3 usage', detail: 'Sign-ups up 12% quarter over quarter' },
+]
+
+export function CarouselDemo({ exampleIndex = 0 }) {
+  const loop = exampleIndex === 1
+
+  return (
+    <div className="w-full max-w-md">
+      <Carousel label={loop ? 'Quarterly reports, looping' : 'Quarterly reports'} loop={loop}>
+        {slides.map((slide) => (
+          <div
+            key={slide.title}
+            className="flex h-40 flex-col items-center justify-center gap-1 rounded-lg border border-teal-outline-variant/50 bg-teal-surface-container-low"
+          >
+            <strong className="text-sm">{slide.title}</strong>
+            <span className="text-sm text-teal-on-surface-variant">{slide.detail}</span>
+          </div>
+        ))}
+      </Carousel>
+      {loop ? (
+        <p className="mt-2 text-sm text-teal-on-surface-variant">loop keeps prev and next enabled by wrapping around.</p>
+      ) : null}
+    </div>
+  )
+}
+```
+
+### Looping
+
+loop keeps prev and next enabled by wrapping past the ends.
+
+```jsx
+import { Carousel } from '@kryv/teal'
+
+const slides = [
+  { title: 'Q1 security', detail: '14 checks, no critical findings' },
+  { title: 'Q2 reliability', detail: '99.98% uptime across services' },
+  { title: 'Q3 usage', detail: 'Sign-ups up 12% quarter over quarter' },
+]
+
+export function CarouselDemo({ exampleIndex = 0 }) {
+  const loop = exampleIndex === 1
+
+  return (
+    <div className="w-full max-w-md">
+      <Carousel label={loop ? 'Quarterly reports, looping' : 'Quarterly reports'} loop={loop}>
+        {slides.map((slide) => (
+          <div
+            key={slide.title}
+            className="flex h-40 flex-col items-center justify-center gap-1 rounded-lg border border-teal-outline-variant/50 bg-teal-surface-container-low"
+          >
+            <strong className="text-sm">{slide.title}</strong>
+            <span className="text-sm text-teal-on-surface-variant">{slide.detail}</span>
+          </div>
+        ))}
+      </Carousel>
+      {loop ? (
+        <p className="mt-2 text-sm text-teal-on-surface-variant">loop keeps prev and next enabled by wrapping around.</p>
+      ) : null}
+    </div>
+  )
+}
+```
+
+## Interface
+
+### Carousel
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` (required) | `string` | - | Accessible label describing the carousel region. |
+| `loop` | `boolean` | `false` | Wraps from the last slide back to the first (and vice versa) when true; otherwise prev/next disable at the ends. |
+| `children` (required) | `ReactNode` | - | Slides; plain children are wrapped in a CarouselSlide automatically. |
+
+### CarouselSlide
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` (required) | `ReactNode` | - | Slide content. |
 
 ---
 

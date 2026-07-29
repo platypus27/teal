@@ -350,6 +350,103 @@ export const moduleGroups = [
           },
         ],
       },
+      {
+        id: 'pin-input',
+        name: 'PIN Input',
+        apiNames: ['PinInput'],
+        description: 'A segmented one-time code field with per-cell navigation, paste support, and masking.',
+        usage: `<PinInput label="Verification code" length={6} onComplete={(code) => undefined} />`,
+        examples: [
+          {
+            title: 'One-time code',
+            description: 'Typing advances to the next cell, Backspace retreats, and paste fills from the focused cell.',
+          },
+        ],
+      },
+      {
+        id: 'tags-input',
+        name: 'Tags Input',
+        apiNames: ['TagsInput'],
+        description: 'A token entry field that turns typed text into removable chips.',
+        usage: `const [tags, setTags] = useState(['design'])
+
+<TagsInput label="Add label" value={tags} onChange={setTags} placeholder="Add a label…" />`,
+        examples: [
+          {
+            title: 'Token entry',
+            description: 'Enter or comma commits a tag; Backspace on an empty draft removes the last one.',
+          },
+        ],
+      },
+      {
+        id: 'input-group',
+        name: 'Input Group',
+        apiNames: ['InputGroup', 'InputAddon'],
+        imports: ['InputGroup', 'InputAddon', 'Input'],
+        description: 'An input joined with leading or trailing addons such as protocols and units.',
+        usage: `<InputGroup>
+  <InputAddon position="leading">https://</InputAddon>
+  <Input aria-label="Domain" placeholder="workspace.example" />
+</InputGroup>`,
+        examples: [
+          {
+            title: 'Addons',
+            description: 'The group squares the joined input corners automatically on the attached side.',
+          },
+        ],
+      },
+      {
+        id: 'editable',
+        name: 'Editable',
+        apiNames: ['Editable'],
+        description: 'Click-to-edit text that commits on Enter or blur and cancels with Escape.',
+        usage: `<Editable label="Project name" defaultValue="Orion" onSubmit={(value) => undefined} />`,
+        examples: [
+          {
+            title: 'Inline rename',
+            description: 'Preview stays a button; editing autofocuses and selects the draft.',
+          },
+        ],
+      },
+      {
+        id: 'time-picker',
+        name: 'Time Picker',
+        apiNames: ['TimePicker'],
+        description: 'A segmented hour and minute field with 12- and 24-hour cycles.',
+        usage: `<TimePicker label="Start time" defaultValue="09:30" onChange={(value) => undefined} />`,
+        examples: [
+          {
+            title: 'Segmented time',
+            description: 'Fields clamp as you type; the 12-hour cycle adds an AM/PM toggle.',
+          },
+        ],
+      },
+      {
+        id: 'date-range-picker',
+        name: 'Date Range Picker',
+        apiNames: ['DateRangePicker'],
+        description: 'A two-click range field with presets and a keyboard-navigable calendar popover.',
+        usage: `<DateRangePicker label="Report period" onChange={(range) => undefined} />`,
+        examples: [
+          {
+            title: 'Range selection',
+            description: 'The first click starts the range and the second completes it; presets fill common windows.',
+          },
+        ],
+      },
+      {
+        id: 'color-picker',
+        name: 'Color Picker',
+        apiNames: ['ColorPicker'],
+        description: 'A swatch trigger with preset colors and a validated hex field.',
+        usage: `<ColorPicker label="Brand color" defaultValue="#006a6c" onChange={(value) => undefined} />`,
+        examples: [
+          {
+            title: 'Presets and hex',
+            description: 'Presets commit immediately; the hex field normalizes #rgb and #rrggbb on Enter or blur.',
+          },
+        ],
+      },
     ],
   },
   {
@@ -637,6 +734,88 @@ export const moduleGroups = [
           },
         ],
       },
+      {
+        id: 'alert-dialog',
+        name: 'Alert Dialog',
+        apiNames: ['AlertDialog'],
+        imports: ['AlertDialog', 'Button'],
+        description: 'A blocking confirmation that holds focus until an explicit choice is made.',
+        usage: `<AlertDialog
+  trigger={<Button variant="danger">Delete project</Button>}
+  title="Delete project?"
+  description="This removes Orion and its reports permanently."
+  tone="danger"
+  confirmText="Delete"
+  onConfirm={() => undefined}
+/>`,
+        examples: [
+          {
+            title: 'Destructive confirmation',
+            description: 'Alertdialog semantics keep focus inside; tone="danger" styles the confirm action.',
+          },
+        ],
+      },
+      {
+        id: 'popconfirm',
+        name: 'Popconfirm',
+        apiNames: ['Popconfirm'],
+        imports: ['Popconfirm', 'Button'],
+        description: 'A lightweight anchored confirmation for small destructive or irreversible actions.',
+        usage: `<Popconfirm
+  trigger={<Button variant="secondary">Remove member</Button>}
+  title="Remove Avery?"
+  message="They lose access to this workspace."
+  tone="danger"
+  confirmText="Remove"
+  onConfirm={() => undefined}
+/>`,
+        examples: [
+          {
+            title: 'Inline confirmation',
+            description: 'Built on Popover, so it anchors to the trigger without taking over the page.',
+          },
+        ],
+      },
+      {
+        id: 'context-menu',
+        name: 'Context Menu',
+        apiNames: ['ContextMenu'],
+        description: 'A right-click action menu attached to any element, sharing the Menu item contract.',
+        usage: `<ContextMenu
+  label="Project actions"
+  items={[{ id: 'rename', label: 'Rename', onSelect: () => undefined }]}
+>
+  <div>Right-click this project row</div>
+</ContextMenu>`,
+        examples: [
+          {
+            title: 'Right-click actions',
+            description: 'Items support icons, separators, disabled states, and the danger variant like Menu.',
+          },
+        ],
+      },
+      {
+        id: 'tour',
+        name: 'Tour',
+        apiNames: ['Tour'],
+        imports: ['Tour', 'Button'],
+        description: 'A guided walkthrough that highlights target elements step by step.',
+        usage: `const [open, setOpen] = useState(false)
+
+<Tour
+  open={open}
+  onOpenChange={setOpen}
+  steps={[
+    { target: '#search-field', title: 'Search everything', content: 'Find projects and people from one field.' },
+  ]}
+/>`,
+        examples: [
+          {
+            title: 'Onboarding steps',
+            description: 'Each step anchors to a selector; missing targets fall back to a centered dialog.',
+          },
+        ],
+      },
     ],
   },
   {
@@ -826,6 +1005,46 @@ toast({ title: 'Changes saved', variant: 'success' })`,
           {
             title: 'Activity feed',
             description: 'Tone dots mark event semantics; connectors link the sequence.',
+          },
+        ],
+      },
+      {
+        id: 'meter',
+        name: 'Meter',
+        apiNames: ['Meter'],
+        description: 'A scalar gauge for a known range with optimum-zone coloring.',
+        usage: `<Meter label="Storage used" value={72} low={60} high={85} optimum={20} />`,
+        examples: [
+          {
+            title: 'Zones',
+            description: 'low, high, and optimum map the value onto neutral, success, warning, and danger fills.',
+          },
+        ],
+      },
+      {
+        id: 'rating',
+        name: 'Rating',
+        apiNames: ['Rating'],
+        description: 'A star rating input with radio semantics, arrow keys, and a read-only display mode.',
+        usage: `<Rating label="Rate this report" defaultValue={3} onChange={(value) => undefined} />`,
+        examples: [
+          {
+            title: 'Interactive rating',
+            description: 'Stars behave as a radiogroup with roving tab index; arrows move and select.',
+          },
+        ],
+      },
+      {
+        id: 'announcer',
+        name: 'Announcer',
+        apiNames: ['Announcer'],
+        imports: ['Announcer', 'Button'],
+        description: 'A visually hidden live region that re-announces a message whenever it changes.',
+        usage: `<Announcer message={statusMessage} politeness="polite" />`,
+        examples: [
+          {
+            title: 'Status updates',
+            description: 'The region clears and rewrites so a repeated message is announced again.',
           },
         ],
       },
@@ -1038,6 +1257,57 @@ toast({ title: 'Changes saved', variant: 'success' })`,
           },
         ],
       },
+      {
+        id: 'menubar',
+        name: 'Menubar',
+        apiNames: ['Menubar'],
+        description: 'An application command bar of labeled dropdown menus with full keyboard navigation.',
+        usage: `<Menubar
+  label="Application"
+  menus={[
+    { label: 'File', items: [{ id: 'new', label: 'New project', onSelect: () => undefined }] },
+    { label: 'Edit', items: [{ id: 'undo', label: 'Undo', onSelect: () => undefined }] },
+  ]}
+/>`,
+        examples: [
+          {
+            title: 'Application commands',
+            description: 'Arrows move across menus and through items following the menubar pattern.',
+          },
+        ],
+      },
+      {
+        id: 'navigation-menu',
+        name: 'Navigation Menu',
+        apiNames: ['NavigationMenu'],
+        description: 'A top-level navigation bar mixing links with rich content panels in a shared viewport.',
+        usage: `<NavigationMenu
+  label="Primary"
+  items={[
+    { type: 'link', label: 'Overview', href: '/', active: true },
+    { type: 'panel', label: 'Products', content: <ProductsPanel /> },
+  ]}
+/>`,
+        examples: [
+          {
+            title: 'Links and panels',
+            description: 'Link items navigate with aria-current; panel items reveal content in one viewport.',
+          },
+        ],
+      },
+      {
+        id: 'back-top',
+        name: 'Back Top',
+        apiNames: ['BackTop'],
+        description: 'A floating button that appears after scrolling and returns to the top of the page.',
+        usage: `<BackTop threshold={400} />`,
+        examples: [
+          {
+            title: 'Scroll recovery',
+            description: 'Appears past the threshold and honors reduced motion when scrolling back up.',
+          },
+        ],
+      },
     ],
   },
   {
@@ -1169,6 +1439,223 @@ toast({ title: 'Changes saved', variant: 'success' })`,
           },
         ],
       },
+      {
+        id: 'stat',
+        name: 'Stat',
+        apiNames: ['Stat'],
+        description: 'A labeled metric with a trend delta and optional supporting content.',
+        usage: `<Stat
+  label="Monthly recurring revenue"
+  value="$48.2k"
+  delta={{ direction: 'up', value: '+12.4%' }}
+  description="vs. previous month"
+/>`,
+        examples: [
+          {
+            title: 'Trend delta',
+            description: 'Direction picks the icon and default tone; assistive technology hears an explicit up or down prefix.',
+          },
+        ],
+      },
+      {
+        id: 'list',
+        name: 'List',
+        apiNames: ['List', 'ListItem'],
+        description: 'A vertical item list with leading and trailing slots, secondary text, and a dense mode.',
+        usage: `<List>
+  <ListItem leading={<Folder />} title="Reports" secondary="12 files" trailing="2 GB" />
+  <ListItem title="Archive" onClick={() => undefined} />
+</List>`,
+        examples: [
+          {
+            title: 'Slots and actions',
+            description: 'onClick turns the row into a button; dense tightens every item.',
+          },
+        ],
+      },
+      {
+        id: 'sparkline',
+        name: 'Sparkline',
+        apiNames: ['Sparkline'],
+        description: 'A tiny inline trend chart in line, area, or bar form with an accessible summary.',
+        usage: `<Sparkline aria-label="Sign-ups trending up" data={[4, 8, 6, 12, 9, 14]} variant="area" />`,
+        examples: [
+          {
+            title: 'Trends at a glance',
+            description: 'role="img" carries the label; a visually hidden min, max, and last summary backs it up.',
+          },
+        ],
+      },
+      {
+        id: 'calendar',
+        name: 'Calendar',
+        apiNames: ['Calendar'],
+        description: 'A month grid for picking a single date with bounds and disabled days.',
+        usage: `const [date, setDate] = useState(new Date())
+
+<Calendar value={date} onSelect={setDate} />`,
+        examples: [
+          {
+            title: 'Date grid',
+            description: 'min, max, and disabledDates constrain selection; the month label announces changes.',
+          },
+        ],
+      },
+      {
+        id: 'result',
+        name: 'Result',
+        apiNames: ['Result'],
+        imports: ['Result', 'Button'],
+        description: 'A full-area outcome state for success, error, and HTTP results with a standard icon and actions.',
+        usage: `<Result
+  status="404"
+  title="Page not found"
+  description="The report may have been moved or deleted."
+  actions={<Button>Back to projects</Button>}
+/>`,
+        examples: [
+          {
+            title: 'Outcome states',
+            description: 'Seven statuses pair a standard icon with a matching tint and optional actions.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'Layout',
+    modules: [
+      {
+        id: 'stack',
+        name: 'Stack',
+        apiNames: ['Stack'],
+        imports: ['Stack', 'Badge'],
+        description: 'A flex primitive that stacks children along one axis with consistent spacing and alignment.',
+        usage: `<Stack direction="row" gap={4} align="center">
+  <Badge variant="success">Ready</Badge>
+  <Badge>Paused</Badge>
+</Stack>`,
+        examples: [
+          {
+            title: 'Axis and spacing',
+            description: 'Numeric gaps follow the spacing scale; direction, align, justify, and wrap map to flexbox.',
+          },
+        ],
+      },
+      {
+        id: 'grid',
+        name: 'Grid',
+        apiNames: ['Grid'],
+        imports: ['Grid', 'Card'],
+        description: 'A grid primitive with fixed columns or responsive auto-fit tracks.',
+        usage: `<Grid minChildWidth="14rem" gap={4}>
+  <Card>...</Card>
+  <Card>...</Card>
+</Grid>`,
+        examples: [
+          {
+            title: 'Responsive tracks',
+            description: 'minChildWidth collapses columns automatically as the container narrows.',
+          },
+        ],
+      },
+      {
+        id: 'resizable',
+        name: 'Resizable',
+        apiNames: ['ResizablePanelGroup', 'ResizablePanel', 'ResizableHandle'],
+        imports: ['ResizablePanelGroup', 'ResizablePanel', 'ResizableHandle'],
+        description: 'Pointer- and keyboard-resizable panes with percentage sizing and double-click reset.',
+        usage: `<ResizablePanelGroup direction="horizontal">
+  <ResizablePanel defaultSize={30}>Sidebar</ResizablePanel>
+  <ResizableHandle />
+  <ResizablePanel>Content</ResizablePanel>
+</ResizablePanelGroup>`,
+        examples: [
+          {
+            title: 'Split panes',
+            description: 'The handle exposes separator semantics with arrow-key steps and aria-valuenow.',
+          },
+        ],
+      },
+      {
+        id: 'aspect-ratio',
+        name: 'Aspect Ratio',
+        apiNames: ['AspectRatio'],
+        description: 'Keeps media or content at a consistent width-to-height ratio.',
+        usage: `<AspectRatio ratio={16 / 9}>
+  <img src="/charts/usage.png" alt="Weekly usage chart" />
+</AspectRatio>`,
+        examples: [
+          {
+            title: 'Consistent media',
+            description: 'The box holds its ratio while content stays clipped with rounded corners.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'Utilities',
+    modules: [
+      {
+        id: 'visually-hidden',
+        name: 'Visually Hidden',
+        apiNames: ['VisuallyHidden'],
+        imports: ['VisuallyHidden'],
+        description: 'Hides content visually while keeping it available to assistive technology.',
+        usage: `<button type="button">
+  <Trash aria-hidden="true" />
+  <VisuallyHidden>Delete report</VisuallyHidden>
+</button>`,
+        examples: [
+          {
+            title: 'Screen-reader text',
+            description: 'Use for extra context that would clutter the visual design.',
+          },
+        ],
+      },
+      {
+        id: 'copy-button',
+        name: 'Copy Button',
+        apiNames: ['CopyButton'],
+        description: 'A button that copies a value to the clipboard and confirms with an icon swap and live feedback.',
+        usage: `<CopyButton value="npm install @kryv/teal" />`,
+        examples: [
+          {
+            title: 'Copy feedback',
+            description: 'The label swaps to the copied text briefly and announces through a hidden live region.',
+          },
+        ],
+      },
+      {
+        id: 'theme-toggle',
+        name: 'Theme Toggle',
+        apiNames: ['ThemeToggle'],
+        description: 'An icon button that toggles the dark class on the document root and reports its state.',
+        usage: `<ThemeToggle onChange={(theme) => persistTheme(theme)} />`,
+        examples: [
+          {
+            title: 'Light and dark',
+            description: 'aria-pressed reflects the current theme; persisting the choice stays with the app.',
+          },
+        ],
+      },
+      {
+        id: 'carousel',
+        name: 'Carousel',
+        apiNames: ['Carousel', 'CarouselSlide'],
+        description: 'A scroll-snap carousel with previous and next controls, dot indicators, and arrow-key support.',
+        usage: `<Carousel label="Featured reports">
+  <ReportCard title="Q1 security" />
+  <ReportCard title="Q2 reliability" />
+</Carousel>`,
+        examples: [
+          {
+            title: 'Paged content',
+            description: 'Slides announce their position; loop wraps around at the ends.',
+          },
+        ],
+      },
     ],
   },
 ]
@@ -1233,6 +1720,36 @@ const additionalExamples = {
   'progress-circle': [{ title: 'Indeterminate work', description: 'Omit value while progress cannot be measured.' }],
   timeline: [{ title: 'Event tones', description: 'Use success and warning tones to mark outcomes in a feed.' }],
   'code-block': [{ title: 'Line numbers', description: 'Enable line numbers for walkthroughs that reference specific lines.' }],
+  meter: [{ title: 'Custom formatting', description: 'formatValue renders units such as GB in the readout and the accessible value text.' }],
+  rating: [{ title: 'Read-only display', description: 'readOnly renders static stars with an img role for review summaries.' }],
+  announcer: [{ title: 'Assertive updates', description: 'Use politeness="assertive" only for urgent changes that should interrupt.' }],
+  'pin-input': [{ title: 'Masked codes', description: 'masked renders password-style cells for codes that should not linger on screen.' }],
+  'tags-input': [{ title: 'Capped lists', description: 'Set max when the domain allows only a fixed number of tags.' }],
+  'input-group': [{ title: 'Trailing units', description: 'A trailing addon works for units like GB or currency codes.' }],
+  editable: [{ title: 'Empty values', description: 'The placeholder keeps an empty value discoverable and clickable.' }],
+  'time-picker': [{ title: '12-hour cycle', description: 'hourCycle={12} swaps the 0–23 hour field for 1–12 with an AM/PM toggle.' }],
+  'date-range-picker': [{ title: 'Bounded ranges', description: 'Use isDateDisabled to exclude days such as weekends or past dates.' }],
+  'color-picker': [{ title: 'Controlled color', description: 'Pair value with onChange when the color drives other UI.' }],
+  'alert-dialog': [{ title: 'Custom actions', description: 'Pass actions to replace the default cancel and confirm buttons entirely.' }],
+  popconfirm: [{ title: 'Default tone', description: 'Use the default tone for non-destructive confirmations such as publishing.' }],
+  'context-menu': [{ title: 'Separated danger', description: 'Keep destructive context actions at the end behind a separator.' }],
+  tour: [{ title: 'Placement', description: 'Use placement="top" when the step target sits near the bottom of the viewport.' }],
+  menubar: [{ title: 'Menu items', description: 'Items share the Menu contract, including icons, disabled states, and danger.' }],
+  'navigation-menu': [{ title: 'Panel content', description: 'Panel items accept arbitrary content such as feature grids or promoted links.' }],
+  'back-top': [{ title: 'Custom threshold', description: 'Lower the threshold on short pages so the control still appears.' }],
+  stat: [{ title: 'With a sparkline', description: 'Pass a Sparkline as children when the metric benefits from a trend shape.' }],
+  list: [{ title: 'Dense lists', description: 'Use dense inside popovers and panels where vertical space is tight.' }],
+  sparkline: [{ title: 'Bar variant', description: 'Use variant="bar" for discrete periods such as daily totals.' }],
+  calendar: [{ title: 'Bounded dates', description: 'Use min and max for booking-style windows like Calendar inside pickers.' }],
+  result: [{ title: 'HTTP states', description: '404, 403, and 500 statuses cover routing and server outcomes.' }],
+  stack: [{ title: 'Wrapping rows', description: 'wrap lets a row flow onto multiple lines on narrow screens.' }],
+  grid: [{ title: 'Fixed columns', description: 'Use columns when the layout must hold an exact track count.' }],
+  resizable: [{ title: 'Vertical stacks', description: 'direction="vertical" splits panes top to bottom with the same handle behavior.' }],
+  'aspect-ratio': [{ title: 'Media placeholders', description: 'Reserve space for media that has not loaded to avoid layout shift.' }],
+  'visually-hidden': [{ title: 'Extra context', description: 'Add location or status context to links whose visible text stays short.' }],
+  'copy-button': [{ title: 'Icon-only copy', description: 'iconOnly fits copy actions inside table rows and code headers.' }],
+  'theme-toggle': [{ title: 'Persisting choice', description: 'Store the theme in onChange and reapply the class on load.' }],
+  carousel: [{ title: 'Looping', description: 'loop keeps prev and next enabled by wrapping past the ends.' }],
 }
 
 for (const module of modules) {
@@ -1305,6 +1822,36 @@ const guidanceById = {
   'progress-circle': { useWhen: 'Progress needs a compact radial treatment.', avoidWhen: 'A precise value matters in a table; use Progress.', behavior: 'Determinate mode exposes aria-valuenow; omit value for indeterminate.', responsive: 'Set an explicit size per context instead of scaling.' },
   timeline: { useWhen: 'Events form a chronological feed.', avoidWhen: 'Items are peers without time order; use a plain list.', behavior: 'Tone dots carry semantics; connectors skip the last item.', responsive: 'Content wraps while the rail stays fixed width.' },
   'code-block': { useWhen: 'Code or commands should be readable and copyable.', avoidWhen: 'A single identifier in prose; use inline code styling.', behavior: 'The copy action confirms with an icon swap and announces via its label.', responsive: 'Long lines scroll horizontally instead of wrapping.' },
+  meter: { useWhen: 'A quantity within a known range needs a glanceable gauge.', avoidWhen: 'Progress toward completing a task is shown; use Progress.', behavior: 'role="meter" carries min, max, and now; zones color the fill from low, high, and optimum.', responsive: 'The track fills its container, so constrain width in the layout.' },
+  rating: { useWhen: 'Users score something on a small fixed scale.', avoidWhen: 'The input is numeric but not a rating; use Slider or NumberInput.', behavior: 'Stars form a radiogroup with roving tab index and arrow-key selection.', responsive: 'Pick a size per context; the inline group never wraps.' },
+  announcer: { useWhen: 'State changes off-screen must reach screen-reader users.', avoidWhen: 'The change is already visible and focused; announcement would duplicate it.', behavior: 'The region clears and rewrites so identical messages re-announce.', responsive: 'The region is visually hidden and has no layout impact.' },
+  'pin-input': { useWhen: 'The user enters a fixed-length numeric code.', avoidWhen: 'The value is free-form text; use Input.', behavior: 'Typing, Backspace, arrows, and paste move between cells; onComplete fires when full.', responsive: 'Cells keep a fixed tap size; reduce length on narrow screens.' },
+  'tags-input': { useWhen: 'A field collects an open-ended list of short tokens.', avoidWhen: 'Values come from a fixed set; use MultiSelect.', behavior: 'Enter or comma commits; duplicates are ignored and chips remove individually.', responsive: 'Chips wrap inside the field as the list grows.' },
+  'input-group': { useWhen: 'An input needs a fixed prefix or suffix such as a protocol or unit.', avoidWhen: 'The accessory is interactive; use separate controls instead.', behavior: 'The group detects addons and squares the matching input corners.', responsive: 'Addons stay fixed width while the input flexes.' },
+  editable: { useWhen: 'A displayed value is renamed or corrected in place.', avoidWhen: 'The value is edited alongside others in a form; use Field and Input.', behavior: 'Enter and blur commit, Escape cancels, and the draft is preselected.', responsive: 'The preview truncates within its container width.' },
+  'time-picker': { useWhen: 'The user enters a time of day.', avoidWhen: 'A date or a date range is needed; use DatePicker or DateRangePicker.', behavior: 'Hour and minute fields clamp while typing; the 12-hour cycle adds a period toggle.', responsive: 'The segmented group stays inline and fits compact forms.' },
+  'date-range-picker': { useWhen: 'The user picks a start and end date.', avoidWhen: 'Only one date is needed; use DatePicker.', behavior: 'Two clicks define the range; presets fill common windows and arrows move by day or week.', responsive: 'The popover collision-handles; the field keeps its layout width.' },
+  'color-picker': { useWhen: 'The user picks a color from presets or a hex value.', avoidWhen: 'A full design-token editor is required.', behavior: 'Presets commit immediately; hex input validates and normalizes on Enter or blur.', responsive: 'The trigger fits toolbars; the panel caps at the preset grid width.' },
+  'alert-dialog': { useWhen: 'An action needs an explicit, blocking confirmation.', avoidWhen: 'The consequence is minor; use Popconfirm or inline feedback.', behavior: 'Focus stays trapped until cancel or confirm; tone styles the confirm action.', responsive: 'The panel caps at the viewport with its own scroll.' },
+  popconfirm: { useWhen: 'A small action benefits from confirmation without a modal.', avoidWhen: 'The consequence is severe; use AlertDialog.', behavior: 'Anchored to its trigger and dismisses on confirm, cancel, or Escape.', responsive: 'The panel stays within the viewport near the trigger.' },
+  'context-menu': { useWhen: 'An element has secondary actions discoverable on right-click.', avoidWhen: 'The actions are primary; keep them visible instead.', behavior: 'Shares the Menu item contract with icons, separators, and danger styling.', responsive: 'Provide a visible alternative on touch layouts.' },
+  tour: { useWhen: 'New users need a guided introduction to key areas.', avoidWhen: 'The hint is local to one control; use Tooltip.', behavior: 'Steps anchor to selectors, Escape or Skip closes, and missing targets center the dialog.', responsive: 'Steps scroll targets into view; keep step content short.' },
+  menubar: { useWhen: 'A desktop-style application exposes many commands in labeled menus.', avoidWhen: 'There are few actions; use a Toolbar or Menu.', behavior: 'Arrows traverse triggers and items following the menubar pattern.', responsive: 'Collapse into a single menu on narrow screens.' },
+  'navigation-menu': { useWhen: 'Top-level destinations mix links with rich preview panels.', avoidWhen: 'The navigation is flat links only; use simpler link styling.', behavior: 'Panels open in a shared viewport; the active link sets aria-current.', responsive: 'Fall back to a vertical nav or drawer on narrow screens.' },
+  'back-top': { useWhen: 'Pages grow long enough that returning to the top is tedious.', avoidWhen: 'The page is short or has its own scroll container.', behavior: 'Appears past the threshold and scrolls smoothly unless reduced motion is preferred.', responsive: 'The floating position clears content on all viewport sizes.' },
+  stat: { useWhen: 'A headline metric needs a label and trend context.', avoidWhen: 'Several metrics compare in rows; use Table.', behavior: 'Delta direction picks the icon and tone; an sr-only prefix states the direction.', responsive: 'Value and delta wrap together; let stats stack in narrow grids.' },
+  list: { useWhen: 'Items share one row structure with optional leading and trailing content.', avoidWhen: 'Records need column alignment; use Table.', behavior: 'onClick rows become buttons; dense reduces padding via context.', responsive: 'Text truncates rather than wrapping; trailing content stays pinned.' },
+  sparkline: { useWhen: 'A trend shape adds context next to a metric.', avoidWhen: 'Precise values matter; pair with Stat or use a full chart.', behavior: 'role="img" with an aria-label plus a hidden min, max, and last summary.', responsive: 'Set explicit width and height per context.' },
+  calendar: { useWhen: 'The user picks one date directly from a month grid.', avoidWhen: 'A date typed in a field is enough, or a range is needed.', behavior: 'min, max, and disabledDates constrain days; the month label is announced.', responsive: 'The grid keeps a fixed comfortable cell size.' },
+  result: { useWhen: 'A route or panel resolves to a single outcome such as success, error, or 404.', avoidWhen: 'The message is local to a field or task; use Alert or Field.', behavior: 'The icon is decorative; title and description carry the meaning with optional actions.', responsive: 'Content centers and wraps within a readable measure.' },
+  stack: { useWhen: 'Children flow along one axis with even spacing.', avoidWhen: 'The layout needs two-dimensional tracks; use Grid.', behavior: 'Numeric gaps follow the spacing scale; alignment maps to flexbox values.', responsive: 'Combine wrap with row direction for adaptive toolbars.' },
+  grid: { useWhen: 'Children distribute across columns, fixed or responsive.', avoidWhen: 'Items flow in one line; use Stack.', behavior: 'minChildWidth enables auto-fit tracks; columns fixes the count.', responsive: 'Auto-fit collapses tracks as the container narrows.' },
+  resizable: { useWhen: 'Users adjust the split between two panes.', avoidWhen: 'The layout is fixed; do not add interaction without a need.', behavior: 'Handles drag, step with arrow keys, and reset on double-click; sizes are percentages.', responsive: 'Set min sizes so panes stay usable on narrow screens.' },
+  'aspect-ratio': { useWhen: 'Media must hold a consistent shape across widths.', avoidWhen: 'Content should size naturally.', behavior: 'The wrapper reserves the ratio and clips overflow with rounded corners.', responsive: 'The box scales with its container while holding the ratio.' },
+  'visually-hidden': { useWhen: 'Assistive technology needs context the visual design omits.', avoidWhen: 'The text should be visible; show it instead.', behavior: 'Content stays in the accessibility tree without layout impact.', responsive: 'No visual footprint at any viewport.' },
+  'copy-button': { useWhen: 'A value such as a command or id is copied often.', avoidWhen: 'The value is editable; use an Input with a copy recipe.', behavior: 'Clipboard failures still give feedback; a hidden live region announces the copy.', responsive: 'iconOnly mode fits dense rows and headers.' },
+  'theme-toggle': { useWhen: 'The app offers a light and dark theme switch.', avoidWhen: 'Theme follows the system only.', behavior: 'Toggles the dark class on the document root and reports state through aria-pressed.', responsive: 'Icon-sized control fits any header.' },
+  carousel: { useWhen: 'Peer items page through a bounded region.', avoidWhen: 'All content should be visible at once; use Grid.', behavior: 'Scroll-snap track with buttons, dots, and arrow keys; slides announce their position.', responsive: 'Slides take full track width; keep content readable at mobile widths.' },
 }
 
 export const moduleGuidance = Object.fromEntries(

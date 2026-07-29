@@ -409,6 +409,75 @@
   },
   {
     "description": "",
+    "displayName": "EcosystemRail",
+    "props": [
+      {
+        "defaultValue": "Kryv ecosystem",
+        "description": "Accessible name for the product navigation.",
+        "name": "ariaLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Optional product-family brand content.",
+        "name": "brand",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Caller-filtered destinations. The rail never derives entitlements.",
+        "name": "destinations",
+        "required": true,
+        "type": "EcosystemRailDestination[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Stable Home destination, always rendered first.",
+        "name": "home",
+        "required": true,
+        "type": "EcosystemRailHome"
+      },
+      {
+        "defaultValue": "",
+        "description": "Optional account or session controls pinned to the bottom.",
+        "name": "footer",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "rail",
+        "description": "Rail collapses labels until hover or focus; full keeps labels visible.",
+        "name": "mode",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called before ordinary anchor navigation.",
+        "name": "onNavigate",
+        "required": false,
+        "type": "(id: string) => void"
+      },
+      {
+        "defaultValue": "left",
+        "description": "Edge where the rail is attached.",
+        "name": "side",
+        "required": false,
+        "type": "enum"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "EmptyState",
     "props": [
       {
@@ -1134,7 +1203,7 @@
         "description": "Edge where the navigation is attached.",
         "name": "side",
         "required": false,
-        "type": "\"right\" | \"left\" | null"
+        "type": "\"left\" | \"right\" | null"
       },
       {
         "defaultValue": "a",
@@ -1199,5 +1268,1355 @@
     "description": "",
     "displayName": "VerticalNavFooter",
     "props": []
+  },
+  {
+    "description": "",
+    "displayName": "Meter",
+    "props": [
+      {
+        "defaultValue": "(v) => String(Math.round(v))",
+        "description": "Formats the visible value text. Defaults to the rounded raw value.",
+        "name": "formatValue",
+        "required": false,
+        "type": "(value: number) => string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Upper boundary of the middle range; used with `low` and `optimum` to color the fill.",
+        "name": "high",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name describing what the meter measures.",
+        "name": "label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Lower boundary of the middle range; used with `high` and `optimum` to color the fill.",
+        "name": "low",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "100",
+        "description": "Largest value the meter can show.",
+        "name": "max",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "0",
+        "description": "Smallest value the meter can show.",
+        "name": "min",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "The value considered ideal; determines whether low or high readings are good.",
+        "name": "optimum",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Current value; clamped between `min` and `max`.",
+        "name": "value",
+        "required": true,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Rating",
+    "props": [
+      {
+        "defaultValue": "0",
+        "description": "Initial rating when uncontrolled.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "Rating",
+        "description": "Accessible name for the rating group.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "5",
+        "description": "Number of stars shown.",
+        "name": "max",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the new rating when a star is chosen.",
+        "name": "onChange",
+        "required": false,
+        "type": "(value: number) => void"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Renders static stars without any interaction.",
+        "name": "readOnly",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "md",
+        "description": "Star size.",
+        "name": "size",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled rating between 0 and `max`.",
+        "name": "value",
+        "required": false,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Announcer",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Text announced to screen readers; re-announced whenever it changes.",
+        "name": "message",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "polite",
+        "description": "Urgency of the live region.",
+        "name": "politeness",
+        "required": false,
+        "type": "enum"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "PinInput",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Initial code when uncontrolled.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Prevents interaction with every cell.",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "One-time code",
+        "description": "Accessible name for the cell group.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "6",
+        "description": "Number of cells; each cell holds one digit.",
+        "name": "length",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Masks each cell like a password field.",
+        "name": "masked",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the current code (may contain gaps) after every edit.",
+        "name": "onChange",
+        "required": false,
+        "type": "(code: string) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the full code once every cell is filled.",
+        "name": "onComplete",
+        "required": false,
+        "type": "(code: string) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled code value.",
+        "name": "value",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "TagsInput",
+    "props": [
+      {
+        "defaultValue": "false",
+        "description": "Prevents adding or removing tags.",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "Add tag",
+        "description": "Accessible name for the text entry.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Maximum number of tags; further entries are ignored.",
+        "name": "max",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the next tag list after every add or remove.",
+        "name": "onChange",
+        "required": false,
+        "type": "(tags: string[]) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Placeholder shown in the text entry.",
+        "name": "placeholder",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Current tags.",
+        "name": "value",
+        "required": true,
+        "type": "string[]"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "InputAddon",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Which end of the input the addon attaches to.",
+        "name": "position",
+        "required": true,
+        "type": "enum"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "InputGroup",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "Editable",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Initial text when uncontrolled.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Prevents switching to edit mode.",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "text",
+        "description": "Accessible name describing the edited text.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the draft text on every keystroke while editing.",
+        "name": "onChange",
+        "required": false,
+        "type": "(value: string) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the final text when a draft is committed (Enter or blur).",
+        "name": "onSubmit",
+        "required": false,
+        "type": "(value: string) => void"
+      },
+      {
+        "defaultValue": "Empty",
+        "description": "Text shown in preview mode when the value is empty.",
+        "name": "placeholder",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled text shown in preview mode.",
+        "name": "value",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "TimePicker",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Initial time in \"HH:mm\" (24h) when uncontrolled. Defaults to \"00:00\".",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Prevents interaction with every field.",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "24",
+        "description": "12 shows a 1–12 hour field with an AM/PM toggle; 24 shows a 0–23 hour field.",
+        "name": "hourCycle",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "Time",
+        "description": "Accessible name for the time field group.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the 24-hour \"HH:mm\" value after every valid edit.",
+        "name": "onChange",
+        "required": false,
+        "type": "(value: string) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled time in \"HH:mm\" (24h).",
+        "name": "value",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "DateRangePicker",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Accessible name when there is no visible label.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial range when uncontrolled.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "DateRange"
+      },
+      {
+        "defaultValue": "",
+        "description": "Prevents interaction with the input.",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Explicit id; otherwise Field or an internal id is used.",
+        "name": "id",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Disables specific days in the calendar grid.",
+        "name": "isDateDisabled",
+        "required": false,
+        "type": "(date: Date) => boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used.",
+        "name": "label",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the range after every selection step.",
+        "name": "onChange",
+        "required": false,
+        "type": "(range: DateRange) => void"
+      },
+      {
+        "defaultValue": "Pick a date range",
+        "description": "Text shown when no range is selected.",
+        "name": "placeholder",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled range.",
+        "name": "value",
+        "required": false,
+        "type": "DateRange"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "ColorPicker",
+    "props": [
+      {
+        "defaultValue": "Choose color",
+        "description": "Accessible name for the trigger button.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "#006a6c",
+        "description": "Initial hex color when uncontrolled. Defaults to the teal primary.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Prevents opening the picker.",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the normalized \"#rrggbb\" value after every selection.",
+        "name": "onChange",
+        "required": false,
+        "type": "(value: string) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled hex color value.",
+        "name": "value",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "AlertDialog",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Custom action area rendered at the bottom; overrides the default cancel/confirm buttons.",
+        "name": "actions",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "Cancel",
+        "description": "Label of the cancel button.",
+        "name": "cancelText",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Confirm",
+        "description": "Label of the confirm button.",
+        "name": "confirmText",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial open state when uncontrolled.",
+        "name": "defaultOpen",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered under the title; also the accessible description of the dialog.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the cancel button is pressed.",
+        "name": "onCancel",
+        "required": false,
+        "type": "() => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the confirm button is pressed.",
+        "name": "onConfirm",
+        "required": false,
+        "type": "() => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the dialog opens or closes.",
+        "name": "onOpenChange",
+        "required": false,
+        "type": "(open: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled open state.",
+        "name": "open",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "default",
+        "description": "'danger' styles the confirm button as destructive.",
+        "name": "tone",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Title rendered at the top; also the accessible name of the dialog.",
+        "name": "title",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Element that opens the dialog; receives trigger props automatically.",
+        "name": "trigger",
+        "required": true,
+        "type": "ReactElement<unknown, string | JSXElementConstructor<any>>"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Popconfirm",
+    "props": [
+      {
+        "defaultValue": "Cancel",
+        "description": "Label of the cancel button.",
+        "name": "cancelText",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Confirm",
+        "description": "Label of the confirm button.",
+        "name": "confirmText",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Initial open state when uncontrolled.",
+        "name": "defaultOpen",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered under the title.",
+        "name": "message",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the cancel button is pressed.",
+        "name": "onCancel",
+        "required": false,
+        "type": "() => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the confirm button is pressed.",
+        "name": "onConfirm",
+        "required": false,
+        "type": "() => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the popconfirm opens or closes.",
+        "name": "onOpenChange",
+        "required": false,
+        "type": "(open: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled open state.",
+        "name": "open",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Short question rendered next to the icon; also the accessible name of the popover.",
+        "name": "title",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "default",
+        "description": "'danger' styles the confirm button and icon as destructive.",
+        "name": "tone",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Element that toggles the popconfirm; receives trigger props automatically.",
+        "name": "trigger",
+        "required": true,
+        "type": "ReactElement<unknown, string | JSXElementConstructor<any>>"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "ContextMenu",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Element the menu is attached to; opens on right-click and receives trigger props automatically.",
+        "name": "children",
+        "required": true,
+        "type": "ReactElement<unknown, string | JSXElementConstructor<any>>"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Items rendered in the menu.",
+        "name": "items",
+        "required": true,
+        "type": "MenuItem[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name for the menu.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "Guided onboarding walkthrough that highlights target elements step by step.",
+    "displayName": "Tour",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Ordered walkthrough steps.",
+        "name": "steps",
+        "required": true,
+        "type": "TourStep[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controls whether the tour is visible.",
+        "name": "open",
+        "required": true,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the tour closes via Skip, Done or Escape.",
+        "name": "onOpenChange",
+        "required": true,
+        "type": "(open: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called after the final step completes.",
+        "name": "onFinish",
+        "required": false,
+        "type": "() => void"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Menubar",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name for the menubar.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Menus rendered left to right, e.g. File/Edit/View.",
+        "name": "menus",
+        "required": true,
+        "type": "MenubarMenu[]"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "NavigationMenu",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Items rendered left to right; links navigate, panels open a content panel.",
+        "name": "items",
+        "required": true,
+        "type": "NavigationMenuItem[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name for the navigation landmark.",
+        "name": "label",
+        "required": true,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "Floating button that appears after scrolling down and smoothly returns to the top of the page.",
+    "displayName": "BackTop",
+    "props": [
+      {
+        "defaultValue": "400",
+        "description": "Scrolled distance in pixels after which the button appears; defaults to 400.",
+        "name": "threshold",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "Back to top",
+        "description": "Accessible label for the button; defaults to 'Back to top'.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Stat",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Optional extra content rendered below the value, e.g. a Sparkline.",
+        "name": "children",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Change indicator rendered next to the value.",
+        "name": "delta",
+        "required": false,
+        "type": "StatDelta"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered below the value.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Name of the metric.",
+        "name": "label",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Metric value, rendered large.",
+        "name": "value",
+        "required": true,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "List",
+    "props": [
+      {
+        "defaultValue": "false",
+        "description": "Reduces the vertical padding of every item.",
+        "name": "dense",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "ListItem",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Content rendered before the text, e.g. an icon or avatar.",
+        "name": "leading",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the item is activated; makes the item a button.",
+        "name": "onClick",
+        "required": false,
+        "type": "() => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered under the title.",
+        "name": "secondary",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Primary text of the item.",
+        "name": "title",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Content rendered after the text, e.g. metadata or an action.",
+        "name": "trailing",
+        "required": false,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Sparkline",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Accessible description of the trend, applied as aria-label.",
+        "name": "aria-label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Values to plot, in order.",
+        "name": "data",
+        "required": true,
+        "type": "number[]"
+      },
+      {
+        "defaultValue": "32",
+        "description": "SVG height in pixels.",
+        "name": "height",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "line",
+        "description": "Chart style: line, filled area, or bars.",
+        "name": "variant",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "120",
+        "description": "SVG width in pixels.",
+        "name": "width",
+        "required": false,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Calendar",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Disables specific dates when it returns true.",
+        "name": "disabledDates",
+        "required": false,
+        "type": "(date: Date) => boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Latest selectable date (inclusive).",
+        "name": "max",
+        "required": false,
+        "type": "Date"
+      },
+      {
+        "defaultValue": "",
+        "description": "Earliest selectable date (inclusive).",
+        "name": "min",
+        "required": false,
+        "type": "Date"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the visible month changes.",
+        "name": "onMonthChange",
+        "required": false,
+        "type": "(month: Date) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the date the user picks.",
+        "name": "onSelect",
+        "required": true,
+        "type": "(date: Date) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Currently selected date, or null for none.",
+        "name": "value",
+        "required": true,
+        "type": "Date | null"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled visible month; any day within the month is accepted.",
+        "name": "visibleMonth",
+        "required": false,
+        "type": "Date"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Result",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Action area rendered below the description, typically Buttons.",
+        "name": "actions",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text that explains the outcome.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Icon override; defaults to the status's standard icon. Always hidden from assistive technology.",
+        "name": "icon",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Outcome shown; picks the default icon and its tint.",
+        "name": "status",
+        "required": true,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Short heading for the outcome.",
+        "name": "title",
+        "required": true,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "A flex layout primitive that stacks children along a single axis\nwith consistent spacing, alignment and distribution.",
+    "displayName": "Stack",
+    "props": [
+      {
+        "defaultValue": "column",
+        "description": "Main axis direction; defaults to 'column'.",
+        "name": "direction",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Spacing between children. Numbers follow the Tailwind spacing scale (n × 0.25rem); strings are used as-is.",
+        "name": "gap",
+        "required": false,
+        "type": "string | number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Cross-axis alignment of children.",
+        "name": "align",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Main-axis distribution of children.",
+        "name": "justify",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Allows children to wrap onto multiple lines when true.",
+        "name": "wrap",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "div",
+        "description": "",
+        "name": "as",
+        "required": false,
+        "type": "ElementType"
+      }
+    ]
+  },
+  {
+    "description": "A grid layout primitive with either a fixed column count\nor responsive auto-fit columns driven by a minimum child width.",
+    "displayName": "Grid",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Fixed column count, rendered as `repeat(n, minmax(0, 1fr))`. Ignored when `minChildWidth` is set.",
+        "name": "columns",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Minimum child width (e.g. '16rem' or 256 for pixels); enables `auto-fit` responsive columns.",
+        "name": "minChildWidth",
+        "required": false,
+        "type": "string | number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Gap between tracks. Numbers follow the Tailwind spacing scale (n × 0.25rem); strings are used as-is.",
+        "name": "gap",
+        "required": false,
+        "type": "string | number"
+      },
+      {
+        "defaultValue": "div",
+        "description": "",
+        "name": "as",
+        "required": false,
+        "type": "ElementType"
+      }
+    ]
+  },
+  {
+    "description": "A single pane inside a ResizablePanelGroup.",
+    "displayName": "ResizablePanel",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Initial size as a percentage of the group (0–100). Panels without one share the remaining space.",
+        "name": "defaultSize",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Smallest size the panel can be resized to, in percent; defaults to 0.",
+        "name": "minSize",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Largest size the panel can be resized to, in percent; defaults to 100.",
+        "name": "maxSize",
+        "required": false,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "Draggable separator between two ResizablePanels; also supports arrow keys and double-click reset.",
+    "displayName": "ResizableHandle",
+    "props": [
+      {
+        "defaultValue": "false",
+        "description": "Disables pointer, keyboard and double-click resizing when true.",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "5",
+        "description": "Percentage step applied by arrow-key resizing; defaults to 5.",
+        "name": "step",
+        "required": false,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "Lays out ResizablePanels separated by ResizableHandles, letting users\nresize the panes with pointer drag, arrow keys or double-click reset.\nPanels and handles must be direct children of the group.",
+    "displayName": "ResizablePanelGroup",
+    "props": [
+      {
+        "defaultValue": "horizontal",
+        "description": "Axis along which panels are laid out; 'horizontal' (default) places panels side by side.",
+        "name": "direction",
+        "required": false,
+        "type": "enum"
+      }
+    ]
+  },
+  {
+    "description": "Keeps media or other content at a consistent width-to-height ratio.",
+    "displayName": "AspectRatio",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "asChild",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "Hides content visually while keeping it available to assistive technology.",
+    "displayName": "VisuallyHidden",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "asChild",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "Copies a value to the clipboard and briefly swaps to a check icon with live feedback.",
+    "displayName": "CopyButton",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Text written to the clipboard when the button is clicked.",
+        "name": "value",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Copy",
+        "description": "Label shown before copying; doubles as the accessible name in icon-only mode. Defaults to 'Copy'.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Copied",
+        "description": "Feedback label shown briefly after a successful copy. Defaults to 'Copied'.",
+        "name": "copiedLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Renders an icon-only IconButton instead of a Button with text.",
+        "name": "iconOnly",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Visual style forwarded to the underlying button.",
+        "name": "variant",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Size forwarded to the underlying button.",
+        "name": "size",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "Toggles the 'dark' class on the document root to switch between light and dark themes.",
+    "displayName": "ThemeToggle",
+    "props": [
+      {
+        "defaultValue": "Toggle dark mode",
+        "description": "Accessible label for the button; defaults to 'Toggle dark mode'.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the new theme after toggling; the app is responsible for persisting it.",
+        "name": "onChange",
+        "required": false,
+        "type": "(theme: Theme) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "A single slide inside a Carousel; Carousel wraps plain children in one automatically.",
+    "displayName": "CarouselSlide",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Slide content.",
+        "name": "children",
+        "required": true,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "A scroll-snap carousel with previous/next buttons, dot indicators and arrow-key support.",
+    "displayName": "Carousel",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Accessible label describing the carousel region.",
+        "name": "label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Wraps from the last slide back to the first (and vice versa) when true; otherwise prev/next disable at the ends.",
+        "name": "loop",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Slides; plain children are wrapped in a CarouselSlide automatically.",
+        "name": "children",
+        "required": true,
+        "type": "ReactNode"
+      }
+    ]
   }
 ]
