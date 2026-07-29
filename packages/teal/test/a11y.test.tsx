@@ -60,6 +60,8 @@ import {
   Meter,
   MultiSelect,
   NavigationMenu,
+  NavRail,
+  NavRailItem,
   NotificationItem,
   NumberInput,
   PageHeader,
@@ -886,6 +888,17 @@ describe('axe: fourth catalog expansion', () => {
       </>,
     )
     await screen.findByRole('alertdialog')
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('nav rail has no violations', async () => {
+    const { baseElement } = render(
+      <NavRail aria-label="Primary">
+        <NavRailItem icon={<svg aria-hidden="true" />} label="Home" href="/" active />
+        <NavRailItem icon={<svg aria-hidden="true" />} label="Notifications" href="/notifications" badge />
+        <NavRailItem icon={<svg aria-hidden="true" />} label="Settings" onClick={() => {}} />
+      </NavRail>,
+    )
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
   })
 

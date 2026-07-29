@@ -59,6 +59,7 @@ const files = [
   'Tour.tsx',
   'Menubar.tsx',
   'NavigationMenu.tsx',
+  'NavRail.tsx',
   'BackTop.tsx',
   'Stat.tsx',
   'List.tsx',

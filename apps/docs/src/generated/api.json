@@ -2071,6 +2071,60 @@
     ]
   },
   {
+    "description": "",
+    "displayName": "NavRail",
+    "props": [
+      {
+        "defaultValue": "Primary",
+        "description": "Accessible name for the rail landmark.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "NavRailItem",
+    "props": [
+      {
+        "defaultValue": "false",
+        "description": "Marks the item as the current page; sets `aria-current=\"page\"`.",
+        "name": "active",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Renders a small attention dot in the corner of the item.",
+        "name": "badge",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Destination URL; renders a link instead of a button when provided.",
+        "name": "href",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Icon rendered inside the circular item.",
+        "name": "icon",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name for the item; also shown in a tooltip on hover or focus.",
+        "name": "label",
+        "required": true,
+        "type": "string"
+      }
+    ]
+  },
+  {
     "description": "Floating button that appears after scrolling down and smoothly returns to the top of the page.",
     "displayName": "BackTop",
     "props": [

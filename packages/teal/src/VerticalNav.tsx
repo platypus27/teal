@@ -131,7 +131,10 @@ const VerticalNavItemImpl = forwardRef<HTMLElement, VerticalNavItemProps>(functi
     <Component
       ref={ref as never}
       className={cn(
-        'teal-focus-ring teal-u-group/item teal-u-flex teal-u-items-center teal-u-rounded-xl teal-u-py-1.5 teal-u-text-sm',
+        'teal-focus-ring teal-u-group/item teal-u-flex teal-u-items-center teal-u-rounded-xl teal-u-py-1.5 teal-u-text-sm teal-u-transition-colors teal-u-duration-[var(--teal-motion-fast)]',
+        active
+          ? 'teal-u-bg-primary/10 teal-u-text-primary'
+          : 'teal-u-text-on-surface-variant hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface',
         className,
       )}
       aria-current={active ? 'page' : undefined}
@@ -139,16 +142,7 @@ const VerticalNavItemImpl = forwardRef<HTMLElement, VerticalNavItemProps>(functi
     >
       {icon ? (
         <span className="teal-u-flex teal-u-w-16 teal-u-shrink-0 teal-u-items-center teal-u-justify-center">
-          <span
-            className={cn(
-              'teal-u-flex teal-u-size-9 teal-u-items-center teal-u-justify-center teal-u-rounded-xl teal-u-transition-colors teal-u-duration-[var(--teal-motion-fast)]',
-              active
-                ? 'teal-u-bg-primary/10 teal-u-text-primary'
-                : 'teal-u-text-on-surface-variant group-hover/item:teal-u-bg-surface-container-high group-hover/item:teal-u-text-on-surface',
-            )}
-          >
-            {icon}
-          </span>
+          {icon}
         </span>
       ) : null}
       <span
@@ -156,7 +150,7 @@ const VerticalNavItemImpl = forwardRef<HTMLElement, VerticalNavItemProps>(functi
           labelClass,
           'teal-u-flex teal-u-items-center',
           icon ? undefined : 'teal-u-pl-3',
-          active ? 'teal-u-font-semibold teal-u-text-primary' : 'teal-u-text-on-surface-variant group-hover/item:teal-u-text-on-surface',
+          active ? 'teal-u-font-semibold' : undefined,
         )}
       >
         {children}

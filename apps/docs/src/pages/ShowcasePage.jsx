@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import {
   Archive,
+  Bell,
   Filter,
+  Home,
   Moon,
   MoreVertical,
   Search,
@@ -46,6 +48,8 @@ import {
   Menu,
   Meter,
   NavigationMenu,
+  NavRail,
+  NavRailItem,
   Pagination,
   PinInput,
   Popconfirm,
@@ -334,6 +338,12 @@ function NavigationSection() {
             { type: 'link', label: 'Members', href: '#' },
           ]}
         />
+        <NavRail aria-label="Product">
+          <NavRailItem icon={<Home />} label="Home" href="#" active />
+          <NavRailItem icon={<Search />} label="Search" href="#" />
+          <NavRailItem icon={<Bell />} label="Notifications" href="#" badge />
+          <NavRailItem icon={<Settings />} label="Settings" href="#" />
+        </NavRail>
       </div>
       <Tabs
         aria-label="Project details"

@@ -1183,6 +1183,24 @@ toast({ title: 'Changes saved', variant: 'success' })`,
         ],
       },
       {
+        id: 'nav-rail',
+        name: 'Nav Rail',
+        apiNames: ['NavRail', 'NavRailItem'],
+        description: 'A fully rounded floating icon rail for dense product navigation.',
+        usage: `<NavRail aria-label="Primary">
+  <NavRailItem icon={<Home />} label="Home" href="/" active />
+  <NavRailItem icon={<Search />} label="Search" href="/search" />
+  <NavRailItem icon={<Settings />} label="Settings" href="/settings" />
+</NavRail>`,
+        examples: [
+          {
+            title: 'Icon destinations',
+            description:
+              'Circular items tint the active destination; every icon carries an accessible label and a tooltip.',
+          },
+        ],
+      },
+      {
         id: 'top-bar',
         name: 'Top Bar',
         apiNames: ['TopBar', 'TopBarBrand', 'TopBarSearch', 'TopBarActions'],
@@ -1685,6 +1703,7 @@ const additionalExamples = {
   pagination: [{ title: 'Boundary pages', description: 'Disable previous and next controls at the collection boundaries.' }],
   'page-header': [{ title: 'Responsive actions', description: 'Let actions wrap beneath the title on narrow screens.' }],
   'vertical-nav': [{ title: 'Application shell', description: 'Compose a persistent rail with a full navigation drawer for responsive products.' }, { title: 'Router integration', description: 'Use VerticalNavItem with a router link and pass active state from the route.' }],
+  'nav-rail': [{ title: 'Badge dots', description: 'Pass badge to flag a destination that needs attention without carrying a count.' }],
   'top-bar': [{ title: 'Application shell header', description: 'Combine brand, global search, and account actions in one persistent header.' }, { title: 'Compact shell', description: 'Use the same slots for a focused route header with fewer global actions.', demo: 'top-bar-shell' }],
   breadcrumb: [{ title: 'Collapsed middle items', description: 'Trails longer than collapseAfter move middle items into a labeled menu.' }],
   table: [{ title: 'Loading rows', description: 'Skeleton rows stand in for data while loading; the region is marked busy and announced through loadingLabel.' }],
@@ -1787,6 +1806,7 @@ const guidanceById = {
   pagination: { useWhen: 'A large collection is split into stable pages.', avoidWhen: 'Users need continuous search, sorting, or infinite history.', behavior: 'The page is controlled by the consumer and unavailable directions are disabled.', responsive: 'Keep controls large enough for touch and preserve the current page label.' },
   'page-header': { useWhen: 'A route needs a consistent title, context, and primary actions.', avoidWhen: 'The content is a small inline section without route-level actions.', behavior: 'Actions remain aligned with the title and wrap below it when needed.', responsive: 'Let actions wrap naturally below the heading at narrow widths.' },
   'vertical-nav': { useWhen: 'An application needs persistent section navigation.', avoidWhen: 'There are only a few inline links or a short wizard.', behavior: 'Rail mode expands on hover or focus and item active state sets aria-current.', responsive: 'Use full navigation in a drawer on mobile and close it after route changes.' },
+  'nav-rail': { useWhen: 'A dense product needs a compact, always-visible strip of top-level destinations.', avoidWhen: 'Destinations need visible labels or grouped sections; use Vertical Nav.', behavior: 'The active item sets aria-current and every icon is named through aria-label and a tooltip.', responsive: 'Keep the rail floating on desktop and fold destinations into a drawer on narrow screens.' },
   'top-bar': { useWhen: 'An application needs a consistent global header and action slots.', avoidWhen: 'A page has only local controls that belong in its header.', behavior: 'Sticky mode keeps the bar visible while its slots remain composable.', responsive: 'Collapse secondary actions and move search to a dedicated mobile trigger.' },
   breadcrumb: { useWhen: 'Users need to see and move within a deep page hierarchy.', avoidWhen: 'The structure is flat or the trail would duplicate primary navigation.', behavior: 'The last item is the current page; middle items collapse into a menu past collapseAfter.', responsive: 'Let items wrap and prefer collapsing over shrinking labels.' },
   table: { useWhen: 'Rows and columns are the clearest way to compare records.', avoidWhen: 'The content is a single object or needs a narrative layout.', behavior: 'Columns own rendering and rows require stable keys.', responsive: 'Keep the table readable with horizontal scrolling or a deliberate compact projection.' },

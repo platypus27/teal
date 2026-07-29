@@ -3032,7 +3032,7 @@ An input needs a fixed prefix or suffix such as a protocol or unit.
 The accessory is interactive; use separate controls instead.
 ### Behavior
 
-The group detects addons and squares the matching input corners.
+The group owns the border and focus ring, so the whole box highlights as one control.
 ### Responsive
 
 Addons stay fixed width while the input flexes.
@@ -8149,6 +8149,123 @@ _This module forwards native element properties._
 - Rail mode expands on hover and on focus-within, so keyboard users can read labels that are hidden from mouse users until hover.
 - The active item sets aria-current="page" to mark the current location for screen readers.
 - Use the icon prop for the leading icon so it stays visible in rail mode; only the label fades.
+
+---
+
+# Nav Rail
+
+A fully rounded floating icon rail for dense product navigation.
+
+## Usage
+
+```js
+import { NavRail, NavRailItem } from '@kryv/teal'
+```
+
+```jsx
+<NavRail aria-label="Primary">
+  <NavRailItem icon={<Home />} label="Home" href="/" active />
+  <NavRailItem icon={<Search />} label="Search" href="/search" />
+  <NavRailItem icon={<Settings />} label="Settings" href="/settings" />
+</NavRail>
+```
+
+## Design guidance
+
+### Use when
+
+A dense product needs a compact, always-visible strip of top-level destinations.
+### Avoid when
+
+Destinations need visible labels or grouped sections; use Vertical Nav.
+### Behavior
+
+The active item sets aria-current and every icon is named through aria-label and a tooltip.
+### Responsive
+
+Keep the rail floating on desktop and fold destinations into a drawer on narrow screens.
+
+## Examples
+
+### Icon destinations
+
+Circular items tint the active destination; every icon carries an accessible label and a tooltip.
+
+```jsx
+import { NavRail, NavRailItem } from '@kryv/teal'
+import { Bell, Home, Search, Settings } from 'lucide-react'
+
+export function NavRailDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <NavRail aria-label="Primary">
+        <NavRailItem icon={<Home />} label="Home" href="#" active />
+        <NavRailItem icon={<Search />} label="Search" href="#" />
+        <NavRailItem icon={<Bell />} label="Notifications" href="#" badge />
+        <NavRailItem icon={<Settings />} label="Settings" href="#" badge />
+      </NavRail>
+    )
+  }
+
+  return (
+    <NavRail aria-label="Primary">
+      <NavRailItem icon={<Home />} label="Home" href="#" active />
+      <NavRailItem icon={<Search />} label="Search" href="#" />
+      <NavRailItem icon={<Bell />} label="Notifications" href="#" />
+      <NavRailItem icon={<Settings />} label="Settings" href="#" />
+    </NavRail>
+  )
+}
+```
+
+### Badge dots
+
+Pass badge to flag a destination that needs attention without carrying a count.
+
+```jsx
+import { NavRail, NavRailItem } from '@kryv/teal'
+import { Bell, Home, Search, Settings } from 'lucide-react'
+
+export function NavRailDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <NavRail aria-label="Primary">
+        <NavRailItem icon={<Home />} label="Home" href="#" active />
+        <NavRailItem icon={<Search />} label="Search" href="#" />
+        <NavRailItem icon={<Bell />} label="Notifications" href="#" badge />
+        <NavRailItem icon={<Settings />} label="Settings" href="#" badge />
+      </NavRail>
+    )
+  }
+
+  return (
+    <NavRail aria-label="Primary">
+      <NavRailItem icon={<Home />} label="Home" href="#" active />
+      <NavRailItem icon={<Search />} label="Search" href="#" />
+      <NavRailItem icon={<Bell />} label="Notifications" href="#" />
+      <NavRailItem icon={<Settings />} label="Settings" href="#" />
+    </NavRail>
+  )
+}
+```
+
+## Interface
+
+### NavRail
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `aria-label` | `string` | `Primary` | Accessible name for the rail landmark. |
+
+### NavRailItem
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `active` | `boolean` | `false` | Marks the item as the current page; sets `aria-current="page"`. |
+| `badge` | `boolean` | `false` | Renders a small attention dot in the corner of the item. |
+| `href` | `string` | - | Destination URL; renders a link instead of a button when provided. |
+| `icon` (required) | `ReactNode` | - | Icon rendered inside the circular item. |
+| `label` (required) | `string` | - | Accessible name for the item; also shown in a tooltip on hover or focus. |
 
 ---
 

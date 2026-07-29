@@ -76,6 +76,7 @@
 - [Pagination](/modules/pagination) (Navigation): A controlled page navigator with compact ranges and unavailable directions.
 - [Page Header](/modules/page-header) (Navigation): A responsive page title, supporting text, and action area.
 - [Vertical Nav](/modules/vertical-nav) (Navigation): A compound vertical navigation with icon-rail and full-text modes.
+- [Nav Rail](/modules/nav-rail) (Navigation): A fully rounded floating icon rail for dense product navigation.
 - [Top Bar](/modules/top-bar) (Navigation): A sticky top bar with brand, search, and action slots.
 - [Breadcrumb](/modules/breadcrumb) (Navigation): A hierarchical trail with router-ready items and automatic middle-item collapse.
 - [Steps](/modules/steps) (Navigation): A numbered flow indicator with done, current, and upcoming states.
