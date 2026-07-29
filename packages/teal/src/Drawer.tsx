@@ -40,7 +40,7 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(function Drawer(
     open,
     side = 'right',
     title,
-    width = 'min(28rem,100vw)',
+    width = 'min(28rem,calc(100vw - 1.5rem))',
   },
   ref,
 ) {
@@ -57,12 +57,12 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(function Drawer(
           data-side={side}
           style={{ width }}
           className={cn(
-            'teal-drawer-content teal-u-fixed teal-u-inset-y-0 teal-u-z-[var(--teal-z-dialog)] teal-u-flex teal-u-flex-col teal-u-border teal-u-bg-surface teal-u-shadow-overlay teal-u-text-on-surface teal-u-outline-none',
-            side === 'right' ? 'teal-u-right-0 teal-u-border-l' : 'teal-u-left-0 teal-u-border-r',
+            'teal-drawer-content teal-u-fixed teal-u-inset-y-3 teal-u-z-[var(--teal-z-dialog)] teal-u-flex teal-u-flex-col teal-u-rounded-xl teal-u-border teal-u-border-[color:var(--teal-border-subtle)] teal-u-bg-surface teal-u-shadow-overlay teal-u-text-on-surface teal-u-outline-none',
+            side === 'right' ? 'teal-u-right-3' : 'teal-u-left-3',
             className,
           )}
         >
-          <div className="teal-u-p-6 teal-u-pr-14">
+          <div className="teal-u-border-b teal-u-border-[color:var(--teal-border-subtle)] teal-u-p-6 teal-u-pr-14">
             {title ? (
               <DialogPrimitive.Title className="teal-u-font-headline teal-u-text-lg teal-u-font-bold teal-u-text-on-surface">
                 {title}

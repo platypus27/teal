@@ -20,8 +20,6 @@ export const ProgressCircle = forwardRef<HTMLDivElement, ProgressCircleProps>(fu
   const clamped = determinate ? Math.min(100, Math.max(0, value)) : undefined
   const radius = (size - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
-  const dashoffset =
-    clamped !== undefined ? circumference * (1 - clamped / 100) : circumference * 0.75
 
   return (
     <div
@@ -39,7 +37,7 @@ export const ProgressCircle = forwardRef<HTMLDivElement, ProgressCircleProps>(fu
         width={size}
         height={size}
         viewBox={`0 0 ${size} ${size}`}
-        className={cn('-teal-u-rotate-90', !determinate && 'teal-u-animate-spin motion-reduce:teal-u-animate-none')}
+        className={cn('-teal-u-rotate-90', !determinate && 'teal-progress-spin')}
         aria-hidden="true"
       >
         <circle
@@ -57,9 +55,14 @@ export const ProgressCircle = forwardRef<HTMLDivElement, ProgressCircleProps>(fu
           fill="none"
           strokeWidth={strokeWidth}
           strokeLinecap="round"
-          strokeDasharray={circumference}
-          strokeDashoffset={dashoffset}
-          className="teal-u-stroke-primary teal-u-transition-[stroke-dashoffset] teal-u-duration-[var(--teal-motion-standard)] motion-reduce:teal-u-transition-none"
+          {...(clamped !== undefined
+            ? { strokeDasharray: circumference, strokeDashoffset: circumference * (1 - clamped / 100) }
+            : { pathLength: 100 })}
+          className={
+            determinate
+              ? 'teal-u-stroke-primary teal-u-transition-[stroke-dashoffset] teal-u-duration-[var(--teal-motion-standard)] motion-reduce:teal-u-transition-none'
+              : 'teal-u-stroke-primary teal-progress-dash'
+          }
         />
       </svg>
       {clamped !== undefined ? (

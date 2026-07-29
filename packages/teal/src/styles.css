@@ -42,6 +42,11 @@
   outline-offset: 2px;
 }
 
+/* The group owns the flush focus ring for its borderless inner input. */
+.teal-input-group:focus-within {
+  box-shadow: var(--teal-focus-ring);
+}
+
 @media (forced-colors: active) {
   .teal-focus-ring:focus-visible {
     box-shadow: none;
@@ -102,13 +107,25 @@
 }
 
 @keyframes teal-drawer-in-right {
-  from { transform: translateX(100%); }
+  from { transform: translateX(calc(100% + 0.75rem)); }
   to { transform: translateX(0); }
 }
 
 @keyframes teal-drawer-in-left {
-  from { transform: translateX(-100%); }
+  from { transform: translateX(calc(-100% - 0.75rem)); }
   to { transform: translateX(0); }
+}
+
+@keyframes teal-progress-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* pathLength={100} on the indeterminate circle normalizes these values for any size. */
+@keyframes teal-progress-dash {
+  0% { stroke-dasharray: 1 100; stroke-dashoffset: 0; }
+  50% { stroke-dasharray: 78 100; stroke-dashoffset: -12; }
+  100% { stroke-dasharray: 78 100; stroke-dashoffset: -98; }
 }
 
 .teal-dialog-overlay[data-state='open'] {
@@ -160,6 +177,14 @@
   animation: teal-drawer-in-left var(--teal-motion-standard) ease-out;
 }
 
+.teal-progress-spin {
+  animation: teal-progress-rotate 1.4s linear infinite;
+}
+
+.teal-progress-dash {
+  animation: teal-progress-dash 1.4s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .teal-focus-ring {
     transition-duration: 0.01ms;
@@ -173,7 +198,9 @@
   .teal-check-indicator,
   .teal-switch-thumb,
   .teal-tab-panel,
-  .teal-drawer-content {
+  .teal-drawer-content,
+  .teal-progress-spin,
+  .teal-progress-dash {
     animation: none !important;
   }
 }

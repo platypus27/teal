@@ -19,28 +19,61 @@ describe('InputGroup', () => {
     expect(input.compareDocumentPosition(trailing) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 
-  it('removes input rounding on attached sides', () => {
+  it('owns the border, rounding and focus-within highlight as one box', () => {
     const { container } = render(
       <InputGroup>
-        <InputAddon position="leading">https://</InputAddon>
-        <Input aria-label="Domain" />
+        <Input aria-label="Price" />
       </InputGroup>,
     )
 
     const group = container.firstElementChild
-    expect(group?.className).toContain('[&_input]:teal-u-rounded-l-none')
-    expect(group?.className).not.toContain('[&_input]:teal-u-rounded-r-none')
+    expect(group?.className).toContain('teal-input-group')
+    expect(group?.className).toContain('teal-u-rounded-xl')
+    expect(group?.className).toContain('teal-u-border-[color:var(--teal-border-subtle)]')
+    expect(group?.className).toContain('focus-within:teal-u-border-primary')
   })
 
-  it('keeps input rounding when there are no addons', () => {
+  it('strips the inner input of its own border, background and focus ring', () => {
     const { container } = render(
       <InputGroup>
-        <Input aria-label="Plain" />
+        <Input aria-label="Price" />
       </InputGroup>,
     )
 
     const group = container.firstElementChild
-    expect(group?.className).not.toContain('rounded-l-none')
-    expect(group?.className).not.toContain('rounded-r-none')
+    expect(group?.className).toContain('[&_input]:teal-u-border-0')
+    expect(group?.className).toContain('[&_input]:teal-u-bg-transparent')
+    expect(group?.className).toContain('[&_input]:focus-visible:teal-u-shadow-none')
+  })
+
+  it('renders addons borderless with a hairline separator on the inner side', () => {
+    render(
+      <InputGroup>
+        <InputAddon position="leading">$</InputAddon>
+        <Input aria-label="Price" />
+        <InputAddon position="trailing">.00</InputAddon>
+      </InputGroup>,
+    )
+
+    const leading = screen.getByText('$')
+    const trailing = screen.getByText('.00')
+    expect(leading.className).toContain('teal-u-border-r')
+    expect(leading.className).not.toContain('teal-u-border-l')
+    expect(trailing.className).toContain('teal-u-border-l')
+    expect(trailing.className).not.toContain('teal-u-border-r')
+    expect(leading.className).not.toContain('teal-u-rounded')
+    expect(trailing.className).not.toContain('teal-u-rounded')
+  })
+
+  it('highlights the whole group when the inner input is invalid', () => {
+    const { container } = render(
+      <InputGroup>
+        <Input aria-label="Price" aria-invalid="true" />
+      </InputGroup>,
+    )
+
+    const group = container.firstElementChild
+    expect(group?.className).toContain('[&:has(input[aria-invalid=true])]:teal-u-border-error')
+    expect(group?.className).toContain('[&:has(input[aria-invalid=true])]:teal-u-shadow-')
   })
 })

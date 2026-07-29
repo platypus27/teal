@@ -28,7 +28,8 @@ describe('ProgressCircle', () => {
 
     const bar = screen.getByRole('progressbar', { name: 'Loading' })
     expect(bar).not.toHaveAttribute('aria-valuenow')
-    expect(container.querySelector('.teal-u-animate-spin')).toBeInTheDocument()
+    expect(container.querySelector('svg')).toHaveClass('teal-progress-spin')
+    expect(container.querySelector('.teal-progress-dash')).toBeInTheDocument()
   })
 
   it('respects size and strokeWidth props', () => {

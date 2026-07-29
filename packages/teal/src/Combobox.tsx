@@ -88,6 +88,7 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(function Com
   const [inputText, setInputText] = useState(selectedOption?.label ?? '')
   const [highlightIndex, setHighlightIndex] = useState(-1)
   const listRef = useRef<HTMLDivElement>(null)
+  const anchorRef = useRef<HTMLDivElement>(null)
 
   const query = inputText.trim().toLowerCase()
   const filtered = open && inputText !== (selectedOption?.label ?? '')
@@ -162,7 +163,7 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(function Com
         }}
       >
         <PopoverPrimitive.Anchor asChild>
-          <div className="teal-u-relative">
+          <div className="teal-u-relative" ref={anchorRef}>
             <Input
               ref={ref}
               id={semantics.controlId}
@@ -180,7 +181,8 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(function Com
               placeholder={placeholder}
               value={inputText}
               className="teal-u-pr-9"
-              onFocus={() => {
+              onFocus={(event) => {
+                if (selectedOption) event.currentTarget.select()
                 if (!open) openList()
               }}
               onChange={(event) => {
@@ -202,6 +204,11 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(function Com
             side="bottom"
             sideOffset={6}
             onOpenAutoFocus={(event) => event.preventDefault()}
+            onCloseAutoFocus={(event) => event.preventDefault()}
+            onInteractOutside={(event) => {
+              // The click that focuses the input must not dismiss the list it just opened.
+              if (anchorRef.current?.contains(event.target as Node)) event.preventDefault()
+            }}
             className="teal-popper-content teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-max-h-64 teal-u-w-[var(--radix-popover-trigger-width)] teal-u-overflow-y-auto teal-u-border teal-u-bg-surface teal-u-p-1 teal-u-text-on-surface teal-u-outline-none"
           >
             <div ref={listRef} role="listbox" id={listboxId} aria-label={ariaLabel}>
