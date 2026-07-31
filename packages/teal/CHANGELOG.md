@@ -1,5 +1,12 @@
 # @kryv/teal
 
+## 0.4.1
+
+### Patch Changes
+
+- Add `SideRail`: a floating glass rail that collapses to an icon strip and expands to a full labeled navigation on hover or focus. It composes the `VerticalNav` compound parts over a translucent, blurred, fully rounded surface with a floating shadow, and positions itself wherever the consumer places it via `className`.
+- Normalize source formatting in Calendar, Carousel, CodeBlock, DatePicker, DateRangePicker, MultiSelect, NumberInput, and ScrollArea (plus their tests) to the house style. No behavior changes.
+
 ## 0.4.0
 
 ### Minor Changes
