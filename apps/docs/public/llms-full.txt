@@ -1,6 +1,6 @@
 # Teal design system - full documentation
 
-Version: v0.4.0
+Version: v0.4.1
 ---
 
 # Getting started
@@ -8691,6 +8691,132 @@ export function NavRailDemo({ exampleIndex = 0 }) {
 
 ---
 
+# Side Rail
+
+A floating glass rail that expands from an icon strip to a full label list on hover or focus.
+
+## Usage
+
+```js
+import { SideRail, VerticalNavBrand, VerticalNavList, VerticalNavSection, VerticalNavItem, VerticalNavFooter } from '@kryv/teal'
+```
+
+```jsx
+<SideRail>
+  <VerticalNavBrand>...</VerticalNavBrand>
+  <VerticalNavList>
+    <VerticalNavSection label="Workspace">
+      <VerticalNavItem active icon={<LayoutDashboard />}>Overview</VerticalNavItem>
+    </VerticalNavSection>
+  </VerticalNavList>
+  <VerticalNavFooter>...</VerticalNavFooter>
+</SideRail>
+```
+
+## Design guidance
+
+### Use when
+
+An application needs a floating rail that glides over content and expands to labeled sections.
+### Avoid when
+
+The nav is attached to a page edge; use Vertical Nav. For a dense icon strip with tooltips, use Nav Rail.
+### Behavior
+
+Rail mode collapses to a glass pill that expands on hover or focus; section and item labels fade in together.
+### Responsive
+
+Position it with className and fold destinations into a drawer on narrow screens.
+
+## Examples
+
+### Floating glass pill
+
+SideRail floats over content with a translucent blurred surface and expands to reveal labels on hover or keyboard focus.
+
+```jsx
+import { FolderKanban, LayoutDashboard, Settings, Users } from 'lucide-react'
+import { SideRail, VerticalNavBrand, VerticalNavFooter, VerticalNavItem, VerticalNavList, VerticalNavSection } from '@kryv/teal'
+
+export function SideRailDemo() {
+  return (
+    <div className="relative h-80 overflow-hidden rounded-xl border border-teal-outline-variant/30">
+      <SideRail className="absolute bottom-4 left-4 top-6">
+        <VerticalNavBrand>
+          <span className="flex w-16 items-center justify-center">
+            <span className="flex size-9 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
+              <LayoutDashboard className="size-5" />
+            </span>
+          </span>
+        </VerticalNavBrand>
+        <VerticalNavList>
+          <VerticalNavSection label="Workspace">
+            <VerticalNavItem active icon={<LayoutDashboard className="size-5" />}>
+              Overview
+            </VerticalNavItem>
+            <VerticalNavItem icon={<FolderKanban className="size-5" />}>Projects</VerticalNavItem>
+            <VerticalNavItem icon={<Users className="size-5" />}>Team</VerticalNavItem>
+          </VerticalNavSection>
+        </VerticalNavList>
+        <VerticalNavFooter>
+          <VerticalNavItem icon={<Settings className="size-5" />}>Settings</VerticalNavItem>
+        </VerticalNavFooter>
+      </SideRail>
+    </div>
+  )
+}
+```
+
+### Full label mode
+
+Pass mode="full" to keep labels visible and pin the rail open at its expanded width.
+
+```jsx
+import { FolderKanban, LayoutDashboard, Settings, Users } from 'lucide-react'
+import { SideRail, VerticalNavBrand, VerticalNavFooter, VerticalNavItem, VerticalNavList, VerticalNavSection } from '@kryv/teal'
+
+export function SideRailDemo() {
+  return (
+    <div className="relative h-80 overflow-hidden rounded-xl border border-teal-outline-variant/30">
+      <SideRail className="absolute bottom-4 left-4 top-6">
+        <VerticalNavBrand>
+          <span className="flex w-16 items-center justify-center">
+            <span className="flex size-9 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
+              <LayoutDashboard className="size-5" />
+            </span>
+          </span>
+        </VerticalNavBrand>
+        <VerticalNavList>
+          <VerticalNavSection label="Workspace">
+            <VerticalNavItem active icon={<LayoutDashboard className="size-5" />}>
+              Overview
+            </VerticalNavItem>
+            <VerticalNavItem icon={<FolderKanban className="size-5" />}>Projects</VerticalNavItem>
+            <VerticalNavItem icon={<Users className="size-5" />}>Team</VerticalNavItem>
+          </VerticalNavSection>
+        </VerticalNavList>
+        <VerticalNavFooter>
+          <VerticalNavItem icon={<Settings className="size-5" />}>Settings</VerticalNavItem>
+        </VerticalNavFooter>
+      </SideRail>
+    </div>
+  )
+}
+```
+
+## Interface
+
+### SideRail
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `aria-label` | `string` | `"Primary"` | Accessible name for the floating rail landmark. |
+| `mode` | `"rail" \| "full"` | `"rail"` | Rail collapses to a glass pill that expands on hover or keyboard focus. Full shows labels always. |
+| `side` | `"left" \| "right"` | - | Which edge the nav anchors to when the rail is attached. A floating rail usually leaves this unset. |
+| `as` | `ElementType` | `nav` | - |
+
+---
+
 # Top Bar
 
 A sticky top bar with brand, search, and action slots.
@@ -12450,7 +12576,14 @@ A recipe becomes a published module only after at least two Kryv products need t
 
 # Changelog
 
-Versioned changes to @kryv/teal, generated from the changesets changelog. Current version: v0.4.0.
+Versioned changes to @kryv/teal, generated from the changesets changelog. Current version: v0.4.1.
+
+## v0.4.1
+
+### Patch Changes
+
+- Add `SideRail`: a floating glass rail that collapses to an icon strip and expands to a full labeled navigation on hover or focus. It composes the `VerticalNav` compound parts over a translucent, blurred, fully rounded surface with a floating shadow, and positions itself wherever the consumer places it via `className`.
+- Normalize source formatting in Calendar, Carousel, CodeBlock, DatePicker, DateRangePicker, MultiSelect, NumberInput, and ScrollArea (plus their tests) to the house style. No behavior changes.
 
 ## v0.4.0
 

@@ -12,7 +12,7 @@ function pascalCase(value) {
 }
 
 if (new Set(modules.map((module) => module.id)).size !== modules.length) errors.push('module ids must be unique')
-if (modules.length !== 94) errors.push(`expected 94 module pages, found ${modules.length}`)
+if (modules.length !== 95) errors.push(`expected 95 module pages, found ${modules.length}`)
 
 for (const module of modules) {
   if (module.examples.length < 2) errors.push(`${module.id} needs at least two examples`)

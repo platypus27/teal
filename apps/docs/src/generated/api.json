@@ -3657,6 +3657,40 @@
   },
   {
     "description": "",
+    "displayName": "SideRail",
+    "props": [
+      {
+        "defaultValue": "Primary",
+        "description": "Accessible name for the floating rail landmark.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "rail",
+        "description": "Rail collapses labels until hover or focus; full keeps labels visible.",
+        "name": "mode",
+        "required": false,
+        "type": "\"rail\" | \"full\" | null"
+      },
+      {
+        "defaultValue": "",
+        "description": "Edge where the navigation is attached; a floating rail usually keeps this unset.",
+        "name": "side",
+        "required": false,
+        "type": "\"left\" | \"right\" | null"
+      },
+      {
+        "defaultValue": "nav",
+        "description": "",
+        "name": "as",
+        "required": false,
+        "type": "ElementType"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "Slider",
     "props": [
       {

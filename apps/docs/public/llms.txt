@@ -1,6 +1,6 @@
 # Teal design system
 
-> Documentation for @kryv/teal v0.4.0 - typed React modules, semantic design tokens, and tested interaction behavior for Kryv applications.
+> Documentation for @kryv/teal v0.4.1 - typed React modules, semantic design tokens, and tested interaction behavior for Kryv applications.
 
 ## Start
 
@@ -77,6 +77,7 @@
 - [Page Header](/modules/page-header) (Navigation): A responsive page title, supporting text, and action area.
 - [Vertical Nav](/modules/vertical-nav) (Navigation): A compound vertical navigation with icon-rail and full-text modes.
 - [Nav Rail](/modules/nav-rail) (Navigation): A fully rounded floating icon rail for dense product navigation.
+- [Side Rail](/modules/side-rail) (Navigation): A floating glass rail that expands from an icon strip to a full label list on hover or focus.
 - [Top Bar](/modules/top-bar) (Navigation): A sticky top bar with brand, search, and action slots.
 - [Breadcrumb](/modules/breadcrumb) (Navigation): A hierarchical trail with router-ready items and automatic middle-item collapse.
 - [Steps](/modules/steps) (Navigation): A numbered flow indicator with done, current, and upcoming states.

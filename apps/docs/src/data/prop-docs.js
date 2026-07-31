@@ -160,6 +160,18 @@ export const propDocs = {
       description: 'Icon element shown before the label. Always visible, even in rail mode.',
     },
   },
+  SideRail: {
+    'aria-label': { type: 'string', defaultValue: '"Primary"', description: 'Accessible name for the floating rail landmark.' },
+    mode: {
+      type: '"rail" | "full"',
+      defaultValue: '"rail"',
+      description: 'Rail collapses to a glass pill that expands on hover or keyboard focus. Full shows labels always.',
+    },
+    side: {
+      type: '"left" | "right"',
+      description: 'Which edge the nav anchors to when the rail is attached. A floating rail usually leaves this unset.',
+    },
+  },
   TopBar: {
     sticky: {
       type: 'boolean',
