@@ -8,6 +8,9 @@ updates:
     open-pull-requests-limit: 10
     labels:
       - dependencies
+    cooldown:
+      default-days: 7
+      semver-major-days: 30
     groups:
       production:
         dependency-type: production
@@ -22,9 +25,17 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "react-dom"
         update-types: ["version-update:semver-major"]
+      - dependency-name: "@eslint/js"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "tailwindcss"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
+    cooldown:
+      default-days: 7
     schedule:
       interval: weekly
       day: monday
@@ -33,6 +44,8 @@ updates:
 
   - package-ecosystem: docker
     directory: /apps/docs
+    cooldown:
+      default-days: 7
     schedule:
       interval: weekly
       day: monday
