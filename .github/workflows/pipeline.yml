@@ -1,0 +1,199 @@
+name: Pipeline
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+# Pull requests cancel stale runs. Master validation and deployment use job-specific
+# groups, while release runs are never cancelled halfway through a publish.
+concurrency:
+  group: pipeline-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  quality:
+    name: Quality and package
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pipeline-quality-${{ github.event_name }}-${{ github.ref }}
+      cancel-in-progress: true
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build --workspace @kryv/teal
+      - run: npm run typecheck
+      - run: npm run test:unit
+      - run: npm run check:generated
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run pack:verify
+
+  browser:
+    name: Playwright (${{ matrix.project }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [chromium, mobile-chromium, firefox, webkit]
+    concurrency:
+      group: pipeline-browser-${{ github.event_name }}-${{ github.ref }}-${{ matrix.project }}
+      cancel-in-progress: true
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps ${{ matrix.project == 'mobile-chromium' && 'chromium' || matrix.project }}
+      - run: npm run build --workspace @kryv/teal
+      - run: npm run test:e2e --workspace @kryv/teal-docs -- --project=${{ matrix.project }}
+
+  lighthouse:
+    name: Lighthouse
+    needs: quality
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pipeline-lighthouse-${{ github.event_name }}-${{ github.ref }}
+      cancel-in-progress: true
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx @lhci/cli@0.14.0 autorun --config=lighthouserc.cjs
+
+  release:
+    name: Release
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    needs: [quality, browser, lighthouse]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pipeline-release-master
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      id-token: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+          cache: npm
+      - run: npm install --global npm@11.5.1
+      - run: npm ci
+      - uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
+        with:
+          version: npm run release:version
+          publish: npm run publish:package
+          createGithubReleases: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+
+  documentation:
+    name: Documentation image and deploy
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    needs: [quality, browser, lighthouse]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pipeline-documentation-master
+      cancel-in-progress: true
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Check deployment configuration
+        env:
+          DEPLOY_KEY: ${{ secrets.DOCS_DEPLOY_SSH_KEY }}
+          DEPLOY_HOST: ${{ secrets.DOCS_DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DOCS_DEPLOY_USER }}
+          DEPLOY_PATH: ${{ secrets.DOCS_DEPLOY_PATH }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DOCS_DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          for name in DEPLOY_KEY DEPLOY_HOST DEPLOY_USER DEPLOY_PATH DEPLOY_KNOWN_HOSTS; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Missing required docs deployment secret: $name"
+              exit 1
+            fi
+          done
+      - uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: image
+        run: echo "name=ghcr.io/${GITHUB_REPOSITORY,,}/teal-docs:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+      - uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          context: .
+          file: apps/docs/Dockerfile
+          push: true
+          tags: ${{ steps.image.outputs.name }}
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+      - name: Configure SSH
+        env:
+          DEPLOY_KEY: ${{ secrets.DOCS_DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DOCS_DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+      - name: Pull immutable image and roll out
+        env:
+          IMAGE: ${{ steps.image.outputs.name }}
+          DEPLOY_HOST: ${{ secrets.DOCS_DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DOCS_DEPLOY_USER }}
+          DEPLOY_PATH: ${{ secrets.DOCS_DEPLOY_PATH }}
+        run: |
+          set -euo pipefail
+          image_arg="$(printf '%q' "$IMAGE")"
+          deploy_path_arg="$(printf '%q' "$DEPLOY_PATH")"
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" "IMAGE=$image_arg DEPLOY_PATH=$deploy_path_arg bash -s" <<'REMOTE'
+          set -euo pipefail
+          cd "$DEPLOY_PATH"
+          previous="$(docker inspect --format '{{.Config.Image}}' "$(docker compose ps -q docs)" 2>/dev/null || true)"
+          export TEAL_DOCS_IMAGE="$IMAGE"
+          docker compose pull docs
+          docker compose up -d --no-build docs
+          if ! curl --fail --retry 12 --retry-delay 2 --silent http://127.0.0.1:8087/ >/dev/null; then
+            if [ -n "$previous" ]; then
+              export TEAL_DOCS_IMAGE="$previous"
+              docker compose up -d --no-build docs
+            fi
+            exit 1
+          fi
+          REMOTE
