@@ -107,7 +107,33 @@ jobs:
           cache: npm
       - run: npm install --global npm@11.5.1
       - run: npm ci
+      - name: Determine whether a release is needed
+        id: release-plan
+        run: |
+          set -euo pipefail
+          version="$(node -p "require('./packages/teal/package.json').version")"
+          published=false
+          registry_error=$(mktemp)
+          trap 'rm -f "$registry_error"' EXIT
+          if npm view "@kryv/teal@$version" version >/dev/null 2>"$registry_error"; then
+            published=true
+          elif ! grep -qiE 'E404|404 Not Found|is not in this registry' "$registry_error"; then
+            cat "$registry_error" >&2
+            exit 1
+          fi
+          has_changesets=false
+          if find .changeset -maxdepth 1 -type f -name '*.md' ! -name 'README.md' -print -quit | grep -q .; then
+            has_changesets=true
+          fi
+          if [ "$has_changesets" = true ] || [ "$published" = false ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "Release required: package=$version published=$published changesets=$has_changesets"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "No release required: package=$version published=$published"
+          fi
       - uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
+        if: steps.release-plan.outputs.run == 'true'
         with:
           version: npm run release:version
           publish: npm run publish:package
@@ -118,7 +144,9 @@ jobs:
 
   documentation:
     name: Documentation image and deploy
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    # Set the repository variable DOCS_DEPLOY_ENABLED=true after configuring the
+    # deployment secrets below. Until then this job is intentionally skipped.
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && vars.DOCS_DEPLOY_ENABLED == 'true' }}
     needs: [quality, browser, lighthouse]
     runs-on: ubuntu-latest
     concurrency:
