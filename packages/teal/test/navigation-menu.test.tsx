@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { NavigationMenu, type NavigationMenuItem } from '../src/NavigationMenu'
 
@@ -48,6 +48,6 @@ describe('NavigationMenu', () => {
     expect(await screen.findByRole('link', { name: 'Analytics suite' })).toBeInTheDocument()
 
     await user.click(trigger)
-    expect(screen.queryByRole('link', { name: 'Analytics suite' })).not.toBeInTheDocument()
+    await waitFor(() => expect(screen.queryByRole('link', { name: 'Analytics suite' })).not.toBeInTheDocument())
   })
 })
