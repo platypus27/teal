@@ -173,11 +173,16 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps>(function Carou
               aria-label={`Go to slide ${index + 1}`}
               aria-current={index === active ? true : undefined}
               onClick={() => goTo(index)}
-              className={cn(
-                'teal-focus-ring teal-u-size-2 teal-u-rounded-full teal-u-transition-colors teal-u-duration-[var(--teal-motion-standard)] motion-reduce:teal-u-transition-none',
-                index === active ? 'teal-u-bg-primary' : 'teal-u-bg-outline-variant hover:teal-u-bg-outline',
-              )}
-            />
+              className="teal-focus-ring teal-u-group teal-u-inline-flex teal-u-size-6 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-transition-colors teal-u-duration-[var(--teal-motion-standard)] motion-reduce:teal-u-transition-none"
+            >
+              <span
+                aria-hidden="true"
+                className={cn(
+                  'teal-u-block teal-u-size-2 teal-u-rounded-full teal-u-transition-colors teal-u-duration-[var(--teal-motion-standard)] motion-reduce:teal-u-transition-none',
+                  index === active ? 'teal-u-bg-primary' : 'teal-u-bg-outline-variant group-hover:teal-u-bg-outline',
+                )}
+              />
+            </button>
           ))}
         </div>
       ) : null}

@@ -14,6 +14,8 @@ describe('CodeBlock', () => {
     const { container } = render(<CodeBlock code={code} language="bash" />)
 
     expect(container.querySelector('pre code')).toHaveTextContent('npm install @kryv/teal')
+    expect(container.querySelector('pre')).toHaveAttribute('tabindex', '0')
+    expect(container.querySelector('pre')).toHaveClass('teal-focus-ring')
     expect(container.querySelector('pre code')).toHaveTextContent('npm run dev')
     expect(screen.getByText('bash')).toBeInTheDocument()
   })

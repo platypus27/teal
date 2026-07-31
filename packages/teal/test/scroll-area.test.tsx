@@ -13,6 +13,8 @@ describe('ScrollArea', () => {
     )
 
     const viewport = container.querySelector('[data-radix-scroll-area-viewport]')
+    expect(viewport).toHaveAttribute('tabindex', '0')
+    expect(viewport).toHaveClass('teal-focus-ring')
     expect(viewport).toContainElement(screen.getByText('First entry'))
     expect(viewport).toContainElement(screen.getByText('Last entry'))
   })

@@ -280,7 +280,8 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(function
                       onFocus={() => setFocusedDate(day)}
                       onClick={() => selectDay(day)}
                       className={cn(
-                        'teal-focus-ring teal-u-box-border teal-u-inline-flex teal-u-size-9 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-text-sm teal-u-text-on-surface hover:teal-u-bg-surface-container-high disabled:teal-u-pointer-events-none disabled:teal-u-opacity-40',
+                        'teal-focus-ring teal-u-box-border teal-u-inline-flex teal-u-size-9 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-text-sm hover:teal-u-bg-surface-container-high disabled:teal-u-pointer-events-none disabled:teal-u-opacity-40',
+                        !isSelected && 'teal-u-text-on-surface',
                         isOutsideMonth && 'teal-u-text-on-surface-variant/50',
                         isToday && 'teal-u-border teal-u-border-solid teal-u-border-primary',
                         isSelected && 'teal-u-bg-primary teal-u-font-semibold teal-u-text-on-primary hover:teal-u-bg-primary/90',

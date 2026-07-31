@@ -67,8 +67,14 @@ describe('DateRangePicker', () => {
     await user.click(screen.getByRole('button', { name: '20' }))
 
     await user.click(input)
-    expect(await screen.findByRole('button', { name: '15' })).toHaveAttribute('aria-pressed', 'true')
-    expect(screen.getByRole('button', { name: '20' })).toHaveAttribute('aria-pressed', 'true')
+    const start = await screen.findByRole('button', { name: '15' })
+    const end = screen.getByRole('button', { name: '20' })
+    expect(start).toHaveAttribute('aria-pressed', 'true')
+    expect(end).toHaveAttribute('aria-pressed', 'true')
+    expect(start).toHaveClass('teal-u-text-on-primary')
+    expect(end).toHaveClass('teal-u-text-on-primary')
+    expect(start).not.toHaveClass('teal-u-text-on-surface')
+    expect(end).not.toHaveClass('teal-u-text-on-surface')
   })
 
   it('applies the Last 7 days preset ending today', async () => {

@@ -173,7 +173,7 @@ export const MultiSelect = forwardRef<HTMLDivElement, MultiSelectProps>(function
                         commit(selectedValues.filter((selected) => selected !== option.value))
                       }}
                       onKeyDown={(event) => event.stopPropagation()}
-                      className="teal-focus-ring teal-u-inline-flex teal-u-shrink-0 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-text-current hover:teal-u-bg-primary/20 disabled:teal-u-pointer-events-none"
+                      className="teal-focus-ring teal-u-inline-flex teal-u-size-6 teal-u--my-0.5 teal-u-shrink-0 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-text-current hover:teal-u-bg-primary/20 disabled:teal-u-pointer-events-none"
                     >
                       <X aria-hidden="true" className="teal-u-size-3" strokeWidth={2.5} />
                     </button>

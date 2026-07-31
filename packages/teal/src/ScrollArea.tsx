@@ -21,7 +21,7 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(function S
       className={cn('teal-u-overflow-hidden', className)}
       style={maxHeight !== undefined ? { maxHeight } : undefined}
     >
-      <ScrollAreaPrimitive.Viewport className="teal-u-size-full teal-u-max-h-[inherit]">
+      <ScrollAreaPrimitive.Viewport tabIndex={0} className="teal-focus-ring teal-u-size-full teal-u-max-h-[inherit]">
         {children}
       </ScrollAreaPrimitive.Viewport>
       <ScrollAreaPrimitive.Scrollbar orientation="vertical" className="teal-u-flex teal-u-w-2 teal-u-p-0.5">

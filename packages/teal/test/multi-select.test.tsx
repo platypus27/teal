@@ -41,7 +41,9 @@ describe('MultiSelect', () => {
     const onValueChange = vi.fn()
     render(<MultiSelect label="Project roles" options={options} defaultValue={['editor', 'viewer']} onValueChange={onValueChange} />)
 
-    await user.click(screen.getByRole('button', { name: 'Remove Editor' }))
+    const removeEditor = screen.getByRole('button', { name: 'Remove Editor' })
+    expect(removeEditor).toHaveClass('teal-u-size-6')
+    await user.click(removeEditor)
 
     expect(onValueChange).toHaveBeenCalledWith(['viewer'])
     const control = screen.getByRole('combobox', { name: 'Project roles' })

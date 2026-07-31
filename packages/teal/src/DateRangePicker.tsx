@@ -316,7 +316,8 @@ export const DateRangePicker = forwardRef<HTMLInputElement, DateRangePickerProps
                       onFocus={() => setFocusedDate(day)}
                       onClick={() => selectDay(day)}
                       className={cn(
-                        'teal-focus-ring teal-u-box-border teal-u-inline-flex teal-u-size-9 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-text-sm teal-u-text-on-surface hover:teal-u-bg-surface-container-high disabled:teal-u-pointer-events-none disabled:teal-u-opacity-40',
+                        'teal-focus-ring teal-u-box-border teal-u-inline-flex teal-u-size-9 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-text-sm hover:teal-u-bg-surface-container-high disabled:teal-u-pointer-events-none disabled:teal-u-opacity-40',
+                        !isStart && !isEnd && 'teal-u-text-on-surface',
                         isOutsideMonth && 'teal-u-text-on-surface-variant/50',
                         isToday && 'teal-u-border teal-u-border-solid teal-u-border-primary',
                         isInRange && 'teal-u-rounded-none teal-u-bg-primary/10',

@@ -31,10 +31,13 @@ describe('Carousel', () => {
     expect(screen.getByText('Slide two')).toBeInTheDocument()
   })
 
-  it('marks the first dot as current and disables prev at the start', () => {
+  it('marks the first dot as current and gives every dot a touch-sized target', () => {
     renderCarousel()
 
-    expect(screen.getByRole('button', { name: 'Go to slide 1' })).toHaveAttribute('aria-current', 'true')
+    const firstDot = screen.getByRole('button', { name: 'Go to slide 1' })
+    expect(firstDot).toHaveAttribute('aria-current', 'true')
+    expect(firstDot).toHaveClass('teal-u-size-6')
+    expect(firstDot.firstElementChild).toHaveClass('teal-u-size-2')
     expect(screen.getByRole('button', { name: 'Previous slide' })).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Next slide' })).toBeEnabled()
   })

@@ -27,6 +27,8 @@ describe('NumberInput', () => {
     const onValueChange = vi.fn()
     render(<NumberInput label="Team size" defaultValue={3} onValueChange={onValueChange} />)
     const input = screen.getByRole('spinbutton', { name: 'Team size' })
+    expect(screen.getByRole('button', { name: 'Increment' })).toHaveClass('teal-u-size-6')
+    expect(screen.getByRole('button', { name: 'Decrement' })).toHaveClass('teal-u-size-6')
 
     await user.click(screen.getByRole('button', { name: 'Increment' }))
     expect(onValueChange).toHaveBeenLastCalledWith(4)

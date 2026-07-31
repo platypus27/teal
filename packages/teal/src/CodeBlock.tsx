@@ -61,7 +61,7 @@ export const CodeBlock = forwardRef<HTMLDivElement, CodeBlockProps>(function Cod
           {copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
         </IconButton>
       </div>
-      <pre className="teal-u-overflow-x-auto teal-u-p-4 teal-u-font-mono teal-u-text-sm teal-u-leading-relaxed">
+      <pre tabIndex={0} className="teal-focus-ring teal-u-overflow-x-auto teal-u-p-4 teal-u-font-mono teal-u-text-sm teal-u-leading-relaxed">
         {showLineNumbers ? (
           lines.map((line, index) => (
             <div key={index} className="teal-u-flex teal-u-min-w-max">

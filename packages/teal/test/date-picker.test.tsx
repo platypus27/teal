@@ -22,7 +22,10 @@ describe('DatePicker', () => {
 
     await user.click(input)
     expect(await screen.findByText(monthLabel(new Date(2024, 0, 1)))).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: '15' })).toHaveAttribute('aria-pressed', 'true')
+    const selected = screen.getByRole('button', { name: '15' })
+    expect(selected).toHaveAttribute('aria-pressed', 'true')
+    expect(selected).toHaveClass('teal-u-text-on-primary')
+    expect(selected).not.toHaveClass('teal-u-text-on-surface')
   })
 
   it('navigates between months with the header buttons', async () => {

@@ -26,7 +26,8 @@ describe('Calendar', () => {
 
     const selected = screen.getByRole('button', { name: '15' })
     expect(selected).toHaveAttribute('aria-pressed', 'true')
-    expect(selected).toHaveClass('teal-u-bg-primary')
+    expect(selected).toHaveClass('teal-u-bg-primary', 'teal-u-text-on-primary')
+    expect(selected).not.toHaveClass('teal-u-text-on-surface')
   })
 
   it('marks today with aria-current="date"', () => {
