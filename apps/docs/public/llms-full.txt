@@ -2349,7 +2349,7 @@ Users pick several values from a filterable list.
 Only one value is allowed; use Select or Combobox.
 ### Behavior
 
-Options toggle without closing and pills remove single values.
+Options toggle without closing and pills remove through compact 24px touch targets.
 ### Responsive
 
 Pills wrap inside the control as values accumulate.
@@ -2650,7 +2650,7 @@ A numeric value benefits from quick stepping.
 The value is an identifier, not a quantity; use Input.
 ### Behavior
 
-Steppers and blur clamp to min/max; empty means undefined.
+Steppers use 24px touch targets and blur clamps to min/max; empty means undefined.
 ### Responsive
 
 The field fills its container; constrain it in the form layout.
@@ -4456,7 +4456,7 @@ A panel needs a bounded height with theme-consistent scrollbars.
 The page itself should scroll; do not nest page-level scrolling.
 ### Behavior
 
-The custom thumb appears over a transparent track only where scrolling is possible.
+The custom thumb appears over a transparent track only where scrolling is possible; the viewport is keyboard focusable.
 ### Responsive
 
 Set maxHeight in relative units so the region adapts to viewport height.
@@ -4599,7 +4599,7 @@ Code or commands should be readable and copyable.
 A single identifier in prose; use inline code styling.
 ### Behavior
 
-The copy action confirms with an icon swap and announces via its label.
+The copy action confirms with an icon swap and announces via its label; long code regions are keyboard focusable.
 ### Responsive
 
 Long lines scroll horizontally instead of wrapping.
@@ -11088,7 +11088,7 @@ The user picks one date directly from a month grid.
 A date typed in a field is enough, or a range is needed.
 ### Behavior
 
-min, max, and disabledDates constrain days; the month label is announced.
+min, max, and disabledDates constrain days; selected dates keep readable contrast and the month label is announced.
 ### Responsive
 
 The grid keeps a fixed comfortable cell size.
@@ -12123,7 +12123,7 @@ Peer items page through a bounded region.
 All content should be visible at once; use Grid.
 ### Behavior
 
-Scroll-snap track with buttons, dots, and arrow keys; slides announce their position.
+Scroll-snap track with buttons, compact dots with 24px touch targets, and arrow keys; slides announce their position.
 ### Responsive
 
 Slides take full track width; keep content readable at mobile widths.
