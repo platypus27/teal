@@ -34,7 +34,7 @@ describe('side rail', () => {
   it('applies the glass pill styling', () => {
     render(<SideRail aria-label="Primary" />)
     const nav = screen.getByRole('navigation', { name: 'Primary' })
-    expect(nav).toHaveClass('teal-u-rounded-full')
+    expect(nav).toHaveClass('teal-u-rounded-[2rem]')
     expect(nav).toHaveClass('teal-u-border')
     expect(nav).toHaveClass('teal-u-bg-surface/70')
     expect(nav).toHaveClass('teal-u-backdrop-blur-xl')
@@ -78,6 +78,38 @@ describe('side rail', () => {
       </SideRail>,
     )
     expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('aria-current', 'page')
+  })
+
+  it('shows the active background as a circle around the icon in rail mode', () => {
+    render(
+      <SideRail aria-label="Primary">
+        <VerticalNavList>
+          <VerticalNavItem icon={icon} href="/" active>
+            Home
+          </VerticalNavItem>
+        </VerticalNavList>
+      </SideRail>,
+    )
+    const link = screen.getByRole('link', { name: 'Home' })
+    expect(link).not.toHaveClass('teal-u-bg-primary/10')
+    const chip = screen.getByTestId('item-icon').parentElement
+    expect(chip).toHaveClass('teal-u-rounded-full')
+    expect(chip).toHaveClass('teal-u-bg-primary/10')
+  })
+
+  it('renders the active background on the row when labels are always visible', () => {
+    render(
+      <SideRail aria-label="Primary" mode="full">
+        <VerticalNavList>
+          <VerticalNavItem icon={icon} href="/" active>
+            Home
+          </VerticalNavItem>
+        </VerticalNavList>
+      </SideRail>,
+    )
+    const link = screen.getByRole('link', { name: 'Home' })
+    expect(link).toHaveClass('teal-u-bg-primary/10')
+    expect(link).toHaveClass('teal-u-rounded-xl')
   })
 
   it('renders as a custom element when as is provided', () => {

@@ -8326,7 +8326,7 @@ An application needs persistent section navigation.
 There are only a few inline links or a short wizard.
 ### Behavior
 
-Rail mode expands on hover or focus and item active state sets aria-current.
+Rail mode expands on hover or focus, the active item shows a circular background around its icon, and item active state sets aria-current.
 ### Responsive
 
 Use full navigation in a drawer on mobile and close it after route changes.
@@ -8335,7 +8335,7 @@ Use full navigation in a drawer on mobile and close it after route changes.
 
 ### Rail and full modes
 
-Rail mode collapses to an icon strip and expands on hover or keyboard focus. Full mode shows labels always.
+Rail mode collapses to an icon strip and expands on hover or keyboard focus; the active item shows a circular background around its icon. Full mode shows labels always with a rounded row highlight.
 
 ```jsx
 import { FolderKanban, LayoutDashboard, Settings, Users } from 'lucide-react'
@@ -8553,7 +8553,7 @@ _This module forwards native element properties._
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
-| `active` | `boolean` | `false` | Marks the item as the current page and sets aria-current="page". |
+| `active` | `boolean` | `false` | Marks the item as the current page and sets aria-current="page". In rail mode the active background is a circle around the icon; in full mode it is a rounded row. |
 | `icon` | `ReactNode` | - | Icon element shown before the label. Always visible, even in rail mode. |
 | `as` | `ElementType` | `a` | - |
 
@@ -8723,7 +8723,7 @@ An application needs a floating rail that glides over content and expands to lab
 The nav is attached to a page edge; use Vertical Nav. For a dense icon strip with tooltips, use Nav Rail.
 ### Behavior
 
-Rail mode collapses to a glass pill that expands on hover or focus; section and item labels fade in together.
+Rail mode collapses to a glass pill that expands on hover or focus; section and item labels fade in together, and the active item shows a circular background around its icon.
 ### Responsive
 
 Position it with className and fold destinations into a drawer on narrow screens.
@@ -8740,11 +8740,11 @@ import { SideRail, VerticalNavBrand, VerticalNavFooter, VerticalNavItem, Vertica
 
 export function SideRailDemo() {
   return (
-    <div className="relative h-80 overflow-hidden rounded-xl border border-teal-outline-variant/30">
+    <div className="relative h-80 w-96 overflow-hidden rounded-xl border border-teal-outline-variant/30">
       <SideRail className="absolute bottom-4 left-4 top-6">
         <VerticalNavBrand>
           <span className="flex w-16 items-center justify-center">
-            <span className="flex size-9 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
+            <span className="flex size-9 items-center justify-center rounded-full bg-teal-primary text-teal-on-primary">
               <LayoutDashboard className="size-5" />
             </span>
           </span>
@@ -8777,11 +8777,11 @@ import { SideRail, VerticalNavBrand, VerticalNavFooter, VerticalNavItem, Vertica
 
 export function SideRailDemo() {
   return (
-    <div className="relative h-80 overflow-hidden rounded-xl border border-teal-outline-variant/30">
+    <div className="relative h-80 w-96 overflow-hidden rounded-xl border border-teal-outline-variant/30">
       <SideRail className="absolute bottom-4 left-4 top-6">
         <VerticalNavBrand>
           <span className="flex w-16 items-center justify-center">
-            <span className="flex size-9 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
+            <span className="flex size-9 items-center justify-center rounded-full bg-teal-primary text-teal-on-primary">
               <LayoutDashboard className="size-5" />
             </span>
           </span>

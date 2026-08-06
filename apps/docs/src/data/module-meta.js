@@ -1320,7 +1320,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 					{
 						title: "Rail and full modes",
 						description:
-							"Rail mode collapses to an icon strip and expands on hover or keyboard focus. Full mode shows labels always.",
+							"Rail mode collapses to an icon strip and expands on hover or keyboard focus; the active item shows a circular background around its icon. Full mode shows labels always with a rounded row highlight.",
 					},
 				],
 			},
@@ -2786,7 +2786,7 @@ const guidanceById = {
 		useWhen: "An application needs persistent section navigation.",
 		avoidWhen: "There are only a few inline links or a short wizard.",
 		behavior:
-			"Rail mode expands on hover or focus and item active state sets aria-current.",
+			"Rail mode expands on hover or focus, the active item shows a circular background around its icon, and item active state sets aria-current.",
 		responsive:
 			"Use full navigation in a drawer on mobile and close it after route changes.",
 	},
@@ -2806,7 +2806,7 @@ const guidanceById = {
 		avoidWhen:
 			"The nav is attached to a page edge; use Vertical Nav. For a dense icon strip with tooltips, use Nav Rail.",
 		behavior:
-			"Rail mode collapses to a glass pill that expands on hover or focus; section and item labels fade in together.",
+			"Rail mode collapses to a glass pill that expands on hover or focus; section and item labels fade in together, and the active item shows a circular background around its icon.",
 		responsive:
 			"Position it with className and fold destinations into a drawer on narrow screens.",
 	},

@@ -25,7 +25,7 @@ const SideRailImpl = forwardRef<HTMLElement, SideRailProps>(function SideRail(
       ref={ref as never}
       aria-label={ariaLabel}
       className={cn(
-        'teal-u-rounded-full teal-u-border teal-u-bg-surface/70 teal-u-backdrop-blur-xl teal-u-shadow-overlay',
+        'teal-u-rounded-[2rem] teal-u-border teal-u-bg-surface/70 teal-u-backdrop-blur-xl teal-u-shadow-overlay',
         className,
       )}
       mode={mode}

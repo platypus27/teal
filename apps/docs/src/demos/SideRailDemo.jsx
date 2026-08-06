@@ -3,11 +3,11 @@ import { SideRail, VerticalNavBrand, VerticalNavFooter, VerticalNavItem, Vertica
 
 export function SideRailDemo() {
   return (
-    <div className="relative h-80 overflow-hidden rounded-xl border border-teal-outline-variant/30">
+    <div className="relative h-80 w-96 overflow-hidden rounded-xl border border-teal-outline-variant/30">
       <SideRail className="absolute bottom-4 left-4 top-6">
         <VerticalNavBrand>
           <span className="flex w-16 items-center justify-center">
-            <span className="flex size-9 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
+            <span className="flex size-9 items-center justify-center rounded-full bg-teal-primary text-teal-on-primary">
               <LayoutDashboard className="size-5" />
             </span>
           </span>

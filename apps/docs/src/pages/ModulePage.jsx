@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
+import { Button } from '@kryv/teal'
 import api from '../generated/api.json'
 import { CodeBlock } from '../components/CodeBlock.jsx'
 import { ExampleBlock } from '../components/ExampleBlock.jsx'
@@ -15,18 +16,41 @@ export function ModulePage() {
   const { moduleId } = useParams()
   const module = catalog.find((item) => item.id === moduleId)
   const [loaded, setLoaded] = useState({ id: null, record: null })
+  const [failedId, setFailedId] = useState(null)
 
   useEffect(() => {
     let active = true
-    loadModuleRecord(moduleId ?? '').then((next) => {
-      if (active) setLoaded({ id: moduleId ?? null, record: next })
-    })
+    loadModuleRecord(moduleId ?? '')
+      .then((next) => {
+        if (!active) return
+        sessionStorage.removeItem(`teal-module-reload:${moduleId}`)
+        setLoaded({ id: moduleId ?? null, record: next })
+      })
+      .catch(() => {
+        if (!active) return
+        if (!sessionStorage.getItem(`teal-module-reload:${moduleId}`)) {
+          sessionStorage.setItem(`teal-module-reload:${moduleId}`, '1')
+          window.location.reload()
+          return
+        }
+        setFailedId(moduleId ?? null)
+      })
     return () => {
       active = false
     }
   }, [moduleId])
 
   if (!module) return <NotFoundPage />
+  if (failedId === moduleId) {
+    return (
+      <Page title={module.name} eyebrow="Module" description={module.description}>
+        <div role="alert" className="rounded-2xl border border-teal-outline-variant/30 bg-teal-surface-container p-6 text-sm text-teal-on-surface-variant">
+          <p>Examples could not be loaded. This usually means the docs were redeployed while this page was open.</p>
+          <Button className="mt-4" onClick={() => window.location.reload()}>Reload page</Button>
+        </div>
+      </Page>
+    )
+  }
   const record = loaded.id === moduleId ? loaded.record : null
   if (!record) {
     return (

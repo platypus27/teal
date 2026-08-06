@@ -154,7 +154,11 @@ export const propDocs = {
     },
   },
   VerticalNavItem: {
-    active: { type: 'boolean', description: 'Marks the item as the current page and sets aria-current="page".' },
+    active: {
+      type: 'boolean',
+      description:
+        'Marks the item as the current page and sets aria-current="page". In rail mode the active background is a circle around the icon; in full mode it is a rounded row.',
+    },
     icon: {
       type: 'ReactNode',
       description: 'Icon element shown before the label. Always visible, even in rail mode.',

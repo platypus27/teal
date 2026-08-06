@@ -106,7 +106,7 @@ export const VerticalNavSection = forwardRef<HTMLDivElement, VerticalNavSectionP
 )
 
 export interface VerticalNavItemOwnProps {
-  /** Marks the item as the current page; sets `aria-current="page"`. */
+  /** Marks the item as the current page; sets `aria-current="page"`. In rail mode the active background is a circle around the icon; in full mode it is a rounded row. */
   active?: boolean
   /** Icon element shown before the label. Always visible, even in rail mode. */
   icon?: ReactNode
@@ -127,14 +127,30 @@ const VerticalNavItemImpl = forwardRef<HTMLElement, VerticalNavItemProps>(functi
       : 'teal-u-flex-1 teal-u-opacity-100',
   )
 
+  const rowColorClass = active
+    ? mode === 'rail'
+      ? 'teal-u-text-primary'
+      : 'teal-u-bg-primary/10 teal-u-text-primary'
+    : mode === 'rail'
+      ? 'teal-u-text-on-surface-variant hover:teal-u-text-on-surface'
+      : 'teal-u-text-on-surface-variant hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface'
+
+  const iconChipClass = cn(
+    'teal-u-flex teal-u-items-center teal-u-justify-center teal-u-transition-colors teal-u-duration-[var(--teal-motion-fast)] motion-reduce:teal-u-transition-none',
+    mode === 'rail'
+      ? cn(
+          'teal-u-size-11 teal-u-rounded-full',
+          active ? 'teal-u-bg-primary/10' : 'group-hover/item:teal-u-bg-surface-container-high',
+        )
+      : undefined,
+  )
+
   return (
     <Component
       ref={ref as never}
       className={cn(
         'teal-focus-ring teal-u-group/item teal-u-flex teal-u-items-center teal-u-rounded-xl teal-u-py-1.5 teal-u-text-sm teal-u-transition-colors teal-u-duration-[var(--teal-motion-fast)]',
-        active
-          ? 'teal-u-bg-primary/10 teal-u-text-primary'
-          : 'teal-u-text-on-surface-variant hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface',
+        rowColorClass,
         className,
       )}
       aria-current={active ? 'page' : undefined}
@@ -142,7 +158,7 @@ const VerticalNavItemImpl = forwardRef<HTMLElement, VerticalNavItemProps>(functi
     >
       {icon ? (
         <span className="teal-u-flex teal-u-w-16 teal-u-shrink-0 teal-u-items-center teal-u-justify-center">
-          {icon}
+          <span className={iconChipClass}>{icon}</span>
         </span>
       ) : null}
       <span

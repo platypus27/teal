@@ -4543,7 +4543,7 @@
     "props": [
       {
         "defaultValue": "false",
-        "description": "Marks the item as the current page; sets `aria-current=\"page\"`.",
+        "description": "Marks the item as the current page; sets `aria-current=\"page\"`. In rail mode the active background is a circle around the icon; in full mode it is a rounded row.",
         "name": "active",
         "required": false,
         "type": "boolean"
