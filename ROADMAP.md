@@ -27,6 +27,16 @@
 - deterministic light, dark, desktop, mobile, and open-overlay visual QA coverage
 - clearer setup guidance for compiled CSS, optional document defaults, and optional Tailwind 3 utilities
 
+## Released in 0.5.0
+
+- catalog grown from 96 to 200 modules across all nine groups
+- SVG chart family (line, area, bar, pie, scatter, radar, heatmap, calendar heatmap, funnel, gauge) on shared ChartContainer scaffolding with screen-reader data tables
+- data displays: KanbanBoard, GanttChart, OrgChart, TreeGrid, ActivityFeed, CommentThread, JsonViewer, DiffViewer, LogViewer, MarkdownView, QrCode
+- advanced form controls: Cascader, TreeSelect, TransferList, MentionInput, RichTextEditor, masked/currency/phone inputs, date-time/month/year pickers, card-style choices
+- overlays (BottomSheet, ActionSheet, Lightbox, ImageViewer, SearchOverlay, NotificationCenter, and more), navigation (Sidebar, Dock, MegaMenu, AnchorNav, BottomNav, TableOfContents, SkipLink), layout primitives (Box, Flex, Container, Masonry, AppShell, StickyHeader, and more), and utility modules (FocusTrap, Collapse, Presence, VirtualList, InfiniteScroll, TimeAgo, and more)
+- every module documented with anatomy, do/don't guidance, accessibility notes, and at least two live examples on the docs site
+- central axe suite extended to cover all 200 modules; three real accessibility bugs found and fixed in the process
+
 ## Consumer rollout
 
 1. Install the latest `@kryv/teal` patch from the npm registry in Daedalus.
@@ -35,9 +45,10 @@
 
 ## Demand-led additions
 
+- The 0.5.0 expansion brought the catalog to 200 modules; further growth returns to a demand-led pace.
 - Add recipes for filter toolbars, confirmation flows, and empty tables.
 - Promote a recipe into the package only after two Kryv products require the same behavior.
-- Evaluate a chart seam only after real chart requirements exist in multiple products.
+- Harden and deepen the 0.5.0 additions (charts, boards, editors) against real product usage before adding more.
 - Add Tailwind 4 semantic utility integration when a consuming Kryv application adopts it.
 
 ## Release engineering
@@ -46,4 +57,4 @@
 - Changesets owns version PRs, generated changelogs, and npm publishing.
 - Open: reduce the packed package from 52.5 kB toward the 35 kB target without dropping source files, declaration maps, or verification coverage.
 
-Teal should deepen existing interfaces before growing a generic catalog. Product behavior remains in products.
+With 200 modules shipped, Teal's focus shifts back to deepening existing interfaces before growing the catalog further. Product behavior remains in products.
