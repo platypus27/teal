@@ -1,112 +1,230 @@
-import { act, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe, type JestAxeConfigureOptions } from 'jest-axe'
 import {
   Accordion,
   AccountMenu,
+  ActionBar,
+  ActionSheet,
+  ActivityFeed,
   Alert,
   AlertDialog,
+  AnchorNav,
   Announcer,
+  AppShell,
+  AppShellFooter,
+  AppShellHeader,
+  AppShellMain,
+  AppShellSidebar,
   AppSwitcher,
+  AreaChart,
   AspectRatio,
+  AutosizeTextarea,
   Avatar,
   AvatarGroup,
   BackTop,
   Badge,
   Banner,
+  BarChart,
+  BlockingOverlay,
+  BottomNav,
+  BottomNavItem,
+  BottomSheet,
+  Box,
   Breadcrumb,
+  BulkActionBar,
   Button,
   ButtonGroup,
   Calendar,
+  CalendarHeatmap,
+  Callout,
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   Carousel,
+  Cascader,
+  Center,
+  ChartContainer,
   Checkbox,
+  CheckboxCard,
   Chip,
   CodeBlock,
+  Collapse,
   ColorPicker,
+  Columns,
   Combobox,
   Command,
+  CommentThread,
+  Container,
   ContextMenu,
+  CookieConsent,
   CopyButton,
+  CountdownTimer,
+  CurrencyInput,
   DataTable,
   DatePicker,
   DateRangePicker,
+  DateTimePicker,
   DescriptionList,
   Dialog,
+  DiffViewer,
+  Dock,
+  DockItem,
   Drawer,
   Editable,
   EmptyState,
   EcosystemRail,
+  ErrorBoundary,
+  ExpandableCard,
   Field,
+  Fieldset,
   FileUpload,
+  Flex,
+  FloatingActionButton,
+  FloatingPanel,
+  FloatingToolbar,
+  FocusTrap,
+  Form,
+  FormErrorSummary,
+  FullscreenDialog,
+  FunnelChart,
+  GanttChart,
+  GaugeChart,
+  GlassPanel,
   Grid,
   HealthIndicator,
+  Heatmap,
+  HighlightText,
   HoverCard,
   IconButton,
+  ImageViewer,
+  InfiniteScroll,
   Input,
   InputAddon,
   InputGroup,
+  JsonViewer,
+  KanbanBoard,
   Kbd,
   LauncherCard,
+  LazyImage,
+  Lightbox,
+  LineChart,
   Link,
   List,
   ListItem,
+  LoadingBar,
   LoadingState,
+  LogViewer,
+  MarkdownView,
+  Marquee,
+  MaskedInput,
+  Masonry,
+  MegaMenu,
+  MegaMenuColumn,
+  MegaMenuItem,
+  MegaMenuLink,
   Menubar,
   Menu,
+  MentionInput,
   Meter,
+  MonthPicker,
   MultiSelect,
   NavigationMenu,
   NavRail,
   NavRailItem,
+  NetworkStatus,
+  NotificationCenter,
   NotificationItem,
   NumberInput,
+  NumberTicker,
+  OfflineBanner,
+  OrgChart,
   PageHeader,
   Pagination,
+  Panel,
   PasswordInput,
+  PasswordStrengthMeter,
   PermissionMatrix,
+  PhoneInput,
+  PieChart,
   PinInput,
   Popconfirm,
   Popover,
+  Portal,
+  Presence,
   Progress,
   ProgressCircle,
+  PromptDialog,
+  PulseDot,
+  QrCode,
+  RadarChart,
+  RadioCard,
   RadioGroup,
+  RangeSlider,
   Rating,
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
   Result,
+  Reveal,
+  RichTextEditor,
+  SaveStatus,
+  ScatterChart,
   ScrollArea,
+  ScrollShadow,
   SearchInput,
+  SearchOverlay,
+  Section,
   SegmentedControl,
   Select,
   Separator,
+  ShareButton,
+  Sidebar,
+  SidebarCollapseButton,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarItem,
+  SidebarSection,
   Skeleton,
+  SkipLink,
   Slider,
   Sparkline,
+  SpeedDial,
+  SpeedDialAction,
   Spinner,
   SplitButton,
   Stack,
   Stat,
+  StatusDot,
   StepUpNotice,
   Steps,
+  StickyHeader,
+  SubNav,
+  SubNavItem,
   Switch,
   Table,
+  TableOfContents,
   Tabs,
   TagsInput,
   TextArea,
   ThemeToggle,
+  TimeAgo,
   Timeline,
   TimePicker,
+  TimezoneSelect,
   Toaster,
   Toggle,
+  ToggleGroup,
+  ToggleGroupItem,
   Toolbar,
   ToolbarGroup,
   ToolbarSeparator,
   Tour,
+  TransferList,
+  TreeGrid,
+  TreeSelect,
   TreeView,
   Tooltip,
   TooltipProvider,
@@ -114,12 +232,17 @@ import {
   TopBarActions,
   TopBarBrand,
   TopBarSearch,
+  TruncatedText,
+  UploadProgress,
   VerticalNav,
   VerticalNavBrand,
   VerticalNavItem,
   VerticalNavList,
   VerticalNavSection,
+  VirtualList,
   VisuallyHidden,
+  YearPicker,
+  type SearchOverlayRenderState,
   dismissToast,
   toast,
 } from '../src/index'
@@ -1015,6 +1138,620 @@ describe('axe: fourth catalog expansion', () => {
           <p>Q2 reliability</p>
         </Carousel>
         <BackTop threshold={-1} />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+})
+
+const searchOverlayPages = ['Getting started', 'Components', 'Foundations']
+
+function renderSearchOverlayResults({ activeIndex, listId, optionId, query }: SearchOverlayRenderState) {
+  const visible = searchOverlayPages.filter((page) => page.toLowerCase().includes(query.toLowerCase()))
+  return (
+    <ul id={listId} role="listbox" aria-label="Results">
+      {visible.map((page, index) => (
+        <li key={page} id={optionId(index)} role="option" aria-selected={index === activeIndex}>
+          {page}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+describe('axe: fifth catalog expansion', () => {
+  it('new action modules have no violations, including the open speed dial', async () => {
+    const { baseElement } = render(
+      <>
+        <ActionBar label="Edit actions">
+          <Button>Save</Button>
+          <Button variant="secondary">Cancel</Button>
+        </ActionBar>
+        <BulkActionBar count={3} onClear={() => {}}>
+          <Button variant="danger">Delete</Button>
+        </BulkActionBar>
+        <FloatingActionButton label="Create item" />
+        <ShareButton url="https://example.com/post/1" />
+        <SpeedDial label="Quick actions" defaultOpen>
+          <SpeedDialAction label="New file" />
+          <SpeedDialAction label="New folder" />
+        </SpeedDial>
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new form structure modules have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <Form aria-label="Profile">
+          <Field label="Display name" required>
+            <Input defaultValue="Avery" />
+          </Field>
+          <Button type="submit">Save</Button>
+        </Form>
+        <Fieldset legend="Notifications" description="Choose how we reach you">
+          <Checkbox label="Email digest" />
+        </Fieldset>
+        <FormErrorSummary
+          errors={[
+            { fieldId: 'email', label: 'Email', message: 'Enter a valid email address.' },
+            { fieldId: 'password', label: 'Password', message: 'Use at least 12 characters.' },
+          ]}
+        />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new form controls have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <ToggleGroup type="single" defaultValue="left" aria-label="Alignment">
+          <ToggleGroupItem value="left">Left</ToggleGroupItem>
+          <ToggleGroupItem value="center">Center</ToggleGroupItem>
+          <ToggleGroupItem value="right">Right</ToggleGroupItem>
+        </ToggleGroup>
+        <ToggleGroup type="multiple" defaultValue={['bold']} aria-label="Formatting">
+          <ToggleGroupItem value="bold">Bold</ToggleGroupItem>
+          <ToggleGroupItem value="italic">Italic</ToggleGroupItem>
+        </ToggleGroup>
+        <RadioCard
+          label="Choose a plan"
+          defaultValue="starter"
+          options={[
+            { value: 'starter', title: 'Starter', description: 'For side projects' },
+            { value: 'pro', title: 'Pro', description: 'For growing teams' },
+            { value: 'enterprise', title: 'Enterprise', description: 'For large orgs', disabled: true },
+          ]}
+        />
+        <CheckboxCard title="Email digest" description="A weekly summary" />
+        <CurrencyInput label="Invoice total" defaultValue={10} />
+        <MaskedInput label="Expiry date" mask="##/##" />
+        <PhoneInput label="Phone" defaultValue="+14155552671" />
+        <AutosizeTextarea label="Bio" description="Markdown is supported" />
+        <PasswordStrengthMeter password="Abcdefgh1!23" />
+        <RangeSlider label="Price range" defaultValue={[20, 80]} />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new selection controls have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <Cascader
+          label="Team"
+          placeholder="Pick a team"
+          options={[
+            {
+              value: 'engineering',
+              label: 'Engineering',
+              children: [
+                { value: 'frontend', label: 'Frontend' },
+                { value: 'backend', label: 'Backend' },
+              ],
+            },
+            { value: 'ops', label: 'Operations' },
+          ]}
+        />
+        <TreeSelect
+          label="Department"
+          options={[
+            {
+              value: 'engineering',
+              label: 'Engineering',
+              children: [{ value: 'frontend', label: 'Frontend' }],
+            },
+            { value: 'design', label: 'Design' },
+          ]}
+        />
+        <TransferList
+          options={[
+            { value: 'design', label: 'Design' },
+            { value: 'engineering', label: 'Engineering' },
+            { value: 'ops', label: 'Operations' },
+          ]}
+          defaultValue={['design']}
+        />
+        <MentionInput
+          label="Comment"
+          options={[
+            { value: 'ada', label: 'Ada Lovelace' },
+            { value: 'grace', label: 'Grace Hopper' },
+          ]}
+        />
+        <TimezoneSelect label="Time zone" defaultValue="Europe/Berlin" />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new editor and date controls have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <RichTextEditor label="Body" defaultValue={'## Draft\n\nhello world'} />
+        <DateTimePicker label="Starts at" defaultValue={new Date(2024, 0, 15, 9, 30)} />
+        <MonthPicker label="Billing month" defaultValue={new Date(2024, 5, 1)} />
+        <YearPicker label="Graduation year" defaultValue={new Date(2024, 0, 1)} />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new chart modules have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <ChartContainer
+          label="Revenue trend"
+          columns={[
+            { key: 'month', label: 'Month' },
+            { key: 'revenue', label: 'Revenue' },
+          ]}
+          data={[
+            { month: 'Jan', revenue: 10 },
+            { month: 'Feb', revenue: 14 },
+          ]}
+        />
+        <LineChart
+          label="Quarterly finances"
+          labels={['Jan', 'Feb', 'Mar']}
+          series={[
+            { name: 'Revenue', data: [10, 14, 12] },
+            { name: 'Costs', data: [6, 8, 7] },
+          ]}
+        />
+        <AreaChart label="Growth" labels={['Jan', 'Feb', 'Mar']} series={[{ name: 'Signups', data: [10, 14, 12] }]} />
+        <BarChart label="Quarterly costs" labels={['Q1', 'Q2']} series={[{ name: 'Costs', data: [6, 8] }]} />
+        <PieChart
+          label="Traffic by device"
+          data={[
+            { name: 'Desktop', value: 50 },
+            { name: 'Mobile', value: 30 },
+            { name: 'Tablet', value: 20 },
+          ]}
+        />
+        <ScatterChart
+          aria-label="Latency by payload size"
+          series={[
+            {
+              name: 'Alpha',
+              data: [
+                { x: 1, y: 2 },
+                { x: 2, y: 5 },
+              ],
+            },
+          ]}
+        />
+        <Heatmap
+          aria-label="Requests by day and time"
+          rows={[
+            { label: 'Mon', values: [1, 4, 7] },
+            { label: 'Tue', values: [2, 5, 8] },
+          ]}
+          columnLabels={['Morning', 'Afternoon', 'Evening']}
+        />
+        <FunnelChart
+          aria-label="Signup funnel"
+          stages={[
+            { name: 'Visited', value: 1000 },
+            { name: 'Signed up', value: 400 },
+            { name: 'Paid', value: 50 },
+          ]}
+        />
+        <GaugeChart aria-label="CPU utilization" value={64} label="CPU" />
+        <RadarChart aria-label="Team comparison" axes={['Speed', 'Quality', 'Cost']} series={[{ name: 'Team A', values: [4, 3, 5] }]} />
+        <CalendarHeatmap aria-label="Commit activity in 2025" year={2025} data={[{ date: '2025-03-14', level: 3 }]} />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new data display modules have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <KanbanBoard
+          label="Sprint board"
+          defaultColumns={[
+            { id: 'todo', title: 'To do', cards: [{ id: 'a', title: 'Design tokens' }] },
+            { id: 'done', title: 'Done', cards: [] },
+          ]}
+        />
+        <GanttChart
+          label="Release plan"
+          today="2025-03-04"
+          tasks={[
+            { id: 'design', label: 'Design', start: '2025-03-03', end: '2025-03-05' },
+            { id: 'build', label: 'Build', start: '2025-03-06', end: '2025-03-12' },
+          ]}
+        />
+        <OrgChart
+          root={{
+            id: 'ceo',
+            name: 'Ada',
+            title: 'CEO',
+            children: [
+              { id: 'cto', name: 'Ben', title: 'CTO', children: [{ id: 'dev', name: 'Cleo', title: 'Engineer' }] },
+              { id: 'cfo', name: 'Dana', title: 'CFO' },
+            ],
+          }}
+        />
+        <TreeGrid
+          aria-label="Project files"
+          defaultExpandedIds={['src']}
+          columns={[
+            { key: 'name', label: 'Name' },
+            { key: 'size', label: 'Size' },
+          ]}
+          rows={[
+            { id: 'src', name: 'src', size: '—', children: [{ id: 'app', name: 'app.ts', size: '2 KB' }] },
+            { id: 'pkg', name: 'package.json', size: '3 KB' },
+          ]}
+        />
+        <ActivityFeed
+          label="Project activity"
+          formatTime={() => 'just now'}
+          items={[{ id: '1', actor: 'Ada Lovelace', action: 'merged the parser rewrite', timestamp: new Date(2026, 7, 6) }]}
+        />
+        <CommentThread
+          formatTime={() => '2h ago'}
+          comments={[
+            {
+              id: '1',
+              author: 'Ada Lovelace',
+              body: 'The parser rewrite looks good overall.',
+              timestamp: '2026-08-01T10:00:00Z',
+              replies: [
+                { id: '1a', author: 'Alan Turing', body: 'Agreed, but the lexer needs tests.', timestamp: '2026-08-01T11:00:00Z' },
+              ],
+            },
+            { id: '2', author: 'Edsger Dijkstra', body: 'Please keep the public API unchanged.' },
+          ]}
+        />
+        <JsonViewer data={{ name: 'teal', version: 5, author: { name: 'Ada', active: true } }} />
+        <DiffViewer label="Config changes" oldValue={'line one\nline two'} newValue={'line one\nline 2'} />
+        <LogViewer
+          label="Deploy logs"
+          lines={[
+            { id: '1', level: 'info', message: 'server started on port 3000', timestamp: '10:00:01' },
+            { id: '2', level: 'error', message: 'failed to reach cache node', timestamp: '10:00:13' },
+          ]}
+        />
+        <MarkdownView content={'# Release notes\n\nSome **bold** text and a [link](https://example.com/docs).'} />
+        <QrCode value="https://example.com" label="QR code for example.com" />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new navigation modules have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <Sidebar>
+          <SidebarHeader>
+            <span>Acme</span>
+          </SidebarHeader>
+          <SidebarContent>
+            <SidebarSection label="Workspace">
+              <SidebarItem active href="#overview">
+                Overview
+              </SidebarItem>
+              <SidebarItem href="#projects">Projects</SidebarItem>
+            </SidebarSection>
+          </SidebarContent>
+          <SidebarFooter>
+            <SidebarCollapseButton />
+          </SidebarFooter>
+        </Sidebar>
+        <Dock>
+          <DockItem active icon={<svg aria-hidden="true" />} label="Mail" />
+          <DockItem icon={<svg aria-hidden="true" />} label="Files" />
+        </Dock>
+        <MegaMenu>
+          <MegaMenuItem label="Products">
+            <MegaMenuColumn heading="Build">
+              <MegaMenuLink href="#editor">Editor</MegaMenuLink>
+              <MegaMenuLink href="#preview">Preview</MegaMenuLink>
+            </MegaMenuColumn>
+          </MegaMenuItem>
+        </MegaMenu>
+        <SubNav aria-label="Settings">
+          <SubNavItem active href="#general">
+            General
+          </SubNavItem>
+          <SubNavItem href="#billing">Billing</SubNavItem>
+        </SubNav>
+        <div>
+          <AnchorNav
+            items={[
+              { id: 'overview', label: 'Overview' },
+              { id: 'usage', label: 'Usage' },
+            ]}
+          />
+          <section id="overview">Overview section</section>
+          <section id="usage">Usage section</section>
+        </div>
+        <BottomNav aria-label="App">
+          <BottomNavItem active href="#home" icon={<svg aria-hidden="true" />} label="Home" />
+          <BottomNavItem badge={3} href="#alerts" icon={<svg aria-hidden="true" />} label="Alerts" />
+        </BottomNav>
+        <div>
+          <TableOfContents
+            headings={[
+              { id: 'install-guide', level: 2, title: 'Installation' },
+              { id: 'usage-guide', level: 2, title: 'Usage' },
+            ]}
+          />
+          <section id="install-guide">Installation section</section>
+          <section id="usage-guide">Usage section</section>
+        </div>
+        <FloatingToolbar>
+          <button type="button">Bold</button>
+          <button type="button">Italic</button>
+        </FloatingToolbar>
+        <div>
+          <SkipLink />
+          <a href="#other">Other link</a>
+        </div>
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new layout primitives have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <Box p={4}>Content</Box>
+        <Flex gap={2}>
+          <span>First</span>
+          <span>Second</span>
+        </Flex>
+        <Container>Body</Container>
+        <Section>
+          <p>Section content</p>
+        </Section>
+        <Center>Middle</Center>
+        <Masonry>
+          <p>Card one</p>
+          <p>Card two</p>
+        </Masonry>
+        <Columns>
+          <span>One</span>
+          <span>Two</span>
+        </Columns>
+        <StickyHeader>Title</StickyHeader>
+        <ScrollShadow>
+          <p>Scrollable content</p>
+        </ScrollShadow>
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('app shell has no violations', async () => {
+    const { baseElement } = render(
+      <AppShell>
+        <AppShellHeader>Header</AppShellHeader>
+        <AppShellSidebar>Sidebar</AppShellSidebar>
+        <AppShellMain>Main</AppShellMain>
+        <AppShellFooter>Footer</AppShellFooter>
+      </AppShell>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new surface modules have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <Panel title="Usage summary" actions={<button type="button">Invite</button>}>
+          Body copy
+        </Panel>
+        <ExpandableCard title="Release notes" defaultExpanded>
+          Full changelog
+        </ExpandableCard>
+        <GlassPanel>Frosted content</GlassPanel>
+        <Callout variant="warning" title="Heads up">
+          New pricing starts next month.
+        </Callout>
+        <StatusDot variant="success" label="Active" />
+        <StatusDot variant="info" aria-label="Syncing" />
+        <PulseDot />
+        <PulseDot label="3 editors online" variant="info" />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new feedback modules have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <ErrorBoundary fallback={<p>Something went wrong</p>}>
+          <p>All good</p>
+        </ErrorBoundary>
+        <NetworkStatus />
+        <BlockingOverlay visible label="Saving changes">
+          <p>Editable content</p>
+        </BlockingOverlay>
+        <SaveStatus status="saving" />
+        <SaveStatus savedAt={new Date(2026, 0, 1, 10, 0, 0)} formatSavedAt={(date) => date.toISOString()} />
+        <UploadProgress fileName="report.pdf" progress={40} size={1572864} onCancel={() => {}} />
+        <LoadingBar />
+        <LoadingBar value={60} />
+      </>,
+    )
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('offline banner has no violations when the browser is offline', async () => {
+    const { baseElement } = render(<OfflineBanner onDismiss={() => {}} />)
+    fireEvent(window, new Event('offline'))
+    await screen.findByRole('status')
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+    fireEvent(window, new Event('online'))
+  })
+
+  it('sheet and panel overlays have no violations when open', async () => {
+    const bottomSheet = render(
+      <BottomSheet
+        open
+        onOpenChange={() => {}}
+        title="Share report"
+        description="Choose who gets access"
+        footer={<Button variant="secondary">Done</Button>}
+      >
+        <p>Sheet body</p>
+      </BottomSheet>,
+    )
+    await screen.findByRole('dialog', { name: 'Share report' })
+    expect(await axe(bottomSheet.baseElement, axeOptions)).toHaveNoViolations()
+    bottomSheet.unmount()
+
+    const actionSheet = render(
+      <ActionSheet
+        open
+        onOpenChange={() => {}}
+        title="Report options"
+        actions={[{ label: 'Duplicate' }, { label: 'Archive' }, { label: 'Delete', destructive: true }]}
+      />,
+    )
+    await screen.findByRole('dialog', { name: 'Report options' })
+    expect(await axe(actionSheet.baseElement, axeOptions)).toHaveNoViolations()
+    actionSheet.unmount()
+
+    const floatingPanel = render(
+      <FloatingPanel open onOpenChange={() => {}} title="Clipboard history">
+        <p>Panel body</p>
+      </FloatingPanel>,
+    )
+    await screen.findByRole('dialog', { name: 'Clipboard history' })
+    expect(await axe(floatingPanel.baseElement, axeOptions)).toHaveNoViolations()
+    floatingPanel.unmount()
+
+    const promptDialog = render(
+      <PromptDialog
+        open
+        onOpenChange={() => {}}
+        title="Rename report"
+        description="The new name appears everywhere the report is shared."
+        label="Report name"
+        defaultValue="Q3 revenue"
+        confirmLabel="Rename"
+      />,
+    )
+    await screen.findByRole('dialog', { name: 'Rename report' })
+    expect(await axe(promptDialog.baseElement, axeOptions)).toHaveNoViolations()
+    promptDialog.unmount()
+
+    const fullscreenDialog = render(
+      <FullscreenDialog open onOpenChange={() => {}} title="Edit report" footer={<Button variant="secondary">Done</Button>}>
+        <p>Editor body</p>
+      </FullscreenDialog>,
+    )
+    await screen.findByRole('dialog', { name: 'Edit report' })
+    expect(await axe(fullscreenDialog.baseElement, axeOptions)).toHaveNoViolations()
+    fullscreenDialog.unmount()
+  })
+
+  it('media and search overlays have no violations when open', async () => {
+    const { baseElement } = render(
+      <>
+        <Lightbox
+          open
+          onOpenChange={() => {}}
+          label="Vacation photos"
+          images={[
+            { src: '/a.jpg', alt: 'First photo' },
+            { src: '/b.jpg', alt: 'Second photo', caption: 'Sunset over the bay' },
+          ]}
+        />
+        <ImageViewer src="/photo.jpg" alt="Studio photo" label="Studio viewer" />
+        <SearchOverlay open onOpenChange={() => {}} resultCount={3} label="Site search">
+          {renderSearchOverlayResults}
+        </SearchOverlay>
+        <CookieConsent message="We use cookies to improve your experience." manageHref="/settings/cookies" />
+      </>,
+    )
+    await screen.findByRole('dialog', { name: 'Vacation photos' })
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('notification center has no violations when open', async () => {
+    const user = userEvent.setup()
+    const { baseElement } = render(
+      <NotificationCenter
+        trigger={<Button>Open notifications</Button>}
+        items={[
+          { id: '1', title: 'Deploy finished', appLabel: 'Orion', timestamp: '2 min ago', href: '/deploys/42', severity: 'success' },
+          { id: '2', title: 'Quota almost reached', appLabel: 'Billing', timestamp: '1 hour ago', href: '/billing', severity: 'warning', read: true },
+        ]}
+        onMarkAllRead={() => {}}
+      />,
+    )
+    await user.click(screen.getByRole('button', { name: 'Open notifications' }))
+    await screen.findByRole('list', { name: 'Notifications' })
+    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
+  })
+
+  it('new utility modules have no violations', async () => {
+    const { baseElement } = render(
+      <>
+        <Portal>
+          <p>Portalled content</p>
+        </Portal>
+        <FocusTrap>
+          <button type="button">First</button>
+          <button type="button">Last</button>
+        </FocusTrap>
+        <Collapse open>
+          <p>Collapsible body</p>
+        </Collapse>
+        <Presence present>
+          <p>Appearing content</p>
+        </Presence>
+        <Reveal>
+          <p>Lazy content</p>
+        </Reveal>
+        <TruncatedText text="A short summary" />
+        <p>
+          <HighlightText text="Report the report" query="report" />
+        </p>
+        <InfiniteScroll hasMore onLoadMore={() => {}}>
+          <p>Row one</p>
+        </InfiniteScroll>
+        <VirtualList
+          items={['Item 0', 'Item 1', 'Item 2']}
+          itemHeight={20}
+          height={100}
+          label="Roster"
+          renderItem={(item) => <span>{item}</span>}
+        />
+        <LazyImage src="/chart.png" alt="Quarterly chart" width={320} height={180} />
+        <CountdownTimer targetDate={new Date(Date.now() + 3_600_000)} />
+        <Marquee>
+          <span>Status update</span>
+        </Marquee>
+        <TimeAgo date={new Date(Date.now() - 5 * 60 * 1000)} />
+        <NumberTicker value={100} />
       </>,
     )
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()

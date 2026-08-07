@@ -1,0 +1,349 @@
+import { forwardRef, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
+import * as PopoverPrimitive from '@radix-ui/react-popover'
+import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Button, IconButton } from './Button'
+import { cn } from './cn'
+import { hasFormContent, isAriaTrue, mergeDescriptionIds, useFormSemantics } from './form-semantics'
+import { Input } from './Input'
+import { TimePicker } from './TimePicker'
+
+export interface DateTimePickerProps {
+  'aria-describedby'?: string
+  /** Accessible name when there is no visible label. */
+  'aria-label'?: string
+  /** Marks the input invalid for form validation and screen readers. */
+  'aria-invalid'?: boolean | 'false' | 'true'
+  className?: string
+  /** Initial selected date and time when uncontrolled. */
+  defaultValue?: Date
+  /** Supporting text rendered below the input. */
+  description?: ReactNode
+  /** Prevents interaction with the input. */
+  disabled?: boolean
+  /** 12 shows a 1–12 hour field with an AM/PM toggle; 24 shows a 0–23 hour field. */
+  hourCycle?: 12 | 24
+  /** Explicit id; otherwise Field or an internal id is used. */
+  id?: string
+  /** Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used. */
+  label?: ReactNode
+  /** Latest selectable date (inclusive); applies to the date portion only. */
+  maxDate?: Date
+  /** Earliest selectable date (inclusive); applies to the date portion only. */
+  minDate?: Date
+  /** Called with the combined date and time whenever either part changes. */
+  onValueChange?: (date: Date | undefined) => void
+  /** Text shown when no date and time is selected. */
+  placeholder?: string
+  /** Marks the input as required. */
+  required?: boolean
+  /** Controlled selected date and time. */
+  value?: Date
+}
+
+function pad(value: number) {
+  return String(value).padStart(2, '0')
+}
+
+function startOfDay(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate())
+}
+
+function isSameDay(a: Date, b: Date) {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate()
+}
+
+function addDays(date: Date, amount: number) {
+  const next = new Date(date)
+  next.setDate(next.getDate() + amount)
+  return next
+}
+
+function addMonths(date: Date, amount: number) {
+  return new Date(date.getFullYear(), date.getMonth() + amount, 1)
+}
+
+function dateKey(date: Date) {
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+}
+
+/** Six weeks covering the visible month, starting on Sunday. */
+function getMonthGrid(month: Date) {
+  const first = new Date(month.getFullYear(), month.getMonth(), 1)
+  const start = addDays(first, -first.getDay())
+  return Array.from({ length: 42 }, (_, index) => addDays(start, index))
+}
+
+const weekdayFormatter = new Intl.DateTimeFormat(undefined, { weekday: 'narrow' })
+const monthFormatter = new Intl.DateTimeFormat(undefined, { month: 'long', year: 'numeric' })
+// 2024-01-07 is a Sunday, so this yields locale weekday names starting Sunday.
+const weekdayNames = Array.from({ length: 7 }, (_, index) => weekdayFormatter.format(addDays(new Date(2024, 0, 7), index)))
+
+const arrowDeltas: Record<string, number> = {
+  ArrowLeft: -1,
+  ArrowRight: 1,
+  ArrowUp: -7,
+  ArrowDown: 7,
+}
+
+export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(function DateTimePicker(
+  {
+    'aria-describedby': describedBy,
+    'aria-label': ariaLabel,
+    'aria-invalid': invalid,
+    className,
+    defaultValue,
+    description,
+    disabled,
+    hourCycle = 24,
+    id,
+    label,
+    maxDate,
+    minDate,
+    onValueChange,
+    placeholder = 'Pick a date and time',
+    required,
+    value,
+  },
+  ref,
+) {
+  const semantics = useFormSemantics({
+    description,
+    id,
+    invalid: isAriaTrue(invalid),
+    prefix: 'teal-date-time-picker',
+    required,
+  })
+  const showLabel = hasFormContent(label) && !semantics.labeledByField
+  const showDescription = hasFormContent(description)
+  const popoverId = `${semantics.controlId}-popover`
+
+  const [internalValue, setInternalValue] = useState<Date | undefined>(defaultValue)
+  const selected = value !== undefined ? value : internalValue
+
+  // Draft time used before any date is chosen; a picked day keeps this time.
+  const [draftTime, setDraftTime] = useState(() => {
+    const base = selected ?? new Date()
+    return { hour: base.getHours(), minute: base.getMinutes() }
+  })
+  const time = selected ? { hour: selected.getHours(), minute: selected.getMinutes() } : draftTime
+
+  const [open, setOpen] = useState(false)
+  const [viewMonth, setViewMonth] = useState<Date>(() => selected ?? new Date())
+  const [focusedDate, setFocusedDate] = useState<Date>(() => selected ?? new Date())
+  const shouldFocusDay = useRef(false)
+  const suppressFocusOpen = useRef(false)
+  const gridRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement | null>(null)
+
+  function setInputRef(node: HTMLInputElement | null) {
+    inputRef.current = node
+    if (typeof ref === 'function') ref(node)
+    else if (ref) (ref as { current: HTMLInputElement | null }).current = node
+  }
+
+  useEffect(() => {
+    if (!open || !shouldFocusDay.current) return
+    shouldFocusDay.current = false
+    // Defer past the pointer interaction that opened the picker; focusing the
+    // day synchronously here is overwritten when the input's focus() completes.
+    queueMicrotask(() => {
+      gridRef.current?.querySelector<HTMLButtonElement>(`[data-date="${dateKey(focusedDate)}"]`)?.focus()
+    })
+  }, [open, focusedDate, viewMonth])
+
+  function isDayDisabled(day: Date) {
+    const timeMs = startOfDay(day).getTime()
+    if (minDate !== undefined && timeMs < startOfDay(minDate).getTime()) return true
+    if (maxDate !== undefined && timeMs > startOfDay(maxDate).getTime()) return true
+    return false
+  }
+
+  function commit(date: Date) {
+    if (value === undefined) setInternalValue(date)
+    onValueChange?.(date)
+  }
+
+  function openPicker() {
+    if (disabled) return
+    const base = selected ?? new Date()
+    setViewMonth(addMonths(base, 0))
+    setFocusedDate(base)
+    shouldFocusDay.current = true
+    setOpen(true)
+  }
+
+  function selectDay(day: Date) {
+    if (isDayDisabled(day)) return
+    // The popover stays open so the time can be adjusted before Done.
+    commit(new Date(day.getFullYear(), day.getMonth(), day.getDate(), time.hour, time.minute))
+  }
+
+  function handleTimeChange(raw: string) {
+    const match = /^(\d{2}):(\d{2})$/.exec(raw)
+    if (!match) return
+    const hour = Number(match[1])
+    const minute = Number(match[2])
+    setDraftTime({ hour, minute })
+    if (selected) {
+      commit(new Date(selected.getFullYear(), selected.getMonth(), selected.getDate(), hour, minute))
+    }
+  }
+
+  function closePicker() {
+    setOpen(false)
+    suppressFocusOpen.current = true
+    inputRef.current?.focus()
+  }
+
+  function handleGridKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    const delta = arrowDeltas[event.key]
+    if (delta === undefined) return
+    event.preventDefault()
+    const next = addDays(focusedDate, delta)
+    setFocusedDate(next)
+    if (next.getMonth() !== viewMonth.getMonth() || next.getFullYear() !== viewMonth.getFullYear()) {
+      setViewMonth(next)
+    }
+    shouldFocusDay.current = true
+  }
+
+  const days = getMonthGrid(viewMonth)
+  const today = new Date()
+
+  return (
+    <div className={cn('teal-u-grid teal-u-gap-1.5', className)}>
+      {showLabel ? (
+        <label htmlFor={semantics.controlId} className="teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface">
+          {label}
+        </label>
+      ) : null}
+      <PopoverPrimitive.Root
+        open={open}
+        onOpenChange={(nextOpen) => {
+          if (nextOpen) openPicker()
+          else setOpen(false)
+        }}
+      >
+        <PopoverPrimitive.Anchor asChild>
+          <div className="teal-u-relative">
+            <Input
+              ref={setInputRef}
+              id={semantics.controlId}
+              aria-label={ariaLabel}
+              aria-haspopup="dialog"
+              aria-controls={popoverId}
+              aria-describedby={mergeDescriptionIds(describedBy, showDescription ? semantics.descriptionId : undefined)}
+              aria-invalid={invalid}
+              autoComplete="off"
+              required={required}
+              disabled={disabled}
+              placeholder={placeholder}
+              readOnly
+              value={selected ? selected.toLocaleString() : ''}
+              className="teal-u-cursor-pointer teal-u-pr-9"
+              onFocus={() => {
+                if (suppressFocusOpen.current) {
+                  suppressFocusOpen.current = false
+                  return
+                }
+                if (!open) openPicker()
+              }}
+              onClick={() => {
+                if (!open) openPicker()
+              }}
+              onKeyDown={(event) => {
+                if (event.key === 'ArrowDown' && !open) {
+                  event.preventDefault()
+                  openPicker()
+                }
+              }}
+            />
+            <Calendar
+              aria-hidden="true"
+              className="teal-u-pointer-events-none teal-u-absolute teal-u-right-3 teal-u-top-1/2 teal-u-size-[var(--teal-icon-sm)] teal-u--translate-y-1/2 teal-u-text-on-surface-variant"
+            />
+          </div>
+        </PopoverPrimitive.Anchor>
+        <PopoverPrimitive.Portal>
+          <PopoverPrimitive.Content
+            id={popoverId}
+            align="start"
+            side="bottom"
+            sideOffset={6}
+            onOpenAutoFocus={(event) => event.preventDefault()}
+            className="teal-popper-content teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-border teal-u-bg-surface teal-u-p-3 teal-u-text-on-surface teal-u-outline-none"
+          >
+            <div ref={gridRef} onKeyDown={handleGridKeyDown}>
+              <div className="teal-u-flex teal-u-items-center teal-u-justify-between teal-u-pb-2">
+                <IconButton label="Previous month" size="sm" onClick={() => setViewMonth(addMonths(viewMonth, -1))}>
+                  <ChevronLeft aria-hidden="true" />
+                </IconButton>
+                <span aria-live="polite" className="teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface">
+                  {monthFormatter.format(viewMonth)}
+                </span>
+                <IconButton label="Next month" size="sm" onClick={() => setViewMonth(addMonths(viewMonth, 1))}>
+                  <ChevronRight aria-hidden="true" />
+                </IconButton>
+              </div>
+              <div className="teal-u-grid teal-u-grid-cols-7 teal-u-justify-items-center">
+                {weekdayNames.map((name, index) => (
+                  <span
+                    key={index}
+                    aria-hidden="true"
+                    className="teal-u-flex teal-u-size-9 teal-u-items-center teal-u-justify-center teal-u-text-xs teal-u-font-semibold teal-u-text-on-surface-variant"
+                  >
+                    {name}
+                  </span>
+                ))}
+                {days.map((day) => {
+                  const isSelected = selected !== undefined && isSameDay(day, selected)
+                  const isToday = isSameDay(day, today)
+                  const isOutsideMonth = day.getMonth() !== viewMonth.getMonth()
+                  const isDisabled = isDayDisabled(day)
+                  return (
+                    <button
+                      key={dateKey(day)}
+                      type="button"
+                      data-date={dateKey(day)}
+                      tabIndex={isSameDay(day, focusedDate) ? 0 : -1}
+                      disabled={isDisabled}
+                      aria-pressed={isSelected || undefined}
+                      aria-current={isToday ? 'date' : undefined}
+                      onFocus={() => setFocusedDate(day)}
+                      onClick={() => selectDay(day)}
+                      className={cn(
+                        'teal-focus-ring teal-u-box-border teal-u-inline-flex teal-u-size-9 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-text-sm hover:teal-u-bg-surface-container-high disabled:teal-u-pointer-events-none disabled:teal-u-opacity-40',
+                        !isSelected && 'teal-u-text-on-surface',
+                        isOutsideMonth && 'teal-u-text-on-surface-variant/50',
+                        isToday && 'teal-u-border teal-u-border-solid teal-u-border-primary',
+                        isSelected && 'teal-u-bg-primary teal-u-font-semibold teal-u-text-on-primary hover:teal-u-bg-primary/90',
+                      )}
+                    >
+                      {day.getDate()}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+            <div className="teal-u-mt-3 teal-u-flex teal-u-items-center teal-u-justify-between teal-u-gap-3 teal-u-border-t teal-u-border-solid teal-u-border-outline-variant/30 teal-u-pt-3">
+              <TimePicker
+                label="Time"
+                hourCycle={hourCycle}
+                value={`${pad(time.hour)}:${pad(time.minute)}`}
+                onChange={handleTimeChange}
+              />
+              <Button variant="secondary" size="sm" onClick={closePicker}>
+                Done
+              </Button>
+            </div>
+          </PopoverPrimitive.Content>
+        </PopoverPrimitive.Portal>
+      </PopoverPrimitive.Root>
+      {showDescription ? (
+        <p id={semantics.descriptionId} className="teal-u-text-xs teal-u-leading-relaxed teal-u-text-on-surface-variant">
+          {description}
+        </p>
+      ) : null}
+    </div>
+  )
+})
