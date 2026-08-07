@@ -61,14 +61,18 @@ and Avatar.
 
 ## Development
 
+Repository development is locked to Node 24.19.0 and npm 11.19.0.
+
 ```bash
-npm install
+npm ci
 npm run verify
 ```
 
-`npm run verify` runs lint, typecheck, unit tests, generated-output checks, both
-workspace builds, and packed React consumer verification. Pull requests also
-run the four Playwright projects and Lighthouse in CI.
+`npm run verify` runs the dependency audit, production-integrity contracts,
+lint, typecheck, unit tests, generated-output checks, both workspace builds,
+package lifecycle checks, and packed React 18/19 consumer verification. Pull
+requests also run all four Playwright projects, locked Lighthouse, and an exact
+production-image scan and smoke test in CI.
 
 Run the documentation site locally:
 
@@ -88,12 +92,27 @@ In production the container sits behind the Traefik reverse proxy, which serves
 it publicly at <https://teal.kryvlabs.com> with a Cloudflare-issued TLS
 certificate.
 
+To reproduce the production image gate locally without touching the default
+Compose project:
+
+```bash
+docker build -f apps/docs/Dockerfile -t teal-docs:production-integrity .
+npm run verify:docs-image -- --image teal-docs:production-integrity
+```
+
+The verifier scans a read-only Docker archive for fixable HIGH/CRITICAL
+vulnerabilities and secrets, then starts a random isolated Compose project on a
+dynamic loopback port and proves the running image ID and security headers.
+
 ## Release policy
 
 Teal remains pre-1.0 while its interfaces are proven across Kryv applications.
-Releases use Changesets and generated release notes. Product-specific status
-mappings, persistence, data queries, and domain language stay in consuming
-applications.
+Releases use Changesets and generated release notes. Versioning and trusted
+publishing are separate least-privilege jobs. Trusted publishing rebuilds and
+verifies one retained tarball, reopens that exact archive, compares every
+compiled byte to the checkout, and publishes only that file. Product-specific
+status mappings, persistence, data queries, and domain language stay in
+consuming applications.
 
 ## License
 

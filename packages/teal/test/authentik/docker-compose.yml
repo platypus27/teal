@@ -2,7 +2,7 @@
 # Bootstrap credentials are fixture-only values for a throwaway local stack.
 services:
   postgresql:
-    image: postgres:16-alpine
+    image: postgres:16.14-alpine3.24@sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777
     environment:
       POSTGRES_DB: authentik
       POSTGRES_USER: authentik
@@ -13,14 +13,14 @@ services:
       timeout: 3s
       retries: 20
   redis:
-    image: redis:7-alpine
+    image: redis:7.4.10-alpine3.21@sha256:e7723ff73d963f5cc6d9c4643ea3d989527a402a319239054e9472a7fb9219a2
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
       interval: 5s
       timeout: 3s
       retries: 20
   server:
-    image: ghcr.io/goauthentik/server:2026.5.6
+    image: ghcr.io/goauthentik/server:2026.5.6@sha256:ed120caf710ccf82ef0026f0bc74e51615bc95ebff228a7a2d6fc60c441c3868
     command: server
     environment:
       AUTHENTIK_SECRET_KEY: authentik-fixture-secret-key
@@ -40,7 +40,7 @@ services:
       redis:
         condition: service_healthy
   worker:
-    image: ghcr.io/goauthentik/server:2026.5.6
+    image: ghcr.io/goauthentik/server:2026.5.6@sha256:ed120caf710ccf82ef0026f0bc74e51615bc95ebff228a7a2d6fc60c441c3868
     command: worker
     environment:
       AUTHENTIK_SECRET_KEY: authentik-fixture-secret-key

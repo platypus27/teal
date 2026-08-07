@@ -27,7 +27,9 @@
     "pack:verify": "npm run pack:check && npm run verify:package",
     "verify:package": "node packages/teal/scripts/verify-package.mjs",
     "verify:release-package": "node packages/teal/scripts/verify-package.mjs --artifact-directory .release/npm --keep-artifact",
+    "verify:docs-image": "node scripts/verify-docs-image.mjs",
     "release:version": "changeset version && npm run generate --workspace @kryv/teal-docs && npm install --package-lock-only --ignore-scripts --no-audit --no-fund",
+    "changeset": "changeset",
     "publish:package": "node packages/teal/scripts/publish-package.mjs .release/npm/artifact.json",
     "verify": "npm run build --workspace @kryv/teal && npm run lint && npm run typecheck && npm run test:unit && npm run test:integrity && npm run audit:dependencies && npm run check:generated && npm run validate:registry --workspace @kryv/teal-docs && npm run build && npm run pack:verify"
   },
