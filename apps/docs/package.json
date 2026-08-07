@@ -13,6 +13,8 @@
     "dev": "npm run generate && vite",
     "build": "npm run generate && vite build",
     "preview": "vite preview",
+    "install:browser": "playwright install",
+    "lighthouse": "lhci autorun --config=../../lighthouserc.cjs",
     "typecheck": "tsc --noEmit --allowJs --checkJs --jsx react-jsx --moduleResolution bundler --module esnext --target es2022 src/vite-env.d.ts src/**/*.jsx vite.config.js",
     "lint": "eslint src scripts --max-warnings 0",
     "test:e2e": "playwright test",

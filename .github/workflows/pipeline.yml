@@ -35,7 +35,7 @@ jobs:
       - run: npm run test:unit
       - run: npm run check:generated
       - run: npm run build
-      - run: npx playwright install --with-deps chromium
+      - run: npm run install:browser --workspace @kryv/teal-docs -- --with-deps chromium
       - run: npm run pack:verify
 
   browser:
@@ -59,7 +59,7 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps ${{ matrix.project == 'mobile-chromium' && 'chromium' || matrix.project }}
+      - run: npm run install:browser --workspace @kryv/teal-docs -- --with-deps ${{ matrix.project == 'mobile-chromium' && 'chromium' || matrix.project }}
       - run: npm run build --workspace @kryv/teal
       - run: npm run test:e2e --workspace @kryv/teal-docs -- --project=${{ matrix.project }}
 
@@ -82,7 +82,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - run: npx @lhci/cli@0.14.0 autorun --config=lighthouserc.cjs
+      - run: npm run lighthouse --workspace @kryv/teal-docs
 
   release:
     name: Release
