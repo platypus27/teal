@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import { Link, useParams } from 'react-router'
 import { Button } from '@kryv/teal'
+import { Check, X } from 'lucide-react'
 import api from '../generated/api.json'
 import { CodeBlock } from '../components/CodeBlock.jsx'
 import { ExampleBlock } from '../components/ExampleBlock.jsx'
@@ -67,6 +68,14 @@ export function ModulePage() {
   const guide = accessibility[record.id]
   const usageSource = `import { ${imports.join(', ')} } from '@kryv/teal'\n\n${record.usage}`
   const guidance = record.guidance
+  const anatomy = record.anatomy?.length ? record.anatomy : null
+  const dosDonts =
+    record.dosDonts && (record.dosDonts.dos?.length || record.dosDonts.donts?.length)
+      ? record.dosDonts
+      : null
+  const related = record.related?.length
+    ? record.related.map((id) => ({ id, name: catalog.find((entry) => entry.id === id)?.name ?? id }))
+    : null
 
   return (
     <Page
@@ -95,6 +104,18 @@ export function ModulePage() {
           })}
         </div>
       </Section>
+      {anatomy ? (
+        <Section title="Anatomy">
+          <dl className="divide-y divide-teal-outline-variant/25 rounded-2xl border border-teal-outline-variant/30 bg-teal-surface-container">
+            {anatomy.map((entry) => (
+              <div key={entry.part} className="px-5 py-4">
+                <dt className="font-teal-headline font-bold text-teal-on-surface">{entry.part}</dt>
+                <dd className="mt-1 text-sm leading-relaxed text-teal-on-surface-variant">{entry.description}</dd>
+              </div>
+            ))}
+          </dl>
+        </Section>
+      ) : null}
       {record.playground ? (
         <Section
           title="Playground"
@@ -117,6 +138,34 @@ export function ModulePage() {
                 <p className="mt-2 text-sm leading-relaxed text-teal-on-surface-variant">{text}</p>
               </div>
             ))}
+          </div>
+        </Section>
+      ) : null}
+      {dosDonts ? (
+        <Section title="Do and don't">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="rounded-2xl border border-teal-outline-variant/30 bg-teal-surface-container p-5">
+              <h3 className="font-teal-headline font-bold text-teal-primary">Do</h3>
+              <ul className="mt-3 grid gap-2 text-sm leading-relaxed text-teal-on-surface-variant">
+                {(dosDonts.dos ?? []).map((item) => (
+                  <li key={item} className="flex gap-2.5">
+                    <Check aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-teal-primary" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-teal-outline-variant/30 bg-teal-surface-container p-5">
+              <h3 className="font-teal-headline font-bold text-teal-error">Don&rsquo;t</h3>
+              <ul className="mt-3 grid gap-2 text-sm leading-relaxed text-teal-on-surface-variant">
+                {(dosDonts.donts ?? []).map((item) => (
+                  <li key={item} className="flex gap-2.5">
+                    <X aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-teal-error" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </Section>
       ) : null}
@@ -184,6 +233,22 @@ export function ModulePage() {
               ))}
             </ul>
           ) : null}
+        </Section>
+      ) : null}
+      {related ? (
+        <Section title="Related modules">
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {related.map((entry) => (
+              <li key={entry.id}>
+                <Link
+                  to={`/modules/${entry.id}`}
+                  className="block rounded-2xl border border-teal-outline-variant/30 bg-teal-surface-container px-5 py-4 font-teal-headline font-bold text-teal-on-surface transition hover:border-teal-primary/40 hover:bg-teal-surface-container-high hover:text-teal-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-primary"
+                >
+                  {entry.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </Section>
       ) : null}
     </Page>

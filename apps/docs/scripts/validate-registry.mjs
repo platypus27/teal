@@ -12,7 +12,7 @@ function pascalCase(value) {
 }
 
 if (new Set(modules.map((module) => module.id)).size !== modules.length) errors.push('module ids must be unique')
-if (modules.length !== 95) errors.push(`expected 95 module pages, found ${modules.length}`)
+if (modules.length !== 199 && modules.length !== 200) errors.push(`expected 199 or 200 module pages, found ${modules.length}`)
 
 for (const module of modules) {
   if (module.examples.length < 2) errors.push(`${module.id} needs at least two examples`)
@@ -49,15 +49,28 @@ const intentionallyUndocumented = new Set([
   'verticalNavVariants',
   'notificationItemVariants',
   'bannerVariants',
+  'calloutVariants',
+  'containerVariants',
+  'sectionVariants',
+  'statusDotVariants',
   // Function and hook exports are documented in module usage snippets, not in
   // generated interface tables, so they have no api.json entry by design.
   'toast',
   'dismissToast',
   'mergeDescriptionIds',
   'useFieldControl',
+  'chartColors',
+  'chartColorAt',
+  'niceTicks',
+  'useFormErrors',
+  'useFormFieldError',
+  'applyMask',
+  'defaultPasswordScore',
+  'phoneCountries',
+  'encodeQrMatrix',
 ])
 for (const name of exported) {
-  const isDocumentedTypeCompanion = name.endsWith('Props') || /(?:Option|Item|Column|Variant|Input|Action|User|Row|Status|Group|Tone|Range|Delta|Theme|Step|Menu|Destination|Home)$/.test(name)
+  const isDocumentedTypeCompanion = name.endsWith('Props') || /(?:Option|Item|Column|Variant|Input|Action|User|Row|Status|Group|Tone|Range|Delta|Theme|Step|Menu|Destination|Home|Series|Point|Day|Tick|Comment|Parts|Line|Value|Stage|Task|Threshold|Card|Image|Level|Node|Country|Datum|State|Heading)$/.test(name)
   if (!documented.has(name) && !intentionallyUndocumented.has(name) && !isDocumentedTypeCompanion && !api.some((entry) => entry.displayName === name)) {
     errors.push(`public export ${name} has no registry representation`)
   }

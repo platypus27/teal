@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ColorPicker } from '@kryv/teal'
+import { Button, ColorPicker } from '@kryv/teal'
 
 export function ColorPickerDemo({ exampleIndex = 0 }) {
   const [color, setColor] = useState('#006a6c')
@@ -14,6 +14,17 @@ export function ColorPickerDemo({ exampleIndex = 0 }) {
         >
           {color}
         </span>
+      </div>
+    )
+  }
+
+  if (exampleIndex === 2) {
+    return (
+      <div className="flex items-center gap-3">
+        <ColorPicker label="Theme color" value={color} onChange={setColor} />
+        <Button size="sm" style={{ backgroundColor: color, borderColor: color }}>
+          Themed action
+        </Button>
       </div>
     )
   }

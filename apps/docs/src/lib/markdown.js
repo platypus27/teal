@@ -7,8 +7,11 @@
 import { accessibility } from '../data/accessibility.js'
 import { authentikAdapter, colorTokens, shapeNotes, typeTokens, visualTokens } from '../data/foundations.js'
 import { installSteps, packageManagers, principles } from '../data/getting-started.js'
+import { moduleGroups } from '../data/module-meta.js'
 import { mergePropDocs } from '../data/prop-docs.js'
 import { promotionRule } from '../data/recipes.js'
+
+const moduleNameById = new Map(moduleGroups.flatMap((group) => group.modules.map((module) => [module.id, module.name])))
 
 function fence(code, lang = 'jsx') {
   return `\`\`\`${lang}\n${code.replace(/^\n+|\n+$/g, '')}\n\`\`\``
@@ -36,7 +39,7 @@ export function propsTableMarkdown(name, props) {
 }
 
 /**
- * @param {{ id: string, name: string, description: string, usage: string, apiNames: string[], imports?: string[], guidance?: { useWhen: string, avoidWhen: string, behavior: string, responsive: string }, examples?: Array<{ title: string, description?: string, source?: string }> }} module
+ * @param {{ id: string, name: string, description: string, usage: string, apiNames: string[], imports?: string[], guidance?: { useWhen: string, avoidWhen: string, behavior: string, responsive: string }, anatomy?: Array<{ part: string, description: string }>, dosDonts?: { dos?: string[], donts?: string[] }, related?: string[], examples?: Array<{ title: string, description?: string, source?: string }> }} module
  * @param {Array<{ displayName: string, props: Array<object> }>} apiEntries
  */
 export function moduleMarkdown(module, apiEntries) {
@@ -67,6 +70,24 @@ export function moduleMarkdown(module, apiEntries) {
     }
   }
 
+  if (module.anatomy?.length) {
+    lines.push('', '## Anatomy', '')
+    for (const part of module.anatomy) lines.push(`- **${part.part}** - ${part.description}`)
+  }
+
+  if (module.dosDonts && (module.dosDonts.dos?.length || module.dosDonts.donts?.length)) {
+    lines.push('', "## Do and don't", '')
+    if (module.dosDonts.dos?.length) {
+      lines.push('### Do', '')
+      for (const item of module.dosDonts.dos) lines.push(`- ${item}`)
+      lines.push('')
+    }
+    if (module.dosDonts.donts?.length) {
+      lines.push("### Don't", '')
+      for (const item of module.dosDonts.donts) lines.push(`- ${item}`)
+    }
+  }
+
   const docs = module.apiNames.flatMap((name) => apiEntries.filter((entry) => entry.displayName === name))
   if (docs.length) {
     lines.push('', '## Interface')
@@ -88,6 +109,11 @@ export function moduleMarkdown(module, apiEntries) {
       lines.push('')
       for (const note of guide.notes) lines.push(`- ${note}`)
     }
+  }
+
+  if (module.related?.length) {
+    lines.push('', '## Related modules', '')
+    for (const id of module.related) lines.push(`- [${moduleNameById.get(id) ?? id}](/modules/${id})`)
   }
 
   return collapse(lines)

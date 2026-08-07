@@ -4,6 +4,19 @@ import { SearchInput } from '@kryv/teal'
 export function SearchInputDemo({ exampleIndex = 0 }) {
   const [query, setQuery] = useState('')
 
+  if (exampleIndex === 2) {
+    return (
+      <SearchInput
+        label="Search invoices"
+        description="Results refresh as you type"
+        placeholder="Type an invoice number"
+        defaultValue="INV-2049"
+        loading
+        className="w-full max-w-md"
+      />
+    )
+  }
+
   if (exampleIndex === 1) {
     return (
       <div className="grid w-full max-w-md gap-4">

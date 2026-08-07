@@ -2,6 +2,24 @@ import { ContextMenu } from '@kryv/teal'
 import { Archive, Pencil, Share2, Trash2 } from 'lucide-react'
 
 export function ContextMenuDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 2) {
+    return (
+      <ContextMenu
+        label="Board actions"
+        items={[
+          { id: 'pin', label: 'Pin board', onSelect: () => undefined },
+          { id: 'copy-link', label: 'Copy link', onSelect: () => undefined },
+          { id: 'clear', label: 'Clear activity', variant: 'danger', separatorBefore: true, onSelect: () => undefined },
+          { id: 'delete-board', label: 'Delete board', variant: 'danger', onSelect: () => undefined },
+        ]}
+      >
+        <div className="flex h-24 w-full max-w-sm items-center justify-center rounded-lg border border-dashed border-teal-outline-variant text-sm text-teal-on-surface-variant">
+          Right-click the sprint board
+        </div>
+      </ContextMenu>
+    )
+  }
+
   if (exampleIndex === 1) {
     return (
       <ContextMenu

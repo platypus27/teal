@@ -17,6 +17,11 @@
 - [Toggle](/modules/toggle) (Actions): A pressed-state button for binary preferences in toolbars and filter rows.
 - [Toolbar](/modules/toolbar) (Actions): A horizontal action bar with grouped controls and hairline separators.
 - [Split Button](/modules/split-button) (Actions): A primary action joined to a menu of related alternatives.
+- [Action Bar](/modules/action-bar) (Actions): A horizontal bar for contextual page-level actions such as a sticky save/cancel bar at the bottom of an editing surface.
+- [Bulk Action Bar](/modules/bulk-action-bar) (Actions): A bar that appears when list or table rows are selected, announcing the selection count and offering bulk actions.
+- [Floating Action Button](/modules/floating-action-button) (Actions): A fixed-position primary action button for the single most important creation task on a screen.
+- [Share Button](/modules/share-button) (Actions): A button that opens a small popover with a copy-link action and, where supported, the native share sheet.
+- [Speed Dial](/modules/speed-dial) (Actions): A floating button that expands into a fan of related creation actions with full keyboard support.
 - [Field](/modules/field) (Forms): A deep form seam that connects labels, descriptions, errors, and required state.
 - [Input and TextArea](/modules/input) (Forms): Native text controls with Teal sizing, invalid states, and forwarded refs.
 - [Select](/modules/select) (Forms): An accessible single-value picker with keyboard navigation, typeahead, and collision-aware positioning.
@@ -38,6 +43,27 @@
 - [Time Picker](/modules/time-picker) (Forms): A segmented hour and minute field with 12- and 24-hour cycles.
 - [Date Range Picker](/modules/date-range-picker) (Forms): A two-click range field with presets and a keyboard-navigable calendar popover.
 - [Color Picker](/modules/color-picker) (Forms): A swatch trigger with preset colors and a validated hex field.
+- [Autosize Textarea](/modules/autosize-textarea) (Forms): A textarea that grows and shrinks with its content, capped by a maximum row count.
+- [Cascader](/modules/cascader) (Forms): A multi-level option picker that walks a hierarchy column by column and commits the full path of values.
+- [Checkbox Card](/modules/checkbox-card) (Forms): A checkbox rendered as a selectable card with a title, description, and optional icon; works standalone or stacked in groups.
+- [Currency Input](/modules/currency-input) (Forms): A numeric amount field with a leading currency symbol that formats the value with Intl.NumberFormat on blur.
+- [Date Time Picker](/modules/date-time-picker) (Forms): A single popover that pairs a calendar grid with time fields and emits one Date.
+- [Fieldset](/modules/fieldset) (Forms): A semantic fieldset/legend group for related fields, with optional help text linked to the whole group.
+- [Form](/modules/form) (Forms): A lightweight form wrapper that collects field values on submit and shares an error map through context, with no form library.
+- [Form Error Summary](/modules/form-error-summary) (Forms): A top-of-form alert that lists validation errors as anchor links which focus the offending field.
+- [Masked Input](/modules/masked-input) (Forms): A text field that enforces a simple digit mask, inserting separators automatically as the user types.
+- [Mention Input](/modules/mention-input) (Forms): A textarea with @-mention autocomplete that inserts chosen people as plain text tokens.
+- [Month Picker](/modules/month-picker) (Forms): A popover grid of the twelve months with a year stepper for fast month-and-year selection.
+- [Password Strength Meter](/modules/password-strength-meter) (Forms): A progressbar-style meter that visualizes password strength from a caller-supplied or built-in score.
+- [Phone Input](/modules/phone-input) (Forms): A country calling-code dropdown paired with a national number field that emits an E.164-ish string.
+- [Radio Card](/modules/radio-card) (Forms): A radio group rendered as selectable cards with a title, description, and optional icon, for choices that need explanation.
+- [Range Slider](/modules/range-slider) (Forms): A dual-thumb slider for choosing a low/high pair, with per-thumb labels and an optional value readout.
+- [Rich Text Editor](/modules/rich-text-editor) (Forms): A lightweight markdown editor whose toolbar formats the textarea selection, with an optional live preview pane.
+- [Timezone Select](/modules/timezone-select) (Forms): A searchable select over a curated set of IANA timezones with UTC offset labels.
+- [Toggle Group](/modules/toggle-group) (Forms): A cluster of Toggle-styled options with roving focus, in mutually exclusive single mode or independent multiple mode.
+- [Transfer List](/modules/transfer-list) (Forms): A dual listbox that moves options between an available list and a chosen list with buttons or the keyboard.
+- [Tree Select](/modules/tree-select) (Forms): A single-select control whose popover shows an expandable, typeahead-enabled tree of options.
+- [Year Picker](/modules/year-picker) (Forms): A popover grid of years with decade paging for fast year-only selection.
 - [Card](/modules/card) (Surfaces): A structural surface for related content without ambiguous interactive behavior.
 - [Launcher Card](/modules/launcher-card) (Surfaces): An interactive application destination card with an icon, description, optional status, and an honest unavailable state.
 - [Badge](/modules/badge) (Surfaces): A compact semantic status indicator using canonical information variants.
@@ -46,6 +72,10 @@
 - [Kbd](/modules/kbd) (Surfaces): An inline keyboard shortcut hint with a raised keycap treatment.
 - [Scroll Area](/modules/scroll-area) (Surfaces): A scrollable region with styled, theme-consistent scrollbars.
 - [Code Block](/modules/code-block) (Surfaces): A code panel with a language label, optional line numbers, and copy-to-clipboard.
+- [Callout](/modules/callout) (Surfaces): A quiet admonition surface with a variant icon and accent border, for guidance that informs without interrupting.
+- [Expandable Card](/modules/expandable-card) (Surfaces): A card that expands and collapses its extra content with a built-in trigger, chevron affordance, and smooth height animation.
+- [Glass Panel](/modules/glass-panel) (Surfaces): A frosted-glass surface with backdrop blur and a translucent background, for content floating over imagery or color.
+- [Panel](/modules/panel) (Surfaces): A lightweight bordered surface with optional header and actions, for grouping content without Card's elevation.
 - [Dialog](/modules/dialog) (Overlays): A modal surface that owns focus management, naming, dismissal, and scroll locking.
 - [Tooltip](/modules/tooltip) (Overlays): A short contextual hint with accessible trigger association and collision handling.
 - [Menu](/modules/menu) (Overlays): A structured action menu with keyboard navigation, disabled items, icons, and danger styling.
@@ -57,6 +87,16 @@
 - [Popconfirm](/modules/popconfirm) (Overlays): A lightweight anchored confirmation for small destructive or irreversible actions.
 - [Context Menu](/modules/context-menu) (Overlays): A right-click action menu attached to any element, sharing the Menu item contract.
 - [Tour](/modules/tour) (Overlays): A guided walkthrough that highlights target elements step by step.
+- [Action Sheet](/modules/action-sheet) (Overlays): An iOS-style bottom sheet listing actions with a destructive option and a separated cancel button.
+- [Bottom Sheet](/modules/bottom-sheet) (Overlays): A sheet that slides up from the bottom edge with snap heights, ideal for mobile-first flows.
+- [Cookie Consent](/modules/cookie-consent) (Overlays): Polite, non-modal bottom banner for cookie consent with accept and decline actions and an optional preferences link.
+- [Floating Panel](/modules/floating-panel) (Overlays): A non-modal panel anchored to a viewport corner for tools that coexist with the page.
+- [Fullscreen Dialog](/modules/fullscreen-dialog) (Overlays): A dialog that occupies the entire viewport with a header close button for immersive tasks.
+- [Image Viewer](/modules/image-viewer) (Overlays): Inline viewer for a single image with toolbar and keyboard zoom plus pointer-drag panning while zoomed.
+- [Lightbox](/modules/lightbox) (Overlays): Full-screen gallery overlay for paging through images with arrow keys, on-screen controls, and a live counter.
+- [Notification Center](/modules/notification-center) (Overlays): Popover panel that lists recent notifications with read states and a mark-all-read action.
+- [Prompt Dialog](/modules/prompt-dialog) (Overlays): A modal dialog with a single labeled input that returns the entered value on confirm.
+- [Search Overlay](/modules/search-overlay) (Overlays): Full-screen search overlay with a large input and caller-rendered results navigated entirely from the keyboard.
 - [Toast](/modules/toast) (Feedback): Imperative, announced feedback with semantic variants, optional actions, and dismissal.
 - [Empty State](/modules/empty-state) (Feedback): An explanatory empty result with an optional action and SVG icon.
 - [Loading](/modules/loading) (Feedback): Named progress and loading treatments for local, skeleton, and full-surface states.
@@ -70,6 +110,15 @@
 - [Meter](/modules/meter) (Feedback): A scalar gauge for a known range with optimum-zone coloring.
 - [Rating](/modules/rating) (Feedback): A star rating input with radio semantics, arrow keys, and a read-only display mode.
 - [Announcer](/modules/announcer) (Feedback): A visually hidden live region that re-announces a message whenever it changes.
+- [Blocking Overlay](/modules/blocking-overlay) (Feedback): A full-surface overlay with a spinner that blocks interaction with the wrapped content during async work.
+- [Error Boundary](/modules/error-boundary) (Feedback): A class-based error boundary that isolates render failures behind a fallback UI with reset support.
+- [Loading Bar](/modules/loading-bar) (Feedback): A thin top-of-page progress bar with determinate and indeterminate modes.
+- [Network Status](/modules/network-status) (Feedback): An inline indicator of the browser's online/offline state with a render prop for custom display.
+- [Offline Banner](/modules/offline-banner) (Feedback): A dismissible banner that appears at the top of the page when the browser loses connectivity.
+- [Pulse Dot](/modules/pulse-dot) (Feedback): An animated pulsing dot that signals live presence or ongoing activity.
+- [Save Status](/modules/save-status) (Feedback): An inline saved/saving/error indicator with an optional relative timestamp.
+- [Status Dot](/modules/status-dot) (Feedback): A small colored dot with an optional text label for compact entity status.
+- [Upload Progress](/modules/upload-progress) (Feedback): A file upload progress row with file name, determinate bar, formatted size, and a cancel button.
 - [App Switcher](/modules/app-switcher) (Navigation): An entitlement-filtered application switcher with an explicit Home destination and keyboard navigation.
 - [Account Menu](/modules/account-menu) (Navigation): A household account menu with an identity header, product items, and distinct app and SSO sign-out actions.
 - [Tabs](/modules/tabs) (Navigation): Keyboard-navigable content switching through a compact item interface.
@@ -78,6 +127,7 @@
 - [Vertical Nav](/modules/vertical-nav) (Navigation): A compound vertical navigation with icon-rail and full-text modes.
 - [Nav Rail](/modules/nav-rail) (Navigation): A fully rounded floating icon rail for dense product navigation.
 - [Side Rail](/modules/side-rail) (Navigation): A floating glass rail that expands from an icon strip to a full label list on hover or focus.
+- [Ecosystem Rail](/modules/ecosystem-rail) (Navigation): A persistent cross-product rail with a stable Home destination, caller-filtered applications, and honest health status.
 - [Top Bar](/modules/top-bar) (Navigation): A sticky top bar with brand, search, and action slots.
 - [Breadcrumb](/modules/breadcrumb) (Navigation): A hierarchical trail with router-ready items and automatic middle-item collapse.
 - [Steps](/modules/steps) (Navigation): A numbered flow indicator with done, current, and upcoming states.
@@ -85,6 +135,15 @@
 - [Menubar](/modules/menubar) (Navigation): An application command bar of labeled dropdown menus with full keyboard navigation.
 - [Navigation Menu](/modules/navigation-menu) (Navigation): A top-level navigation bar mixing links with rich content panels in a shared viewport.
 - [Back Top](/modules/back-top) (Navigation): A floating button that appears after scrolling and returns to the top of the page.
+- [Anchor Nav](/modules/anchor-nav) (Navigation): A scroll-spy nav of page section anchors that highlights the section in view and smooth-scrolls on click.
+- [Bottom Nav](/modules/bottom-nav) (Navigation): A mobile bottom navigation bar of three to five icon-and-label items with aria-current and safe-area padding.
+- [Dock](/modules/dock) (Navigation): A macOS-style dock of icon buttons with hover tooltips, accessible names, and an active-app indicator dot.
+- [Floating Toolbar](/modules/floating-toolbar) (Navigation): A floating contextual toolbar that appears near a selection or anchored element, with roving tabindex and arrow-key navigation.
+- [Mega Menu](/modules/mega-menu) (Navigation): A top-level navigation item that opens a multi-column link panel on hover, focus, or click, with full keyboard support.
+- [Sidebar](/modules/sidebar) (Navigation): A full app sidebar with header, content, and footer slots that collapses to an icon rail, with aria-current on the active item.
+- [Skip Link](/modules/skip-link) (Navigation): A visually-hidden-until-focused "Skip to content" link that becomes the first tab stop of the page.
+- [Sub Nav](/modules/sub-nav) (Navigation): A secondary horizontal nav row with an underline indicator for the active item that scrolls when items overflow.
+- [Table of Contents](/modules/table-of-contents) (Navigation): A nested list of heading links that indents by heading level and highlights the section in view with an IntersectionObserver.
 - [Permission Matrix](/modules/permission-matrix) (Data): A people-by-applications access matrix with caller-supplied cell content and explicit no-access cells.
 - [Table](/modules/table) (Data): Accessible data presentation driven by column definitions, density, loading, and empty state.
 - [Separator](/modules/separator) (Data): A semantic or decorative divider for related content.
@@ -97,14 +156,60 @@
 - [Sparkline](/modules/sparkline) (Data): A tiny inline trend chart in line, area, or bar form with an accessible summary.
 - [Calendar](/modules/calendar) (Data): A month grid for picking a single date with bounds and disabled days.
 - [Result](/modules/result) (Data): A full-area outcome state for success, error, and HTTP results with a standard icon and actions.
+- [Activity Feed](/modules/activity-feed) (Data): Chronological list of actor-plus-action events with avatars or icons and timestamps, optionally grouped under day headings.
+- [Area Chart](/modules/area-chart) (Data): Line chart with a filled area under each series, an adjustable fill opacity, and a stacked mode for part-to-whole trends.
+- [Bar Chart](/modules/bar-chart) (Data): Grouped SVG bar chart with vertical or horizontal bars, optional value labels, a legend, and a built-in accessible data table.
+- [Calendar Heatmap](/modules/calendar-heatmap) (Data): GitHub-style year calendar heatmap with weeks-by-weekday cells, a 0–4 level color scale, and month labels.
+- [Chart Container](/modules/chart-container) (Data): Accessible SVG frame for hand-rolled charts with an aria-label summary, a toggleable screen-reader data table, and reusable axis, grid, and legend primitives.
+- [Comment Thread](/modules/comment-thread) (Data): Nested comment list with author avatars, timestamps, caller-wired reply buttons, and collapsible reply threads.
+- [Diff Viewer](/modules/diff-viewer) (Data): Line-based diff view with added/removed/context coloring, a +/- gutter, and old/new line numbers.
+- [Funnel Chart](/modules/funnel-chart) (Data): SVG funnel of stages whose widths follow their values, with stage-to-stage conversion percentages.
+- [Gantt Chart](/modules/gantt-chart) (Data): A read-only SVG Gantt chart that plots task bars on a day grid with a today marker.
+- [Gauge Chart](/modules/gauge-chart) (Data): Semicircle SVG gauge with min/max scale, threshold zones, and a centered value label.
+- [Heatmap](/modules/heatmap) (Data): Matrix heatmap that maps values to a color scale with row/column labels and cell tooltips.
+- [JSON Viewer](/modules/json-viewer) (Data): Collapsible JSON tree with type-colored values, key-count summaries, and optional hover copy-path buttons.
+- [Kanban Board](/modules/kanban-board) (Data): A column-based board where cards move between workflow stages with full keyboard support.
+- [Line Chart](/modules/line-chart) (Data): Multi-series SVG line chart with axis ticks, focusable points, simple or custom tooltips, a legend, and a built-in accessible data table.
+- [Log Viewer](/modules/log-viewer) (Data): Scrollable monospace log pane with severity coloring, a follow/auto-scroll toggle, and optional search highlighting.
+- [Markdown View](/modules/markdown-view) (Data): Renders a safe markdown subset — headings, emphasis, links, lists, code, and quotes — as teal-styled elements with no raw HTML.
+- [Org Chart](/modules/org-chart) (Data): A hierarchy of person nodes rendered as connected boxes, with collapsible subtrees.
+- [Pie Chart](/modules/pie-chart) (Data): SVG pie and donut chart with keyboard-focusable segments, percentage labels, a legend, and a built-in accessible data table.
+- [QR Code](/modules/qr-code) (Data): Dependency-free SVG QR code renderer with a hand-rolled byte-mode encoder (error-correction level L).
+- [Radar Chart](/modules/radar-chart) (Data): SVG radar (spider) chart that overlays multi-series polygons across a shared set of axes.
+- [Scatter Chart](/modules/scatter-chart) (Data): Hand-rolled SVG scatter plot with x/y axes, multi-series dots, and optional size encoding.
+- [Tree Grid](/modules/tree-grid) (Data): A data table whose rows form an expandable tree, following the WAI-ARIA treegrid pattern.
 - [Stack](/modules/stack) (Layout): A flex primitive that stacks children along one axis with consistent spacing and alignment.
 - [Grid](/modules/grid) (Layout): A grid primitive with fixed columns or responsive auto-fit tracks.
 - [Resizable](/modules/resizable) (Layout): Pointer- and keyboard-resizable panes with percentage sizing and double-click reset.
 - [Aspect Ratio](/modules/aspect-ratio) (Layout): Keeps media or content at a consistent width-to-height ratio.
+- [AppShell](/modules/app-shell) (Layout): An application frame that places header, sidebar, main and footer regions into named grid areas.
+- [Box](/modules/box) (Layout): The lowest-level layout primitive: a polymorphic box with spacing props, leaving surfaces and colors to className.
+- [Center](/modules/center) (Layout): Centers children horizontally and vertically inside their box, with an inline option for flow content.
+- [Columns](/modules/columns) (Layout): An equal-width grid column layout that keeps row alignment and collapses to fewer columns on narrow screens.
+- [Container](/modules/container) (Layout): Centers content in a max-width column with responsive horizontal padding and fixed size steps.
+- [Flex](/modules/flex) (Layout): A flex container primitive with direction, gap, alignment and distribution props; defaults to a horizontal row.
+- [Masonry](/modules/masonry) (Layout): A CSS-columns masonry layout where unequal-height items pack tightly down each column without row gaps.
+- [ScrollShadow](/modules/scroll-shadow) (Layout): A scroll container that fades the top and bottom edges to signal that more content exists in that direction.
+- [Section](/modules/section) (Layout): A semantic page section with vertical rhythm spacing and an optional centered container wrap.
+- [StickyHeader](/modules/sticky-header) (Layout): A header that sticks to the top of its scrolling container and gains a shadow once it is stuck.
 - [Visually Hidden](/modules/visually-hidden) (Utilities): Hides content visually while keeping it available to assistive technology.
 - [Copy Button](/modules/copy-button) (Utilities): A button that copies a value to the clipboard and confirms with an icon swap and live feedback.
 - [Theme Toggle](/modules/theme-toggle) (Utilities): An icon button that toggles the dark class on the document root and reports its state.
 - [Carousel](/modules/carousel) (Utilities): A scroll-snap carousel with previous and next controls, dot indicators, and arrow-key support.
+- [Collapse](/modules/collapse) (Utilities): Animates a region's height to show or hide content, marking it hidden and inert while closed.
+- [Countdown Timer](/modules/countdown-timer) (Utilities): Counts down to a target date with a default HH:MM:SS display or a custom render prop, firing onComplete at zero.
+- [Focus Trap](/modules/focus-trap) (Utilities): Keeps Tab and Shift+Tab focus cycling within a container and restores focus when deactivated.
+- [Highlight Text](/modules/highlight-text) (Utilities): Wraps every case-insensitive match of a query in a styled mark element.
+- [Infinite Scroll](/modules/infinite-scroll) (Utilities): Loads the next batch of content automatically when a sentinel scrolls into view via IntersectionObserver.
+- [Lazy Image](/modules/lazy-image) (Utilities): Defers an image request until it nears the viewport, showing a placeholder and fading the image in on load.
+- [Marquee](/modules/marquee) (Utilities): Scrolls content horizontally in a seamless CSS-animation loop with pause-on-hover and reduced-motion support.
+- [Number Ticker](/modules/number-ticker) (Utilities): Animates a number toward its target with a requestAnimationFrame count-up and a pluggable formatter.
+- [Portal](/modules/portal) (Utilities): Renders children into a different DOM container, escaping overflow and stacking-context traps.
+- [Presence](/modules/presence) (Utilities): Keeps children mounted through their exit transition before unmounting them.
+- [Reveal](/modules/reveal) (Utilities): Fades and slides children in when they scroll into the viewport via IntersectionObserver.
+- [Time Ago](/modules/time-ago) (Utilities): Renders a self-updating relative timestamp like "5 minutes ago" with the absolute time on hover.
+- [Truncated Text](/modules/truncated-text) (Utilities): Clamps text to one or more lines with a show more/less toggle and a tooltip for the full text.
+- [Virtual List](/modules/virtual-list) (Utilities): Renders only the visible slice of a large fixed-height list, keeping thousands of rows scrolling smoothly.
 
 ## Patterns
 

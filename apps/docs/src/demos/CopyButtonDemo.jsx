@@ -1,6 +1,20 @@
 import { CopyButton } from '@kryv/teal'
 
 export function CopyButtonDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 2) {
+    return (
+      <div className="w-full max-w-md overflow-hidden rounded-lg border border-teal-outline-variant/50">
+        <div className="flex items-center justify-between bg-teal-surface-container-high px-3 py-1.5">
+          <span className="text-xs text-teal-on-surface-variant">install.sh</span>
+          <CopyButton iconOnly value="npm install @kryv/teal" label="Copy snippet" copiedLabel="Snippet copied" />
+        </div>
+        <pre className="px-3 py-2 text-sm">
+          <code>npm install @kryv/teal</code>
+        </pre>
+      </div>
+    )
+  }
+
   if (exampleIndex === 1) {
     return (
       <div className="flex items-center gap-3">

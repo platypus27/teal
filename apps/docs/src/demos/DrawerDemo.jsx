@@ -3,11 +3,11 @@ import { Button, Drawer } from '@kryv/teal'
 
 export function DrawerDemo({ exampleIndex = 0 }) {
   const [open, setOpen] = useState(false)
-  const side = exampleIndex ? 'left' : 'right'
+  const side = exampleIndex === 1 ? 'left' : 'right'
   return (
     <>
       <Button variant="secondary" onClick={() => setOpen(true)}>
-        {exampleIndex ? 'Open left drawer' : 'Open drawer'}
+        {exampleIndex === 1 ? 'Open left drawer' : 'Open drawer'}
       </Button>
       <Drawer
         open={open}

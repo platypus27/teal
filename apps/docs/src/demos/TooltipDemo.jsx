@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { IconButton, Input, Tooltip } from '@kryv/teal'
-import { Search, X } from 'lucide-react'
+import { Button, IconButton, Input, Tooltip } from '@kryv/teal'
+import { ArrowLeft, ArrowRight, Search, X } from 'lucide-react'
 
-export function TooltipDemo() {
+export function TooltipDemo({ exampleIndex = 0 }) {
   const [open, setOpen] = useState(false)
   const inputRef = useRef(null)
 
@@ -11,6 +11,29 @@ export function TooltipDemo() {
     const frame = requestAnimationFrame(() => inputRef.current?.focus())
     return () => cancelAnimationFrame(frame)
   }, [open])
+
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-center gap-3">
+        <Tooltip content="Older reports" side="left">
+          <IconButton label="Older reports">
+            <ArrowLeft />
+          </IconButton>
+        </Tooltip>
+        <span className="text-sm text-teal-on-surface-variant">Q3 2025</span>
+        <Tooltip content="Newer reports" side="right">
+          <IconButton label="Newer reports">
+            <ArrowRight />
+          </IconButton>
+        </Tooltip>
+        <Tooltip content="Jump to the latest quarter" side="bottom">
+          <Button variant="secondary" size="sm">
+            Latest
+          </Button>
+        </Tooltip>
+      </div>
+    )
+  }
 
   return (
     <div

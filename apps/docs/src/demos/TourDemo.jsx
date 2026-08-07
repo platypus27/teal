@@ -4,6 +4,33 @@ import { Button, Tour } from '@kryv/teal'
 export function TourDemo({ exampleIndex = 0 }) {
   const [open, setOpen] = useState(false)
 
+  if (exampleIndex === 2) {
+    return (
+      <div className="flex flex-col items-start gap-4">
+        <Button variant="secondary" onClick={() => setOpen(true)}>
+          Replay the placement tip
+        </Button>
+        <div className="flex h-32 w-full max-w-md items-end rounded-lg border border-teal-outline-variant/30 p-3">
+          <span id="tour-demo-dock" className="rounded-lg border border-teal-outline-variant/50 px-3 py-2 text-sm">
+            Shortcut dock
+          </span>
+        </div>
+        <Tour
+          open={open}
+          onOpenChange={setOpen}
+          steps={[
+            {
+              target: '#tour-demo-dock',
+              placement: 'top',
+              title: 'Shortcuts dock here',
+              content: 'The dock sits near the bottom edge, so this step opens above it.',
+            },
+          ]}
+        />
+      </div>
+    )
+  }
+
   if (exampleIndex === 1) {
     return (
       <div className="flex items-center gap-4">

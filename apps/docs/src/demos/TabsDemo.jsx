@@ -1,6 +1,21 @@
 import { Tabs } from '@kryv/teal'
 
-export function TabsDemo() {
+export function TabsDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="w-full max-w-xl">
+        <Tabs
+          aria-label="Profile sections"
+          defaultValue="general"
+          items={[
+            { value: 'general', label: 'General', content: <p className="text-sm">Name, handle, and avatar for this profile</p> },
+            { value: 'security', label: 'Security', content: <p className="text-sm">Sign-in and verification settings</p> },
+            { value: 'notifications', label: 'Notifications', content: <p className="text-sm">Delivery preferences for this profile</p> },
+          ]}
+        />
+      </div>
+    )
+  }
   return (
     <div className="w-full max-w-xl">
       <Tabs

@@ -104,6 +104,157 @@
   },
   {
     "description": "",
+    "displayName": "ActionBar",
+    "props": [
+      {
+        "defaultValue": "Actions",
+        "description": "Accessible name for the action region.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "bottom",
+        "description": "Edge of the content the bar sits on; flips the hairline border and sticky offset.",
+        "name": "position",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Keeps the bar visible while the surrounding content scrolls.",
+        "name": "sticky",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "ActionSheet",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Actions listed in the sheet, in order.",
+        "name": "actions",
+        "required": true,
+        "type": "ActionSheetAction[]"
+      },
+      {
+        "defaultValue": "Cancel",
+        "description": "Text of the cancel button.",
+        "name": "cancelLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial open state when uncontrolled.",
+        "name": "defaultOpen",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered under the title.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "Actions",
+        "description": "Accessible name used when no visible title is provided.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the cancel button is pressed.",
+        "name": "onCancel",
+        "required": false,
+        "type": "() => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the sheet opens or closes.",
+        "name": "onOpenChange",
+        "required": false,
+        "type": "(open: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled open state.",
+        "name": "open",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Title rendered above the actions; also the accessible name of the sheet.",
+        "name": "title",
+        "required": false,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "ActivityFeed",
+    "props": [
+      {
+        "defaultValue": "No activity yet",
+        "description": "Message shown when there are no items.",
+        "name": "emptyMessage",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Formats the day heading when `groupByDay` is on; defaults to Today/Yesterday/weekday labels.",
+        "name": "formatDay",
+        "required": false,
+        "type": "(day: Date) => string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Formats each item timestamp.",
+        "name": "formatTime",
+        "required": false,
+        "type": "(timestamp: string | number | Date) => string"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Groups items under a heading per day.",
+        "name": "groupByDay",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Events to display, newest first.",
+        "name": "items",
+        "required": true,
+        "type": "ActivityFeedItem[]"
+      },
+      {
+        "defaultValue": "Activity",
+        "description": "Accessible name for the feed.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "Alert",
     "props": [
       {
@@ -235,6 +386,47 @@
   },
   {
     "description": "",
+    "displayName": "AnchorNav",
+    "props": [
+      {
+        "defaultValue": "On this page",
+        "description": "Accessible name for the navigation landmark.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled id of the active section.",
+        "name": "activeId",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initially active section id when uncontrolled.",
+        "name": "defaultActiveId",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Sections the nav links to and spies on, in document order.",
+        "name": "items",
+        "required": true,
+        "type": "AnchorNavItem[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the section id when the active section changes.",
+        "name": "onActiveChange",
+        "required": false,
+        "type": "(id: string) => void"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "Announcer",
     "props": [
       {
@@ -252,6 +444,39 @@
         "type": "enum"
       }
     ]
+  },
+  {
+    "description": "",
+    "displayName": "AppShell",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "AppShellHeader",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "AppShellSidebar",
+    "props": [
+      {
+        "defaultValue": "256",
+        "description": "Width of the sidebar column (e.g. 240 or '16rem').",
+        "name": "width",
+        "required": false,
+        "type": "string | number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "AppShellMain",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "AppShellFooter",
+    "props": []
   },
   {
     "description": "",
@@ -323,6 +548,96 @@
     ]
   },
   {
+    "description": "",
+    "displayName": "AreaChart",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Accessible chart summary, applied as the SVG aria-label.",
+        "name": "label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "X-axis category labels.",
+        "name": "labels",
+        "required": true,
+        "type": "string[]"
+      },
+      {
+        "defaultValue": "0.25",
+        "description": "Fill opacity of the area between 0 and 1.",
+        "name": "opacity",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Custom tooltip renderer for the hovered or focused point; falls back to a simple SVG title.",
+        "name": "renderTooltip",
+        "required": false,
+        "type": "(point: AreaChartPoint) => ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "One or more series to plot.",
+        "name": "series",
+        "required": true,
+        "type": "AreaChartSeries[]"
+      },
+      {
+        "defaultValue": "300",
+        "description": "SVG height in pixels.",
+        "name": "height",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Shows axes with tick labels.",
+        "name": "showAxis",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Shows horizontal grid lines.",
+        "name": "showGrid",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Shows a legend below the chart.",
+        "name": "showLegend",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Draws focusable point markers at each value.",
+        "name": "showPoints",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Stacks series on top of each other instead of overlaying them.",
+        "name": "stacked",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "560",
+        "description": "SVG width in pixels.",
+        "name": "width",
+        "required": false,
+        "type": "number"
+      }
+    ]
+  },
+  {
     "description": "Keeps media or other content at a consistent width-to-height ratio.",
     "displayName": "AspectRatio",
     "props": [
@@ -332,6 +647,40 @@
         "name": "asChild",
         "required": false,
         "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "AutosizeTextarea",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered below the textarea.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Visible label rendered above the textarea. Required outside a Field; inside a Field the Field's label is used.",
+        "name": "label",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Maximum rows shown before the textarea scrolls instead of growing.",
+        "name": "maxRows",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "1",
+        "description": "Rows shown when the content is short.",
+        "name": "minRows",
+        "required": false,
+        "type": "number"
       }
     ]
   },
@@ -472,6 +821,280 @@
   },
   {
     "description": "",
+    "displayName": "BarChart",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Accessible chart summary, applied as the SVG aria-label.",
+        "name": "label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Category labels, one per group of bars.",
+        "name": "labels",
+        "required": true,
+        "type": "string[]"
+      },
+      {
+        "defaultValue": "vertical",
+        "description": "Bar direction.",
+        "name": "orientation",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "One or more series to plot; multiple series render grouped bars.",
+        "name": "series",
+        "required": true,
+        "type": "BarChartSeries[]"
+      },
+      {
+        "defaultValue": "300",
+        "description": "SVG height in pixels.",
+        "name": "height",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Shows axes with tick labels.",
+        "name": "showAxis",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Shows grid lines along the value axis.",
+        "name": "showGrid",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Shows a legend below the chart.",
+        "name": "showLegend",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Renders the value above (or beside) each bar.",
+        "name": "showValues",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "560",
+        "description": "SVG width in pixels.",
+        "name": "width",
+        "required": false,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "BlockingOverlay",
+    "props": [
+      {
+        "defaultValue": "false",
+        "description": "Shows the overlay and blocks interaction with the wrapped content while true.",
+        "name": "visible",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "Loading",
+        "description": "Accessible label announced while the overlay is visible; also rendered under the spinner.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "BottomNav",
+    "props": [
+      {
+        "defaultValue": "Main",
+        "description": "Accessible name for the navigation landmark.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "BottomNavItem",
+    "props": [
+      {
+        "defaultValue": "false",
+        "description": "Marks the item as the current page; sets `aria-current=\"page\"`.",
+        "name": "active",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Small badge content shown on the corner of the icon, such as a count.",
+        "name": "badge",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Icon shown above the label.",
+        "name": "icon",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Text under the icon.",
+        "name": "label",
+        "required": true,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "BottomSheet",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Body content of the sheet.",
+        "name": "children",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Close",
+        "description": "Accessible label for the close button.",
+        "name": "closeLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial open state when uncontrolled.",
+        "name": "defaultOpen",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered under the title.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Action area rendered at the bottom of the sheet.",
+        "name": "footer",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the sheet opens or closes.",
+        "name": "onOpenChange",
+        "required": false,
+        "type": "(open: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled open state.",
+        "name": "open",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "half",
+        "description": "Height the sheet snaps to.",
+        "name": "snap",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Title rendered at the top; also the accessible name of the sheet.",
+        "name": "title",
+        "required": false,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "The lowest-level layout primitive: a polymorphic box with spacing props.\nSurfaces, colors and borders are applied through `className`.",
+    "displayName": "Box",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Margin on all sides. Numbers follow the Tailwind spacing scale (n × 0.25rem); strings are used as-is.",
+        "name": "m",
+        "required": false,
+        "type": "string | number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Horizontal margin; overrides `m` on the inline axis.",
+        "name": "mx",
+        "required": false,
+        "type": "string | number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Vertical margin; overrides `m` on the block axis.",
+        "name": "my",
+        "required": false,
+        "type": "string | number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Padding on all sides. Numbers follow the Tailwind spacing scale (n × 0.25rem); strings are used as-is.",
+        "name": "p",
+        "required": false,
+        "type": "string | number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Horizontal padding; overrides `p` on the inline axis.",
+        "name": "px",
+        "required": false,
+        "type": "string | number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Vertical padding; overrides `p` on the block axis.",
+        "name": "py",
+        "required": false,
+        "type": "string | number"
+      },
+      {
+        "defaultValue": "div",
+        "description": "",
+        "name": "as",
+        "required": false,
+        "type": "ElementType"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "Breadcrumb",
     "props": [
       {
@@ -501,6 +1124,33 @@
         "name": "label",
         "required": false,
         "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "BulkActionBar",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Number of selected rows; the bar renders nothing while this is 0.",
+        "name": "count",
+        "required": true,
+        "type": "number"
+      },
+      {
+        "defaultValue": "Bulk actions",
+        "description": "Accessible name for the bulk action region.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the user clears the selection.",
+        "name": "onClear",
+        "required": false,
+        "type": "() => void"
       }
     ]
   },
@@ -642,6 +1292,74 @@
   },
   {
     "description": "",
+    "displayName": "CalendarHeatmap",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Accessible description of the calendar, applied as aria-label.",
+        "name": "aria-label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "new Date().getFullYear()",
+        "description": "Year to render.",
+        "name": "year",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "[]",
+        "description": "Activity entries keyed by date; missing dates render as level 0.",
+        "name": "data",
+        "required": false,
+        "type": "CalendarHeatmapDay[]"
+      },
+      {
+        "defaultValue": "12",
+        "description": "Cell edge length in pixels.",
+        "name": "cellSize",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "3",
+        "description": "Gap between cells in pixels.",
+        "name": "cellGap",
+        "required": false,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Callout",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Icon override; defaults to the variant's standard icon. Always hidden from assistive technology.",
+        "name": "icon",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Bold leading text of the callout.",
+        "name": "title",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "variant",
+        "required": false,
+        "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | null"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "Card",
     "props": [
       {
@@ -741,6 +1459,287 @@
     ]
   },
   {
+    "description": "Multi-level option picker: the popover renders one column per level, and\nchoosing a leaf commits the full path of values from root to leaf.",
+    "displayName": "Cascader",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "aria-describedby",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name when there is no visible label.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the control invalid for form validation and screen readers.",
+        "name": "aria-invalid",
+        "required": false,
+        "type": "boolean | \"true\" | \"false\""
+      },
+      {
+        "defaultValue": "",
+        "description": "Explicit id; otherwise Field or an internal id is used.",
+        "name": "id",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial selected path when uncontrolled.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered below the control.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Prevents interaction with the control.",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Visible label rendered above the control. Required outside a Field; inside a Field the Field's label is used.",
+        "name": "label",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the full path of values whenever a leaf option is chosen.",
+        "name": "onValueChange",
+        "required": false,
+        "type": "(path: string[]) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Options rendered as cascading columns in the popover.",
+        "name": "options",
+        "required": true,
+        "type": "CascaderOption[]"
+      },
+      {
+        "defaultValue": "Select…",
+        "description": "Text shown when nothing is selected.",
+        "name": "placeholder",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the control as required.",
+        "name": "required",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled selected path, one value per level.",
+        "name": "value",
+        "required": false,
+        "type": "string[]"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Center",
+    "props": [
+      {
+        "defaultValue": "false",
+        "description": "Renders as an inline flex box that shrinks to its content.",
+        "name": "inline",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "ChartContainer",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Accessible chart summary, applied as the SVG aria-label.",
+        "name": "label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Chart content rendered inside the SVG frame.",
+        "name": "children",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Rows shown in the hidden data table.",
+        "name": "data",
+        "required": false,
+        "type": "Record<string, string | number>[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Columns of the hidden data table; required together with `data` to enable the table.",
+        "name": "columns",
+        "required": false,
+        "type": "ChartDataColumn[]"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Initial visibility of the data table when uncontrolled.",
+        "name": "defaultShowDataTable",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "300",
+        "description": "SVG height in pixels.",
+        "name": "height",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Content rendered between the chart and the data-table toggle, typically a ChartLegend.",
+        "name": "legend",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the data table visibility changes.",
+        "name": "onShowDataTableChange",
+        "required": false,
+        "type": "(show: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled visibility of the data table.",
+        "name": "showDataTable",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "560",
+        "description": "SVG width in pixels.",
+        "name": "width",
+        "required": false,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "ChartAxis",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "End coordinate of the axis line along its direction.",
+        "name": "end",
+        "required": true,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Cross-axis coordinate of the axis line (y for an x axis, x for a y axis).",
+        "name": "offset",
+        "required": true,
+        "type": "number"
+      },
+      {
+        "defaultValue": "horizontal",
+        "description": "Axis orientation.",
+        "name": "orientation",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Start coordinate of the axis line along its direction.",
+        "name": "start",
+        "required": true,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Ticks drawn along the axis.",
+        "name": "ticks",
+        "required": true,
+        "type": "ChartAxisTick[]"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "ChartGrid",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "End coordinate of each grid line along its direction.",
+        "name": "end",
+        "required": true,
+        "type": "number"
+      },
+      {
+        "defaultValue": "horizontal",
+        "description": "Line direction: horizontal lines (default) or vertical lines.",
+        "name": "orientation",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Coordinate of each grid line along the cross axis.",
+        "name": "positions",
+        "required": true,
+        "type": "number[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Start coordinate of each grid line along its direction.",
+        "name": "start",
+        "required": true,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "ChartLegend",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Entries shown in the legend.",
+        "name": "items",
+        "required": true,
+        "type": "ChartLegendItem[]"
+      }
+    ]
+  },
+  {
     "description": "",
     "displayName": "Checkbox",
     "props": [
@@ -771,6 +1770,54 @@
         "name": "asChild",
         "required": false,
         "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "A checkbox rendered as a selectable card with a title, description, and\noptional icon. Works on its own or stacked in groups for multi-select\nchoices.",
+    "displayName": "CheckboxCard",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Controlled checked state.",
+        "name": "checked",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Initial checked state when uncontrolled.",
+        "name": "defaultChecked",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered below the title.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Optional icon rendered above the title.",
+        "name": "icon",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the new checked state when the card is toggled.",
+        "name": "onCheckedChange",
+        "required": false,
+        "type": "(checked: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Card heading; doubles as the accessible name when no aria-label is given.",
+        "name": "title",
+        "required": true,
+        "type": "ReactNode"
       }
     ]
   },
@@ -851,6 +1898,26 @@
   },
   {
     "description": "",
+    "displayName": "Collapse",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Content shown or hidden by the collapse.",
+        "name": "children",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Whether the region is expanded.",
+        "name": "open",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "ColorPicker",
     "props": [
       {
@@ -894,6 +1961,33 @@
         "name": "value",
         "required": false,
         "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "An equal-width column layout that keeps row alignment and\ncollapses to fewer columns responsively.",
+    "displayName": "Columns",
+    "props": [
+      {
+        "defaultValue": "3",
+        "description": "Number of equal-width columns on wide viewports; collapses to fewer columns on narrow screens.",
+        "name": "columns",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Gap between tracks. Numbers follow the Tailwind spacing scale (n × 0.25rem); strings are used as-is.",
+        "name": "gap",
+        "required": false,
+        "type": "string | number"
+      },
+      {
+        "defaultValue": "div",
+        "description": "",
+        "name": "as",
+        "required": false,
+        "type": "ElementType"
       }
     ]
   },
@@ -1051,6 +2145,60 @@
   },
   {
     "description": "",
+    "displayName": "CommentThread",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Top-level comments; each may carry nested `replies`.",
+        "name": "comments",
+        "required": true,
+        "type": "CommentThreadComment[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Formats a comment timestamp.",
+        "name": "formatTime",
+        "required": false,
+        "type": "(timestamp: string | number | Date) => string"
+      },
+      {
+        "defaultValue": "Comments",
+        "description": "Accessible name for the thread.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "When provided, each comment shows a reply button that calls this handler.",
+        "name": "onReply",
+        "required": false,
+        "type": "(comment: CommentThreadComment) => void"
+      }
+    ]
+  },
+  {
+    "description": "Centers content in a max-width column with responsive horizontal padding.",
+    "displayName": "Container",
+    "props": [
+      {
+        "defaultValue": "lg",
+        "description": "Maximum width of the centered column; 'fluid' removes the width cap.",
+        "name": "size",
+        "required": false,
+        "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"fluid\" | null"
+      },
+      {
+        "defaultValue": "div",
+        "description": "",
+        "name": "as",
+        "required": false,
+        "type": "ElementType"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "ContextMenu",
     "props": [
       {
@@ -1080,6 +2228,89 @@
         "name": "label",
         "required": false,
         "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "Polite, non-modal consent banner pinned to the bottom of the viewport.\nAccept and decline both dismiss the banner; it never traps focus or\nblocks interaction with the page behind it.",
+    "displayName": "CookieConsent",
+    "props": [
+      {
+        "defaultValue": "Accept",
+        "description": "Label of the accept button.",
+        "name": "acceptLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Decline",
+        "description": "Label of the decline button.",
+        "name": "declineLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Initial visibility when uncontrolled.",
+        "name": "defaultOpen",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "Cookie consent",
+        "description": "Accessible name of the banner region.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "URL of the cookie preferences page; renders a manage link when set.",
+        "name": "manageHref",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Manage preferences",
+        "description": "Label of the manage link.",
+        "name": "manageLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Consent message, supplied sanitized by the caller.",
+        "name": "message",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the accept button is pressed; also dismisses the banner.",
+        "name": "onAccept",
+        "required": false,
+        "type": "() => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the decline button is pressed; also dismisses the banner.",
+        "name": "onDecline",
+        "required": false,
+        "type": "() => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the banner is shown or dismissed.",
+        "name": "onOpenChange",
+        "required": false,
+        "type": "(open: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled visibility.",
+        "name": "open",
+        "required": false,
+        "type": "boolean"
       }
     ]
   },
@@ -1135,6 +2366,172 @@
         "name": "className",
         "required": false,
         "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "CountdownTimer",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Custom renderer receiving the remaining time parts; defaults to `HH:MM:SS`.",
+        "name": "children",
+        "required": false,
+        "type": "(parts: CountdownParts) => ReactNode"
+      },
+      {
+        "defaultValue": "Countdown complete",
+        "description": "Message announced politely to screen readers when the countdown completes.",
+        "name": "completionMessage",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "1000",
+        "description": "Update interval in milliseconds.",
+        "name": "interval",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called once when the countdown reaches zero.",
+        "name": "onComplete",
+        "required": false,
+        "type": "() => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Point in time to count down to.",
+        "name": "targetDate",
+        "required": true,
+        "type": "string | number | Date"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "CurrencyInput",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Extra description ids, merged with the component's own description.",
+        "name": "aria-describedby",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the input invalid for form validation and screen readers.",
+        "name": "aria-invalid",
+        "required": false,
+        "type": "boolean | \"true\" | \"false\""
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name when there is no visible label.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "USD",
+        "description": "ISO 4217 currency code used for the leading symbol and fraction digits.",
+        "name": "currency",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial amount when uncontrolled.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered below the input.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Prevents interaction with the input.",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Explicit id; otherwise Field or an internal id is used.",
+        "name": "id",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used.",
+        "name": "label",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "en-US",
+        "description": "BCP 47 locale used for grouping and decimal separators.",
+        "name": "locale",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Largest allowed amount; the field clamps to it on blur.",
+        "name": "max",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Smallest allowed amount; the field clamps to it on blur.",
+        "name": "min",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the parsed amount, or undefined when the field is emptied.",
+        "name": "onChange",
+        "required": false,
+        "type": "(value: number) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Text shown when the field is empty.",
+        "name": "placeholder",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the input as required.",
+        "name": "required",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled amount.",
+        "name": "value",
+        "required": false,
+        "type": "number"
       }
     ]
   },
@@ -1431,6 +2828,124 @@
   },
   {
     "description": "",
+    "displayName": "DateTimePicker",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "aria-describedby",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name when there is no visible label.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the input invalid for form validation and screen readers.",
+        "name": "aria-invalid",
+        "required": false,
+        "type": "boolean | \"true\" | \"false\""
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial selected date and time when uncontrolled.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "Date"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered below the input.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Prevents interaction with the input.",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "24",
+        "description": "12 shows a 1–12 hour field with an AM/PM toggle; 24 shows a 0–23 hour field.",
+        "name": "hourCycle",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Explicit id; otherwise Field or an internal id is used.",
+        "name": "id",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used.",
+        "name": "label",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Latest selectable date (inclusive); applies to the date portion only.",
+        "name": "maxDate",
+        "required": false,
+        "type": "Date"
+      },
+      {
+        "defaultValue": "",
+        "description": "Earliest selectable date (inclusive); applies to the date portion only.",
+        "name": "minDate",
+        "required": false,
+        "type": "Date"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the combined date and time whenever either part changes.",
+        "name": "onValueChange",
+        "required": false,
+        "type": "(date: Date) => void"
+      },
+      {
+        "defaultValue": "Pick a date and time",
+        "description": "Text shown when no date and time is selected.",
+        "name": "placeholder",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the input as required.",
+        "name": "required",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled selected date and time.",
+        "name": "value",
+        "required": false,
+        "type": "Date"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "DescriptionList",
     "props": [
       {
@@ -1529,6 +3044,87 @@
         "name": "title",
         "required": true,
         "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "DiffViewer",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Pre-computed diff lines; takes precedence over `oldValue`/`newValue`.",
+        "name": "hunks",
+        "required": false,
+        "type": "DiffLine[]"
+      },
+      {
+        "defaultValue": "Diff",
+        "description": "Accessible name for the diff.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Shows old/new line number gutters.",
+        "name": "lineNumbers",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "New text; diffed against `oldValue` when `hunks` is not provided.",
+        "name": "newValue",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Original text; diffed against `newValue` when `hunks` is not provided.",
+        "name": "oldValue",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Dock",
+    "props": [
+      {
+        "defaultValue": "Dock",
+        "description": "Accessible name for the dock landmark.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "DockItem",
+    "props": [
+      {
+        "defaultValue": "false",
+        "description": "Shows a dot under the icon marking the running or current app.",
+        "name": "active",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Icon content of the item.",
+        "name": "icon",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Name of the item; used as the accessible name and the tooltip text.",
+        "name": "label",
+        "required": true,
+        "type": "string"
       }
     ]
   },
@@ -1782,6 +3378,102 @@
   },
   {
     "description": "",
+    "displayName": "ErrorBoundary",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Content protected by the boundary.",
+        "name": "children",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Rendered instead of children when an error is caught. As a function it receives the error and a reset callback.",
+        "name": "fallback",
+        "required": false,
+        "type": "ReactNode | ((error: Error, reset: () => void) => ReactNode)"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the error and component stack when an error is caught.",
+        "name": "onError",
+        "required": false,
+        "type": "(error: Error, info: ErrorInfo) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Resets the boundary whenever any of these values change.",
+        "name": "resetKeys",
+        "required": false,
+        "type": "unknown[]"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "ExpandableCard",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Content revealed when the card is expanded; hidden and inert while collapsed.",
+        "name": "children",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "Show less",
+        "description": "Accessible label of the trigger when expanded.",
+        "name": "collapseLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Initially expanded state when uncontrolled.",
+        "name": "defaultExpanded",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "Show more",
+        "description": "Accessible label of the trigger when collapsed.",
+        "name": "expandLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled expanded state.",
+        "name": "expanded",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the next expanded state when the trigger is pressed.",
+        "name": "onExpandedChange",
+        "required": false,
+        "type": "(expanded: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Title rendered in the always-visible header next to the trigger.",
+        "name": "title",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "h2",
+        "description": "Heading element used for the title; defaults to 'h2'. Adjust to fit the page outline.",
+        "name": "titleAs",
+        "required": false,
+        "type": "enum"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "Label",
     "props": [
       {
@@ -1838,6 +3530,26 @@
         "name": "invalid",
         "required": false,
         "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "Groups related fields under a semantic fieldset/legend pair, for example a\nset of Fields that together answer one question.",
+    "displayName": "Fieldset",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Caption rendered as the fieldset legend; names the group for assistive technology.",
+        "name": "legend",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Help text rendered below the legend and linked to the group for assistive technology.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
       }
     ]
   },
@@ -1939,6 +3651,490 @@
     ]
   },
   {
+    "description": "A flex container primitive with direction, spacing, alignment and\ndistribution props; defaults to a horizontal row.",
+    "displayName": "Flex",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Cross-axis alignment of children.",
+        "name": "align",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "row",
+        "description": "Main axis direction; defaults to 'row'.",
+        "name": "direction",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Spacing between children. Numbers follow the Tailwind spacing scale (n × 0.25rem); strings are used as-is.",
+        "name": "gap",
+        "required": false,
+        "type": "string | number"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Renders as an inline flex container that shrinks to its content.",
+        "name": "inline",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Main-axis distribution of children.",
+        "name": "justify",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Allows children to wrap onto multiple lines when true.",
+        "name": "wrap",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "div",
+        "description": "",
+        "name": "as",
+        "required": false,
+        "type": "ElementType"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "FloatingActionButton",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Text rendered next to the icon; turns the round FAB into an extended pill.",
+        "name": "extendedLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Icon rendered inside the button. Defaults to a plus icon.",
+        "name": "icon",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name for the button; also the default tooltip text.",
+        "name": "label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "bottom-right",
+        "description": "Viewport corner the button is fixed to.",
+        "name": "position",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Tooltip text shown on hover and focus; pass the label or a longer hint.",
+        "name": "tooltip",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "FloatingPanel",
+    "props": [
+      {
+        "defaultValue": "bottom-right",
+        "description": "Viewport corner the panel is anchored to.",
+        "name": "anchor",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Body content of the panel.",
+        "name": "children",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Close",
+        "description": "Accessible label for the close button.",
+        "name": "closeLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial open state when uncontrolled.",
+        "name": "defaultOpen",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Action area rendered at the bottom of the panel.",
+        "name": "footer",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the panel opens or closes.",
+        "name": "onOpenChange",
+        "required": false,
+        "type": "(open: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled open state.",
+        "name": "open",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Title rendered in the header; also the accessible name of the panel.",
+        "name": "title",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "min(22rem,calc(100vw - 2rem))",
+        "description": "Width of the panel surface.",
+        "name": "width",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "FloatingToolbar",
+    "props": [
+      {
+        "defaultValue": "Contextual actions",
+        "description": "Accessible name for the toolbar.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Renders nothing when false; pair it with selection or focus state.",
+        "name": "open",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "FocusTrap",
+    "props": [
+      {
+        "defaultValue": "true",
+        "description": "Whether the trap currently holds focus.",
+        "name": "active",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Content whose focusable descendants are trapped while `active`.",
+        "name": "children",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Return focus to the previously focused element when the trap deactivates or unmounts.",
+        "name": "restoreFocus",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "A lightweight form wrapper: it collects field values with FormData on\nsubmit and shares an error map with descendants through context, so plain\ncontrols and Field compositions work without a form library.",
+    "displayName": "Form",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Validation messages keyed by field name, exposed to descendants through context.",
+        "name": "errors",
+        "required": false,
+        "type": "Record<string, ReactNode>"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the collected field values on submit; the default page navigation is prevented.",
+        "name": "onSubmit",
+        "required": false,
+        "type": "(values: Record<string, FormDataEntryValue | FormDataEntryValue[]>, event: FormEvent<HTMLFormElement>) => void"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "FormErrorSummary",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Field errors listed as focus links; the summary renders nothing when empty.",
+        "name": "errors",
+        "required": true,
+        "type": "FormErrorItem[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called after an error link is activated, with its item.",
+        "name": "onErrorClick",
+        "required": false,
+        "type": "(error: FormErrorItem) => void"
+      },
+      {
+        "defaultValue": "There is a problem",
+        "description": "Heading text of the summary.",
+        "name": "title",
+        "required": false,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "FullscreenDialog",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Body content of the dialog.",
+        "name": "children",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Close",
+        "description": "Accessible label for the close button.",
+        "name": "closeLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial open state when uncontrolled.",
+        "name": "defaultOpen",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered under the title.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Action area rendered at the bottom of the dialog.",
+        "name": "footer",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the dialog opens or closes.",
+        "name": "onOpenChange",
+        "required": false,
+        "type": "(open: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled open state.",
+        "name": "open",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Title rendered in the header; also the accessible name of the dialog.",
+        "name": "title",
+        "required": true,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "FunnelChart",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Accessible description of the funnel, applied as aria-label.",
+        "name": "aria-label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Stages from top (widest) to bottom.",
+        "name": "stages",
+        "required": true,
+        "type": "FunnelStage[]"
+      },
+      {
+        "defaultValue": "320",
+        "description": "SVG width in pixels.",
+        "name": "width",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "240",
+        "description": "SVG height in pixels.",
+        "name": "height",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Shows the stage-to-stage conversion percentage next to each junction.",
+        "name": "showPercentages",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "A read-only SVG Gantt chart: task bars on a day grid with a today marker.",
+    "displayName": "GanttChart",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Last day on the axis as YYYY-MM-DD; defaults to the latest task end.",
+        "name": "endDate",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Gantt chart",
+        "description": "Accessible name for the chart.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "First day on the axis as YYYY-MM-DD; defaults to the earliest task start.",
+        "name": "startDate",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Tasks to plot, top to bottom.",
+        "name": "tasks",
+        "required": true,
+        "type": "GanttTask[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Date highlighted with a marker line as YYYY-MM-DD; defaults to the current day.",
+        "name": "today",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "GaugeChart",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Accessible description of the gauge, applied as aria-label.",
+        "name": "aria-label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Current value; the arc is clamped to the min–max range.",
+        "name": "value",
+        "required": true,
+        "type": "number"
+      },
+      {
+        "defaultValue": "0",
+        "description": "Lower bound of the scale.",
+        "name": "min",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "100",
+        "description": "Upper bound of the scale.",
+        "name": "max",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "[]",
+        "description": "Threshold zones drawn along the arc.",
+        "name": "thresholds",
+        "required": false,
+        "type": "GaugeThreshold[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Caption rendered under the center value.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "220",
+        "description": "SVG width in pixels.",
+        "name": "width",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "140",
+        "description": "SVG height in pixels.",
+        "name": "height",
+        "required": false,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "GlassPanel",
+    "props": []
+  },
+  {
     "description": "A grid layout primitive with either a fixed column count\nor responsive auto-fit columns driven by a minimum child width.",
     "displayName": "Grid",
     "props": [
@@ -2001,6 +4197,74 @@
   },
   {
     "description": "",
+    "displayName": "Heatmap",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Accessible description of the matrix, applied as aria-label.",
+        "name": "aria-label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Rows of the matrix, top to bottom.",
+        "name": "rows",
+        "required": true,
+        "type": "HeatmapRow[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Column labels rendered above the grid.",
+        "name": "columnLabels",
+        "required": true,
+        "type": "string[]"
+      },
+      {
+        "defaultValue": "28",
+        "description": "Cell edge length in pixels.",
+        "name": "cellSize",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "4",
+        "description": "Gap between cells in pixels.",
+        "name": "cellGap",
+        "required": false,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "HighlightText",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Class applied to each `<mark>` around a match.",
+        "name": "highlightClassName",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Case-insensitive query to highlight. Empty highlights nothing.",
+        "name": "query",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "The text to render.",
+        "name": "text",
+        "required": true,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "HoverCard",
     "props": [
       {
@@ -2055,6 +4319,137 @@
     ]
   },
   {
+    "description": "Inline single-image viewer. Zoom via the toolbar buttons or the `+`/`-`\nkeys; while zoomed in, drag the image to pan. `0` resets the view.",
+    "displayName": "ImageViewer",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Alternative text announced for the image.",
+        "name": "alt",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "1",
+        "description": "Initial zoom factor when uncontrolled.",
+        "name": "defaultZoom",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "Image viewer",
+        "description": "Accessible name of the viewer region.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "4",
+        "description": "Maximum zoom factor.",
+        "name": "maxZoom",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "1",
+        "description": "Minimum zoom factor; at this level panning is disabled.",
+        "name": "minZoom",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the zoom factor changes.",
+        "name": "onZoomChange",
+        "required": false,
+        "type": "(zoom: number) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Image URL.",
+        "name": "src",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled zoom factor where 1 fits the image to the viewport.",
+        "name": "zoom",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "0.5",
+        "description": "Amount added or subtracted per zoom step.",
+        "name": "zoomStep",
+        "required": false,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "InfiniteScroll",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Content loaded so far.",
+        "name": "children",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Message shown once there is nothing left to load.",
+        "name": "endMessage",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Whether more items can be loaded.",
+        "name": "hasMore",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Content shown while the next batch loads.",
+        "name": "loader",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Whether a batch is currently loading; suppresses further triggers.",
+        "name": "loading",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the sentinel enters the viewport and more items can load.",
+        "name": "onLoadMore",
+        "required": false,
+        "type": "() => void"
+      },
+      {
+        "defaultValue": "0px",
+        "description": "Margin around the sentinel at which loading starts, e.g. `'200px'`.",
+        "name": "rootMargin",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "0",
+        "description": "Portion of the sentinel that must be visible to trigger loading, from 0 to 1.",
+        "name": "threshold",
+        "required": false,
+        "type": "number"
+      }
+    ]
+  },
+  {
     "description": "",
     "displayName": "Input",
     "props": [
@@ -2097,6 +4492,81 @@
     "description": "",
     "displayName": "InputGroup",
     "props": []
+  },
+  {
+    "description": "",
+    "displayName": "JsonViewer",
+    "props": [
+      {
+        "defaultValue": "false",
+        "description": "Shows a copy-path button on each row (revealed on hover).",
+        "name": "copyable",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "The JSON-compatible value to inspect.",
+        "name": "data",
+        "required": true,
+        "type": "unknown"
+      },
+      {
+        "defaultValue": "1",
+        "description": "Depth up to which objects and arrays start expanded; 0 collapses everything below the root.",
+        "name": "defaultExpandedDepth",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "JSON viewer",
+        "description": "Accessible name for the viewer.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "$",
+        "description": "Label shown for the root node; defaults to \"$\".",
+        "name": "rootName",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "A column-based board. Arrow keys move focus between cards and columns;\nEnter or Space grabs a card, arrows move the grabbed card, Enter or Space\ndrops it, and Escape cancels the grab.",
+    "displayName": "KanbanBoard",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Controlled columns. When provided, the board never mutates its own state.",
+        "name": "columns",
+        "required": false,
+        "type": "KanbanColumn[]"
+      },
+      {
+        "defaultValue": "[]",
+        "description": "Initial columns when uncontrolled.",
+        "name": "defaultColumns",
+        "required": false,
+        "type": "KanbanColumn[]"
+      },
+      {
+        "defaultValue": "Kanban board",
+        "description": "Accessible name for the board region.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the next columns whenever a card is moved.",
+        "name": "onColumnsChange",
+        "required": false,
+        "type": "(columns: KanbanColumn[]) => void"
+      }
+    ]
   },
   {
     "description": "",
@@ -2155,6 +4625,213 @@
         "name": "status",
         "required": false,
         "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "LazyImage",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Text alternative for the image.",
+        "name": "alt",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Height of the image in pixels.",
+        "name": "height",
+        "required": false,
+        "type": "string | number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Content shown until the image finishes loading.",
+        "name": "placeholder",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "200px",
+        "description": "Margin around the viewport at which loading starts, e.g. `'200px'`.",
+        "name": "rootMargin",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Image URL, requested only once the image nears the viewport.",
+        "name": "src",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "0",
+        "description": "Portion of the wrapper that must be visible before loading starts, from 0 to 1.",
+        "name": "threshold",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Width of the image in pixels.",
+        "name": "width",
+        "required": false,
+        "type": "string | number"
+      }
+    ]
+  },
+  {
+    "description": "Full-screen gallery overlay. Arrow keys and the on-screen controls move\nbetween images (wrapping at the ends); Escape and backdrop clicks close.",
+    "displayName": "Lightbox",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Close",
+        "description": "Accessible label for the close button.",
+        "name": "closeLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "0",
+        "description": "Initial image index when uncontrolled.",
+        "name": "defaultIndex",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial open state when uncontrolled.",
+        "name": "defaultOpen",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Images shown in gallery order.",
+        "name": "images",
+        "required": true,
+        "type": "LightboxImage[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled index of the visible image.",
+        "name": "index",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "Image gallery",
+        "description": "Accessible name of the gallery dialog.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the visible image changes.",
+        "name": "onIndexChange",
+        "required": false,
+        "type": "(index: number) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the lightbox opens or closes.",
+        "name": "onOpenChange",
+        "required": false,
+        "type": "(open: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled open state.",
+        "name": "open",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "LineChart",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Accessible chart summary, applied as the SVG aria-label.",
+        "name": "label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "X-axis category labels.",
+        "name": "labels",
+        "required": true,
+        "type": "string[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Custom tooltip renderer for the hovered or focused point; falls back to a simple SVG title.",
+        "name": "renderTooltip",
+        "required": false,
+        "type": "(point: LineChartPoint) => ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "One or more series to plot.",
+        "name": "series",
+        "required": true,
+        "type": "LineChartSeries[]"
+      },
+      {
+        "defaultValue": "300",
+        "description": "SVG height in pixels.",
+        "name": "height",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Shows axes with tick labels.",
+        "name": "showAxis",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Shows horizontal grid lines.",
+        "name": "showGrid",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Shows a legend below the chart.",
+        "name": "showLegend",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Draws focusable point markers at each value.",
+        "name": "showPoints",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "560",
+        "description": "SVG width in pixels.",
+        "name": "width",
+        "required": false,
+        "type": "number"
       }
     ]
   },
@@ -2241,6 +4918,33 @@
   },
   {
     "description": "",
+    "displayName": "LoadingBar",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Current value between 0 and `max`. Omit for indeterminate mode.",
+        "name": "value",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "100",
+        "description": "Maximum value.",
+        "name": "max",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "Loading",
+        "description": "Accessible label announced by screen readers.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "Spinner",
     "props": [
       {
@@ -2294,6 +4998,338 @@
         "name": "asChild",
         "required": false,
         "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "LogViewer",
+    "props": [
+      {
+        "defaultValue": "true",
+        "description": "Initial follow state when uncontrolled.",
+        "name": "defaultFollow",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "No log lines",
+        "description": "Message shown when there are no lines.",
+        "name": "emptyMessage",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled follow state; when true the pane auto-scrolls to the newest line.",
+        "name": "follow",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "Logs",
+        "description": "Accessible name for the log pane.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Lines to display, oldest first.",
+        "name": "lines",
+        "required": true,
+        "type": "LogLine[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the user toggles follow mode.",
+        "name": "onFollowChange",
+        "required": false,
+        "type": "(follow: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Case-insensitive query highlighted inside each message.",
+        "name": "search",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "MarkdownView",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Markdown source. Supports headings, bold, italic, links, lists, inline code, fenced code blocks, blockquotes, and horizontal rules. Raw HTML is rendered as literal text.",
+        "name": "content",
+        "required": true,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Marquee",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Content that loops; it is rendered twice for a seamless wrap.",
+        "name": "children",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "left",
+        "description": "Scroll direction.",
+        "name": "direction",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "20",
+        "description": "Seconds for one full loop; larger values scroll slower.",
+        "name": "duration",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Pauses the animation while the pointer hovers the marquee.",
+        "name": "pauseOnHover",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "MaskedInput",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Extra description ids, merged with the component's own description.",
+        "name": "aria-describedby",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the input invalid for form validation and screen readers.",
+        "name": "aria-invalid",
+        "required": false,
+        "type": "boolean | \"true\" | \"false\""
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name when there is no visible label.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial value when uncontrolled; digits are extracted and re-masked.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered below the input.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Prevents interaction with the input.",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Explicit id; otherwise Field or an internal id is used.",
+        "name": "id",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used.",
+        "name": "label",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Mask pattern; `#` marks a digit slot, every other character is a literal (use non-digit literals).",
+        "name": "mask",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the masked string whenever the digits change.",
+        "name": "onChange",
+        "required": false,
+        "type": "(value: string) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Text shown when the field is empty; defaults to the mask itself.",
+        "name": "placeholder",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the input as required.",
+        "name": "required",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled value; digits are extracted and re-masked.",
+        "name": "value",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "A CSS-columns masonry layout: items flow down each column before\ncontinuing in the next, so unequal heights pack without row gaps.",
+    "displayName": "Masonry",
+    "props": [
+      {
+        "defaultValue": "2",
+        "description": "Fixed column count; defaults to 2. Ignored when `minColumnWidth` is set.",
+        "name": "columns",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "4",
+        "description": "Gap between columns and stacked items. Numbers follow the Tailwind spacing scale (n × 0.25rem); strings are used as-is.",
+        "name": "gap",
+        "required": false,
+        "type": "string | number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Minimum column width (e.g. '16rem' or 256 for pixels); enables responsive auto-filling columns.",
+        "name": "minColumnWidth",
+        "required": false,
+        "type": "string | number"
+      },
+      {
+        "defaultValue": "div",
+        "description": "",
+        "name": "as",
+        "required": false,
+        "type": "ElementType"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "MegaMenu",
+    "props": [
+      {
+        "defaultValue": "Main",
+        "description": "Accessible name for the navigation landmark.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "MegaMenuItem",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Text of the top-level trigger button.",
+        "name": "label",
+        "required": true,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "MegaMenuColumn",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Heading shown above the column's links.",
+        "name": "heading",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "MegaMenuLink",
+    "props": []
+  },
+  {
+    "description": "Textarea with",
+    "displayName": "MentionInput",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Initial text when uncontrolled.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Visible label rendered above the textarea.",
+        "name": "label",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the full text whenever it changes.",
+        "name": "onChange",
+        "required": false,
+        "type": "(value: string) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the option after its mention token is inserted.",
+        "name": "onMentionSelect",
+        "required": false,
+        "type": "(option: MentionOption) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "People or records offered by the\n@ -mention autocomplete popup.",
+        "name": "options",
+        "required": true,
+        "type": "MentionOption[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled text.",
+        "name": "value",
+        "required": false,
+        "type": "string"
       }
     ]
   },
@@ -2431,6 +5467,117 @@
         "name": "value",
         "required": true,
         "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "MonthPicker",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "aria-describedby",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name when there is no visible label.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the input invalid for form validation and screen readers.",
+        "name": "aria-invalid",
+        "required": false,
+        "type": "boolean | \"true\" | \"false\""
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial selected month when uncontrolled; the day is always the first.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "Date"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered below the input.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Prevents interaction with the input.",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Explicit id; otherwise Field or an internal id is used.",
+        "name": "id",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used.",
+        "name": "label",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Latest selectable month (inclusive).",
+        "name": "maxDate",
+        "required": false,
+        "type": "Date"
+      },
+      {
+        "defaultValue": "",
+        "description": "Earliest selectable month (inclusive).",
+        "name": "minDate",
+        "required": false,
+        "type": "Date"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the first day of the selected month.",
+        "name": "onValueChange",
+        "required": false,
+        "type": "(date: Date) => void"
+      },
+      {
+        "defaultValue": "Pick a month",
+        "description": "Text shown when no month is selected.",
+        "name": "placeholder",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the input as required.",
+        "name": "required",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled selected month; only the year and month are significant.",
+        "name": "value",
+        "required": false,
+        "type": "Date"
       }
     ]
   },
@@ -2616,6 +5763,123 @@
         "name": "label",
         "required": true,
         "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "NetworkStatus",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Render prop receiving the current online state for fully custom output.",
+        "name": "children",
+        "required": false,
+        "type": "(online: boolean) => ReactNode"
+      },
+      {
+        "defaultValue": "Online",
+        "description": "Text shown while the browser is online.",
+        "name": "onlineLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Offline",
+        "description": "Text shown while the browser is offline.",
+        "name": "offlineLabel",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "Popover panel listing recent notifications with a mark-all-read action.\nRows reuse NotificationItem; the panel never mutates the items itself.",
+    "displayName": "NotificationCenter",
+    "props": [
+      {
+        "defaultValue": "end",
+        "description": "Horizontal alignment of the panel relative to the trigger.",
+        "name": "align",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial open state when uncontrolled.",
+        "name": "defaultOpen",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "You're all caught up",
+        "description": "Content shown when there are no notifications.",
+        "name": "emptyMessage",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Notifications listed newest first.",
+        "name": "items",
+        "required": true,
+        "type": "NotificationCenterItem[]"
+      },
+      {
+        "defaultValue": "Notifications",
+        "description": "Accessible name of the popover panel.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Mark all as read",
+        "description": "Accessible label of the mark-all-read action.",
+        "name": "markAllReadLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Renders the mark-all-read action and calls this when pressed. Never mutates the items.",
+        "name": "onMarkAllRead",
+        "required": false,
+        "type": "() => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the panel opens or closes.",
+        "name": "onOpenChange",
+        "required": false,
+        "type": "(open: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled open state.",
+        "name": "open",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "bottom",
+        "description": "Side of the trigger the panel opens on.",
+        "name": "side",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Element that toggles the panel; receives trigger props automatically.",
+        "name": "trigger",
+        "required": true,
+        "type": "ReactElement<unknown, string | JSXElementConstructor<any>>"
       }
     ]
   },
@@ -2808,6 +6072,115 @@
   },
   {
     "description": "",
+    "displayName": "NumberTicker",
+    "props": [
+      {
+        "defaultValue": "1000",
+        "description": "Animation length in milliseconds.",
+        "name": "duration",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Formats the animated value for display.",
+        "name": "formatter",
+        "required": false,
+        "type": "(value: number) => string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the animation reaches the target value.",
+        "name": "onComplete",
+        "required": false,
+        "type": "() => void"
+      },
+      {
+        "defaultValue": "0",
+        "description": "Value the first animation starts from; later animations start from the current value.",
+        "name": "startValue",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Target value to count to.",
+        "name": "value",
+        "required": true,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "OfflineBanner",
+    "props": [
+      {
+        "defaultValue": "You are offline. Changes may not be saved until the connection returns.",
+        "description": "Message shown inside the banner.",
+        "name": "message",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Dismiss offline notification",
+        "description": "Accessible label for the dismiss button.",
+        "name": "dismissLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the banner is dismissed.",
+        "name": "onDismiss",
+        "required": false,
+        "type": "() => void"
+      }
+    ]
+  },
+  {
+    "description": "A hierarchy of person nodes rendered as connected boxes with collapsible subtrees.",
+    "displayName": "OrgChart",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Controlled collapsed node ids.",
+        "name": "collapsedIds",
+        "required": false,
+        "type": "string[]"
+      },
+      {
+        "defaultValue": "[]",
+        "description": "Initial collapsed node ids when uncontrolled.",
+        "name": "defaultCollapsedIds",
+        "required": false,
+        "type": "string[]"
+      },
+      {
+        "defaultValue": "Organization chart",
+        "description": "Accessible name for the chart.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the full list of collapsed ids whenever it changes.",
+        "name": "onCollapsedChange",
+        "required": false,
+        "type": "(collapsedIds: string[]) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Root node of the hierarchy.",
+        "name": "root",
+        "required": true,
+        "type": "OrgChartNode"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "PageHeader",
     "props": [
       {
@@ -2883,6 +6256,33 @@
   },
   {
     "description": "",
+    "displayName": "Panel",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Action elements rendered on the trailing side of the header.",
+        "name": "actions",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Title rendered in the header; omit to render the panel without a header.",
+        "name": "title",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "h2",
+        "description": "Heading element used for the title; defaults to 'h2'. Adjust to fit the page outline.",
+        "name": "titleAs",
+        "required": false,
+        "type": "enum"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "PasswordInput",
     "props": [
       {
@@ -2919,6 +6319,40 @@
         "name": "onValueChange",
         "required": false,
         "type": "(value: string) => void"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "PasswordStrengthMeter",
+    "props": [
+      {
+        "defaultValue": "Password strength",
+        "description": "Accessible name for the meter.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Password to score.",
+        "name": "password",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Custom scoring function returning 0 (very weak) to 4 (very strong).",
+        "name": "score",
+        "required": false,
+        "type": "(password: string) => number"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Hides the visible strength text; assistive technology still hears it via aria-valuetext.",
+        "name": "showLabel",
+        "required": false,
+        "type": "boolean"
       }
     ]
   },
@@ -2967,6 +6401,144 @@
         "name": "rowHeader",
         "required": false,
         "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "PhoneInput",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Extra description ids, merged with the component's own description.",
+        "name": "aria-describedby",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the input invalid for form validation and screen readers.",
+        "name": "aria-invalid",
+        "required": false,
+        "type": "boolean | \"true\" | \"false\""
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial E.164-ish value when uncontrolled.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered below the input.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Prevents interaction with both controls.",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Explicit id for the number input; otherwise Field or an internal id is used.",
+        "name": "id",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used.",
+        "name": "label",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the E.164-ish string, or undefined when the number is emptied.",
+        "name": "onChange",
+        "required": false,
+        "type": "(value: string) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Text shown when the number field is empty.",
+        "name": "placeholder",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the input as required.",
+        "name": "required",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled E.164-ish value, e.g. \"+14155552671\".",
+        "name": "value",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "PieChart",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Segments of the pie.",
+        "name": "data",
+        "required": true,
+        "type": "PieChartDatum[]"
+      },
+      {
+        "defaultValue": "0",
+        "description": "Inner radius as a fraction (0–0.95) of the outer radius; values above 0 render a donut.",
+        "name": "innerRadius",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible chart summary, applied as the SVG aria-label.",
+        "name": "label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Shows percentage labels on segments large enough to fit them.",
+        "name": "showLabels",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Shows a legend below the chart.",
+        "name": "showLegend",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "280",
+        "description": "Chart size in pixels (both width and height).",
+        "name": "size",
+        "required": false,
+        "type": "number"
       }
     ]
   },
@@ -3193,6 +6765,53 @@
   },
   {
     "description": "",
+    "displayName": "Portal",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Element to render into. Defaults to `document.body`.",
+        "name": "container",
+        "required": false,
+        "type": "Element | DocumentFragment | null"
+      },
+      {
+        "defaultValue": "",
+        "description": "Content rendered inside the portal.",
+        "name": "children",
+        "required": false,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Presence",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Called after the exit transition finishes and the children unmount.",
+        "name": "onExitComplete",
+        "required": false,
+        "type": "() => void"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Whether the children should be shown.",
+        "name": "present",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Content kept mounted through its exit transition.",
+        "name": "children",
+        "required": false,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "ProgressCircle",
     "props": [
       {
@@ -3220,6 +6839,267 @@
         "defaultValue": "",
         "description": "Accessible name applied as `aria-label`.",
         "name": "label",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "PromptDialog",
+    "props": [
+      {
+        "defaultValue": "Cancel",
+        "description": "Text of the cancel button.",
+        "name": "cancelLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Confirm",
+        "description": "Text of the confirm button.",
+        "name": "confirmLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial open state when uncontrolled.",
+        "name": "defaultOpen",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial input value; restored each time the dialog opens.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered under the title.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Label of the input.",
+        "name": "label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the cancel button is pressed.",
+        "name": "onCancel",
+        "required": false,
+        "type": "() => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the dialog opens or closes.",
+        "name": "onOpenChange",
+        "required": false,
+        "type": "(open: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the entered value when the dialog is confirmed.",
+        "name": "onSubmit",
+        "required": false,
+        "type": "(value: string) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled open state.",
+        "name": "open",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Placeholder of the input.",
+        "name": "placeholder",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Title rendered at the top; also the accessible name of the dialog.",
+        "name": "title",
+        "required": true,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "PulseDot",
+    "props": [
+      {
+        "defaultValue": "Live",
+        "description": "Accessible label describing the live state, for example \"3 editors online\".",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "md",
+        "description": "Size of the dot.",
+        "name": "size",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "success",
+        "description": "Semantic color of the dot.",
+        "name": "variant",
+        "required": false,
+        "type": "enum"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "QrCode",
+    "props": [
+      {
+        "defaultValue": "QR code",
+        "description": "Accessible name for the code; defaults to \"QR code\".",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "L",
+        "description": "Error-correction level. Only \"L\" (~7% recovery) is currently supported.",
+        "name": "level",
+        "required": false,
+        "type": "\"L\""
+      },
+      {
+        "defaultValue": "4",
+        "description": "Quiet-zone width in modules.",
+        "name": "margin",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "160",
+        "description": "Rendered size in pixels.",
+        "name": "size",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Text to encode; UTF-8 byte mode, up to 343 bytes.",
+        "name": "value",
+        "required": true,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "RadarChart",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Accessible description of the chart, applied as aria-label.",
+        "name": "aria-label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Axis names, one per spoke, starting at the top and going clockwise.",
+        "name": "axes",
+        "required": true,
+        "type": "string[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Data series drawn as polygons.",
+        "name": "series",
+        "required": true,
+        "type": "RadarSeries[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Scale maximum; defaults to the largest value across all series.",
+        "name": "max",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "280",
+        "description": "Chart edge length in pixels.",
+        "name": "size",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "4",
+        "description": "Number of concentric grid rings.",
+        "name": "rings",
+        "required": false,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "A radio group where each option is a selectable card with a title,\ndescription, and optional icon. Arrow keys move and select like a native\nradio group; the selected card holds the single tab stop.",
+    "displayName": "RadioCard",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Initially selected value when uncontrolled.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name for the card group.",
+        "name": "label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the value of the newly selected card.",
+        "name": "onChange",
+        "required": false,
+        "type": "(value: string) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Cards rendered as radios inside the group.",
+        "name": "options",
+        "required": true,
+        "type": "RadioCardOption[]"
+      },
+      {
+        "defaultValue": "vertical",
+        "description": "Layout direction of the cards.",
+        "name": "orientation",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled selected value.",
+        "name": "value",
         "required": false,
         "type": "string"
       }
@@ -3256,6 +7136,68 @@
         "name": "orientation",
         "required": false,
         "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "asChild",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "RangeSlider",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Initial low/high pair when uncontrolled.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "RangeSliderValue"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered below the slider and linked to it for assistive technology.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Visible label rendered above the slider.",
+        "name": "label",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the new low/high pair when either thumb moves.",
+        "name": "onChange",
+        "required": false,
+        "type": "(value: RangeSliderValue) => void"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Renders the current range right-aligned above the track.",
+        "name": "showValue",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "['Minimum value', 'Maximum value']",
+        "description": "Accessible names for the low and high thumbs.",
+        "name": "thumbLabels",
+        "required": false,
+        "type": "[string, string]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled low/high pair.",
+        "name": "value",
+        "required": false,
+        "type": "RangeSliderValue"
       },
       {
         "defaultValue": "",
@@ -3424,6 +7366,177 @@
   },
   {
     "description": "",
+    "displayName": "Reveal",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Content revealed when it scrolls into view.",
+        "name": "children",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "true",
+        "description": "Reveal only the first time the element enters the viewport.",
+        "name": "once",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "0.25",
+        "description": "Portion of the element that must be visible before it reveals, from 0 to 1.",
+        "name": "threshold",
+        "required": false,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "Lightweight markdown editor: the toolbar wraps the text area selection with\nmarkdown syntax, and an optional pane previews the rendered result. Editing\nstays in a plain textarea — there is no contentEditable surface.",
+    "displayName": "RichTextEditor",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Accessible name for the text area when there is no visible label.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial markdown when uncontrolled.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Visible label rendered above the editor.",
+        "name": "label",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the full markdown whenever it changes.",
+        "name": "onChange",
+        "required": false,
+        "type": "(value: string) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Placeholder text of the text area.",
+        "name": "placeholder",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Renders a live preview pane next to the text area.",
+        "name": "preview",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "8",
+        "description": "Visible height of the text area in rows.",
+        "name": "rows",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled markdown.",
+        "name": "value",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "SaveStatus",
+    "props": [
+      {
+        "defaultValue": "saved",
+        "description": "Current persistence state.",
+        "name": "status",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "When the last save completed; rendered as relative text after the \"Saved\" label.",
+        "name": "savedAt",
+        "required": false,
+        "type": "Date"
+      },
+      {
+        "defaultValue": "",
+        "description": "Formats `savedAt` into relative text.",
+        "name": "formatSavedAt",
+        "required": false,
+        "type": "(date: Date) => string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "ScatterChart",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Accessible description of the chart, applied as aria-label.",
+        "name": "aria-label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Data series to plot.",
+        "name": "series",
+        "required": true,
+        "type": "ScatterSeries[]"
+      },
+      {
+        "defaultValue": "360",
+        "description": "SVG width in pixels.",
+        "name": "width",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "240",
+        "description": "SVG height in pixels.",
+        "name": "height",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Caption rendered under the x axis.",
+        "name": "xAxisLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Caption rendered alongside the y axis.",
+        "name": "yAxisLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Maps each point's `size` value to the dot radius.",
+        "name": "sizeEncoding",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "ScrollArea",
     "props": [
       {
@@ -3446,6 +7559,19 @@
         "name": "maxHeight",
         "required": false,
         "type": "string | number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "ScrollShadow",
+    "props": [
+      {
+        "defaultValue": "24",
+        "description": "Height of the fade shadows in pixels.",
+        "name": "shadowSize",
+        "required": false,
+        "type": "number"
       }
     ]
   },
@@ -3501,6 +7627,116 @@
         "name": "loading",
         "required": false,
         "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "Full-screen search overlay. The caller renders the results via a render\nprop; the overlay owns the query input and the keyboard highlight\n(Arrow Up/Down cycle, Enter selects, Escape closes).",
+    "displayName": "SearchOverlay",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Results rendered below the input; receives the query and highlight state.",
+        "name": "children",
+        "required": true,
+        "type": "(state: SearchOverlayRenderState) => ReactNode"
+      },
+      {
+        "defaultValue": "Close",
+        "description": "Accessible label for the close button.",
+        "name": "closeLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial open state when uncontrolled.",
+        "name": "defaultOpen",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "Search",
+        "description": "Accessible name of the search dialog.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the overlay opens or closes.",
+        "name": "onOpenChange",
+        "required": false,
+        "type": "(open: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the latest query whenever the input changes.",
+        "name": "onQueryChange",
+        "required": false,
+        "type": "(query: string) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the highlighted result's index when Enter is pressed.",
+        "name": "onSelect",
+        "required": false,
+        "type": "(index: number) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled open state.",
+        "name": "open",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "Search…",
+        "description": "Placeholder of the search input.",
+        "name": "placeholder",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Number of results currently rendered; arrow keys cycle within this range.",
+        "name": "resultCount",
+        "required": true,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Section",
+    "props": [
+      {
+        "defaultValue": "false",
+        "description": "Wraps children in a centered Container.",
+        "name": "container",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Width of the inner container when `container` is true.",
+        "name": "containerSize",
+        "required": false,
+        "type": "\"sm\" | \"md\" | \"lg\" | \"xl\" | \"fluid\" | null"
+      },
+      {
+        "defaultValue": "md",
+        "description": "Vertical rhythm padding above and below the section content.",
+        "name": "spacing",
+        "required": false,
+        "type": "\"none\" | \"sm\" | \"md\" | \"lg\" | null"
       }
     ]
   },
@@ -3656,6 +7892,68 @@
     ]
   },
   {
+    "description": "Opens a popover with copy-link and, when available, native share actions.",
+    "displayName": "ShareButton",
+    "props": [
+      {
+        "defaultValue": "Link copied",
+        "description": "Feedback label shown briefly after the link is copied.",
+        "name": "copiedLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Share",
+        "description": "Accessible name and visible text of the trigger button.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "secondary",
+        "description": "Visual style forwarded to the trigger button.",
+        "name": "variant",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Size forwarded to the trigger button.",
+        "name": "size",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Text shared through the native share sheet.",
+        "name": "text",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Title shared through the native share sheet.",
+        "name": "title",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "URL copied or shared. Defaults to the current page URL.",
+        "name": "url",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
     "description": "",
     "displayName": "SideRail",
     "props": [
@@ -3671,7 +7969,7 @@
         "description": "Rail collapses labels until hover or focus; full keeps labels visible.",
         "name": "mode",
         "required": false,
-        "type": "\"rail\" | \"full\" | null"
+        "type": "\"full\" | \"rail\" | null"
       },
       {
         "defaultValue": "",
@@ -3686,6 +7984,106 @@
         "name": "as",
         "required": false,
         "type": "ElementType"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "Sidebar",
+    "props": [
+      {
+        "defaultValue": "Sidebar",
+        "description": "Accessible name for the sidebar landmark.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled collapsed state; true renders the sidebar as an icon rail.",
+        "name": "collapsed",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Initial collapsed state when uncontrolled.",
+        "name": "defaultCollapsed",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the new collapsed state when the sidebar is toggled.",
+        "name": "onCollapsedChange",
+        "required": false,
+        "type": "(collapsed: boolean) => void"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "SidebarHeader",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "SidebarContent",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "SidebarFooter",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "SidebarSection",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Uppercase heading shown above the items. Hidden while the sidebar is collapsed.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "SidebarItem",
+    "props": [
+      {
+        "defaultValue": "false",
+        "description": "Marks the item as the current page; sets `aria-current=\"page\"`.",
+        "name": "active",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Icon shown before the label. Always visible, even when the sidebar is collapsed.",
+        "name": "icon",
+        "required": false,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "SidebarCollapseButton",
+    "props": []
+  },
+  {
+    "description": "",
+    "displayName": "SkipLink",
+    "props": [
+      {
+        "defaultValue": "#main",
+        "description": "Target of the skip link, usually the main content landmark.",
+        "name": "href",
+        "required": false,
+        "type": "string"
       }
     ]
   },
@@ -3761,6 +8159,88 @@
         "name": "width",
         "required": false,
         "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "SpeedDial",
+    "props": [
+      {
+        "defaultValue": "false",
+        "description": "Initial open state when uncontrolled.",
+        "name": "defaultOpen",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "up",
+        "description": "Direction the actions fan out toward.",
+        "name": "direction",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "Icon shown on the closed trigger. Defaults to a plus icon.",
+        "name": "icon",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name for the trigger button.",
+        "name": "label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called when the dial opens or closes.",
+        "name": "onOpenChange",
+        "required": false,
+        "type": "(open: boolean) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled open state.",
+        "name": "open",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Icon shown on the open trigger. Defaults to an X icon.",
+        "name": "openIcon",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "bottom-right",
+        "description": "Viewport corner the dial is fixed to.",
+        "name": "position",
+        "required": false,
+        "type": "enum"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "SpeedDialAction",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Icon rendered inside the action button.",
+        "name": "icon",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name; also shown as the visible label chip next to the icon.",
+        "name": "label",
+        "required": true,
+        "type": "string"
       }
     ]
   },
@@ -3917,6 +8397,33 @@
   },
   {
     "description": "",
+    "displayName": "StatusDot",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Optional text rendered next to the dot.",
+        "name": "label",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "variant",
+        "required": false,
+        "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\" | null"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "size",
+        "required": false,
+        "type": "\"sm\" | \"md\" | \"lg\" | null"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "StepUpNotice",
     "props": [
       {
@@ -3980,6 +8487,45 @@
         "name": "onStepClick",
         "required": false,
         "type": "(index: number) => void"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "StickyHeader",
+    "props": [
+      {
+        "defaultValue": "0",
+        "description": "Distance in pixels from the top of the scrolling container where the header sticks.",
+        "name": "offset",
+        "required": false,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "SubNav",
+    "props": [
+      {
+        "defaultValue": "Section",
+        "description": "Accessible name for the navigation landmark.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "SubNavItem",
+    "props": [
+      {
+        "defaultValue": "false",
+        "description": "Marks the item as the current page; sets `aria-current=\"page\"` and shows the underline.",
+        "name": "active",
+        "required": false,
+        "type": "boolean"
       }
     ]
   },
@@ -4083,6 +8629,47 @@
         "name": "rows",
         "required": true,
         "type": "Row[]"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "TableOfContents",
+    "props": [
+      {
+        "defaultValue": "Table of contents",
+        "description": "Accessible name for the navigation landmark.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled id of the active heading.",
+        "name": "activeId",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initially active heading id when uncontrolled.",
+        "name": "defaultActiveId",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Flat list of headings in document order; nested by `level`.",
+        "name": "headings",
+        "required": true,
+        "type": "TocHeading[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the heading id when the active heading changes.",
+        "name": "onActiveChange",
+        "required": false,
+        "type": "(id: string) => void"
       }
     ]
   },
@@ -4211,6 +8798,33 @@
   },
   {
     "description": "",
+    "displayName": "TimeAgo",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Point in time to describe, past or future.",
+        "name": "date",
+        "required": true,
+        "type": "string | number | Date"
+      },
+      {
+        "defaultValue": "en",
+        "description": "Locale used for the relative label and the absolute title.",
+        "name": "locale",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "60000",
+        "description": "How often the label refreshes, in milliseconds.",
+        "name": "updateInterval",
+        "required": false,
+        "type": "number"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "TimePicker",
     "props": [
       {
@@ -4272,12 +8886,149 @@
   },
   {
     "description": "",
+    "displayName": "TimezoneSelect",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "aria-describedby",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name when there is no visible label.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the input invalid for form validation and screen readers.",
+        "name": "aria-invalid",
+        "required": false,
+        "type": "boolean | \"true\" | \"false\""
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial IANA zone id when uncontrolled.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered below the input.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Prevents interaction with the input.",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "No matching time zones",
+        "description": "Message shown when no timezone matches the typed text.",
+        "name": "emptyMessage",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Explicit id; otherwise Field or an internal id is used.",
+        "name": "id",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used.",
+        "name": "label",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the IANA zone id of the selected timezone.",
+        "name": "onValueChange",
+        "required": false,
+        "type": "(value: string) => void"
+      },
+      {
+        "defaultValue": "Select a time zone",
+        "description": "Text shown when no timezone is selected.",
+        "name": "placeholder",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the input as required.",
+        "name": "required",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled IANA zone id, e.g. \"America/New_York\".",
+        "name": "value",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "Toaster",
     "props": []
   },
   {
     "description": "A two-state button that toggles a single option on or off, such as a\nformatting choice. Renders the pressed state as `aria-pressed`.",
     "displayName": "Toggle",
+    "props": [
+      {
+        "defaultValue": "md",
+        "description": "Control size.",
+        "name": "size",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "asChild",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "A cluster of toggles with shared focus management. Use `type=\"single\"` for\nmutually exclusive choices and `type=\"multiple\"` for independent ones.",
+    "displayName": "ToggleGroup",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "asChild",
+        "required": false,
+        "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "A single option inside a ToggleGroup, styled to match Toggle.",
+    "displayName": "ToggleGroupItem",
     "props": [
       {
         "defaultValue": "md",
@@ -4426,6 +9177,220 @@
     ]
   },
   {
+    "description": "Dual listbox: two multi-selectable lists with buttons and keyboard commands\nthat move selected options between the source and the target list.",
+    "displayName": "TransferList",
+    "props": [
+      {
+        "defaultValue": "Transfer list",
+        "description": "Accessible name for the whole transfer group.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial target values when uncontrolled.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the full list of target values whenever items move.",
+        "name": "onValueChange",
+        "required": false,
+        "type": "(values: string[]) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "All options; those listed in `value` render in the target list.",
+        "name": "options",
+        "required": true,
+        "type": "TransferListOption[]"
+      },
+      {
+        "defaultValue": "Available",
+        "description": "Accessible name of the source list.",
+        "name": "sourceLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Selected",
+        "description": "Accessible name of the target list.",
+        "name": "targetLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled target values.",
+        "name": "value",
+        "required": false,
+        "type": "string[]"
+      }
+    ]
+  },
+  {
+    "description": "A table with expandable tree rows following the WAI-ARIA treegrid pattern.",
+    "displayName": "TreeGrid",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Accessible name for the grid.",
+        "name": "aria-label",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Column definitions; the first column carries the tree indentation and expand toggle.",
+        "name": "columns",
+        "required": true,
+        "type": "TreeGridColumn[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial expanded row ids when uncontrolled.",
+        "name": "defaultExpandedIds",
+        "required": false,
+        "type": "string[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled expanded row ids.",
+        "name": "expandedIds",
+        "required": false,
+        "type": "string[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the full list of expanded ids whenever expansion changes.",
+        "name": "onExpandedChange",
+        "required": false,
+        "type": "(expandedIds: string[]) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Rows rendered at the root of the tree.",
+        "name": "rows",
+        "required": true,
+        "type": "TreeGridRow[]"
+      }
+    ]
+  },
+  {
+    "description": "Single-select control whose popover shows an expandable tree of options.\nBranch nodes expand and collapse; leaf nodes commit the selection.",
+    "displayName": "TreeSelect",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "aria-describedby",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name when there is no visible label.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the control invalid for form validation and screen readers.",
+        "name": "aria-invalid",
+        "required": false,
+        "type": "boolean | \"true\" | \"false\""
+      },
+      {
+        "defaultValue": "",
+        "description": "Explicit id; otherwise Field or an internal id is used.",
+        "name": "id",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initially expanded branch values when uncontrolled.",
+        "name": "defaultExpandedValues",
+        "required": false,
+        "type": "string[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial selected value when uncontrolled.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered below the control.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Prevents interaction with the control.",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Visible label rendered above the control. Required outside a Field; inside a Field the Field's label is used.",
+        "name": "label",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with the value of the chosen leaf node.",
+        "name": "onValueChange",
+        "required": false,
+        "type": "(value: string) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Tree of options rendered in the popover; only leaf nodes are selectable.",
+        "name": "options",
+        "required": true,
+        "type": "TreeSelectNode[]"
+      },
+      {
+        "defaultValue": "Select…",
+        "description": "Text shown when nothing is selected.",
+        "name": "placeholder",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the control as required.",
+        "name": "required",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled selected value.",
+        "name": "value",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
     "description": "A navigable tree with roving focus, expansion, and selection.",
     "displayName": "TreeView",
     "props": [
@@ -4489,6 +9454,81 @@
   },
   {
     "description": "",
+    "displayName": "TruncatedText",
+    "props": [
+      {
+        "defaultValue": "1",
+        "description": "Maximum number of visible lines before the text clamps.",
+        "name": "lines",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "Show less",
+        "description": "Label for the button that collapses the text.",
+        "name": "showLessLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "Show more",
+        "description": "Label for the button that expands the text.",
+        "name": "showMoreLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "The full text to display.",
+        "name": "text",
+        "required": true,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "UploadProgress",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Name of the file being uploaded.",
+        "name": "fileName",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Upload completion percentage; clamped between 0 and 100.",
+        "name": "progress",
+        "required": true,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Total size of the file in bytes, shown formatted next to the percentage.",
+        "name": "size",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Formats the byte size for display.",
+        "name": "formatSize",
+        "required": false,
+        "type": "(bytes: number) => string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Renders a cancel button that calls this when pressed.",
+        "name": "onCancel",
+        "required": false,
+        "type": "() => void"
+      }
+    ]
+  },
+  {
+    "description": "",
     "displayName": "VerticalNav",
     "props": [
       {
@@ -4496,7 +9536,7 @@
         "description": "Rail collapses labels until hover or focus; full keeps labels visible.",
         "name": "mode",
         "required": false,
-        "type": "\"rail\" | \"full\" | null"
+        "type": "\"full\" | \"rail\" | null"
       },
       {
         "defaultValue": "",
@@ -4570,6 +9610,54 @@
     "props": []
   },
   {
+    "description": "Windowed list renderer that mounts only the rows near the scroll position.",
+    "displayName": "VirtualList",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Height of the scrollable viewport in pixels.",
+        "name": "height",
+        "required": true,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Fixed row height in pixels.",
+        "name": "itemHeight",
+        "required": true,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Items windowed over; only the visible slice is rendered.",
+        "name": "items",
+        "required": true,
+        "type": "Item[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name for the list.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Extra rows rendered above and below the viewport to reduce blank flashes.",
+        "name": "overscan",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Renders one row for the given item.",
+        "name": "renderItem",
+        "required": true,
+        "type": "(item: Item, index: number) => ReactNode"
+      }
+    ]
+  },
+  {
     "description": "Hides content visually while keeping it available to assistive technology.",
     "displayName": "VisuallyHidden",
     "props": [
@@ -4579,6 +9667,117 @@
         "name": "asChild",
         "required": false,
         "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "YearPicker",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "aria-describedby",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name when there is no visible label.",
+        "name": "aria-label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the input invalid for form validation and screen readers.",
+        "name": "aria-invalid",
+        "required": false,
+        "type": "boolean | \"true\" | \"false\""
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Initial selected year when uncontrolled; the month and day are always January 1.",
+        "name": "defaultValue",
+        "required": false,
+        "type": "Date"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered below the input.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Prevents interaction with the input.",
+        "name": "disabled",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Explicit id; otherwise Field or an internal id is used.",
+        "name": "id",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used.",
+        "name": "label",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Latest selectable year (inclusive).",
+        "name": "maxDate",
+        "required": false,
+        "type": "Date"
+      },
+      {
+        "defaultValue": "",
+        "description": "Earliest selectable year (inclusive).",
+        "name": "minDate",
+        "required": false,
+        "type": "Date"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with January 1 of the selected year.",
+        "name": "onValueChange",
+        "required": false,
+        "type": "(date: Date) => void"
+      },
+      {
+        "defaultValue": "Pick a year",
+        "description": "Text shown when no year is selected.",
+        "name": "placeholder",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Marks the input as required.",
+        "name": "required",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Controlled selected year; only the year is significant.",
+        "name": "value",
+        "required": false,
+        "type": "Date"
       }
     ]
   }

@@ -12,6 +12,31 @@ export function ResultDemo({ exampleIndex = 0 }) {
     )
   }
 
+  if (exampleIndex === 2) {
+    return (
+      <div className="grid gap-10">
+        <Result
+          status="404"
+          title="Route not found"
+          description="The link may be outdated or the page removed."
+          actions={<Button variant="secondary">Back to dashboard</Button>}
+        />
+        <Result
+          status="403"
+          title="Access restricted"
+          description="You need the security role to open this area."
+          actions={<Button variant="secondary">Request access</Button>}
+        />
+        <Result
+          status="500"
+          title="Something went wrong"
+          description="The server hit an unexpected error while loading the report."
+          actions={<Button variant="secondary">Retry request</Button>}
+        />
+      </div>
+    )
+  }
+
   return (
     <Result
       status="success"

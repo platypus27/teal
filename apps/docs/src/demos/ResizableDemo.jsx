@@ -4,6 +4,26 @@ const paneClasses =
   'flex h-full items-center justify-center rounded-lg border border-teal-outline-variant/50 bg-teal-surface-container-low text-sm text-teal-on-surface-variant'
 
 export function ResizableDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 2) {
+    return (
+      <div className="h-64 w-full max-w-lg">
+        <ResizablePanelGroup direction="vertical" className="gap-1">
+          <ResizablePanel defaultSize={30} minSize={15}>
+            <div className={paneClasses}>Inbox</div>
+          </ResizablePanel>
+          <ResizableHandle />
+          <ResizablePanel defaultSize={40} minSize={20}>
+            <div className={paneClasses}>Message</div>
+          </ResizablePanel>
+          <ResizableHandle />
+          <ResizablePanel minSize={15}>
+            <div className={paneClasses}>Preview</div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    )
+  }
+
   if (exampleIndex === 1) {
     return (
       <div className="h-56 w-full max-w-lg">

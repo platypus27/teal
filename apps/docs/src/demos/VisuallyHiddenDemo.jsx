@@ -2,6 +2,25 @@ import { VisuallyHidden } from '@kryv/teal'
 import { Trash2 } from 'lucide-react'
 
 export function VisuallyHiddenDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 2) {
+    return (
+      <ul className="space-y-2 text-sm">
+        <li>
+          <a href="#" className="text-teal-primary underline">
+            Changelog
+            <VisuallyHidden> — archived release notes from 2023</VisuallyHidden>
+          </a>
+        </li>
+        <li>
+          <a href="#" className="text-teal-primary underline">
+            Uptime
+            <VisuallyHidden> — all systems operational</VisuallyHidden>
+          </a>
+        </li>
+      </ul>
+    )
+  }
+
   if (exampleIndex === 1) {
     return (
       <p className="text-sm">

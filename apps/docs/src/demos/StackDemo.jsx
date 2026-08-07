@@ -11,6 +11,21 @@ export function StackDemo({ exampleIndex = 0 }) {
     )
   }
 
+  if (exampleIndex === 2) {
+    return (
+      <Stack direction="row" gap={2} wrap className="w-full max-w-xs">
+        <Badge>Reports</Badge>
+        <Badge>Security</Badge>
+        <Badge>Billing</Badge>
+        <Badge>Members</Badge>
+        <Badge>Audit log</Badge>
+        <Badge>Usage</Badge>
+        <Badge>Integrations</Badge>
+        <Badge>Backups</Badge>
+      </Stack>
+    )
+  }
+
   return (
     <Stack direction="row" gap={4} align="center" wrap>
       <Avatar name="Avery Chen" />
