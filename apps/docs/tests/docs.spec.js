@@ -117,9 +117,10 @@ test('module pages match the approved desktop visual baseline', async ({ page, b
   await page.goto('/modules/button')
   await waitForVisualReady(page, 'Button', '#examples')
   // Allow small cross-machine rasterization variance in the light-theme baseline.
-  await expect(page).toHaveScreenshot('button-module-light.png', { fullPage: true, maxDiffPixels: 650 })
+  await expect(page).toHaveScreenshot('button-module-light.png', { fullPage: true, maxDiffPixels: 650, animations: 'disabled' })
   await page.getByRole('button', { name: 'Dark mode' }).click()
-  await expect(page).toHaveScreenshot('button-module-dark.png', { fullPage: true, maxDiffPixels: 500 })
+  await expect(page.locator('html')).toHaveClass(/dark/)
+  await expect(page).toHaveScreenshot('button-module-dark.png', { fullPage: true, maxDiffPixels: 500, animations: 'disabled' })
 })
 
 test('visual QA surface covers every module family in both themes', async ({ page, browserName, isMobile }) => {
