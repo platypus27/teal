@@ -85,13 +85,15 @@ test('publishes only the validated retained tarball', async (t) => {
     currentSourceCommit: sourceCommit,
   })
   const calls = []
+  const announcements = []
   await publishValidatedArtifact(validated, async (command, args) => {
     calls.push({ command, args })
-  })
+  }, (message) => announcements.push(message))
   assert.deepEqual(calls, [{
     command: 'npm',
     args: ['publish', fixture.descriptor.tarballPath, '--access', 'public', '--provenance'],
   }])
+  assert.deepEqual(announcements, ['New tag: @kryv/teal@0.4.1\n'])
 })
 
 test('rejects symlink ambiguity in the exact tarball', async (t) => {

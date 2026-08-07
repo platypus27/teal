@@ -149,7 +149,11 @@ export async function validateReleaseArtifact({ artifactDirectory, currentPackag
   return { ...descriptor, archivedPackageJson, [validatedArtifact]: true }
 }
 
-export async function publishValidatedArtifact(artifact, run = runCommand) {
+export async function publishValidatedArtifact(
+  artifact,
+  run = runCommand,
+  announce = (message) => process.stdout.write(message),
+) {
   if (artifact?.[validatedArtifact] !== true) {
     throw new Error('Release artifact was not validated')
   }
@@ -160,6 +164,9 @@ export async function publishValidatedArtifact(artifact, run = runCommand) {
     'public',
     '--provenance',
   ])
+  announce(
+    `New tag: ${artifact.archivedPackageJson.name}@${artifact.archivedPackageJson.version}\n`,
+  )
 }
 
 async function main() {

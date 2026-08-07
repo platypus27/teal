@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { access, mkdtemp, rm } from 'node:fs/promises'
+import { access, mkdtemp, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -22,9 +22,10 @@ test('builds and retains one validated npm tarball', async (t) => {
   })
 
   await access(artifact.tarballPath)
+  const packageJson = JSON.parse(await readFile(join(packageRoot, 'package.json'), 'utf8'))
   assert.match(artifact.sourceCommit, /^[0-9a-f]{40}$/)
   assert.equal(artifact.name, '@kryv/teal')
-  assert.equal(artifact.version, '0.4.1')
+  assert.equal(artifact.version, packageJson.version)
   assert.ok(artifact.manifest.files.some((file) => file.path === 'dist/index.js'))
   assert.ok(artifact.builtDistFiles.includes('dist/index.js'))
 })

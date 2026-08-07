@@ -14,7 +14,7 @@ concurrency:
 jobs:
   quality:
     name: Quality and package
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 35
     concurrency:
       group: pipeline-quality-${{ github.event_name }}-${{ github.ref }}
@@ -44,7 +44,7 @@ jobs:
 
   browser:
     name: Playwright (${{ matrix.project }})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -72,7 +72,7 @@ jobs:
   lighthouse:
     name: Lighthouse
     needs: quality
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     concurrency:
       group: pipeline-lighthouse-${{ github.event_name }}-${{ github.ref }}
@@ -95,7 +95,7 @@ jobs:
   production_image:
     name: Production documentation image
     needs: quality
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 35
     concurrency:
       group: pipeline-production-image-${{ github.event_name }}-${{ github.ref }}
@@ -124,7 +124,7 @@ jobs:
     name: Plan release
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
     needs: [quality, browser, lighthouse, production_image]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
       contents: read
@@ -171,7 +171,7 @@ jobs:
     name: Version release
     if: ${{ needs.release_plan.outputs.mode == 'version' }}
     needs: release_plan
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     concurrency:
       group: pipeline-release-version-master
@@ -202,7 +202,7 @@ jobs:
     name: Publish release
     if: ${{ needs.release_plan.outputs.mode == 'publish' }}
     needs: release_plan
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 35
     concurrency:
       group: pipeline-release-publish-master
@@ -239,7 +239,7 @@ jobs:
     # deployment secrets below. Until then this job is intentionally skipped.
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && vars.DOCS_DEPLOY_ENABLED == 'true' }}
     needs: [quality, browser, lighthouse, production_image]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 35
     concurrency:
       group: pipeline-documentation-master

@@ -37,6 +37,12 @@ test('fresh-clone verification builds Teal before downstream typechecking', asyn
   assert.ok(runs.includes('npm run test:integrity'))
 })
 
+test('browser gates surface flakes instead of retrying them away', async () => {
+  const config = await read('apps/docs/playwright.config.js')
+  assert.match(config, /retries:\s*0/)
+  assert.doesNotMatch(config, /process\.env\.CI\s*\?\s*[1-9]/)
+})
+
 test('all workflow actions are approved immutable SHAs and every job is bounded', async () => {
   const workflow = parse(await read('.github/workflows/pipeline.yml'))
   const approvedActions = new Set([
@@ -47,6 +53,7 @@ test('all workflow actions are approved immutable SHAs and every job is bounded'
     'docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a',
   ])
   for (const [name, job] of Object.entries(workflow.jobs)) {
+    assert.equal(job['runs-on'], 'ubuntu-24.04', `${name} runner must be pinned`)
     assert.ok(Number.isInteger(job['timeout-minutes']), `${name} needs timeout-minutes`)
     for (const step of job.steps ?? []) {
       if (!step.uses) continue
