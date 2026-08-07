@@ -136,7 +136,10 @@ jobs:
         if: steps.release-plan.outputs.run == 'true'
         with:
           version: npm run release:version
-          publish: npm run publish:package
+          # Use changeset publish (not publish:package) so the action detects the
+          # published packages and creates the GitHub release; provenance still
+          # applies via NPM_CONFIG_PROVENANCE.
+          publish: npx changeset publish
           createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
