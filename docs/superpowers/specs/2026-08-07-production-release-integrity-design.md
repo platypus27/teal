@@ -87,14 +87,20 @@ A small package-contract module will own the following rules:
   style assertions against the exact tarball.
 
 The existing package verifier will gain a release mode that keeps the verified
-tarball and writes a descriptor containing the package name, version, path,
-SHA-512 digest, and pack manifest. Normal verification may continue to clean
-up its temporary artifact.
+tarball and writes a descriptor containing the tarball path, SHA-512 digest,
+and full source commit. Normal verification may continue to clean up its
+temporary artifact.
 
-The publisher will read the descriptor, verify the current package identity,
-recompute the digest, re-run the exact-artifact contract, and invoke
-`npm publish` on that tarball path with public access and provenance. Its
-stdout will remain compatible with Changesets' published-package discovery.
+The publisher will not trust a descriptor's file list or package identity. It
+will parse the exact tarball again, reject absolute paths, traversal, duplicate
+normalized paths, symbolic links, and hard links, and read package name,
+version, entry points, and exports from the archived `package/package.json`.
+It will compare every archived `dist/` file byte-for-byte with the current
+built `dist/`, reject missing or extra distribution files, verify the current
+checkout and descriptor name the same full source commit, and recompute the
+tarball digest. Only then will it invoke `npm publish` on that exact file with
+public access and provenance. Its stdout will remain compatible with
+Changesets' published-package discovery.
 
 ## Lifecycle defense
 
@@ -169,14 +175,26 @@ tmpfs mounts for required writable paths, and a health check. It will not set
 `pull_policy: never`, because production must be able to pull the selected
 immutable GHCR digest.
 
-A production-image job will build and load a commit-specific candidate, smoke
-test health and required headers under the hardened Compose settings, and scan
-the final image for secrets and fixable HIGH or CRITICAL vulnerabilities. The
-scanner will itself be version and digest pinned. The production deployment
-job will repeat build, scan, and smoke checks on its exact candidate before
-push, resolve the pushed repository digest, and deploy
-`ghcr.io/.../teal-docs@sha256:...`. Rollback will retain the previously running
-digest.
+A production-image job will build and load a commit-specific candidate, save
+that exact image to a Docker archive, and scan the archive for secrets and
+fixable HIGH or CRITICAL vulnerabilities. The digest-pinned scanner will run
+with a read-only root filesystem, all capabilities dropped, no-new-privileges,
+and no Docker socket mount. The same candidate will be smoke tested for health
+and required headers under hardened Compose settings.
+
+The verifier will create a unique disposable Compose project and a generated
+configuration with a dynamically allocated loopback host port. It will never
+reuse the repository's default project, service container, or port, and its
+cleanup will target only that unique project. Both verification and deployment
+will use `--no-build` so the selected image cannot be replaced from source.
+
+The production deployment job will repeat archive scan and smoke checks on its
+exact candidate before push, resolve the pushed repository digest, and deploy
+`ghcr.io/.../teal-docs@sha256:...`. The remote rollout will capture the
+previous immutable repository digest, pull the new digest, start it with
+`--no-build`, and prove the running container's image ID and configured image
+reference resolve to the pushed digest. A failed proof or health check will
+roll back with `--no-build` to the previously captured immutable digest.
 
 The initial scanner candidate is
 `aquasec/trivy:0.73.0@sha256:7cced7cae583819fc7806d4cbc0dbbc7cad18b99f7d3e235192e6da8c091045c`.
