@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { modules } from '../src/data/module-meta.js'
+import changelog from '../src/generated/changelog.json' with { type: 'json' }
 
 const moduleIds = modules.map((module) => module.id)
 const moduleNames = new Map(modules.map((module) => [module.id, module.name]))
@@ -230,8 +231,14 @@ test('module pages match the approved desktop visual baseline', async ({ page, b
   test.skip(browserName !== 'chromium' || isMobile, 'Stable visual baseline uses desktop Chromium')
   await page.goto('/modules/button')
   await waitForVisualReady(page, 'Button', '#examples')
+  const currentVersion = page.getByText(`v${changelog.version}`, { exact: true })
+  await expect(currentVersion).toBeVisible()
   // The approved PR33 baseline covers the page content surface. The independently
-  // tested live table-of-contents rail must not change these frozen image bytes.
+  // tested live version and table-of-contents rail must not change these frozen
+  // image bytes. Restore the PR33 version label only for the frozen capture.
+  await currentVersion.evaluate((element) => {
+    element.textContent = 'v0.4.1'
+  })
   await page.addStyleTag({
     content: 'aside:has(nav[aria-label="On this page"]) { display: none !important; }',
   })
