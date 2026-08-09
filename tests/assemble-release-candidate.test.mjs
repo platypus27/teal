@@ -7,6 +7,7 @@ import { join, resolve } from 'node:path'
 import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { promisify } from 'node:util'
+import { create as createTar } from 'tar'
 
 import { assembleReleaseCandidate } from '../scripts/assemble-release-candidate.mjs'
 import {
@@ -21,7 +22,70 @@ const repository = 'ghcr.io/platypus27/teal/teal-docs'
 const execute = promisify(execFile)
 const assembler = fileURLToPath(new URL('../scripts/assemble-release-candidate.mjs', import.meta.url))
 
-async function fixture(t) {
+async function indexedImageArchive(root, archive) {
+  const archiveRoot = join(root, 'indexed-image')
+  const blobs = join(archiveRoot, 'blobs', 'sha256')
+  await mkdir(blobs, { recursive: true })
+
+  async function writeBlob(value) {
+    const body = Buffer.from(`${JSON.stringify(value)}\n`)
+    const digest = createHash('sha256').update(body).digest('hex')
+    await writeFile(join(blobs, digest), body)
+    return { digest: `sha256:${digest}`, size: body.length }
+  }
+
+  const config = await writeBlob({ architecture: 'amd64', os: 'linux' })
+  const platform = await writeBlob({
+    schemaVersion: 2,
+    mediaType: 'application/vnd.oci.image.manifest.v1+json',
+    config: {
+      mediaType: 'application/vnd.oci.image.config.v1+json',
+      ...config,
+    },
+    layers: [],
+  })
+  const index = await writeBlob({
+    schemaVersion: 2,
+    mediaType: 'application/vnd.oci.image.index.v1+json',
+    manifests: [{
+      mediaType: 'application/vnd.oci.image.manifest.v1+json',
+      ...platform,
+      platform: { architecture: 'amd64', os: 'linux' },
+    }],
+  })
+  await writeFile(join(archiveRoot, 'index.json'), `${JSON.stringify({
+    schemaVersion: 2,
+    mediaType: 'application/vnd.oci.image.index.v1+json',
+    manifests: [{
+      mediaType: 'application/vnd.oci.image.index.v1+json',
+      ...index,
+    }],
+  })}\n`)
+  await writeFile(join(archiveRoot, 'manifest.json'), `${JSON.stringify([{
+    Config: `blobs/sha256/${config.digest.slice('sha256:'.length)}`,
+    RepoTags: ['teal-docs:test'],
+    Layers: [],
+  }])}\n`)
+  await createTar({ cwd: archiveRoot, file: archive }, ['index.json', 'manifest.json', 'blobs'])
+  return { configImageId: config.digest, imageId: index.digest }
+}
+
+async function singleImageArchive(root, archive) {
+  const archiveRoot = join(root, 'single-image')
+  await mkdir(archiveRoot)
+  const config = Buffer.from('{"architecture":"amd64","os":"linux"}\n')
+  const digest = createHash('sha256').update(config).digest('hex')
+  await writeFile(join(archiveRoot, `${digest}.json`), config)
+  await writeFile(join(archiveRoot, 'manifest.json'), `${JSON.stringify([{
+    Config: `${digest}.json`,
+    RepoTags: ['teal-docs:test'],
+    Layers: [],
+  }])}\n`)
+  await createTar({ cwd: archiveRoot, file: archive }, ['manifest.json', `${digest}.json`])
+  return `sha256:${digest}`
+}
+
+async function fixture(t, { indexed = false } = {}) {
   const root = await mkdtemp(join(tmpdir(), 'teal-candidate-assembly-'))
   t.after(() => rm(root, { recursive: true, force: true }))
   const npmRoot = join(root, 'npm')
@@ -39,18 +103,26 @@ async function fixture(t) {
     tarballPath: tarball,
   }, null, 2)}\n`)
 
-  const imageBytes = Buffer.from('exact docs image')
-  const imageId = `sha256:${'2'.repeat(64)}`
+  const imagePath = join(docsRoot, 'docs-image.tar')
+  let imageId
+  let configImageId
+  if (indexed) {
+    ({ configImageId, imageId } = await indexedImageArchive(root, imagePath))
+  } else {
+    imageId = await singleImageArchive(root, imagePath)
+    configImageId = imageId
+  }
+  const imageBytes = await readFile(imagePath)
   const archiveSha256 = sha256Bytes(imageBytes)
-  await writeFile(join(docsRoot, 'docs-image.tar'), imageBytes)
   const rawReport = Buffer.from(`${JSON.stringify({
     SchemaVersion: 2,
     ArtifactType: 'container_image',
-    Metadata: { ImageID: imageId },
+    Metadata: { ImageID: configImageId },
     Results: [],
   })}\n`)
   const vulnerability = Buffer.from(`${JSON.stringify(exactScanReceipt({
     archiveSha256,
+    configImageId,
     imageId,
     rawBytes: rawReport,
     repository,
@@ -59,6 +131,7 @@ async function fixture(t) {
   }), null, 2)}\n`)
   const secret = Buffer.from(`${JSON.stringify(exactScanReceipt({
     archiveSha256,
+    configImageId,
     imageId,
     rawBytes: rawReport,
     repository,
@@ -67,6 +140,7 @@ async function fixture(t) {
   }), null, 2)}\n`)
   const sbom = Buffer.from(`${JSON.stringify(exactCycloneDxSbom({
     archiveSha256,
+    configImageId,
     imageId,
     rawBytes: Buffer.from(`${JSON.stringify({
       bomFormat: 'CycloneDX',
@@ -74,7 +148,7 @@ async function fixture(t) {
       metadata: {
         component: {
           type: 'container',
-          properties: [{ name: 'aquasecurity:trivy:ImageID', value: imageId }],
+          properties: [{ name: 'aquasecurity:trivy:ImageID', value: configImageId }],
         },
       },
       components: [],
@@ -90,6 +164,7 @@ async function fixture(t) {
     sourceCommit,
     repository,
     imageId,
+    ...(configImageId === imageId ? {} : { configImageId }),
     archive: 'docs-image.tar',
     archiveSha256,
     sbom: 'docs-image.sbom.cdx.json',
@@ -144,6 +219,18 @@ test('assembles and independently verifies the complete immutable candidate', as
   const npmDescriptor = JSON.parse(await readFile(join(inputs.candidateRoot, 'npm/artifact.json')))
   assert.equal(npmDescriptor.tarball, 'kryv-teal-0.5.1.tgz')
   assert.match(npmDescriptor.tarballSha256, /^sha256:[0-9a-f]{64}$/)
+})
+
+test('assembles indexed docs evidence only when the archive binds its config identity', async (t) => {
+  const inputs = await fixture(t, { indexed: true })
+  await assert.doesNotReject(assembleReleaseCandidate({
+    ...inputs,
+    createdAt: '2026-08-07T12:00:00.000Z',
+    sourceCommit,
+    sourceRunAttempt: 2,
+    sourceRunId: '1234567890123456789',
+    workspaceRoot: resolve(import.meta.dirname, '..'),
+  }))
 })
 
 test('rejects a docs receipt that is not bound to the exact image', async (t) => {

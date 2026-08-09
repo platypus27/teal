@@ -250,6 +250,7 @@ async function main() {
   let generated = false
   let cacheCreated = false
   let localImageId
+  let configImageId
   let archiveSha256
   let pendingArtifactDirectory
   let artifactDirectory
@@ -282,7 +283,8 @@ async function main() {
     }
     await run('docker', ['save', '--output', archivePath, localImageId])
     await chmod(archivePath, 0o444)
-    await verifyDockerArchiveImageId(archivePath, localImageId)
+    const archiveIdentity = await verifyDockerArchiveImageId(archivePath, localImageId)
+    configImageId = archiveIdentity.configImageId
     archiveSha256 = await sha256File(archivePath)
     await run('docker', trivyRunArgs(
       archivePath,
@@ -374,6 +376,7 @@ async function main() {
       ])
       const vulnerability = exactScanReceipt({
         archiveSha256,
+        configImageId,
         imageId: localImageId,
         rawBytes: vulnerabilityRaw,
         repository,
@@ -382,6 +385,7 @@ async function main() {
       })
       const secret = exactScanReceipt({
         archiveSha256,
+        configImageId,
         imageId: localImageId,
         rawBytes: secretRaw,
         repository,
@@ -390,6 +394,7 @@ async function main() {
       })
       const sbom = exactCycloneDxSbom({
         archiveSha256,
+        configImageId,
         imageId: localImageId,
         rawBytes: sbomRaw,
         repository,
@@ -403,6 +408,7 @@ async function main() {
         sourceCommit: revision,
         repository,
         imageId: localImageId,
+        ...(configImageId === localImageId ? {} : { configImageId }),
         archive: 'docs-image.tar',
         archiveSha256,
         sbom: 'docs-image.sbom.cdx.json',

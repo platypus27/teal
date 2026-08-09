@@ -320,6 +320,7 @@ export function parseJsonEvidence(bytes, label) {
 export function exactScanReceipt({
   archiveSha256,
   imageId,
+  configImageId = imageId,
   rawBytes,
   repository,
   scanType,
@@ -334,6 +335,9 @@ export function exactScanReceipt({
   if (!/^sha256:[0-9a-f]{64}$/.test(imageId)) {
     throw new Error('imageId is invalid')
   }
+  if (!/^sha256:[0-9a-f]{64}$/.test(configImageId)) {
+    throw new Error('configImageId is invalid')
+  }
   if (!/^[0-9a-f]{40}$/.test(sourceCommit)) {
     throw new Error('sourceCommit is invalid')
   }
@@ -344,7 +348,7 @@ export function exactScanReceipt({
   if (report.SchemaVersion !== 2 || !Array.isArray(report.Results)) {
     throw new Error(`${scanType} scan report has an invalid Trivy schema`)
   }
-  if (report.ArtifactType !== 'container_image' || report.Metadata?.ImageID !== imageId) {
+  if (report.ArtifactType !== 'container_image' || report.Metadata?.ImageID !== configImageId) {
     throw new Error(`${scanType} scan report image identity is invalid`)
   }
   const canonicalReport = Buffer.from(`${JSON.stringify(report, null, 2)}\n`)
@@ -359,6 +363,7 @@ export function exactScanReceipt({
     sourceCommit,
     repository,
     imageId,
+    ...(configImageId === imageId ? {} : { configImageId }),
     archiveSha256,
     reportSha256: sha256Bytes(canonicalReport),
     report,
@@ -368,6 +373,7 @@ export function exactScanReceipt({
 export function exactCycloneDxSbom({
   archiveSha256,
   imageId,
+  configImageId = imageId,
   rawBytes,
   repository,
   sourceCommit,
@@ -377,6 +383,9 @@ export function exactCycloneDxSbom({
   }
   if (!/^sha256:[0-9a-f]{64}$/.test(imageId)) {
     throw new Error('imageId is invalid')
+  }
+  if (!/^sha256:[0-9a-f]{64}$/.test(configImageId)) {
+    throw new Error('configImageId is invalid')
   }
   if (!/^[0-9a-f]{40}$/.test(sourceCommit)) {
     throw new Error('sourceCommit is invalid')
@@ -394,7 +403,7 @@ export function exactCycloneDxSbom({
   if (
     sbom.metadata?.component?.type !== 'container'
     || imageIdentityProperties.length !== 1
-    || imageIdentityProperties[0].value !== imageId
+    || imageIdentityProperties[0].value !== configImageId
   ) {
     throw new Error('CycloneDX SBOM image identity is invalid')
   }
@@ -408,6 +417,9 @@ export function exactCycloneDxSbom({
       properties: [
         ...properties,
         { name: 'org.kryv.teal.image-id', value: imageId },
+        ...(configImageId === imageId
+          ? []
+          : [{ name: 'org.kryv.teal.config-image-id', value: configImageId }]),
         { name: 'org.kryv.teal.archive-sha256', value: archiveSha256 },
         { name: 'org.kryv.teal.source-commit', value: sourceCommit },
         { name: 'org.kryv.teal.repository', value: repository },

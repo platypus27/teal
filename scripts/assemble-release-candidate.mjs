@@ -17,6 +17,7 @@ import {
   createCandidateManifest,
   sha256Bytes,
 } from './teal_release_candidate.mjs'
+import { verifyDockerArchiveImageId } from './docker-archive.mjs'
 
 const MAX_JSON_BYTES = 8 * 1024 * 1024
 const MAX_INPUT_BYTES = 8 * 1024 * 1024 * 1024
@@ -147,12 +148,22 @@ async function fileSha256(path) {
 }
 
 function exactDocsDescriptor(value, sourceCommit) {
-  exactFields(value, DOCS_DESCRIPTOR_FIELDS, 'Docs descriptor')
+  const fields = value?.configImageId === undefined
+    ? DOCS_DESCRIPTOR_FIELDS
+    : new Set([...DOCS_DESCRIPTOR_FIELDS, 'configImageId'])
+  exactFields(value, fields, 'Docs descriptor')
   if (
     value.schemaVersion !== 2
     || value.sourceCommit !== sourceCommit
     || value.repository !== 'ghcr.io/platypus27/teal/teal-docs'
     || !/^sha256:[0-9a-f]{64}$/.test(value.imageId)
+    || (
+      value.configImageId !== undefined
+      && (
+        !/^sha256:[0-9a-f]{64}$/.test(value.configImageId)
+        || value.configImageId === value.imageId
+      )
+    )
     || value.archive !== 'docs-image.tar'
     || value.sbom !== 'docs-image.sbom.cdx.json'
     || value.vulnerabilityReceipt !== 'docs-image.vulnerability.json'
@@ -174,6 +185,7 @@ function exactDocsDescriptor(value, sourceCommit) {
 }
 
 function verifyScanReceipt(receipt, descriptor, scanType) {
+  const configImageId = descriptor.configImageId ?? descriptor.imageId
   if (
     receipt?.schemaVersion !== 1
     || receipt.status !== 'passed'
@@ -183,10 +195,11 @@ function verifyScanReceipt(receipt, descriptor, scanType) {
     || receipt.sourceCommit !== descriptor.sourceCommit
     || receipt.repository !== descriptor.repository
     || receipt.imageId !== descriptor.imageId
+    || receipt.configImageId !== descriptor.configImageId
     || receipt.archiveSha256 !== descriptor.archiveSha256
     || receipt.report?.SchemaVersion !== 2
     || receipt.report.ArtifactType !== 'container_image'
-    || receipt.report.Metadata?.ImageID !== descriptor.imageId
+    || receipt.report.Metadata?.ImageID !== configImageId
     || !Array.isArray(receipt.report.Results)
   ) {
     throw new Error(`${scanType} receipt image or release identity mismatch`)
@@ -202,6 +215,7 @@ function verifyScanReceipt(receipt, descriptor, scanType) {
 }
 
 function verifySbom(sbom, descriptor) {
+  const configImageId = descriptor.configImageId ?? descriptor.imageId
   if (sbom?.bomFormat !== 'CycloneDX' || !/^1\.[4-9]$/.test(String(sbom.specVersion))) {
     throw new Error('Docs SBOM schema is invalid')
   }
@@ -212,12 +226,13 @@ function verifySbom(sbom, descriptor) {
   if (
     sbom.metadata?.component?.type !== 'container'
     || rawImageIdentities.length !== 1
-    || rawImageIdentities[0].value !== descriptor.imageId
+    || rawImageIdentities[0].value !== configImageId
   ) {
     throw new Error('Docs SBOM raw image identity mismatch')
   }
   for (const [name, value] of [
     ['org.kryv.teal.image-id', descriptor.imageId],
+    ['org.kryv.teal.config-image-id', descriptor.configImageId],
     ['org.kryv.teal.archive-sha256', descriptor.archiveSha256],
     ['org.kryv.teal.source-commit', descriptor.sourceCommit],
     ['org.kryv.teal.repository', descriptor.repository],
@@ -242,6 +257,13 @@ export async function validateDocsEvidenceDirectory(docsRoot, sourceCommit) {
     if (facts.sha256 !== descriptor[digestField]) {
       throw new Error(`Docs ${pathField} digest mismatch`)
     }
+  }
+  const archiveIdentity = await verifyDockerArchiveImageId(
+    join(docsRoot, descriptor.archive),
+    descriptor.imageId,
+  )
+  if (archiveIdentity.configImageId !== (descriptor.configImageId ?? descriptor.imageId)) {
+    throw new Error('Docs archive config image identity mismatch')
   }
   const vulnerability = await readJson(
     join(docsRoot, descriptor.vulnerabilityReceipt),

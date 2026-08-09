@@ -12,6 +12,7 @@ import {
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import test from 'node:test'
+import { create as createTar } from 'tar'
 
 import {
   APPROVAL_CONTEXT,
@@ -34,7 +35,8 @@ import {
 const sourceCommit = '1'.repeat(40)
 const sourceRunId = '1234567890123456789'
 const sourceRunAttempt = 2
-const imageId = `sha256:${'2'.repeat(64)}`
+const imageConfig = Buffer.from('{"architecture":"amd64","os":"linux"}\n')
+const imageId = sha256Bytes(imageConfig)
 const repository = 'ghcr.io/platypus27/teal/teal-docs'
 const now = new Date('2026-08-07T12:00:00.000Z')
 const { privateKey, publicKey } = generateKeyPairSync('ed25519')
@@ -61,9 +63,20 @@ async function candidateFixture(t, suffix = '') {
     await mkdir(join(candidateRoot, directory), { mode: 0o700 })
   }
 
-  const archiveBytes = Buffer.from(`exact-image-${suffix || 'one'}`)
+  const archiveRoot = join(fixtureRoot, 'docker-archive')
+  const archivePath = join(candidateRoot, 'docs/docs-image.tar')
+  const configName = `${imageId.slice('sha256:'.length)}.json`
+  await mkdir(archiveRoot)
+  await writeFile(join(archiveRoot, configName), imageConfig)
+  await writeFile(join(archiveRoot, 'manifest.json'), `${JSON.stringify([{
+    Config: configName,
+    RepoTags: ['teal-docs:test'],
+    Layers: [],
+  }])}\n`)
+  await createTar({ cwd: archiveRoot, file: archivePath }, ['manifest.json', configName])
+  await chmod(archivePath, 0o444)
+  const archiveBytes = await readFile(archivePath)
   const archiveSha256 = sha256Bytes(archiveBytes)
-  await writeFile(join(candidateRoot, 'docs/docs-image.tar'), archiveBytes, { mode: 0o444 })
 
   const rawReport = {
     SchemaVersion: 2,

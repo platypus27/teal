@@ -105,6 +105,27 @@ test('binds a passed Trivy receipt to the exact archive, image, source, and raw 
   })
 })
 
+test('binds an OCI index image separately from the config identity reported by Trivy', () => {
+  const configImageId = `sha256:${'d'.repeat(64)}`
+  const report = {
+    SchemaVersion: 2,
+    ArtifactType: 'container_image',
+    ArtifactName: '/scan/image.tar',
+    Metadata: { ImageID: configImageId },
+    Results: [],
+  }
+  const receipt = exactScanReceipt({
+    ...facts,
+    configImageId,
+    rawBytes: Buffer.from(`${JSON.stringify(report)}\n`),
+    scanType: 'vulnerability',
+  })
+
+  assert.equal(receipt.imageId, facts.imageId)
+  assert.equal(receipt.configImageId, configImageId)
+  assert.equal(receipt.report.Metadata.ImageID, configImageId)
+})
+
 test('rejects a receipt with the wrong scan type, identity, or Trivy schema', () => {
   const validReport = {
     SchemaVersion: 2,
@@ -184,6 +205,28 @@ test('adds exact Teal identities to a CycloneDX SBOM and replaces spoofed proper
     sbom.metadata.properties.filter(({ name }) => name === 'org.kryv.teal.image-id').length,
     1,
   )
+})
+
+test('binds an indexed image SBOM to both the runtime index and scanned config', () => {
+  const configImageId = `sha256:${'d'.repeat(64)}`
+  const rawBytes = Buffer.from(`${JSON.stringify({
+    bomFormat: 'CycloneDX',
+    specVersion: '1.6',
+    metadata: {
+      component: {
+        type: 'container',
+        properties: [
+          { name: 'aquasecurity:trivy:ImageID', value: configImageId },
+        ],
+      },
+    },
+    components: [],
+  })}\n`)
+  const sbom = exactCycloneDxSbom({ ...facts, configImageId, rawBytes })
+  const properties = new Map(sbom.metadata.properties.map(({ name, value }) => [name, value]))
+
+  assert.equal(properties.get('org.kryv.teal.image-id'), facts.imageId)
+  assert.equal(properties.get('org.kryv.teal.config-image-id'), configImageId)
 })
 
 test('rejects a CycloneDX document not authored for the exact Trivy image', () => {
