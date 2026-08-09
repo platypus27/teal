@@ -1,0 +1,101 @@
+{
+  "id": "floating-toolbar",
+  "name": "Floating Toolbar",
+  "apiNames": [
+    "FloatingToolbar"
+  ],
+  "description": "A floating contextual toolbar that appears near a selection or anchored element, with roving tabindex and arrow-key navigation.",
+  "usage": "<FloatingToolbar open={hasSelection} className=\"left-1/2 top-2 -translate-x-1/2\">\n  <button aria-label=\"Bold\"><Bold /></button>\n  <button aria-label=\"Italic\"><Italic /></button>\n  <button aria-label=\"Underline\"><Underline /></button>\n</FloatingToolbar>",
+  "anatomy": [
+    {
+      "part": "Toolbar",
+      "description": "Floating toolbar surface positioned by the caller near its anchor."
+    },
+    {
+      "part": "Controls",
+      "description": "Caller-supplied buttons reached with arrow keys through a roving tabindex."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Render it only while its context exists; pass open={hasSelection}.",
+      "Label every icon-only button with aria-label."
+    ],
+    "donts": [
+      "Don't use it for always-visible controls; use Toolbar.",
+      "Don't trap focus; it stays a single tab stop with arrow-key movement."
+    ]
+  },
+  "related": [
+    "toolbar",
+    "context-menu",
+    "dock"
+  ],
+  "examples": [
+    {
+      "title": "Selection formatting",
+      "description": "Anchored above highlighted text with the classic bold, italic, and underline controls."
+    },
+    {
+      "title": "Custom action set",
+      "description": "Any buttons work inside; the toolbar manages focus movement across whatever controls it contains."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Actions apply to a transient context such as a text selection or a hovered row and should appear right next to it.",
+    "avoidWhen": "The controls are always visible in a fixed region of the screen; use Toolbar instead and skip the positioning.",
+    "behavior": "Renders nothing while open is false; when shown it is a single tab stop whose controls are reached with arrow keys, Home, and End, skipping disabled controls.",
+    "responsive": "Positioning comes from className or style, so the anchor logic decides placement; keep it inside the viewport near the selection."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Arrow Right",
+          "Arrow Down"
+        ],
+        "action": "Moves focus to the next control, wrapping at the end."
+      },
+      {
+        "keys": [
+          "Arrow Left",
+          "Arrow Up"
+        ],
+        "action": "Moves focus to the previous control, wrapping at the start."
+      },
+      {
+        "keys": [
+          "Home",
+          "End"
+        ],
+        "action": "Moves focus to the first or last control."
+      }
+    ],
+    "notes": [
+      "Renders a toolbar role with a configurable aria-label.",
+      "Roving tabindex keeps exactly one control in the tab order, following focus as it moves."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "FloatingToolbar",
+      "props": [
+        {
+          "defaultValue": "Contextual actions",
+          "description": "Accessible name for the toolbar.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "true",
+          "description": "Renders nothing when false; pair it with selection or focus state.",
+          "name": "open",
+          "required": false,
+          "type": "boolean"
+        }
+      ]
+    }
+  ]
+}

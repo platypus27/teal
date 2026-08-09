@@ -1,0 +1,155 @@
+{
+  "id": "button",
+  "name": "Button",
+  "apiNames": [
+    "Button",
+    "IconButton"
+  ],
+  "description": "Actions with consistent hierarchy, sizing, loading, and accessible icon treatment.",
+  "usage": "<Button variant=\"primary\">Save changes</Button>\n<IconButton label=\"More options\"><MoreHorizontal /></IconButton>",
+  "anatomy": [
+    {
+      "part": "Label",
+      "description": "The visible text naming the action; required unless the button is icon-only."
+    },
+    {
+      "part": "Icon",
+      "description": "An optional leading or trailing glyph that supports the label, hidden from assistive technology."
+    },
+    {
+      "part": "Spinner",
+      "description": "Replaces the content while loading and keeps the button disabled until the action settles."
+    },
+    {
+      "part": "IconButton",
+      "description": "The icon-only variant; its label prop becomes the aria-label and the tooltip text."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use one primary button per view so the main action is unambiguous.",
+      "Write verb-led labels that say what happens, like \"Save changes\".",
+      "Use IconButton with a descriptive label for icon-only actions."
+    ],
+    "donts": [
+      "Don't use a button for navigation; use a Link instead.",
+      "Don't rely on the danger color alone; keep the destructive label explicit.",
+      "Don't disable a button without explaining why nearby."
+    ]
+  },
+  "related": [
+    "link",
+    "button-group",
+    "toolbar",
+    "split-button"
+  ],
+  "examples": [
+    {
+      "title": "Variants and sizes",
+      "description": "Primary, secondary, ghost, and danger variants with a dedicated IconButton for icon-only actions."
+    },
+    {
+      "title": "Disabled actions",
+      "description": "Use disabled state when the action cannot be completed yet, and explain why nearby."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A user needs to take an explicit action.",
+    "avoidWhen": "The control is only communicating status or navigation.",
+    "behavior": "Loading disables the native button until the action completes.",
+    "responsive": "Let actions wrap in narrow toolbars instead of shrinking their labels."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus to and from the button."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Activates the button."
+      }
+    ],
+    "notes": [
+      "Icon-only actions use IconButton, which requires a label applied as aria-label and mirrored in the title tooltip.",
+      "Loading buttons set aria-busy and are disabled so they cannot be activated twice.",
+      "A loading IconButton replaces its icon with a spinner while keeping the accessible label.",
+      "The danger variant carries meaning through its label as well as its color."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Button",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "variant",
+          "required": false,
+          "type": "\"danger\" | \"primary\" | \"secondary\" | \"ghost\" | null"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "size",
+          "required": false,
+          "type": "\"sm\" | \"md\" | \"lg\" | null"
+        },
+        {
+          "defaultValue": "false",
+          "description": "",
+          "name": "asChild",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "false",
+          "description": "",
+          "name": "loading",
+          "required": false,
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "IconButton",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Accessible label applied as `aria-label`; also used as the default tooltip text.",
+          "name": "label",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Replaces the icon with a spinner and disables the button while true.",
+          "name": "loading",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "variant",
+          "required": false,
+          "type": "\"danger\" | \"secondary\" | \"ghost\" | null"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "size",
+          "required": false,
+          "type": "\"sm\" | \"md\" | \"lg\" | null"
+        }
+      ]
+    }
+  ]
+}

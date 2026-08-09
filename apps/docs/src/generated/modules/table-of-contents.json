@@ -1,0 +1,118 @@
+{
+  "id": "table-of-contents",
+  "name": "Table of Contents",
+  "apiNames": [
+    "TableOfContents"
+  ],
+  "description": "A nested list of heading links that indents by heading level and highlights the section in view with an IntersectionObserver.",
+  "usage": "<TableOfContents\n  headings={[\n    { id: 'installation', level: 2, title: 'Installation' },\n    { id: 'npm', level: 3, title: 'With npm' },\n    { id: 'usage', level: 2, title: 'Usage' },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "Nav",
+      "description": "Landmark labelled \"Table of contents\" by default."
+    },
+    {
+      "part": "Links",
+      "description": "Heading links indented by level into a nested outline."
+    },
+    {
+      "part": "Active highlight",
+      "description": "The heading in view sets aria-current=\"location\" via an IntersectionObserver."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Pass headings in document order with their real levels.",
+      "Keep it in a side column on wide screens."
+    ],
+    "donts": [
+      "Don't use it for flat section links; use Anchor Nav.",
+      "Don't fabricate levels; skipped levels still nest under the nearest ancestor."
+    ]
+  },
+  "related": [
+    "anchor-nav",
+    "sub-nav",
+    "scroll-area"
+  ],
+  "examples": [
+    {
+      "title": "Nested by heading level",
+      "description": "A flat list of headings in document order becomes a nested, indented list; the observer tracks scrolling."
+    },
+    {
+      "title": "Skipped levels",
+      "description": "Heading level gaps still nest under the nearest ancestor, so real documents stay correctly indented."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Long-form content such as docs or articles needs an on-page outline that mirrors the heading hierarchy.",
+    "avoidWhen": "The page has only flat sections with no hierarchy; use AnchorNav for a lighter flat list.",
+    "behavior": "Clicking a link activates it and smooth-scrolls the heading into view; the IntersectionObserver moves aria-current as the reader scrolls, and activeId can be controlled.",
+    "responsive": "Designed for a side column on wide screens; on narrow screens collapse it behind a disclosure or hide it entirely."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus between the heading links."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Smooth-scrolls the linked heading into view and marks it active."
+      }
+    ],
+    "notes": [
+      "Renders a navigation landmark labelled \"Table of contents\" with nested lists matching the heading hierarchy.",
+      "The active heading exposes aria-current=\"location\" so the reading position is announced.",
+      "Without IntersectionObserver the links still navigate; only the scroll tracking is skipped."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "TableOfContents",
+      "props": [
+        {
+          "defaultValue": "Table of contents",
+          "description": "Accessible name for the navigation landmark.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled id of the active heading.",
+          "name": "activeId",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initially active heading id when uncontrolled.",
+          "name": "defaultActiveId",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Flat list of headings in document order; nested by `level`.",
+          "name": "headings",
+          "required": true,
+          "type": "TocHeading[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the heading id when the active heading changes.",
+          "name": "onActiveChange",
+          "required": false,
+          "type": "(id: string) => void"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "id": "floating-panel",
+  "name": "Floating Panel",
+  "apiNames": [
+    "FloatingPanel"
+  ],
+  "description": "A non-modal panel anchored to a viewport corner for tools that coexist with the page.",
+  "usage": "<FloatingPanel\n  open={open}\n  onOpenChange={setOpen}\n  anchor=\"bottom-right\"\n  title=\"Clipboard history\"\n>\n  <p>Panel content</p>\n</FloatingPanel>",
+  "anatomy": [
+    {
+      "part": "Panel",
+      "description": "The non-modal surface pinned to a viewport corner; the page stays interactive behind it."
+    },
+    {
+      "part": "Header",
+      "description": "The title row with a close button, naming the panel for assistive technology."
+    },
+    {
+      "part": "Body",
+      "description": "The caller's companion content, like clipboard history or shortcuts."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use for companion tooling the user keeps open while working, like history or inspectors.",
+      "Pick an anchor corner that doesn't cover the page's primary navigation.",
+      "Keep the content compact; the panel has a fixed, viewport-capped width."
+    ],
+    "donts": [
+      "Don't use it for decisions that need full attention; use Dialog.",
+      "Don't open several floating panels that overlap each other.",
+      "Don't put transient feedback in it; use Toast."
+    ]
+  },
+  "related": [
+    "drawer",
+    "popover",
+    "bottom-sheet"
+  ],
+  "examples": [
+    {
+      "title": "Corner panel",
+      "description": "A closable panel floats above the page without trapping focus or dimming content."
+    },
+    {
+      "title": "Alternate anchor",
+      "description": "The anchor prop moves the panel to any viewport corner."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Companion tooling (history, shortcuts, inspectors) the user keeps open while working in the page.",
+    "avoidWhen": "Tasks that demand full attention or decisions; use Dialog or BottomSheet instead.",
+    "behavior": "Non-modal: the page stays interactive, focus is not trapped, and the panel closes via its close button or Escape.",
+    "responsive": "Fixed width capped to the viewport with margins on every side, so it never covers edge-to-edge on phones."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the panel when focus is inside it."
+      }
+    ],
+    "notes": [
+      "Renders as a non-modal role=\"dialog\" named by its title; aria-modal is not set.",
+      "Because focus is not trapped, the panel participates in the natural tab order."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "FloatingPanel",
+      "props": [
+        {
+          "defaultValue": "bottom-right",
+          "description": "Viewport corner the panel is anchored to.",
+          "name": "anchor",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Body content of the panel.",
+          "name": "children",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "Close",
+          "description": "Accessible label for the close button.",
+          "name": "closeLabel",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial open state when uncontrolled.",
+          "name": "defaultOpen",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Action area rendered at the bottom of the panel.",
+          "name": "footer",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the panel opens or closes.",
+          "name": "onOpenChange",
+          "required": false,
+          "type": "(open: boolean) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled open state.",
+          "name": "open",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Title rendered in the header; also the accessible name of the panel.",
+          "name": "title",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "min(22rem,calc(100vw - 2rem))",
+          "description": "Width of the panel surface.",
+          "name": "width",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

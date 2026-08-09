@@ -1,0 +1,142 @@
+{
+  "id": "field",
+  "name": "Field",
+  "apiNames": [
+    "Field",
+    "Label"
+  ],
+  "imports": [
+    "Field",
+    "Input"
+  ],
+  "description": "A deep form seam that connects labels, descriptions, errors, and required state.",
+  "usage": "<Field label=\"Display name\" description=\"Shown to other workspace members\" required>\n  <Input defaultValue=\"Avery Chen\" />\n</Field>",
+  "anatomy": [
+    {
+      "part": "Label",
+      "description": "Visible label wired to the control with htmlFor; carries the required marker when required is set."
+    },
+    {
+      "part": "Control",
+      "description": "The single child that receives the generated id, aria-describedby, and aria-invalid wiring."
+    },
+    {
+      "part": "Description",
+      "description": "Optional help text linked to the control through aria-describedby."
+    },
+    {
+      "part": "Error",
+      "description": "Validation message that marks the control aria-invalid and renders in error color."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Wrap every free-standing control in a Field so labels and errors stay wired automatically.",
+      "Write errors that say how to fix the value, not just that it is invalid.",
+      "Keep descriptions to one sentence; move longer explanations to a Callout or help page."
+    ],
+    "donts": [
+      "Don't nest more than one control in a Field; use Fieldset for groups.",
+      "Don't mark a field required visually without the required prop, or the attribute and marker drift apart.",
+      "Don't clear the error while the value is still invalid; re-validate on change."
+    ]
+  },
+  "related": [
+    "input",
+    "fieldset",
+    "form",
+    "form-error-summary"
+  ],
+  "examples": [
+    {
+      "title": "Label, description, and error",
+      "description": "Field wires the label, help text, and error message to the control inside it automatically."
+    },
+    {
+      "title": "Choice controls",
+      "description": "Checkbox and Switch render the Field label instead of their own when nested inside one."
+    },
+    {
+      "title": "Account profile",
+      "description": "Pair a required profile value with a clear validation message."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A control needs a visible label, help text, or validation message.",
+    "avoidWhen": "The control already owns an equivalent form-label composition.",
+    "behavior": "Field provides the id and ARIA relationships consumed by its child control.",
+    "responsive": "Keep labels readable and let long error messages wrap."
+  },
+  "accessibility": {
+    "notes": [
+      "The label is wired to the control with htmlFor, so clicking the label focuses the control.",
+      "Description and error text are linked to Input and TextArea children through aria-describedby automatically.",
+      "Setting error marks the control aria-invalid and renders the message in error color.",
+      "The required indicator is decorative; the underlying control keeps the native required attribute.",
+      "Custom controls can join the same wiring through the exported useFieldControl hook and mergeDescriptionIds helper."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Field",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "The form control this field labels and describes.",
+          "name": "children",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Help text rendered below the control and linked to it for assistive technology.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Error message; marks the control as invalid and links the message to it.",
+          "name": "error",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label associated with the control.",
+          "name": "label",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Marks the control as required and renders a required indicator.",
+          "name": "required",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the control invalid without requiring a visible error message.",
+          "name": "invalid",
+          "required": false,
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "Label",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "asChild",
+          "required": false,
+          "type": "boolean"
+        }
+      ]
+    }
+  ]
+}

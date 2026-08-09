@@ -1,14 +1,40 @@
-import { access, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
+import { access, mkdir, mkdtemp, readFile, readdir, rename, rm, writeFile } from 'node:fs/promises'
 import { execFile } from 'node:child_process'
 import { createServer } from 'node:http'
+import { tmpdir } from 'node:os'
 import { promisify } from 'node:util'
 import { resolve } from 'node:path'
 import { chromium } from 'playwright'
+
+import { createPackageArtifact } from './create-package-artifact.mjs'
 
 const exec = promisify(execFile)
 const root = resolve(import.meta.dirname, '..')
 const workspaceRoot = resolve(root, '../..')
 const packageJson = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'))
+
+function parseArguments(args) {
+  let artifactDirectory
+  let keepArtifact = false
+  for (let index = 0; index < args.length; index += 1) {
+    const argument = args[index]
+    if (argument === '--keep-artifact') {
+      keepArtifact = true
+    } else if (argument === '--artifact-directory') {
+      artifactDirectory = args[index + 1]
+      if (!artifactDirectory || artifactDirectory.startsWith('-')) {
+        throw new Error('--artifact-directory requires a path')
+      }
+      index += 1
+    } else {
+      throw new Error(`Unknown argument: ${argument}`)
+    }
+  }
+  if (keepArtifact && !artifactDirectory) {
+    throw new Error('--keep-artifact requires --artifact-directory')
+  }
+  return { artifactDirectory, keepArtifact }
+}
 
 async function run(command, args, cwd = workspaceRoot) {
   const { stdout, stderr } = await exec(command, args, { cwd, env: process.env, maxBuffer: 10 * 1024 * 1024 })
@@ -167,22 +193,22 @@ async function verifyCompiledConsumer(consumer) {
   }
 }
 
-await run(process.execPath, [resolve(root, 'scripts/build.mjs')], root)
-const packDir = '/tmp/teal-package-check'
-await rm(packDir, { recursive: true, force: true })
+const options = parseArguments(process.argv.slice(2))
+const packDir = options.artifactDirectory
+  ? resolve(workspaceRoot, options.artifactDirectory)
+  : await mkdtemp(resolve(tmpdir(), 'teal-package-check-'))
 await mkdir(packDir, { recursive: true })
-const { stdout: packOutput } = await exec('npm', ['pack', '--json', '--workspace', packageJson.name, '--pack-destination', packDir], {
-  cwd: workspaceRoot,
-  env: process.env,
+const descriptorPath = resolve(packDir, 'artifact.json')
+await rm(descriptorPath, { force: true })
+const artifact = await createPackageArtifact({
+  artifactDirectory: packDir,
+  build: true,
+  packageRoot: root,
+  requireClean: options.keepArtifact,
+  workspaceRoot,
 })
-const tarball = JSON.parse(packOutput)[0]?.filename
-if (!tarball) throw new Error('npm pack did not produce a tarball name')
-
-const tarballPath = resolve(packDir, tarball)
-await exec('npm', ['exec', '--workspace', packageJson.name, '--', 'publint', 'run', '--strict', tarballPath], {
-  cwd: workspaceRoot,
-  env: process.env,
-})
+const tarballPath = artifact.tarballPath
+await run('npm', ['run', 'publint:artifact', '--workspace', packageJson.name, '--', tarballPath], workspaceRoot)
 
 const declarationMaps = (await readdir(resolve(root, 'dist'))).filter((file) => file.endsWith('.d.ts.map'))
 for (const file of declarationMaps) {
@@ -191,6 +217,7 @@ for (const file of declarationMaps) {
 }
 
 const temp = await mkdtemp('/tmp/teal-consumer-')
+let verificationPassed = false
 try {
   for (const reactVersion of ['18', '19']) {
     const consumer = resolve(temp, `react-${reactVersion}`)
@@ -199,6 +226,10 @@ try {
       name: `teal-package-consumer-react-${reactVersion}`,
       private: true,
       type: 'module',
+      scripts: {
+        build: 'vite build',
+        'build:css': 'tailwindcss -c tailwind.config.js -i tailwind-input.css -o public-utilities.css --minify',
+      },
       dependencies: {
         '@kryv/teal': `file:${tarballPath}`,
         react: `^${reactVersion}.0.0`,
@@ -289,12 +320,12 @@ export default {
     await run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund'], consumer)
     await run(process.execPath, ['-e', "import('@kryv/teal').then((mod) => { if (!mod.Button || !mod.VerticalNavItem || !mod.AppSwitcher) throw new Error('public export missing') })"], consumer)
     await run(process.execPath, ['ssr.mjs'], consumer)
-    await run('npm', ['exec', '--', 'tailwindcss', '-c', 'tailwind.config.js', '-i', 'tailwind-input.css', '-o', 'public-utilities.css', '--minify'], consumer)
+    await run('npm', ['run', 'build:css'], consumer)
     const publicUtilities = await readFile(resolve(consumer, 'public-utilities.css'), 'utf8')
     for (const expected of ['.bg-primary', '.bg-teal-primary', '.text-teal-on-primary']) {
       if (!publicUtilities.includes(expected)) throw new Error(`Public preset stylesheet is missing ${expected}`)
     }
-    await run('npm', ['exec', '--', 'vite', 'build'], consumer)
+    await run('npm', ['run', 'build'], consumer)
     const builtAssets = resolve(consumer, 'dist/assets')
     const builtCssFiles = (await readdir(builtAssets)).filter((file) => file.endsWith('.css'))
     if (builtCssFiles.length !== 1) throw new Error(`Expected one compiled consumer stylesheet, found ${builtCssFiles.length}`)
@@ -320,10 +351,25 @@ export default {
       for (const source of map.sources ?? []) await access(resolve(installedPackage, 'dist', source))
     }
   }
+  verificationPassed = true
 } finally {
   await rm(temp, { recursive: true, force: true })
-  await rm(tarballPath, { force: true })
-  await rm(packDir, { recursive: true, force: true })
+  if (!verificationPassed || !options.keepArtifact) {
+    if (options.artifactDirectory) await rm(tarballPath, { force: true })
+    else await rm(packDir, { recursive: true, force: true })
+  }
+}
+
+if (options.keepArtifact) {
+  const temporaryDescriptor = `${descriptorPath}.tmp-${process.pid}`
+  await writeFile(temporaryDescriptor, `${JSON.stringify({
+    integrity: artifact.integrity,
+    name: artifact.name,
+    sourceCommit: artifact.sourceCommit,
+    tarballPath,
+    version: artifact.version,
+  }, null, 2)}\n`, { flag: 'wx' })
+  await rename(temporaryDescriptor, descriptorPath)
 }
 
 console.log(`Verified ${packageJson.name}@${packageJson.version}`)

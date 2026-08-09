@@ -1,0 +1,140 @@
+{
+  "id": "mega-menu",
+  "name": "Mega Menu",
+  "apiNames": [
+    "MegaMenu",
+    "MegaMenuItem",
+    "MegaMenuColumn",
+    "MegaMenuLink"
+  ],
+  "description": "A top-level navigation item that opens a multi-column link panel on hover, focus, or click, with full keyboard support.",
+  "usage": "<MegaMenu>\n  <MegaMenuItem label=\"Products\">\n    <MegaMenuColumn heading=\"Build\">\n      <MegaMenuLink href=\"/editor\">Editor</MegaMenuLink>\n      <MegaMenuLink href=\"/preview\">Preview</MegaMenuLink>\n    </MegaMenuColumn>\n    <MegaMenuColumn heading=\"Ship\">\n      <MegaMenuLink href=\"/hosting\">Hosting</MegaMenuLink>\n    </MegaMenuColumn>\n  </MegaMenuItem>\n</MegaMenu>",
+  "anatomy": [
+    {
+      "part": "Trigger",
+      "description": "Top-level item button exposing aria-expanded and aria-haspopup."
+    },
+    {
+      "part": "Panel",
+      "description": "Multi-column surface opened on hover, focus, or click."
+    },
+    {
+      "part": "Columns",
+      "description": "MegaMenuColumn groups with headings that organize the links."
+    },
+    {
+      "part": "Links",
+      "description": "MegaMenuLink destinations inside each column."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Group links under a heading per column so wide panels stay scannable.",
+      "Keep panels to links; move actions into a Menu."
+    ],
+    "donts": [
+      "Don't use it for a single short list; use Menu.",
+      "Don't try to pin several panels open; only one is open at a time by design."
+    ]
+  },
+  "related": [
+    "navigation-menu",
+    "menu",
+    "accordion"
+  ],
+  "examples": [
+    {
+      "title": "Two-column panel",
+      "description": "Grouped columns of links under a single trigger; opens on hover, focus, or click."
+    },
+    {
+      "title": "Three-column panel",
+      "description": "Wider panels stay scannable with headings per column, useful for solution or industry menus."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A marketing or docs site has a handful of top-level sections that each fan out into many categorized links.",
+    "avoidWhen": "The panel would hold actions rather than links, or the structure is a single short list; use Menu or NavigationMenu instead.",
+    "behavior": "Only one panel is open at a time; arrow keys move between triggers and across column boundaries, and Escape closes the panel and refocuses its trigger.",
+    "responsive": "Panels open below their trigger and grow with the column count; on narrow screens switch to a Drawer or Accordion of the same links."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Arrow Down"
+        ],
+        "action": "Opens the panel and focuses the first link."
+      },
+      {
+        "keys": [
+          "Arrow Right",
+          "Arrow Left"
+        ],
+        "action": "Moves between triggers, or between links across columns inside an open panel."
+      },
+      {
+        "keys": [
+          "Arrow Up"
+        ],
+        "action": "Returns focus from a panel link to its trigger."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the panel and refocuses the trigger."
+      }
+    ],
+    "notes": [
+      "Triggers are buttons with aria-expanded and aria-haspopup pointing at their panel.",
+      "Panels contain real links inside a navigation landmark, so structure is announced without a menubar role."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "MegaMenu",
+      "props": [
+        {
+          "defaultValue": "Main",
+          "description": "Accessible name for the navigation landmark.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "MegaMenuItem",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Text of the top-level trigger button.",
+          "name": "label",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "MegaMenuColumn",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Heading shown above the column's links.",
+          "name": "heading",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "MegaMenuLink",
+      "props": []
+    }
+  ]
+}

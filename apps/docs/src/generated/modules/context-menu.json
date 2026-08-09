@@ -1,0 +1,131 @@
+{
+  "id": "context-menu",
+  "name": "Context Menu",
+  "apiNames": [
+    "ContextMenu"
+  ],
+  "description": "A right-click action menu attached to any element, sharing the Menu item contract.",
+  "usage": "<ContextMenu\n  label=\"Project actions\"\n  items={[{ id: 'rename', label: 'Rename', onSelect: () => undefined }]}\n>\n  <div>Right-click this project row</div>\n</ContextMenu>",
+  "anatomy": [
+    {
+      "part": "Target",
+      "description": "The wrapped children that open the menu on right-click or the keyboard menu key."
+    },
+    {
+      "part": "Content",
+      "description": "The floating action list, named by the label prop, sharing Menu's keyboard model."
+    },
+    {
+      "part": "Item",
+      "description": "One action with label, optional icon, disabled state, separatorBefore, and danger variant."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Mirror actions that are also reachable elsewhere, like a row toolbar or Menu.",
+      "Pass a label so the menu is announced with the target's context.",
+      "Isolate destructive items with separatorBefore and the danger variant."
+    ],
+    "donts": [
+      "Don't make any action reachable only through right-click; touch and keyboard users need a visible path.",
+      "Don't attach context menus to small inline text where selection is the primary gesture.",
+      "Don't duplicate the page's primary actions; keep it to secondary, target-specific ones."
+    ]
+  },
+  "related": [
+    "menu",
+    "popover",
+    "command"
+  ],
+  "examples": [
+    {
+      "title": "Right-click actions",
+      "description": "Items support icons, separators, disabled states, and the danger variant like Menu."
+    },
+    {
+      "title": "Disabled and danger items",
+      "description": "Unavailable actions stay visible but disabled; destructive ones keep the danger styling."
+    },
+    {
+      "title": "Separated danger",
+      "description": "Keep destructive context actions at the end behind a separator."
+    }
+  ],
+  "guidance": {
+    "useWhen": "An element has secondary actions discoverable on right-click.",
+    "avoidWhen": "The actions are primary; keep them visible instead.",
+    "behavior": "Shares the Menu item contract with icons, separators, and danger styling.",
+    "responsive": "Provide a visible alternative on touch layouts."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Menu key"
+        ],
+        "action": "Opens the menu from the keyboard on the focused target."
+      },
+      {
+        "keys": [
+          "Arrow Up",
+          "Arrow Down"
+        ],
+        "action": "Moves the highlight between items, skipping disabled ones."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Activates the highlighted item and closes the menu."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the menu and returns focus to the target."
+      }
+    ],
+    "notes": [
+      "Shares Menu's ARIA menu pattern with menuitem roles and roving highlight.",
+      "The menu is named by the required label prop so the target context is announced.",
+      "Right-click is pointer-only; every action must also be reachable through a visible control."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "ContextMenu",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Element the menu is attached to; opens on right-click and receives trigger props automatically.",
+          "name": "children",
+          "required": true,
+          "type": "ReactElement<unknown, string | JSXElementConstructor<any>>"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Items rendered in the menu.",
+          "name": "items",
+          "required": true,
+          "type": "MenuItem[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name for the menu.",
+          "name": "label",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

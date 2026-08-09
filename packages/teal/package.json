@@ -49,6 +49,8 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
+    "prepack": "node scripts/prepack-package.mjs",
+    "publint:artifact": "publint run --strict",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "lint": "eslint src test --max-warnings 0",

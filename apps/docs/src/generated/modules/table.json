@@ -1,0 +1,157 @@
+{
+  "id": "table",
+  "name": "Table",
+  "apiNames": [
+    "Table"
+  ],
+  "description": "Accessible data presentation driven by column definitions, density, loading, and empty state.",
+  "usage": "<Table\n  caption=\"Team members\"\n  columns={[{ key: 'name', header: 'Name', cell: (row) => row.name }]}\n  rows={rows}\n  getRowKey={(row) => row.id}\n/>",
+  "anatomy": [
+    {
+      "part": "Scroll region",
+      "description": "The overflow wrapper with role=\"region\" named after the caption; it takes keyboard focus only when it actually scrolls."
+    },
+    {
+      "part": "Caption",
+      "description": "Visually hidden caption announcing the table's subject to screen readers."
+    },
+    {
+      "part": "Header row",
+      "description": "Uppercase th cells with scope=\"col\", one per column definition, on a raised surface."
+    },
+    {
+      "part": "Body rows",
+      "description": "One tr per record keyed by getRowKey; each column's cell renderer produces the td content."
+    },
+    {
+      "part": "Loading and empty states",
+      "description": "Skeleton rows with a busy region while loading, or the empty content spanning all columns when rows is empty."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Always pass a caption; it names both the region and the table for assistive technology.",
+      "Use density=\"compact\" in dashboards and side panels where vertical space is scarce.",
+      "Give empty a helpful message that explains why there are no rows."
+    ],
+    "donts": [
+      "Don't add sorting or row selection here; use DataTable, which layers both on this contract.",
+      "Don't derive row keys from array indexes; getRowKey should return a stable id.",
+      "Don't put unlabeled icon buttons in cells; every interactive cell needs an accessible name."
+    ]
+  },
+  "related": [
+    "data-table",
+    "permission-matrix",
+    "list"
+  ],
+  "examples": [
+    {
+      "title": "Column definitions",
+      "description": "Columns declare their header and cell renderer; rows need a stable key."
+    },
+    {
+      "title": "Loading state",
+      "description": "loading swaps in skeleton rows, marks the region busy, and announces the loadingLabel."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Records need readable rows and columns without sorting or selection.",
+    "avoidWhen": "Rows need sorting or bulk selection; use DataTable. Hierarchical data fits TreeView better.",
+    "behavior": "Columns declare a header and a cell renderer; loading swaps in skeleton rows and marks the region busy; an empty rows array shows the empty content.",
+    "responsive": "The region scrolls horizontally when columns overflow and takes keyboard focus only then."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus to the scroll region when the table overflows horizontally."
+      },
+      {
+        "keys": [
+          "Arrow keys"
+        ],
+        "action": "Scrolls the region horizontally when the table overflows."
+      }
+    ],
+    "notes": [
+      "The caption is announced to screen readers and kept visually hidden.",
+      "Header cells use scope=\"col\", and the table keeps real table semantics for screen reader navigation.",
+      "Skeleton rows are announced through loadingLabel while data loads.",
+      "The scroll region is a tab stop only while the table overflows; tables that fit their container are skipped."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Table",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Accessible caption describing the table, announced to screen readers.",
+          "name": "caption",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Column definitions rendered in header order.",
+          "name": "columns",
+          "required": true,
+          "type": "TableColumn<Row>[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Vertical padding of cells.",
+          "name": "density",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Content shown when `rows` is empty and the table is not loading.",
+          "name": "empty",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Returns a stable, unique key for each row.",
+          "name": "getRowKey",
+          "required": true,
+          "type": "(row: Row) => string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Renders skeleton rows in place of data and marks the region busy.",
+          "name": "loading",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible label announced while skeleton rows are shown.",
+          "name": "loadingLabel",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Data rows rendered in the table body.",
+          "name": "rows",
+          "required": true,
+          "type": "Row[]"
+        }
+      ]
+    }
+  ]
+}

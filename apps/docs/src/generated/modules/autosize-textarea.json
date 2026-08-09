@@ -1,0 +1,97 @@
+{
+  "id": "autosize-textarea",
+  "name": "Autosize Textarea",
+  "apiNames": [
+    "AutosizeTextarea"
+  ],
+  "description": "A textarea that grows and shrinks with its content, capped by a maximum row count.",
+  "usage": "<AutosizeTextarea\n  label=\"Bio\"\n  minRows={2}\n  maxRows={6}\n  placeholder=\"Tell us about yourself\"\n/>",
+  "anatomy": [
+    {
+      "part": "Label",
+      "description": "The visible label associated with the textarea, wired to any description or error text."
+    },
+    {
+      "part": "Textarea",
+      "description": "The native textarea whose height tracks scrollHeight on every edit, clamped between minRows and maxRows."
+    },
+    {
+      "part": "Help or error text",
+      "description": "Optional description or validation message linked to the field with aria-describedby."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Set minRows so the empty field hints at the expected entry length.",
+      "Set maxRows on fields that can grow long, so the form below is not pushed down.",
+      "Pair with Field when the entry needs validation messages."
+    ],
+    "donts": [
+      "Don't use it when the layout needs a fixed, user-resizable field; use TextArea instead.",
+      "Don't leave maxRows unset on comment or log-style inputs with unbounded length."
+    ]
+  },
+  "related": [
+    "input",
+    "field",
+    "mention-input"
+  ],
+  "examples": [
+    {
+      "title": "Grow with content",
+      "description": "The height tracks scrollHeight on every edit, so the field never clips short notes or wastes space on long ones."
+    },
+    {
+      "title": "Capped growth",
+      "description": "maxRows stops the growth and switches to scrolling, keeping long entries from pushing the form down."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Entries vary widely in length and seeing the whole text matters, such as comments, bios, or feedback boxes.",
+    "avoidWhen": "The layout needs a stable, resizable field; use TextArea, which keeps a fixed minimum height and a resize handle.",
+    "behavior": "Height follows the content between minRows and maxRows; beyond maxRows the field scrolls instead of growing.",
+    "responsive": "The field stretches to fill its container and re-measures on every change, so wrapping text still fits."
+  },
+  "accessibility": {
+    "notes": [
+      "The visible label is associated with the textarea; use aria-label when there is no visible label.",
+      "Resize is suppressed visually because the field sizes itself; keyboard and screen-reader behavior match a standard textarea."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "AutosizeTextarea",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered below the textarea.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label rendered above the textarea. Required outside a Field; inside a Field the Field's label is used.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Maximum rows shown before the textarea scrolls instead of growing.",
+          "name": "maxRows",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "1",
+          "description": "Rows shown when the content is short.",
+          "name": "minRows",
+          "required": false,
+          "type": "number"
+        }
+      ]
+    }
+  ]
+}

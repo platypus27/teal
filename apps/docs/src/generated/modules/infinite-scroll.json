@@ -1,0 +1,127 @@
+{
+  "id": "infinite-scroll",
+  "name": "Infinite Scroll",
+  "apiNames": [
+    "InfiniteScroll"
+  ],
+  "description": "Loads the next batch of content automatically when a sentinel scrolls into view via IntersectionObserver.",
+  "usage": "<InfiniteScroll\n  hasMore={hasMore}\n  loading={loading}\n  onLoadMore={loadNextPage}\n  endMessage=\"All caught up\"\n>\n  <ReportRows rows={rows} />\n</InfiniteScroll>",
+  "anatomy": [
+    {
+      "part": "Content block",
+      "description": "The accumulated children rendered as a plain block."
+    },
+    {
+      "part": "Sentinel",
+      "description": "The aria-hidden marker whose intersection with the viewport triggers onLoadMore."
+    },
+    {
+      "part": "Loader and end message",
+      "description": "A role=\"status\" spinner while loading, replaced by the end message when hasMore is false."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Set an endMessage so the end of the feed is explicit.",
+      "Gate requests with hasMore and loading to prevent duplicate fetches.",
+      "Offer another route to footer content, since infinite lists push it away."
+    ],
+    "donts": [
+      "Don't use it when users need to reach a specific record; use Pagination.",
+      "Don't auto-load task lists the user must finish; continuous loading hides the finish line.",
+      "Don't rely on the sentinel without a fallback; unsupported environments show a Load more button."
+    ]
+  },
+  "related": [
+    "pagination",
+    "virtual-list",
+    "loading"
+  ],
+  "examples": [
+    {
+      "title": "Sentinel loading",
+      "description": "Scrolling the list to the bottom triggers onLoadMore and appends the next batch, with a spinner while it loads."
+    },
+    {
+      "title": "End of feed",
+      "description": "With hasMore={false} the sentinel disappears and an end message tells the reader there is nothing left."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Feeds and long result lists where readers browse continuously, such as activity streams or search results.",
+    "avoidWhen": "Data where users need to reach a specific record or the footer; use Pagination or a VirtualList instead.",
+    "behavior": "Calls onLoadMore only while hasMore is true and loading is false; without IntersectionObserver it falls back to a manual Load more button.",
+    "responsive": "Renders as a plain block around its children, so the content's own responsive layout is untouched."
+  },
+  "accessibility": {
+    "notes": [
+      "The default loader is a role=\"status\" region, so screen readers hear that more content is loading.",
+      "Without IntersectionObserver support a real Load more button keeps the feature operable.",
+      "The sentinel itself is aria-hidden and adds nothing to the accessibility tree."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "InfiniteScroll",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Content loaded so far.",
+          "name": "children",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Message shown once there is nothing left to load.",
+          "name": "endMessage",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "true",
+          "description": "Whether more items can be loaded.",
+          "name": "hasMore",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Content shown while the next batch loads.",
+          "name": "loader",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Whether a batch is currently loading; suppresses further triggers.",
+          "name": "loading",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the sentinel enters the viewport and more items can load.",
+          "name": "onLoadMore",
+          "required": false,
+          "type": "() => void"
+        },
+        {
+          "defaultValue": "0px",
+          "description": "Margin around the sentinel at which loading starts, e.g. `'200px'`.",
+          "name": "rootMargin",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "0",
+          "description": "Portion of the sentinel that must be visible to trigger loading, from 0 to 1.",
+          "name": "threshold",
+          "required": false,
+          "type": "number"
+        }
+      ]
+    }
+  ]
+}

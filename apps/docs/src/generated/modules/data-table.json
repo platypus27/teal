@@ -1,0 +1,192 @@
+{
+  "id": "data-table",
+  "name": "Data Table",
+  "apiNames": [
+    "DataTable"
+  ],
+  "description": "A data grid with sortable columns and row selection, built on the Table contract.",
+  "usage": "<DataTable\n  caption=\"Projects\"\n  columns={[{ key: 'name', header: 'Name', cell: (row) => row.name, sortable: true }]}\n  rows={rows}\n  getRowKey={(row) => row.id}\n  sort={sort}\n  onSortChange={setSort}\n  selectable\n/>",
+  "anatomy": [
+    {
+      "part": "Sort headers",
+      "description": "Buttons inside sortable th cells that toggle ascending/descending and expose aria-sort on the column."
+    },
+    {
+      "part": "Selection column",
+      "description": "A header checkbox with indeterminate state plus one checkbox per row, added by selectable."
+    },
+    {
+      "part": "Body rows",
+      "description": "Rows keyed by getRowKey; selected rows are tinted and expose aria-selected."
+    },
+    {
+      "part": "Loading and empty states",
+      "description": "Skeleton rows with a busy region while loading, or the empty content when there are no rows."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Keep sort and selectedKeys controlled; the component reports intent, you re-sort the rows.",
+      "Mark only genuinely sortable columns as sortable.",
+      "Pair selection with a BulkActionBar so selected rows have something to act on."
+    ],
+    "donts": [
+      "Don't expect DataTable to sort for you; onSortChange only reports the next sort state.",
+      "Don't enable selectable without an onSelectionChange handler.",
+      "Don't use DataTable for a handful of read-only rows; Table is enough."
+    ]
+  },
+  "related": [
+    "table",
+    "pagination",
+    "bulk-action-bar"
+  ],
+  "examples": [
+    {
+      "title": "Sorting and selection",
+      "description": "Sortable headers set aria-sort; the header checkbox handles indeterminate bulk state."
+    },
+    {
+      "title": "Compact selection",
+      "description": "density=\"compact\" with selectable rows; selected rows tint and expose aria-selected."
+    },
+    {
+      "title": "Bulk selection",
+      "description": "Combine selectable rows with a toolbar for bulk actions."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Rows need sorting or bulk selection beyond Table.",
+    "avoidWhen": "The data is read-only and simple; use Table.",
+    "behavior": "Sorting is caller-owned; the header checkbox tracks indeterminate state.",
+    "responsive": "The region scrolls horizontally like Table on narrow screens."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus through the sort header buttons and the row checkboxes."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Activates the focused sort toggle or checkbox."
+      }
+    ],
+    "notes": [
+      "Sorted columns expose aria-sort=\"ascending\" or \"descending\" on the column header.",
+      "The select-all checkbox reports an indeterminate state when only some rows are selected; selected rows expose aria-selected.",
+      "While loading, the region is marked aria-busy and a status element announces the loadingLabel."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "A Table with caller-owned sorting and row selection layered on top.",
+      "displayName": "DataTable",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Accessible caption describing the table, announced to screen readers.",
+          "name": "caption",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Column definitions rendered in header order.",
+          "name": "columns",
+          "required": true,
+          "type": "DataTableColumn<Row>[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Vertical padding of cells.",
+          "name": "density",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Content shown when `rows` is empty and the table is not loading.",
+          "name": "empty",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Returns a stable, unique key for each row.",
+          "name": "getRowKey",
+          "required": true,
+          "type": "(row: Row) => string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Renders skeleton rows in place of data and marks the region busy.",
+          "name": "loading",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible label announced while skeleton rows are shown.",
+          "name": "loadingLabel",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the next sort state when a sortable header is activated. Sorting itself stays caller-owned.",
+          "name": "onSortChange",
+          "required": false,
+          "type": "(sort: DataTableSort) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the full list of selected row keys whenever the selection changes.",
+          "name": "onSelectionChange",
+          "required": false,
+          "type": "(keys: string[]) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Data rows rendered in the table body.",
+          "name": "rows",
+          "required": true,
+          "type": "Row[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Adds a selection column with a header checkbox and per-row checkboxes.",
+          "name": "selectable",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled set of selected row keys.",
+          "name": "selectedKeys",
+          "required": false,
+          "type": "string[] | Set<string>"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled sort state; drives the header icons and `aria-sort`.",
+          "name": "sort",
+          "required": false,
+          "type": "DataTableSort"
+        }
+      ]
+    }
+  ]
+}

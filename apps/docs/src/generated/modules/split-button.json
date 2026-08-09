@@ -1,0 +1,147 @@
+{
+  "id": "split-button",
+  "name": "Split Button",
+  "apiNames": [
+    "SplitButton"
+  ],
+  "description": "A primary action joined to a menu of related alternatives.",
+  "usage": "<SplitButton\n  label=\"Deploy\"\n  onClick={() => undefined}\n  items={[{ id: 'staging', label: 'Deploy to staging', onSelect: () => undefined }]}\n/>",
+  "anatomy": [
+    {
+      "part": "Main action",
+      "description": "The button that fires the default action on click."
+    },
+    {
+      "part": "Menu trigger",
+      "description": "The chevron button named by menuLabel (\"More actions\" by default)."
+    },
+    {
+      "part": "Menu",
+      "description": "The list of alternative actions sharing the main action's context."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Make the default the action most people want most of the time.",
+      "Keep alternatives to a handful of close variants of the same action.",
+      "Keep the main label short so the joined control stays on one line."
+    ],
+    "donts": [
+      "Don't put unrelated actions in the menu; use separate buttons or a plain Menu.",
+      "Don't hide the only way to do something behind the chevron."
+    ]
+  },
+  "related": [
+    "button",
+    "menu",
+    "button-group"
+  ],
+  "examples": [
+    {
+      "title": "Default plus alternatives",
+      "description": "The main action fires directly; the chevron opens the related menu."
+    },
+    {
+      "title": "Secondary and danger variants",
+      "description": "The menu can carry a danger item behind the separator."
+    }
+  ],
+  "guidance": {
+    "useWhen": "One default action has a few close alternatives.",
+    "avoidWhen": "The actions are unrelated; use separate buttons or a plain Menu.",
+    "behavior": "The main button fires the default; the chevron owns the menu.",
+    "responsive": "Keep the label short so the joined control stays one line."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus to the main action and then to the menu trigger."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Activates the focused half; the trigger opens the menu."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the menu without selecting an item."
+      }
+    ],
+    "notes": [
+      "The main action and the menu trigger are separate focus stops with separate accessible names.",
+      "The chevron trigger is named by menuLabel (\"More actions\" by default) and the menu shares that label.",
+      "Menu items follow menu keyboard behavior through the underlying Menu component."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "A primary action button with an attached menu trigger for related secondary\nactions, joined into a single pill with a hairline seam.",
+      "displayName": "SplitButton",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Disables both the main action and the menu trigger.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Secondary actions rendered in the attached menu.",
+          "name": "items",
+          "required": true,
+          "type": "MenuItem[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Content of the main action button.",
+          "name": "label",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "More actions",
+          "description": "Accessible label for the menu trigger button and the menu itself.",
+          "name": "menuLabel",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the main action is clicked.",
+          "name": "onClick",
+          "required": true,
+          "type": "() => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Size of both buttons.",
+          "name": "size",
+          "required": false,
+          "type": "\"sm\" | \"md\" | \"lg\" | null"
+        },
+        {
+          "defaultValue": "primary",
+          "description": "Color treatment shared by both buttons.",
+          "name": "variant",
+          "required": false,
+          "type": "enum"
+        }
+      ]
+    }
+  ]
+}

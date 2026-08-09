@@ -1,0 +1,157 @@
+{
+  "id": "popover",
+  "name": "Popover",
+  "apiNames": [
+    "Popover"
+  ],
+  "imports": [
+    "Popover",
+    "Button",
+    "Checkbox"
+  ],
+  "description": "An anchored surface for arbitrary controls and supplemental content.",
+  "usage": "<Popover label=\"Filter projects\" trigger={<Button variant=\"secondary\">Filters</Button>}>\n  <div className=\"grid gap-3\">\n    <Checkbox label=\"Active only\" defaultChecked />\n    <Button size=\"sm\">Apply filters</Button>\n  </div>\n</Popover>",
+  "anatomy": [
+    {
+      "part": "Trigger",
+      "description": "The control that toggles the panel; exposes aria-expanded and aria-controls."
+    },
+    {
+      "part": "Content",
+      "description": "The anchored panel holding arbitrary controls, named by the required label prop."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Always pass a label so the panel has an accessible name even without a visible heading.",
+      "Keep the content to one small task, like a filter set or a share action.",
+      "Let collision handling flip placement; only set side or align when the default reads wrong."
+    ],
+    "donts": [
+      "Don't use a popover for blocking decisions; use Dialog or AlertDialog.",
+      "Don't build multi-step flows inside a popover; focus is not trapped by design.",
+      "Don't use it for a one-line hint; use Tooltip instead."
+    ]
+  },
+  "related": [
+    "tooltip",
+    "menu",
+    "popconfirm"
+  ],
+  "examples": [
+    {
+      "title": "Filter panel",
+      "description": "Popover anchors interactive content to a trigger with collision-aware placement."
+    },
+    {
+      "title": "Share panel",
+      "description": "side=\"top\" opens the panel above the trigger; a read-only Input holds the share link."
+    },
+    {
+      "title": "Inline filters",
+      "description": "Keep a small set of filters anchored to the toolbar that owns them."
+    },
+    {
+      "title": "Supplemental controls",
+      "description": "Use a popover for controls that do not deserve a full route or dialog."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Supplemental controls should stay anchored to a trigger.",
+    "avoidWhen": "The content is a blocking task or a simple one-line hint.",
+    "behavior": "Focus returns to the trigger after dismissal.",
+    "responsive": "Keep panels within the viewport and avoid overly wide forms."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the popover and returns focus to the trigger."
+      },
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus into the popover content, then back into the page flow."
+      }
+    ],
+    "notes": [
+      "The trigger exposes aria-expanded and aria-controls for the popover content.",
+      "Focus is not trapped; popovers suit small control panels, not multi-step flows.",
+      "Placement flips automatically to stay inside the viewport."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Popover",
+      "props": [
+        {
+          "defaultValue": "center",
+          "description": "Horizontal alignment of the content relative to the trigger.",
+          "name": "align",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Content rendered inside the popover surface.",
+          "name": "children",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial open state when uncontrolled.",
+          "name": "defaultOpen",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name for the dialog-like popover surface.",
+          "name": "label",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the popover opens or closes.",
+          "name": "onOpenChange",
+          "required": false,
+          "type": "(open: boolean) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled open state.",
+          "name": "open",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "bottom",
+          "description": "Side of the trigger the content opens on.",
+          "name": "side",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Element that toggles the popover; receives trigger props automatically.",
+          "name": "trigger",
+          "required": true,
+          "type": "ReactElement<unknown, string | JSXElementConstructor<any>>"
+        }
+      ]
+    }
+  ]
+}

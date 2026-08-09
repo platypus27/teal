@@ -1,0 +1,114 @@
+{
+  "id": "anchor-nav",
+  "name": "Anchor Nav",
+  "apiNames": [
+    "AnchorNav"
+  ],
+  "description": "A scroll-spy nav of page section anchors that highlights the section in view and smooth-scrolls on click.",
+  "usage": "<AnchorNav\n  items={[\n    { id: 'overview', label: 'Overview' },\n    { id: 'features', label: 'Features' },\n    { id: 'pricing', label: 'Pricing' },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "Nav",
+      "description": "Landmark labelled \"On this page\" by default."
+    },
+    {
+      "part": "Items",
+      "description": "Anchor links to page sections; the section in view sets aria-current=\"location\"."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Give each section a stable id that matches its item.",
+      "Seed defaultActiveId when deep links should start highlighted."
+    ],
+    "donts": [
+      "Don't use it to display heading hierarchy; use Table of Contents.",
+      "Don't render sections inside the nav; it only points at them."
+    ]
+  },
+  "related": [
+    "table-of-contents",
+    "sub-nav",
+    "back-top"
+  ],
+  "examples": [
+    {
+      "title": "Scroll-spy sections",
+      "description": "An IntersectionObserver tracks the rendered sections and moves the highlight as the page scrolls."
+    },
+    {
+      "title": "Seeded active item",
+      "description": "defaultActiveId controls the initial highlight before any scrolling happens, useful for deep links."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A long page is split into id-addressable sections and readers need a persistent way to jump between them, such as docs or marketing pages.",
+    "avoidWhen": "The links are headings with a hierarchy to display; use TableOfContents to show nesting by heading level.",
+    "behavior": "Clicking an item activates it and smooth-scrolls its section into view; scrolling the page updates the active item through IntersectionObserver, and activeId can be controlled.",
+    "responsive": "The vertical layout suits side rails on wide screens; on narrow screens hide it or move it above the content."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus between the section links."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Smooth-scrolls the linked section into view and marks the item active."
+      }
+    ],
+    "notes": [
+      "Renders a navigation landmark labelled \"On this page\" by default.",
+      "The active item exposes aria-current=\"location\" so the position in the page is announced.",
+      "Without IntersectionObserver the links still navigate; only the scroll tracking is skipped."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "AnchorNav",
+      "props": [
+        {
+          "defaultValue": "On this page",
+          "description": "Accessible name for the navigation landmark.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled id of the active section.",
+          "name": "activeId",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initially active section id when uncontrolled.",
+          "name": "defaultActiveId",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Sections the nav links to and spies on, in document order.",
+          "name": "items",
+          "required": true,
+          "type": "AnchorNavItem[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the section id when the active section changes.",
+          "name": "onActiveChange",
+          "required": false,
+          "type": "(id: string) => void"
+        }
+      ]
+    }
+  ]
+}

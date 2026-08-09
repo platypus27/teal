@@ -1,0 +1,64 @@
+{
+  "id": "kbd",
+  "name": "Kbd",
+  "apiNames": [
+    "Kbd"
+  ],
+  "description": "An inline keyboard shortcut hint with a raised keycap treatment.",
+  "usage": "Save with <Kbd>Ctrl</Kbd> + <Kbd>S</Kbd>",
+  "anatomy": [
+    {
+      "part": "Keycap",
+      "description": "The raised kbd element sized in ems so it scales with surrounding text."
+    },
+    {
+      "part": "Separator",
+      "description": "Plain text between keycaps, like +, keeping combinations readable."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use Kbd for shortcuts referenced in help, onboarding, or settings copy.",
+      "Write platform-appropriate key names, like Cmd on macOS and Ctrl elsewhere.",
+      "Keep combinations to two or three keys."
+    ],
+    "donts": [
+      "Don't use Kbd for user-entered values; use plain or inline-code styling.",
+      "Don't style non-keyboard text as a keycap."
+    ]
+  },
+  "related": [
+    "code-block",
+    "tooltip",
+    "callout"
+  ],
+  "examples": [
+    {
+      "title": "Shortcut hints",
+      "description": "Kbd scales with surrounding text through em-based sizing."
+    },
+    {
+      "title": "Combinations",
+      "description": "Join keys with plain-text separators for multi-key shortcuts."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A keyboard shortcut is referenced in help or onboarding copy.",
+    "avoidWhen": "The key is part of a form value; use plain text.",
+    "behavior": "Sizing is em-based so the keycap scales with its context.",
+    "responsive": "Keep combinations short; wrap groups of keys with separators as text."
+  },
+  "accessibility": {
+    "notes": [
+      "Renders a native kbd element, so assistive technology announces the content as keyboard input.",
+      "Kbd is purely presentational and takes no focus; it should never be interactive."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Kbd",
+      "props": []
+    }
+  ]
+}

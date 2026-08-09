@@ -1,0 +1,132 @@
+{
+  "id": "card",
+  "name": "Card",
+  "apiNames": [
+    "Card",
+    "CardHeader",
+    "CardTitle",
+    "CardDescription",
+    "CardContent",
+    "CardFooter"
+  ],
+  "description": "A structural surface for related content without ambiguous interactive behavior.",
+  "usage": "<Card>\n  <CardHeader>\n    <CardTitle>Security report</CardTitle>\n    <CardDescription>Updated five minutes ago</CardDescription>\n  </CardHeader>\n  <CardContent>No critical findings were detected.</CardContent>\n</Card>",
+  "anatomy": [
+    {
+      "part": "CardHeader",
+      "description": "The heading block holding CardTitle and CardDescription."
+    },
+    {
+      "part": "CardContent",
+      "description": "The main body region of the card."
+    },
+    {
+      "part": "CardFooter",
+      "description": "The trailing region for metadata or secondary actions."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Compose with the header, content, and footer parts so spacing rhythm stays consistent.",
+      "Set the polymorphic as prop (article, section, li) to fit the page outline.",
+      "Keep one clear topic per card."
+    ],
+    "donts": [
+      "Don't make the whole card clickable when it also contains links or buttons.",
+      "Don't wrap every section in a card just for decoration.",
+      "Don't bury the page's primary action inside a card footer."
+    ]
+  },
+  "related": [
+    "panel",
+    "launcher-card",
+    "expandable-card"
+  ],
+  "examples": [
+    {
+      "title": "Composition",
+      "description": "Cards compose header, content, and footer regions with consistent rhythm."
+    },
+    {
+      "title": "Report summary",
+      "description": "Use a card to group a short summary and one related action."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Related content needs a structural surface.",
+    "avoidWhen": "A card is being used only to decorate every section or hide a primary action.",
+    "behavior": "Card is non-interactive by default and accepts an explicit polymorphic element.",
+    "responsive": "Use compact padding and let card content define its width."
+  },
+  "accessibility": {
+    "notes": [
+      "Cards are passive surfaces with no keyboard behavior of their own.",
+      "Render real links and buttons inside a card rather than making the card itself clickable.",
+      "The as prop lets you render the card as a section, article, or list item to fit the page outline.",
+      "Disabled cards are dimmed, skip pointer events, and set aria-disabled.",
+      "CardTitle renders an h2 by default; set titleAs so card headings fit the surrounding page outline."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Card",
+      "props": [
+        {
+          "defaultValue": "false",
+          "description": "Applies disabled styling and blocks interaction on interactive cards.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Button type used when the card renders an interactive element.",
+          "name": "type",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "div",
+          "description": "",
+          "name": "as",
+          "required": false,
+          "type": "ElementType"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "CardHeader",
+      "props": []
+    },
+    {
+      "description": "",
+      "displayName": "CardTitle",
+      "props": [
+        {
+          "defaultValue": "h2",
+          "description": "Heading element used for the title; defaults to 'h2'. Adjust to fit the page outline.",
+          "name": "titleAs",
+          "required": false,
+          "type": "enum"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "CardDescription",
+      "props": []
+    },
+    {
+      "description": "",
+      "displayName": "CardContent",
+      "props": []
+    },
+    {
+      "description": "",
+      "displayName": "CardFooter",
+      "props": []
+    }
+  ]
+}

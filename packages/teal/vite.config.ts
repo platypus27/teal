@@ -21,6 +21,11 @@ export default defineConfig({
       external: (id) => externalPackages.some(
         (packageName) => id === packageName || id.startsWith(`${packageName}/`),
       ),
+      output: {
+        entryFileNames: '[name].js',
+        preserveModules: true,
+        preserveModulesRoot: 'src',
+      },
     },
   },
 })

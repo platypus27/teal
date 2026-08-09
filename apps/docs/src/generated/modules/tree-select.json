@@ -1,0 +1,224 @@
+{
+  "id": "tree-select",
+  "name": "Tree Select",
+  "apiNames": [
+    "TreeSelect"
+  ],
+  "description": "A single-select control whose popover shows an expandable, typeahead-enabled tree of options.",
+  "usage": "<TreeSelect\n  label=\"Office\"\n  options={[\n    { value: 'emea', label: 'EMEA', children: [{ value: 'berlin', label: 'Berlin' }] },\n    { value: 'singapore', label: 'Singapore' },\n  ]}\n  onValueChange={(value) => undefined}\n/>",
+  "anatomy": [
+    {
+      "part": "Trigger",
+      "description": "A combobox-styled button showing the selected leaf's label."
+    },
+    {
+      "part": "Tree popover",
+      "description": "A tree of options with typeahead, matching the trigger width and scrolling vertically."
+    },
+    {
+      "part": "Branch node",
+      "description": "An expandable group with a chevron; it only expands or collapses, never commits."
+    },
+    {
+      "part": "Leaf node",
+      "description": "A terminal item that commits its value, closes the popover, and shows a check when selected."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use it when intermediate grouping aids orientation, like regions or org units.",
+      "Pre-expand the ancestors of a controlled value so the selection is visible on open.",
+      "Keep disabled nodes visible so users see what exists but is unavailable."
+    ],
+    "donts": [
+      "Don't use it for flat or small option sets; use Select.",
+      "Don't make branch nodes selectable; use Cascader's columns if drilling should scan faster."
+    ]
+  },
+  "related": [
+    "cascader",
+    "select",
+    "tree-view"
+  ],
+  "examples": [
+    {
+      "title": "Basic tree select",
+      "description": "Branches expand and collapse; only leaf nodes commit the selection."
+    },
+    {
+      "title": "Controlled with pre-expanded branches",
+      "description": "A controlled value is revealed and highlighted on open; disabled nodes stay visible but cannot be chosen."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Users pick one value from a hierarchy where intermediate grouping helps orientation, such as regions, folders, or org units.",
+    "avoidWhen": "The option set is flat or small — use Select; if the user needs to drill through many levels, Cascader's columns scan faster.",
+    "behavior": "Branch nodes only expand or collapse; leaf nodes commit a single value, close the popover, and render their label in the trigger.",
+    "responsive": "The popover matches the trigger width and the tree scrolls vertically; deep levels indent rather than widen the control."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Arrow Down",
+          "Arrow Up"
+        ],
+        "action": "Moves focus between visible tree items."
+      },
+      {
+        "keys": [
+          "Arrow Right"
+        ],
+        "action": "Expands a branch or moves into its first child."
+      },
+      {
+        "keys": [
+          "Arrow Left"
+        ],
+        "action": "Collapses a branch or moves to its parent."
+      },
+      {
+        "keys": [
+          "Home",
+          "End"
+        ],
+        "action": "Moves focus to the first or last visible item."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Selects a leaf or toggles a branch."
+      },
+      {
+        "keys": [
+          "Character keys"
+        ],
+        "action": "Typeahead moves focus to the next matching visible item."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the popover and returns focus to the trigger."
+      }
+    ],
+    "notes": [
+      "The trigger is a combobox with aria-haspopup=\"tree\"; options follow the tree/treeitem roles with aria-expanded and aria-selected.",
+      "The selected value's ancestors are expanded automatically so the selection is visible on open."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "Single-select control whose popover shows an expandable tree of options.\nBranch nodes expand and collapse; leaf nodes commit the selection.",
+      "displayName": "TreeSelect",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "aria-describedby",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name when there is no visible label.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the control invalid for form validation and screen readers.",
+          "name": "aria-invalid",
+          "required": false,
+          "type": "boolean | \"true\" | \"false\""
+        },
+        {
+          "defaultValue": "",
+          "description": "Explicit id; otherwise Field or an internal id is used.",
+          "name": "id",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initially expanded branch values when uncontrolled.",
+          "name": "defaultExpandedValues",
+          "required": false,
+          "type": "string[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial selected value when uncontrolled.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered below the control.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Prevents interaction with the control.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label rendered above the control. Required outside a Field; inside a Field the Field's label is used.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the value of the chosen leaf node.",
+          "name": "onValueChange",
+          "required": false,
+          "type": "(value: string) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Tree of options rendered in the popover; only leaf nodes are selectable.",
+          "name": "options",
+          "required": true,
+          "type": "TreeSelectNode[]"
+        },
+        {
+          "defaultValue": "Select…",
+          "description": "Text shown when nothing is selected.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the control as required.",
+          "name": "required",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled selected value.",
+          "name": "value",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "id": "bar-chart",
+  "name": "Bar Chart",
+  "apiNames": [
+    "BarChart"
+  ],
+  "description": "Grouped SVG bar chart with vertical or horizontal bars, optional value labels, a legend, and a built-in accessible data table.",
+  "usage": "<BarChart\n  label=\"Revenue and costs per quarter\"\n  labels={['Q1', 'Q2', 'Q3', 'Q4']}\n  series={[\n    { name: 'Revenue', data: [42, 55, 48, 61] },\n    { name: 'Costs', data: [30, 34, 32, 38] },\n  ]}\n  showValues\n/>",
+  "anatomy": [
+    {
+      "part": "Chart frame",
+      "description": "The shared container with the accessible summary and the hidden data table behind a toggle."
+    },
+    {
+      "part": "Bar groups",
+      "description": "One group per category with side-by-side bars per series, starting from a zero baseline."
+    },
+    {
+      "part": "Value labels",
+      "description": "Optional exact values above each bar, or at the end of the bar in horizontal mode."
+    },
+    {
+      "part": "Legend",
+      "description": "Palette swatches naming each series below the chart."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Switch to orientation=\"horizontal\" when category names are long.",
+      "Turn on showValues when exact numbers matter more than the visual comparison.",
+      "Keep the legend visible whenever there is more than one series."
+    ],
+    "donts": [
+      "Don't plot many ordered categories; a LineChart reads better as a trend.",
+      "Don't rely on bar color alone to identify series; the legend and tooltips carry the names."
+    ]
+  },
+  "related": [
+    "line-chart",
+    "area-chart",
+    "chart-container"
+  ],
+  "examples": [
+    {
+      "title": "Grouped vertical bars",
+      "description": "Multiple series render side-by-side per category with palette colors, a legend, and optional value labels above each bar."
+    },
+    {
+      "title": "Horizontal bars",
+      "description": "orientation=\"horizontal\" swaps the axes so long category names read comfortably and values label the end of each bar."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Comparing discrete categories against each other, especially with a few series per category or when exact values deserve labels.",
+    "avoidWhen": "Showing a continuous trend over many ordered points; a LineChart or AreaChart reads better as categories multiply.",
+    "behavior": "Bars start from a zero baseline, carry a simple title tooltip with series, category, and value, and group evenly within each category band; horizontal mode mirrors the same data.",
+    "responsive": "The SVG scales down proportionally; horizontal orientation is the better fit when category labels are long or screens are narrow."
+  },
+  "accessibility": {
+    "notes": [
+      "The chart is a labelled image; each bar has an aria-label and title with its series, category, and value.",
+      "A visually hidden data table with all values is always present and can be revealed with the built-in toggle."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "BarChart",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Accessible chart summary, applied as the SVG aria-label.",
+          "name": "label",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Category labels, one per group of bars.",
+          "name": "labels",
+          "required": true,
+          "type": "string[]"
+        },
+        {
+          "defaultValue": "vertical",
+          "description": "Bar direction.",
+          "name": "orientation",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "One or more series to plot; multiple series render grouped bars.",
+          "name": "series",
+          "required": true,
+          "type": "BarChartSeries[]"
+        },
+        {
+          "defaultValue": "300",
+          "description": "SVG height in pixels.",
+          "name": "height",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "true",
+          "description": "Shows axes with tick labels.",
+          "name": "showAxis",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "true",
+          "description": "Shows grid lines along the value axis.",
+          "name": "showGrid",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "true",
+          "description": "Shows a legend below the chart.",
+          "name": "showLegend",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Renders the value above (or beside) each bar.",
+          "name": "showValues",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "560",
+          "description": "SVG width in pixels.",
+          "name": "width",
+          "required": false,
+          "type": "number"
+        }
+      ]
+    }
+  ]
+}

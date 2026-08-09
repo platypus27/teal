@@ -7,14 +7,18 @@ behavior. See [ROADMAP.md](ROADMAP.md).
 
 ## Setup
 
+Use Node 24.19.0 and npm 11.19.0 exactly, then install from the lockfile:
+
 ```bash
-npm install
+npm ci
 npm run verify
 ```
 
-`npm run verify` runs lint, typecheck, unit tests, generated-output checks, both
-workspace builds, and packed React consumer verification. Pull requests also
-run the four Playwright projects in the CI browser matrix.
+`npm run verify` builds Teal before downstream typechecks, then runs lint,
+typecheck, unit and production-integrity tests, dependency audit, generated
+output checks, both workspace builds, package lifecycle validation, and packed
+React 18/19 consumer verification. Pull requests also run the four Playwright
+projects, locked Lighthouse, and the production-image scan and smoke gate.
 
 ## Workspace layout
 
@@ -38,13 +42,16 @@ run the four Playwright projects in the CI browser matrix.
 ## Browser tests
 
 ```bash
-cd apps/docs
-npx playwright test
+npm run install:browser --workspace @kryv/teal-docs -- chromium
+npm run test:e2e --workspace @kryv/teal-docs -- --project=chromium
 ```
 
 Chromium, mobile-chromium, and Firefox run everywhere. WebKit requires extra
-system libraries on Linux (`npx playwright install-deps` on Debian/Ubuntu); it
-runs in CI.
+system libraries on Linux. Install it with the locked local CLI:
+
+```bash
+npm run install:browser --workspace @kryv/teal-docs -- --with-deps webkit
+```
 
 ## Releases
 
@@ -52,11 +59,17 @@ Releases use [Changesets](https://github.com/changesets/changesets). Add a
 changeset for any user-facing change to `@kryv/teal`:
 
 ```bash
-npx changeset
+npm run changeset
 ```
 
 The release notes on the docs site's Changelog page are generated from
 `packages/teal/CHANGELOG.md`.
+
+Release planning, version PR creation, and trusted publishing use separate
+least-privilege jobs. The publishing job performs the full package verification
+again, retains that exact tarball, reopens it at the publishing boundary, and
+publishes only that validated file. Do not invoke `npm run publish:package`
+outside the protected trusted-publishing job.
 
 ## License
 

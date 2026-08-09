@@ -1,13 +1,63 @@
-import { useEffect, useRef, useState } from 'react'
-import { FlaskConical, Menu as MenuIcon, Moon, Palette, Search, Sun, X } from 'lucide-react'
+import { lazy, Suspense, useEffect, useState } from 'react'
+import { Menu as MenuIcon, Moon, Palette, Search, Sun, X } from 'lucide-react'
 import { GitHubIcon } from './GitHubIcon.jsx'
-import { NavLink, Outlet, useLocation } from 'react-router'
-import { IconButton, Toaster, TooltipProvider, TopBar, TopBarActions, TopBarBrand, TopBarSearch, VerticalNav, VerticalNavBrand, VerticalNavItem, VerticalNavList, VerticalNavSection, iconButtonVariants } from '@kryv/teal'
-import { catalogGroups } from '../data/docs-module-registry.js'
-import changelog from '../generated/changelog.json'
-import { CommandPalette, CommandPaletteProvider, useCommandPalette } from './CommandPalette.jsx'
-import { PrevNext } from './PrevNext.jsx'
+import { IconButton, TopBar, TopBarActions, TopBarBrand, TopBarSearch, iconButtonVariants } from '@kryv/teal'
+import { CommandPaletteProvider, useCommandPalette } from './CommandPaletteState.jsx'
 import { TableOfContents } from './TableOfContents.jsx'
+
+const CommandPalette = lazy(() =>
+  import('./CommandPalette.jsx').then((module) => ({ default: module.CommandPalette })),
+)
+const Sidebar = lazy(() => import('./Sidebar.jsx').then((module) => ({ default: module.Sidebar })))
+const DeferredToaster = lazy(() =>
+  import('./DeferredToaster.jsx').then((module) => ({ default: module.DeferredToaster })),
+)
+
+function LazyCommandPalette() {
+  const { open } = useCommandPalette()
+  if (!open) return null
+  return (
+    <Suspense fallback={null}>
+      <CommandPalette />
+    </Suspense>
+  )
+}
+
+function FirstInteractionToaster() {
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    const reveal = () => setReady(true)
+    window.addEventListener('pointerdown', reveal, { capture: true, once: true })
+    window.addEventListener('keydown', reveal, { capture: true, once: true })
+    const fallback = window.setTimeout(reveal, 10_000)
+    return () => {
+      window.removeEventListener('pointerdown', reveal, { capture: true })
+      window.removeEventListener('keydown', reveal, { capture: true })
+      window.clearTimeout(fallback)
+    }
+  }, [])
+
+  if (!ready) return null
+  return (
+    <Suspense fallback={null}>
+      <DeferredToaster />
+    </Suspense>
+  )
+}
+
+function useDesktopNavigation() {
+  const [desktop, setDesktop] = useState(() => window.matchMedia('(min-width: 1024px)').matches)
+
+  useEffect(() => {
+    const query = window.matchMedia('(min-width: 1024px)')
+    const update = () => setDesktop(query.matches)
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+
+  return desktop
+}
 
 function ThemeToggle() {
   const [dark, setDark] = useState(() => {
@@ -38,12 +88,12 @@ function Header({ navOpen, setNavOpen }) {
   return (
     <TopBar sticky>
       <TopBarBrand>
-        <NavLink to="/" className="flex items-center gap-2 font-teal-headline font-extrabold lg:hidden">
+        <a href="/" className="flex items-center gap-2 font-teal-headline font-extrabold lg:hidden">
           <span className="flex size-8 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
             <Palette className="size-4" />
           </span>
           Teal
-        </NavLink>
+        </a>
       </TopBarBrand>
       <TopBarSearch>
         <button
@@ -84,92 +134,9 @@ function Header({ navOpen, setNavOpen }) {
   )
 }
 
-function Sidebar({ navOpen, setNavOpen }) {
-  const { pathname } = useLocation()
-  const firstLinkRef = useRef(null)
-  const active = (to, end = false) => (end ? pathname === to : pathname.startsWith(to))
-
-  useEffect(() => {
-    if (navOpen) firstLinkRef.current?.focus()
-  }, [navOpen])
-
-  return (
-    <>
-      {navOpen ? (
-        <button
-          type="button"
-          aria-label="Close navigation"
-          className="fixed inset-0 z-30 bg-black/40 lg:hidden"
-          onClick={() => setNavOpen(false)}
-        />
-      ) : null}
-      <VerticalNav
-        mode="full"
-        side="left"
-        aria-label="Documentation"
-        className={`fixed inset-y-0 left-0 z-40 transition-transform lg:translate-x-0 ${navOpen ? 'translate-x-0' : '-translate-x-full'}`}
-      >
-        <VerticalNavBrand>
-          <NavLink to="/" className="flex items-center gap-3" onClick={() => setNavOpen(false)}>
-            <span className="flex size-9 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
-              <Palette className="size-5" />
-            </span>
-            <span>
-              <span className="flex items-center gap-2 font-teal-headline text-lg font-extrabold leading-none">
-                Teal
-                <span className="rounded-full bg-teal-primary/10 px-1.5 py-0.5 font-mono text-[10px] font-bold text-teal-primary">
-                  v{changelog.version}
-                </span>
-              </span>
-              <span className="mt-1 block text-xs text-teal-on-surface-variant">Kryv design system</span>
-            </span>
-          </NavLink>
-        </VerticalNavBrand>
-
-        <VerticalNavList>
-          <VerticalNavSection label="Start">
-            <VerticalNavItem ref={firstLinkRef} as={NavLink} end to="/" active={active('/', true)} onClick={() => setNavOpen(false)}>
-              Getting started
-            </VerticalNavItem>
-            <VerticalNavItem as={NavLink} to="/foundations" active={active('/foundations')} onClick={() => setNavOpen(false)}>
-              Foundations
-            </VerticalNavItem>
-            <VerticalNavItem as={NavLink} to="/changelog" active={active('/changelog')} onClick={() => setNavOpen(false)}>
-              Changelog
-            </VerticalNavItem>
-          </VerticalNavSection>
-          {catalogGroups.map((group) => (
-            <VerticalNavSection key={group.name} label={group.name}>
-              {group.modules.map((module) => (
-                <VerticalNavItem
-                  key={module.id}
-                  as={NavLink}
-                  to={`/modules/${module.id}`}
-                  active={active(`/modules/${module.id}`)}
-                  onClick={() => setNavOpen(false)}
-                >
-                  {module.name}
-                  {module.hasPlayground ? (
-                    <FlaskConical aria-hidden="true" className="ml-auto size-3.5 text-teal-primary/70" />
-                  ) : null}
-                </VerticalNavItem>
-              ))}
-            </VerticalNavSection>
-          ))}
-          <VerticalNavSection label="Patterns">
-            <VerticalNavItem as={NavLink} to="/recipes" active={active('/recipes')} onClick={() => setNavOpen(false)}>
-              Recipes
-            </VerticalNavItem>
-          </VerticalNavSection>
-        </VerticalNavList>
-      </VerticalNav>
-    </>
-  )
-}
-
-export function Layout() {
+export function Layout({ children }) {
   const [navOpen, setNavOpen] = useState(false)
-  const { pathname } = useLocation()
+  const desktopNavigation = useDesktopNavigation()
 
   useEffect(() => {
     if (!navOpen) return undefined
@@ -180,35 +147,32 @@ export function Layout() {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [navOpen])
 
-  useEffect(() => {
-    window.scrollTo({ top: 0 })
-  }, [pathname])
-
   return (
     <CommandPaletteProvider>
-      <TooltipProvider>
-        <div className="min-h-screen bg-teal-background text-teal-on-surface">
+      <div className="min-h-screen bg-teal-background text-teal-on-surface">
           <a
             href="#main-content"
             className="fixed left-3 top-3 z-[100] -translate-y-20 rounded-lg bg-teal-primary px-4 py-2 font-semibold text-teal-on-primary focus:translate-y-0"
           >
             Skip to content
           </a>
-          <Sidebar navOpen={navOpen} setNavOpen={setNavOpen} />
+          {desktopNavigation || navOpen ? (
+            <Suspense fallback={null}>
+              <Sidebar navOpen={navOpen} setNavOpen={setNavOpen} />
+            </Suspense>
+          ) : null}
           <div className="lg:ml-72">
             <Header navOpen={navOpen} setNavOpen={setNavOpen} />
             <div className="flex min-h-[calc(100vh-4rem)]">
               <main id="main-content" className="min-w-0 flex-1 scroll-mt-16">
-                <Outlet />
-                <PrevNext />
+                {children}
               </main>
               <TableOfContents />
             </div>
           </div>
-          <CommandPalette />
-          <Toaster />
+          <LazyCommandPalette />
+          <FirstInteractionToaster />
         </div>
-      </TooltipProvider>
     </CommandPaletteProvider>
   )
 }

@@ -1,0 +1,177 @@
+{
+  "id": "lightbox",
+  "name": "Lightbox",
+  "apiNames": [
+    "Lightbox"
+  ],
+  "description": "Full-screen gallery overlay for paging through images with arrow keys, on-screen controls, and a live counter.",
+  "usage": "<Lightbox\n  open={open}\n  onOpenChange={setOpen}\n  images={[{ src: \"/photo.jpg\", alt: \"Team offsite\", caption: \"Spring offsite\" }]}\n/>",
+  "anatomy": [
+    {
+      "part": "Overlay",
+      "description": "The full-screen dialog surface that dims the page and traps focus while open."
+    },
+    {
+      "part": "Image stage",
+      "description": "The current image, scaled to fit the viewport, with its alt and optional caption."
+    },
+    {
+      "part": "Prev/next controls",
+      "description": "Chevron buttons that mirror the arrow keys and wrap around the ends."
+    },
+    {
+      "part": "Counter",
+      "description": "The live \"n of m\" indicator tracking the current position."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Give every image meaningful alt text and a short caption where it adds context.",
+      "Open at the clicked thumbnail's index via the controlled index prop.",
+      "Let the overlay own paging; arrow keys and buttons stay in sync."
+    ],
+    "donts": [
+      "Don't use a lightbox for a single image that needs zoom inspection; use ImageViewer.",
+      "Don't write long prose captions; keep them to a short label.",
+      "Don't hide the close path; Escape and the backdrop always close it."
+    ]
+  },
+  "related": [
+    "image-viewer",
+    "fullscreen-dialog",
+    "dialog"
+  ],
+  "examples": [
+    {
+      "title": "Gallery overlay",
+      "description": "A button opens the lightbox; arrow keys and the chevron buttons page through images while the counter tracks position."
+    },
+    {
+      "title": "Thumbnail entry points",
+      "description": "Each thumbnail opens the gallery at its own index via the controlled index prop."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Users need to inspect a set of images one at a time without leaving the page, such as photo galleries or screenshot collections.",
+    "avoidWhen": "A single inline image with zoom controls is enough; use ImageViewer instead.",
+    "behavior": "Wraps from the last image to the first (and back) with both keys and buttons; Escape and backdrop clicks close the overlay.",
+    "responsive": "The image scales to fit the viewport while controls stay anchored to the edges on any width."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Arrow Right"
+        ],
+        "action": "Shows the next image, wrapping past the last."
+      },
+      {
+        "keys": [
+          "Arrow Left"
+        ],
+        "action": "Shows the previous image, wrapping before the first."
+      },
+      {
+        "keys": [
+          "Home"
+        ],
+        "action": "Jumps to the first image."
+      },
+      {
+        "keys": [
+          "End"
+        ],
+        "action": "Jumps to the last image."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the lightbox."
+      }
+    ],
+    "notes": [
+      "Rendered as a labelled dialog that traps focus while open.",
+      "The position counter ('3 of 8') is announced via a polite live region.",
+      "Images always require alt text supplied by the caller."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "Full-screen gallery overlay. Arrow keys and the on-screen controls move\nbetween images (wrapping at the ends); Escape and backdrop clicks close.",
+      "displayName": "Lightbox",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "Close",
+          "description": "Accessible label for the close button.",
+          "name": "closeLabel",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "0",
+          "description": "Initial image index when uncontrolled.",
+          "name": "defaultIndex",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial open state when uncontrolled.",
+          "name": "defaultOpen",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Images shown in gallery order.",
+          "name": "images",
+          "required": true,
+          "type": "LightboxImage[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled index of the visible image.",
+          "name": "index",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "Image gallery",
+          "description": "Accessible name of the gallery dialog.",
+          "name": "label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the visible image changes.",
+          "name": "onIndexChange",
+          "required": false,
+          "type": "(index: number) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the lightbox opens or closes.",
+          "name": "onOpenChange",
+          "required": false,
+          "type": "(open: boolean) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled open state.",
+          "name": "open",
+          "required": false,
+          "type": "boolean"
+        }
+      ]
+    }
+  ]
+}

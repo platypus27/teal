@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "packageManager": "npm@11.5.1",
+  "packageManager": "npm@11.19.0",
   "engines": {
-    "node": ">=24 <25",
-    "npm": ">=11.5.1"
+    "node": ">=24.19.0 <25",
+    "npm": ">=11.19.0 <12"
   },
   "workspaces": [
     "packages/*",
@@ -17,18 +17,41 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "test:unit": "npm run test --workspace @kryv/teal",
+    "test:integrity": "node --test tests/*.test.mjs",
     "test:e2e": "npm run test:e2e --workspace @kryv/teal-docs",
     "lint": "npm run lint --workspaces --if-present",
+    "audit:dependencies": "npm audit --audit-level=high",
     "generate:tokens": "node packages/teal/scripts/generate-tokens.mjs",
     "check:generated": "node packages/teal/scripts/generate-tokens.mjs --check && npm run check:generated --workspace @kryv/teal-docs",
     "pack:check": "npm pack --workspace @kryv/teal --dry-run --cache /tmp/teal-npm-cache",
     "pack:verify": "npm run pack:check && npm run verify:package",
     "verify:package": "node packages/teal/scripts/verify-package.mjs",
-    "release:version": "npx changeset version && npm run generate --workspace @kryv/teal-docs && npm install --package-lock-only --ignore-scripts --no-audit --no-fund",
-    "publish:package": "npm publish --workspace @kryv/teal --access public --provenance",
-    "verify": "npm run lint && npm run typecheck && npm run test:unit && npm run check:generated && npm run validate:registry --workspace @kryv/teal-docs && npm run build && npm run pack:verify"
+    "verify:release-package": "node packages/teal/scripts/verify-package.mjs --artifact-directory .release/npm --keep-artifact",
+    "create:release-package": "node packages/teal/scripts/create-release-artifact.mjs --artifact-directory .release/npm",
+    "plan:release": "node scripts/plan-release.mjs --descriptor .release/npm/artifact.json",
+    "reconcile:release": "node scripts/reconcile-github-release.mjs --descriptor .release/npm/artifact.json",
+    "verify:docs-image": "node scripts/verify-docs-image.mjs",
+    "release:version": "changeset version && npm run generate --workspace @kryv/teal-docs && npm install --package-lock-only --ignore-scripts --no-audit --no-fund",
+    "changeset": "changeset",
+    "publish:package": "node packages/teal/scripts/publish-package.mjs .release/npm/artifact.json",
+    "verify": "npm run build --workspace @kryv/teal && npm run lint && npm run typecheck && npm run test:unit && npm run test:integrity && npm run audit:dependencies && npm run check:generated && npm run validate:registry --workspace @kryv/teal-docs && npm run build && npm run pack:verify"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.31.1"
+    "@changesets/cli": "^2.31.1",
+    "@lhci/cli": "0.15.1",
+    "tar": "7.5.22",
+    "yaml": "2.9.0"
+  },
+  "overrides": {
+    "brace-expansion": "1.1.18",
+    "js-yaml": "4.3.1",
+    "@lhci/utils": {
+      "js-yaml": "3.15.1"
+    },
+    "read-yaml-file": {
+      "js-yaml": "3.15.1"
+    },
+    "tmp": "0.2.7",
+    "uuid": "11.1.1"
   }
 }

@@ -1,0 +1,106 @@
+{
+  "id": "toast",
+  "name": "Toast",
+  "apiNames": [
+    "Toaster"
+  ],
+  "imports": [
+    "Toaster",
+    "toast"
+  ],
+  "description": "Imperative, announced feedback with semantic variants, optional actions, and dismissal.",
+  "usage": "// Mount once near the app root\n<Toaster />\n\n// Call toast() from anywhere\ntoast({ title: 'Changes saved', variant: 'success' })",
+  "anatomy": [
+    {
+      "part": "Toaster viewport",
+      "description": "Fixed container mounted once near the app root; stacks incoming toasts and owns their live region."
+    },
+    {
+      "part": "Toast",
+      "description": "The announced surface carrying the message; auto-dismisses after its duration unless made persistent."
+    },
+    {
+      "part": "Variant icon",
+      "description": "Decorative severity glyph matched to the neutral, info, success, warning, or danger variant."
+    },
+    {
+      "part": "Title and description",
+      "description": "The message text; the title is required and the description carries detail."
+    },
+    {
+      "part": "Action and close",
+      "description": "An optional action button plus a labeled dismiss control."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Mount exactly one Toaster near the app root so every toast() call shares it.",
+      "Match the variant to the outcome, such as success for a completed save.",
+      "Pass duration: Infinity for messages the user must not miss, and pair them with an action."
+    ],
+    "donts": [
+      "Don't toast information the user must act on later; use Alert or Banner so it stays in context.",
+      "Don't fire several toasts for one operation; collapse retries into a single final message.",
+      "Don't put long copy in a toast; keep the title to a phrase and move detail into the description."
+    ]
+  },
+  "related": [
+    "alert",
+    "banner",
+    "announcer"
+  ],
+  "examples": [
+    {
+      "title": "Saving feedback",
+      "description": "Call toast() from anywhere once a Toaster is mounted near the app root."
+    },
+    {
+      "title": "Failure feedback",
+      "description": "Use a danger variant for a failed action and keep the recovery path in context."
+    },
+    {
+      "title": "Undo feedback",
+      "description": "Offer a short action when users may want to reverse a completed operation."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A completed or failed action needs brief asynchronous feedback.",
+    "avoidWhen": "The message is required to continue or must be read in context.",
+    "behavior": "Toaster announces messages and supports timed or manual dismissal.",
+    "responsive": "Position toasts away from mobile browser controls and safe areas."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "F8"
+        ],
+        "action": "Moves focus to the toast viewport so toasts can be reviewed and dismissed."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Dismisses the focused toast."
+      },
+      {
+        "keys": [
+          "Swipe right"
+        ],
+        "action": "Dismisses a toast on touch devices."
+      }
+    ],
+    "notes": [
+      "Toasts are announced through a live region as they appear.",
+      "Actions render as real buttons with accessible labels.",
+      "Pass duration: Infinity for critical messages that must be dismissed manually."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Toaster",
+      "props": []
+    }
+  ]
+}

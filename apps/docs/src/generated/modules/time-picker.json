@@ -1,0 +1,139 @@
+{
+  "id": "time-picker",
+  "name": "Time Picker",
+  "apiNames": [
+    "TimePicker"
+  ],
+  "description": "A segmented hour and minute field with 12- and 24-hour cycles.",
+  "usage": "<TimePicker label=\"Start time\" defaultValue=\"09:30\" onChange={(value) => undefined} />",
+  "anatomy": [
+    {
+      "part": "Group",
+      "description": "The labeled container with group semantics around the segments."
+    },
+    {
+      "part": "Hour field",
+      "description": "The clamped hour segment labeled Hour."
+    },
+    {
+      "part": "Minute field",
+      "description": "The clamped minute segment labeled Minutes."
+    },
+    {
+      "part": "Period toggle",
+      "description": "The AM/PM switch shown with the 12-hour cycle."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Match hourCycle to the audience's locale.",
+      "Bind a string value like 09:30 and let the segments clamp while typing.",
+      "Pair with DatePicker or use DateTimePicker when the user needs a full timestamp."
+    ],
+    "donts": [
+      "Don't use it for durations; use NumberInput with a unit.",
+      "Don't use it for time zones; pair with TimezoneSelect.",
+      "Don't prefill the current time unless now is a sensible default."
+    ]
+  },
+  "related": [
+    "date-picker",
+    "date-time-picker",
+    "timezone-select",
+    "number-input"
+  ],
+  "examples": [
+    {
+      "title": "Segmented time",
+      "description": "Fields clamp as you type; the 12-hour cycle adds an AM/PM toggle."
+    },
+    {
+      "title": "12-hour clock",
+      "description": "hourCycle={12} swaps the hour range and adds an AM/PM toggle."
+    }
+  ],
+  "guidance": {
+    "useWhen": "The user enters a time of day.",
+    "avoidWhen": "A date or a date range is needed; use DatePicker or DateRangePicker.",
+    "behavior": "Hour and minute fields clamp while typing; the 12-hour cycle adds a period toggle.",
+    "responsive": "The segmented group stays inline and fits compact forms."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus through the hour, minute, and period controls."
+      },
+      {
+        "keys": [
+          "Typing"
+        ],
+        "action": "Edits a segment; values clamp as you type."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Toggles AM or PM on the period buttons."
+      }
+    ],
+    "notes": [
+      "The segments sit in a group named by the field label; the hour and minute inputs are labeled Hour and Minutes.",
+      "The AM/PM toggle reports its state through aria-pressed.",
+      "The 24-hour cycle omits the period control entirely."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "TimePicker",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Initial time in \"HH:mm\" (24h) when uncontrolled. Defaults to \"00:00\".",
+          "name": "defaultValue",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Prevents interaction with every field.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "24",
+          "description": "12 shows a 1–12 hour field with an AM/PM toggle; 24 shows a 0–23 hour field.",
+          "name": "hourCycle",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "Time",
+          "description": "Accessible name for the time field group.",
+          "name": "label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the 24-hour \"HH:mm\" value after every valid edit.",
+          "name": "onChange",
+          "required": false,
+          "type": "(value: string) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled time in \"HH:mm\" (24h).",
+          "name": "value",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

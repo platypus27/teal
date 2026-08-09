@@ -1,0 +1,186 @@
+{
+  "id": "vertical-nav",
+  "name": "Vertical Nav",
+  "apiNames": [
+    "VerticalNav",
+    "VerticalNavBrand",
+    "VerticalNavList",
+    "VerticalNavSection",
+    "VerticalNavItem",
+    "VerticalNavFooter"
+  ],
+  "imports": [
+    "VerticalNav",
+    "VerticalNavBrand",
+    "VerticalNavList",
+    "VerticalNavSection",
+    "VerticalNavItem",
+    "VerticalNavFooter"
+  ],
+  "description": "A compound vertical navigation with icon-rail and full-text modes.",
+  "usage": "<VerticalNav mode=\"rail\">\n  <VerticalNavBrand>...</VerticalNavBrand>\n  <VerticalNavList>\n    <VerticalNavSection label=\"Workspace\">\n      <VerticalNavItem active icon={<LayoutDashboard />}>Overview</VerticalNavItem>\n    </VerticalNavSection>\n  </VerticalNavList>\n  <VerticalNavFooter>...</VerticalNavFooter>\n</VerticalNav>",
+  "anatomy": [
+    {
+      "part": "Nav landmark",
+      "description": "The labeled nav container; rail mode collapses it to an icon strip that expands on hover or focus."
+    },
+    {
+      "part": "Brand",
+      "description": "VerticalNavBrand holds the product mark; in full mode it can pair an icon with a wordmark."
+    },
+    {
+      "part": "Section",
+      "description": "VerticalNavSection groups items under a label that fades in when the rail expands."
+    },
+    {
+      "part": "Item",
+      "description": "VerticalNavItem pairs an always-visible icon with a label; active sets aria-current and a circular icon background in rail mode."
+    },
+    {
+      "part": "Footer",
+      "description": "VerticalNavFooter pins secondary destinations like settings to the bottom."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Give every item an icon so rail mode stays usable while labels are collapsed.",
+      "Drive active from the router so the current page sets aria-current.",
+      "Use mode=\"full\" inside a mobile drawer where labels should always show."
+    ],
+    "donts": [
+      "Don't nest sections more than one level deep; use Tree View for deeper hierarchies.",
+      "Don't mix icons on only some items in a section; rail mode depends on consistent icons.",
+      "Don't keep the rail attached on narrow screens; move it into a dismissible drawer instead."
+    ]
+  },
+  "related": [
+    "side-rail",
+    "nav-rail",
+    "ecosystem-rail"
+  ],
+  "examples": [
+    {
+      "title": "Rail and full modes",
+      "description": "Rail mode collapses to an icon strip and expands on hover or keyboard focus; the active item shows a circular background around its icon. Full mode shows labels always with a rounded row highlight."
+    },
+    {
+      "title": "Application shell",
+      "description": "Compose a persistent rail with a full navigation drawer for responsive products."
+    },
+    {
+      "title": "Router integration",
+      "description": "Use VerticalNavItem with a router link and pass active state from the route."
+    }
+  ],
+  "guidance": {
+    "useWhen": "An application needs persistent section navigation.",
+    "avoidWhen": "There are only a few inline links or a short wizard.",
+    "behavior": "Rail mode expands on hover or focus, the active item shows a circular background around its icon, and item active state sets aria-current.",
+    "responsive": "Use full navigation in a drawer on mobile and close it after route changes."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus between nav items. In rail mode, focusing an item expands the nav."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Activates the focused item link."
+      }
+    ],
+    "notes": [
+      "Rail mode expands on hover and on focus-within, so keyboard users can read labels that are hidden from mouse users until hover.",
+      "The active item sets aria-current=\"page\" to mark the current location for screen readers.",
+      "Use the icon prop for the leading icon so it stays visible in rail mode; only the label fades."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "VerticalNav",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Rail collapses labels until hover or focus; full keeps labels visible.",
+          "name": "mode",
+          "required": false,
+          "type": "\"full\" | \"rail\" | null"
+        },
+        {
+          "defaultValue": "",
+          "description": "Edge where the navigation is attached.",
+          "name": "side",
+          "required": false,
+          "type": "\"left\" | \"right\" | null"
+        },
+        {
+          "defaultValue": "a",
+          "description": "",
+          "name": "as",
+          "required": false,
+          "type": "ElementType"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "VerticalNavBrand",
+      "props": []
+    },
+    {
+      "description": "",
+      "displayName": "VerticalNavList",
+      "props": []
+    },
+    {
+      "description": "",
+      "displayName": "VerticalNavSection",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Uppercase heading shown above the items. Hidden in rail mode until the nav expands.",
+          "name": "label",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "VerticalNavItem",
+      "props": [
+        {
+          "defaultValue": "false",
+          "description": "Marks the item as the current page; sets `aria-current=\"page\"`. In rail mode the active background is a circle around the icon; in full mode it is a rounded row.",
+          "name": "active",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Icon element shown before the label. Always visible, even in rail mode.",
+          "name": "icon",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "a",
+          "description": "",
+          "name": "as",
+          "required": false,
+          "type": "ElementType"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "VerticalNavFooter",
+      "props": []
+    }
+  ]
+}

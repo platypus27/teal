@@ -1,0 +1,130 @@
+{
+  "id": "checkbox-card",
+  "name": "Checkbox Card",
+  "apiNames": [
+    "CheckboxCard"
+  ],
+  "description": "A checkbox rendered as a selectable card with a title, description, and optional icon; works standalone or stacked in groups.",
+  "usage": "<CheckboxCard\n  title=\"Email digest\"\n  description=\"A weekly summary of activity\"\n  defaultChecked\n  onCheckedChange={(checked) => console.log(checked)}\n/>",
+  "anatomy": [
+    {
+      "part": "Card",
+      "description": "A button with checkbox semantics (role and aria-checked) that owns the whole click target."
+    },
+    {
+      "part": "Check indicator",
+      "description": "A decorative corner check that mirrors the state; assistive technology reads aria-checked instead."
+    },
+    {
+      "part": "Title",
+      "description": "The card's accessible name and primary label."
+    },
+    {
+      "part": "Description and icon",
+      "description": "Supporting text and an optional icon that explain what the toggle does."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Give every card a specific title that states what turns on or off.",
+      "Stack related opt-ins, such as notification channels, as a group of cards.",
+      "Keep unavailable options visible but disabled."
+    ],
+    "donts": [
+      "Don't use cards for mutually exclusive choices; use RadioCard.",
+      "Don't use a card when a plain Checkbox with a label says enough."
+    ]
+  },
+  "related": [
+    "checkbox",
+    "radio-card",
+    "switch"
+  ],
+  "examples": [
+    {
+      "title": "Standalone card",
+      "description": "One self-contained toggle with a visible check indicator in the corner."
+    },
+    {
+      "title": "Stacked group",
+      "description": "Several independent cards, including icons and a disabled unavailable option."
+    }
+  ],
+  "guidance": {
+    "useWhen": "An on/off choice needs a description or icon to be understood, such as notification channels or feature opt-ins.",
+    "avoidWhen": "The choice needs no explanation; a plain Checkbox is more compact. Mutually exclusive options call for RadioCard.",
+    "behavior": "Clicking or pressing Space toggles the card and reports the new checked state; each card in a group tracks its own state. Supports controlled and uncontrolled checked.",
+    "responsive": "Cards fill their container width; stack them single-column on narrow screens."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus to and from each card."
+      },
+      {
+        "keys": [
+          "Space",
+          "Enter"
+        ],
+        "action": "Toggles the focused card."
+      }
+    ],
+    "notes": [
+      "The card is a button with checkbox semantics (aria-checked); the title doubles as its accessible name.",
+      "The check indicator is decorative; state is conveyed through aria-checked, not the icon."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "A checkbox rendered as a selectable card with a title, description, and\noptional icon. Works on its own or stacked in groups for multi-select\nchoices.",
+      "displayName": "CheckboxCard",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Controlled checked state.",
+          "name": "checked",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Initial checked state when uncontrolled.",
+          "name": "defaultChecked",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered below the title.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Optional icon rendered above the title.",
+          "name": "icon",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the new checked state when the card is toggled.",
+          "name": "onCheckedChange",
+          "required": false,
+          "type": "(checked: boolean) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Card heading; doubles as the accessible name when no aria-label is given.",
+          "name": "title",
+          "required": true,
+          "type": "ReactNode"
+        }
+      ]
+    }
+  ]
+}

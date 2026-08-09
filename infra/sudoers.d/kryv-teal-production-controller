@@ -1,0 +1,2 @@
+Defaults!/usr/local/libexec/kryv-teal-production-controller env_reset,secure_path=/usr/bin:/bin
+%teal-production-runner ALL=(root) NOPASSWD: /usr/local/libexec/kryv-teal-production-controller deploy *

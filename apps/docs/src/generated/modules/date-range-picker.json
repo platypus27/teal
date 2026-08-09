@@ -1,0 +1,180 @@
+{
+  "id": "date-range-picker",
+  "name": "Date Range Picker",
+  "apiNames": [
+    "DateRangePicker"
+  ],
+  "description": "A two-click range field with presets and a keyboard-navigable calendar popover.",
+  "usage": "<DateRangePicker label=\"Report period\" onChange={(range) => undefined} />",
+  "anatomy": [
+    {
+      "part": "Field",
+      "description": "The trigger showing the formatted start and end pair."
+    },
+    {
+      "part": "Presets",
+      "description": "Buttons that fill common windows like the last week or month."
+    },
+    {
+      "part": "Calendar popover",
+      "description": "The two-click month grid with keyboard navigation."
+    },
+    {
+      "part": "Day cells",
+      "description": "Buttons that mark the range start, end, and the span between."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Offer presets when users repeatedly pick the same windows.",
+      "Disable dates that cannot join the range, like weekends for maintenance windows.",
+      "Let two clicks define the range; don't force a drag gesture."
+    ],
+    "donts": [
+      "Don't use it for a single date; use DatePicker.",
+      "Don't allow inverted ranges; the component orders the start before the end.",
+      "Don't hide the selected span; the in-range highlight is the feedback."
+    ]
+  },
+  "related": [
+    "date-picker",
+    "calendar",
+    "month-picker",
+    "date-time-picker"
+  ],
+  "examples": [
+    {
+      "title": "Range selection",
+      "description": "The first click starts the range and the second completes it; presets fill common windows."
+    },
+    {
+      "title": "Disabled days",
+      "description": "isDateDisabled blocks weekends so only weekday windows can be picked."
+    },
+    {
+      "title": "Bounded ranges",
+      "description": "Use isDateDisabled to exclude days such as weekends or past dates."
+    }
+  ],
+  "guidance": {
+    "useWhen": "The user picks a start and end date.",
+    "avoidWhen": "Only one date is needed; use DatePicker.",
+    "behavior": "Two clicks define the range; presets fill common windows and arrows move by day or week.",
+    "responsive": "The popover collision-handles; the field keeps its layout width."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Arrow Down"
+        ],
+        "action": "Opens the calendar from the field."
+      },
+      {
+        "keys": [
+          "Arrow Left",
+          "Arrow Right"
+        ],
+        "action": "Moves the focused day by one day."
+      },
+      {
+        "keys": [
+          "Arrow Up",
+          "Arrow Down"
+        ],
+        "action": "Moves the focused day by one week."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Picks the range start, then the range end."
+      }
+    ],
+    "notes": [
+      "Day buttons use a roving tab index, so the calendar grid is a single Tab stop.",
+      "Range start and end days expose their state through aria-pressed, and today keeps aria-current date.",
+      "Preset buttons fill the whole range in one action and are plain buttons in the tab order.",
+      "The month label is announced with aria-live as the view changes."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "DateRangePicker",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Accessible name when there is no visible label.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial range when uncontrolled.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "DateRange"
+        },
+        {
+          "defaultValue": "",
+          "description": "Prevents interaction with the input.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Explicit id; otherwise Field or an internal id is used.",
+          "name": "id",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Disables specific days in the calendar grid.",
+          "name": "isDateDisabled",
+          "required": false,
+          "type": "(date: Date) => boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the range after every selection step.",
+          "name": "onChange",
+          "required": false,
+          "type": "(range: DateRange) => void"
+        },
+        {
+          "defaultValue": "Pick a date range",
+          "description": "Text shown when no range is selected.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled range.",
+          "name": "value",
+          "required": false,
+          "type": "DateRange"
+        }
+      ]
+    }
+  ]
+}

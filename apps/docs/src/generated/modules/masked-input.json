@@ -1,0 +1,172 @@
+{
+  "id": "masked-input",
+  "name": "Masked Input",
+  "apiNames": [
+    "MaskedInput"
+  ],
+  "description": "A text field that enforces a simple digit mask, inserting separators automatically as the user types.",
+  "usage": "<MaskedInput\n  label=\"Date\"\n  mask=\"##/##/####\"\n  onChange={(value) => console.log(value)}\n/>",
+  "anatomy": [
+    {
+      "part": "Label",
+      "description": "The visible label associated with the field."
+    },
+    {
+      "part": "Masked input",
+      "description": "A text field that accepts digits for # slots, inserts literal separators automatically, and keeps the caret after the last filled slot."
+    },
+    {
+      "part": "Mask placeholder",
+      "description": "The mask itself renders as the placeholder, so the expected shape is visible before typing."
+    },
+    {
+      "part": "Help or error text",
+      "description": "Optional description documenting the expected format, linked with aria-describedby."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use it for fixed digit-count formats like dates, card expiries, or US phone numbers.",
+      "Add a description when the format is ambiguous across regions, such as day-first dates.",
+      "Validate the completed value on submit; the mask only enforces shape."
+    ],
+    "donts": [
+      "Don't use it for formats with letters or variable length; the mask only handles digits.",
+      "Don't use it for international phone numbers; use PhoneInput instead."
+    ]
+  },
+  "related": [
+    "input",
+    "phone-input",
+    "pin-input"
+  ],
+  "examples": [
+    {
+      "title": "Date and expiry masks",
+      "description": "'#' marks a digit slot and every other character is a literal; the mask itself is the placeholder."
+    },
+    {
+      "title": "Phone and ZIP masks",
+      "description": "Longer regional formats work the same way, and a description can document the expected shape."
+    }
+  ],
+  "guidance": {
+    "useWhen": "The value has a fixed digit count with familiar separators, such as dates, card expiries, or US phone numbers.",
+    "avoidWhen": "The format varies by region or allows letters; use a plain Input with a description, or PhoneInput for international numbers.",
+    "behavior": "Only digits are accepted, literals are inserted automatically, the caret stays after the last filled slot, and onChange receives the masked string.",
+    "responsive": "The field stretches to fill its container; fixed-width masks pair well with tabular numerals."
+  },
+  "accessibility": {
+    "notes": [
+      "The mask doubles as the placeholder so the expected format is visible before typing.",
+      "The visible label is associated with the input; use aria-label when there is no visible label.",
+      "Non-digit key presses are ignored rather than announced; pair with a description for the expected format."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "MaskedInput",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Extra description ids, merged with the component's own description.",
+          "name": "aria-describedby",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the input invalid for form validation and screen readers.",
+          "name": "aria-invalid",
+          "required": false,
+          "type": "boolean | \"true\" | \"false\""
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name when there is no visible label.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial value when uncontrolled; digits are extracted and re-masked.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered below the input.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Prevents interaction with the input.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Explicit id; otherwise Field or an internal id is used.",
+          "name": "id",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Mask pattern; `#` marks a digit slot, every other character is a literal (use non-digit literals).",
+          "name": "mask",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the masked string whenever the digits change.",
+          "name": "onChange",
+          "required": false,
+          "type": "(value: string) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Text shown when the field is empty; defaults to the mask itself.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the input as required.",
+          "name": "required",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled value; digits are extracted and re-masked.",
+          "name": "value",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

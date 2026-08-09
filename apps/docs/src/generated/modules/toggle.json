@@ -1,0 +1,98 @@
+{
+  "id": "toggle",
+  "name": "Toggle",
+  "apiNames": [
+    "Toggle"
+  ],
+  "description": "A pressed-state button for binary preferences in toolbars and filter rows.",
+  "usage": "<Toggle aria-label=\"Bold\"><Bold /></Toggle>",
+  "anatomy": [
+    {
+      "part": "Button",
+      "description": "The pressable control carrying aria-pressed for its on/off state."
+    },
+    {
+      "part": "Icon or label",
+      "description": "Compact content, usually icon-sized, named by aria-label when icon-only."
+    },
+    {
+      "part": "Pressed tint",
+      "description": "The data-state styling that visually distinguishes on from off."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use for binary states that apply immediately, like Bold or a filter flag.",
+      "Give icon-only toggles an aria-label naming the option.",
+      "Group related toggles in a Toolbar or ToggleGroup."
+    ],
+    "donts": [
+      "Don't use for settings that need explanation; use Switch with a label.",
+      "Don't use a toggle to fire a one-shot action; use a Button."
+    ]
+  },
+  "related": [
+    "toggle-group",
+    "switch",
+    "toolbar"
+  ],
+  "examples": [
+    {
+      "title": "Pressed state",
+      "description": "aria-pressed and data-state reflect the current value; tint follows."
+    },
+    {
+      "title": "Filter rows",
+      "description": "Use toggles in a toolbar for independent on/off preferences."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A preference flips between two states inside a toolbar or filter row.",
+    "avoidWhen": "The choice needs a label with explanation; use Switch or Checkbox.",
+    "behavior": "aria-pressed reflects the value and the pressed tint follows.",
+    "responsive": "Keep toggle content icon-sized so rows stay compact."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus to and from the toggle."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Flips the pressed state."
+      }
+    ],
+    "notes": [
+      "Exposes its state through aria-pressed, announced as a pressed or not-pressed toggle button.",
+      "Icon-only toggles require aria-label to have an accessible name."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "A two-state button that toggles a single option on or off, such as a\nformatting choice. Renders the pressed state as `aria-pressed`.",
+      "displayName": "Toggle",
+      "props": [
+        {
+          "defaultValue": "md",
+          "description": "Control size.",
+          "name": "size",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "asChild",
+          "required": false,
+          "type": "boolean"
+        }
+      ]
+    }
+  ]
+}

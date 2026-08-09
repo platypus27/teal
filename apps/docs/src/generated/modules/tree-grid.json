@@ -1,0 +1,140 @@
+{
+  "id": "tree-grid",
+  "name": "Tree Grid",
+  "apiNames": [
+    "TreeGrid"
+  ],
+  "description": "A data table whose rows form an expandable tree, following the WAI-ARIA treegrid pattern.",
+  "usage": "<TreeGrid\n  aria-label=\"Project files\"\n  columns={[\n    { key: 'name', label: 'Name' },\n    { key: 'size', label: 'Size' },\n  ]}\n  rows={[\n    { id: 'src', name: 'src', size: '—', children: [{ id: 'app', name: 'app.ts', size: '2 KB' }] },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "Header row",
+      "description": "columnheader cells; the first column owns the tree affordances."
+    },
+    {
+      "part": "Tree cell",
+      "description": "First column with depth indentation, a chevron toggle on parent rows, and the row label."
+    },
+    {
+      "part": "Data cells",
+      "description": "Remaining gridcell columns read from the row object by key."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Put the most identifying column first; it carries the indentation and expand toggle.",
+      "Use defaultExpandedIds to spotlight one or two branches on first render.",
+      "Keep cell content as simple text; interaction belongs on the row."
+    ],
+    "donts": [
+      "Don't use it for flat tables; DataTable adds sorting and selection.",
+      "Don't nest deeper than four or five levels; indentation eats the first column.",
+      "Don't put focusable controls inside cells; the keyboard model is row-level."
+    ]
+  },
+  "related": [
+    "data-table",
+    "tree-view",
+    "tree-select"
+  ],
+  "examples": [
+    {
+      "title": "File tree",
+      "description": "A collapsed-by-default file listing; Arrow Right expands a folder row to reveal its children."
+    },
+    {
+      "title": "Pre-expanded budget",
+      "description": "defaultExpandedIds opens chosen branches on first render, useful for spotlight rows."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Tabular data has a parent-child structure, such as file trees, budget rollups, or nested categories with shared columns.",
+    "avoidWhen": "Rows are flat — use DataTable, which adds sorting and selection; if there is no per-row data beyond a label, TreeView is simpler.",
+    "behavior": "Collapsed rows hide their whole subtree. Arrow Right expands a collapsed parent, Arrow Left collapses it or moves focus to its parent, and expansion state is controlled or uncontrolled.",
+    "responsive": "Columns keep their content width and the grid scrolls horizontally on narrow screens; indentation grows with depth instead of widening columns."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Arrow Up",
+          "Arrow Down"
+        ],
+        "action": "Moves focus between visible rows."
+      },
+      {
+        "keys": [
+          "Arrow Right"
+        ],
+        "action": "Expands a collapsed parent row."
+      },
+      {
+        "keys": [
+          "Arrow Left"
+        ],
+        "action": "Collapses an expanded parent row, or moves focus to its parent."
+      },
+      {
+        "keys": [
+          "Home",
+          "End"
+        ],
+        "action": "Moves focus to the first or last visible row."
+      }
+    ],
+    "notes": [
+      "The table uses role=\"treegrid\" with row, columnheader, and gridcell roles; rows expose aria-level and, for parents, aria-expanded.",
+      "A single tab stop roves across rows, and each parent row also offers a chevron button named \"Expand\" or \"Collapse\" plus the row label."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "A table with expandable tree rows following the WAI-ARIA treegrid pattern.",
+      "displayName": "TreeGrid",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Accessible name for the grid.",
+          "name": "aria-label",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Column definitions; the first column carries the tree indentation and expand toggle.",
+          "name": "columns",
+          "required": true,
+          "type": "TreeGridColumn[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial expanded row ids when uncontrolled.",
+          "name": "defaultExpandedIds",
+          "required": false,
+          "type": "string[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled expanded row ids.",
+          "name": "expandedIds",
+          "required": false,
+          "type": "string[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the full list of expanded ids whenever expansion changes.",
+          "name": "onExpandedChange",
+          "required": false,
+          "type": "(expandedIds: string[]) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Rows rendered at the root of the tree.",
+          "name": "rows",
+          "required": true,
+          "type": "TreeGridRow[]"
+        }
+      ]
+    }
+  ]
+}

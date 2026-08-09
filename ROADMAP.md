@@ -54,7 +54,8 @@
 ## Release engineering
 
 - GitHub Actions runs `npm run verify`, Playwright, and Lighthouse checks on pull requests.
-- Changesets owns version PRs, generated changelogs, and npm publishing.
+- Changesets owns version PRs and generated changelogs. Protected publishing and docs deployment require exact retained artifacts, separate least-privilege environments, and owner-signed approval.
+- The reviewed Ed25519 owner trust anchor is configured. The protected `teal-release` and `teal-production` environments remain required before the next publish or production deployment.
 - Open: reduce the packed package from 52.5 kB toward the 35 kB target without dropping source files, declaration maps, or verification coverage.
 
 With 200 modules shipped, Teal's focus shifts back to deepening existing interfaces before growing the catalog further. Product behavior remains in products.

@@ -1,0 +1,219 @@
+{
+  "id": "year-picker",
+  "name": "Year Picker",
+  "apiNames": [
+    "YearPicker"
+  ],
+  "description": "A popover grid of years with decade paging for fast year-only selection.",
+  "usage": "<YearPicker\n  label=\"Graduation year\"\n  value={year}\n  onValueChange={setYear}\n/>",
+  "anatomy": [
+    {
+      "part": "Input trigger",
+      "description": "A read-only field showing the selected year, with a calendar affordance."
+    },
+    {
+      "part": "Decade header",
+      "description": "Stepper buttons that page the grid by decade; the visible range is announced through an aria-live region."
+    },
+    {
+      "part": "Year grid",
+      "description": "Twelve year buttons per page; the selected year is aria-pressed and the current year aria-current."
+    },
+    {
+      "part": "Disabled years",
+      "description": "Years outside minDate and maxDate stay visible but cannot be chosen."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use it when only the year matters, like graduation, fiscal, or model years.",
+      "Bound the range with minDate and maxDate for windows like recent fiscal years.",
+      "Format the emitted January 1 Date down to the year for display."
+    ],
+    "donts": [
+      "Don't use it when the month or day is also needed; use MonthPicker or DatePicker.",
+      "Don't use it for free numeric year entry at scale; a NumberInput types faster."
+    ]
+  },
+  "related": [
+    "month-picker",
+    "date-picker",
+    "calendar"
+  ],
+  "examples": [
+    {
+      "title": "Year grid with decade paging",
+      "description": "Twelve years render per page while the header steps by decade, emitting January 1 of the chosen year."
+    },
+    {
+      "title": "Bounded year range",
+      "description": "minDate and maxDate disable years outside the range, such as recent fiscal years only."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Only the year matters, such as graduation, fiscal, or model years, and scrolling a full calendar would be noise.",
+    "avoidWhen": "The month or day is also needed; use MonthPicker or DatePicker instead.",
+    "behavior": "Clicking or pressing Enter on a year commits January 1 and closes the popover; arrow keys move focus and page the grid automatically at the edges.",
+    "responsive": "The input fills its container; the three-column year grid keeps a fixed compact width."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Arrow Down"
+        ],
+        "action": "Opens the popover from the input."
+      },
+      {
+        "keys": [
+          "Arrow Left",
+          "Arrow Right"
+        ],
+        "action": "Moves the focused year by one, paging at the edges."
+      },
+      {
+        "keys": [
+          "Arrow Up",
+          "Arrow Down"
+        ],
+        "action": "Moves the focused year by three."
+      },
+      {
+        "keys": [
+          "Home",
+          "End"
+        ],
+        "action": "Jumps to the first or last year of the page."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Selects the focused year."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the popover."
+      }
+    ],
+    "notes": [
+      "The selected year is exposed with aria-pressed and the current year with aria-current.",
+      "The visible year range is announced through an aria-live region as pages change."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "YearPicker",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "aria-describedby",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name when there is no visible label.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the input invalid for form validation and screen readers.",
+          "name": "aria-invalid",
+          "required": false,
+          "type": "boolean | \"true\" | \"false\""
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial selected year when uncontrolled; the month and day are always January 1.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "Date"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered below the input.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Prevents interaction with the input.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Explicit id; otherwise Field or an internal id is used.",
+          "name": "id",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Latest selectable year (inclusive).",
+          "name": "maxDate",
+          "required": false,
+          "type": "Date"
+        },
+        {
+          "defaultValue": "",
+          "description": "Earliest selectable year (inclusive).",
+          "name": "minDate",
+          "required": false,
+          "type": "Date"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with January 1 of the selected year.",
+          "name": "onValueChange",
+          "required": false,
+          "type": "(date: Date) => void"
+        },
+        {
+          "defaultValue": "Pick a year",
+          "description": "Text shown when no year is selected.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the input as required.",
+          "name": "required",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled selected year; only the year is significant.",
+          "name": "value",
+          "required": false,
+          "type": "Date"
+        }
+      ]
+    }
+  ]
+}

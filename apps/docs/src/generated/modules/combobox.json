@@ -1,0 +1,208 @@
+{
+  "id": "combobox",
+  "name": "Combobox",
+  "apiNames": [
+    "Combobox"
+  ],
+  "description": "A filterable single-value picker combining free text with a suggestion list.",
+  "usage": "<Combobox\n  label=\"Assignee\"\n  options={[\n    { value: 'avery', label: 'Avery Chen' },\n    { value: 'morgan', label: 'Morgan Reyes' },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "Input",
+      "description": "The text field with combobox semantics that filters the list as you type."
+    },
+    {
+      "part": "Listbox",
+      "description": "The suggestion popup matched to the field width."
+    },
+    {
+      "part": "Option",
+      "description": "A filterable row with a check mark on the selected value."
+    },
+    {
+      "part": "Empty message",
+      "description": "The text shown when no option matches the filter."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use Combobox when the list is long enough to need filtering.",
+      "Write an emptyMessage that suggests what to try next.",
+      "Keep the committed value readable as the input text."
+    ],
+    "donts": [
+      "Don't use it for short lists; use Select.",
+      "Don't treat unmatched text as a value; use TagsInput for free entry.",
+      "Don't clear the current value on Escape; it should restore, not wipe."
+    ]
+  },
+  "related": [
+    "select",
+    "multi-select",
+    "mention-input",
+    "input"
+  ],
+  "examples": [
+    {
+      "title": "Filter and select",
+      "description": "Type to filter, arrows to highlight, Enter to select; Escape keeps the current value."
+    },
+    {
+      "title": "Filter with empty state",
+      "description": "A project picker with a disabled option and a custom message when nothing matches."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Users choose one value from a list long enough to need filtering.",
+    "avoidWhen": "The list is short; use Select, or the value is free text; use Input.",
+    "behavior": "Typing filters, arrows highlight, Enter selects, Escape preserves the current value.",
+    "responsive": "The suggestion list matches the field width and collision-handles vertically."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Typing"
+        ],
+        "action": "Filters the option list and opens the listbox."
+      },
+      {
+        "keys": [
+          "Arrow Down",
+          "Arrow Up"
+        ],
+        "action": "Moves the highlight through the filtered options."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Selects the highlighted option and closes the listbox."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the listbox without changing the committed value."
+      }
+    ],
+    "notes": [
+      "The input renders the combobox role with aria-autocomplete list and aria-activedescendant for the highlighted option.",
+      "Options render option roles with aria-selected; disabled options cannot be chosen.",
+      "The empty message appears inside the listbox when no option matches the filter."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Combobox",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "aria-describedby",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name when there is no visible label.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the input invalid for form validation and screen readers.",
+          "name": "aria-invalid",
+          "required": false,
+          "type": "boolean | \"true\" | \"false\""
+        },
+        {
+          "defaultValue": "",
+          "description": "Explicit id; otherwise Field or an internal id is used.",
+          "name": "id",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial selected value when uncontrolled.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered below the input.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Prevents interaction with the input.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "No matches",
+          "description": "Message shown when no option matches the typed text.",
+          "name": "emptyMessage",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the value of the selected option.",
+          "name": "onValueChange",
+          "required": false,
+          "type": "(value: string) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Options rendered in the filtered listbox.",
+          "name": "options",
+          "required": true,
+          "type": "ComboboxOption[]"
+        },
+        {
+          "defaultValue": "Search…",
+          "description": "Text shown when no value is selected.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the input as required.",
+          "name": "required",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled selected value.",
+          "name": "value",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

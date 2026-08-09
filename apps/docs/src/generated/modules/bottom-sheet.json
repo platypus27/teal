@@ -1,0 +1,158 @@
+{
+  "id": "bottom-sheet",
+  "name": "Bottom Sheet",
+  "apiNames": [
+    "BottomSheet"
+  ],
+  "description": "A sheet that slides up from the bottom edge with snap heights, ideal for mobile-first flows.",
+  "usage": "<BottomSheet\n  open={open}\n  onOpenChange={setOpen}\n  snap=\"half\"\n  title=\"Share report\"\n>\n  <p>Sheet content</p>\n</BottomSheet>",
+  "anatomy": [
+    {
+      "part": "Backdrop",
+      "description": "The dimmed layer behind the sheet that closes it on click."
+    },
+    {
+      "part": "Sheet",
+      "description": "The bottom-anchored modal surface that traps focus and is named by its title."
+    },
+    {
+      "part": "Header",
+      "description": "The title row at the top of the sheet."
+    },
+    {
+      "part": "Body",
+      "description": "The caller's content, sized by the snap prop (half or full viewport height)."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use snap=\"half\" for glanceable tasks so page context stays visible above the sheet.",
+      "Reach for it in mobile-first flows like sharing, filtering, or picking a value.",
+      "Give the sheet a title so the dialog has an accessible name."
+    ],
+    "donts": [
+      "Don't use it for desktop-centric workflows; use Drawer or Dialog.",
+      "Don't stack it with another modal like a Dialog on top.",
+      "Don't fill it with page-length content; keep the task temporary and focused."
+    ]
+  },
+  "related": [
+    "action-sheet",
+    "drawer",
+    "dialog"
+  ],
+  "examples": [
+    {
+      "title": "Half snap",
+      "description": "The sheet snaps to half the viewport so page context stays visible above it."
+    },
+    {
+      "title": "Full snap",
+      "description": "The full snap height suits long content such as pickers and previews."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Mobile-first flows where a temporary task (sharing, filtering, picking) should rise from the thumb zone without leaving the page.",
+    "avoidWhen": "Desktop-centric workflows or persistent side content; use Drawer or Dialog instead.",
+    "behavior": "Modal dialog semantics: focus is trapped inside, Escape and the backdrop close it, and the snap prop fixes the height.",
+    "responsive": "Spans the full width up to a max width centered on larger screens; the half snap keeps the sheet glanceable on small screens."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the sheet and returns focus to the trigger."
+      },
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Cycles focus through the controls inside the sheet."
+      }
+    ],
+    "notes": [
+      "Renders with role=\"dialog\" and is named by its title.",
+      "The drag handle is a visual affordance only and is hidden from assistive technology."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "BottomSheet",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Body content of the sheet.",
+          "name": "children",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "Close",
+          "description": "Accessible label for the close button.",
+          "name": "closeLabel",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial open state when uncontrolled.",
+          "name": "defaultOpen",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered under the title.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Action area rendered at the bottom of the sheet.",
+          "name": "footer",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the sheet opens or closes.",
+          "name": "onOpenChange",
+          "required": false,
+          "type": "(open: boolean) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled open state.",
+          "name": "open",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "half",
+          "description": "Height the sheet snaps to.",
+          "name": "snap",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Title rendered at the top; also the accessible name of the sheet.",
+          "name": "title",
+          "required": false,
+          "type": "ReactNode"
+        }
+      ]
+    }
+  ]
+}

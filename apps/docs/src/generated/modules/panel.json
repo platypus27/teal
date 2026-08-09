@@ -1,0 +1,94 @@
+{
+  "id": "panel",
+  "name": "Panel",
+  "apiNames": [
+    "Panel"
+  ],
+  "description": "A lightweight bordered surface with optional header and actions, for grouping content without Card's elevation.",
+  "usage": "<Panel\n  title=\"Storage usage\"\n  actions={<Button size=\"sm\" variant=\"ghost\">Manage</Button>}\n>\n  <p>You have used 6.2 GB of your 10 GB quota.</p>\n</Panel>",
+  "anatomy": [
+    {
+      "part": "Header row",
+      "description": "The title-plus-actions row, rendered only when title or actions are provided."
+    },
+    {
+      "part": "Title",
+      "description": "The heading naming the grouped content, adjustable to fit the page outline."
+    },
+    {
+      "part": "Actions",
+      "description": "The trailing slot for one small related control."
+    },
+    {
+      "part": "Body",
+      "description": "The bordered content region without Card's elevation."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use it for quiet grouping like settings blocks and summaries.",
+      "Keep header actions to a single small control.",
+      "Choose Panel over Card when elevation would add noise."
+    ],
+    "donts": [
+      "Don't make the panel itself clickable; put a real link or button inside.",
+      "Don't nest panels inside panels; flatten the grouping instead."
+    ]
+  },
+  "related": [
+    "card",
+    "glass-panel",
+    "accordion"
+  ],
+  "examples": [
+    {
+      "title": "Panel with header and actions",
+      "description": "A titled panel with a trailing action, the default way to frame a self-contained block of content."
+    },
+    {
+      "title": "Headerless and action-only panels",
+      "description": "Omit the title for a simple bordered group, or pass actions alone when the content speaks for itself."
+    }
+  ],
+  "guidance": {
+    "useWhen": "You need to group related content on the page with a light boundary, for example settings blocks, summaries, or sidebar sections.",
+    "avoidWhen": "The surface is a primary, clickable, or elevated content unit; use Card instead, which carries stronger elevation and an interactive variant.",
+    "behavior": "Panel is a static container: it renders a header row only when a title or actions are provided and adds no interaction of its own.",
+    "responsive": "The header row keeps its items on one line with a gap and relies on the flexible width of the panel, so it fills narrow columns without extra work."
+  },
+  "accessibility": {
+    "notes": [
+      "The title renders a real heading (h2 by default, adjustable via titleAs), so screen-reader users can navigate between panels.",
+      "Actions are plain interactive elements and keep their own accessible names and focus rings."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Panel",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Action elements rendered on the trailing side of the header.",
+          "name": "actions",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Title rendered in the header; omit to render the panel without a header.",
+          "name": "title",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "h2",
+          "description": "Heading element used for the title; defaults to 'h2'. Adjust to fit the page outline.",
+          "name": "titleAs",
+          "required": false,
+          "type": "enum"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "id": "notification-item",
+  "name": "Notification Item",
+  "apiNames": [
+    "NotificationItem"
+  ],
+  "imports": [
+    "NotificationItem"
+  ],
+  "description": "A sanitized ecosystem inbox row with severity, source application, read state, deep link, and delivery-state controls.",
+  "usage": "<NotificationItem\n  severity=\"warning\"\n  appLabel=\"Yang Operations\"\n  timestamp=\"2 hours ago\"\n  title=\"photos-api restarted unexpectedly\"\n  href=\"https://yang.example/incidents/photos-api\"\n  onMute={() => undefined}\n  onArchive={() => undefined}\n/>",
+  "anatomy": [
+    {
+      "part": "Severity dot",
+      "description": "Small colored marker matched to the severity variant."
+    },
+    {
+      "part": "Severity icon",
+      "description": "Decorative status icon beside the content; hidden from assistive technology."
+    },
+    {
+      "part": "Title link",
+      "description": "Deep link to the source application event; unread items are bold and append a screen-reader-only unread marker."
+    },
+    {
+      "part": "Metadata",
+      "description": "Source application label and caller-supplied timestamp."
+    },
+    {
+      "part": "Mute and archive",
+      "description": "Optional IconButtons that change delivery state only, never the source event."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Pass sanitized title and appLabel from the ecosystem payload; the row renders what it is given.",
+      "Wire mute and archive to delivery-state endpoints only."
+    ],
+    "donts": [
+      "Don't mutate the source event from onMute or onArchive.",
+      "Don't use NotificationItem for feedback local to the current task; use Alert or Toast."
+    ]
+  },
+  "related": [
+    "notification-center",
+    "health-indicator",
+    "toast"
+  ],
+  "examples": [
+    {
+      "title": "Unread with controls",
+      "description": "Unread items are emphasized and announced; mute and archive only touch delivery state, never the source event."
+    },
+    {
+      "title": "Read",
+      "description": "Read items drop the emphasis and the unread announcement."
+    }
+  ],
+  "guidance": {
+    "useWhen": "An inbox lists sanitized pointers to application events.",
+    "avoidWhen": "The feedback is local to the current task; use Alert or Toast instead.",
+    "behavior": "Mute and archive touch delivery state only; the deep link never mutates the source.",
+    "responsive": "Text wraps and controls stay reachable at mobile widths."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus to the title link and to the mute and archive buttons."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Follows the title link to the source application."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Activates the mute or archive button."
+      }
+    ],
+    "notes": [
+      "Unread items are bold and append a screen-reader-only \", unread\" marker to the title link.",
+      "The severity dot and icon are aria-hidden; severity must also be clear from the title or surrounding context.",
+      "Mute and archive are IconButtons with explicit accessible labels."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "NotificationItem",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Label of the source application, supplied sanitized by the caller.",
+          "name": "appLabel",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "URL of the source application deep link.",
+          "name": "href",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Renders an archive control and calls this when pressed. Never mutates the source event.",
+          "name": "onArchive",
+          "required": false,
+          "type": "() => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Renders a mute control and calls this when pressed. Never mutates the source event.",
+          "name": "onMute",
+          "required": false,
+          "type": "() => void"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Marks the item as read; unread items are emphasized and announce an unread marker.",
+          "name": "read",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "info",
+          "description": "Severity drives the indicator and icon.",
+          "name": "severity",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Human-readable timestamp supplied by the caller.",
+          "name": "timestamp",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Notification title, supplied sanitized by the caller.",
+          "name": "title",
+          "required": true,
+          "type": "ReactNode"
+        }
+      ]
+    }
+  ]
+}

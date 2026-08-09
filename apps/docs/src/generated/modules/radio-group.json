@@ -1,0 +1,134 @@
+{
+  "id": "radio-group",
+  "name": "Radio Group",
+  "apiNames": [
+    "RadioGroup"
+  ],
+  "description": "A single-choice option set with an integrated label, description, and subtle borders.",
+  "usage": "<RadioGroup\n  label=\"Home region\"\n  defaultValue=\"eu\"\n  options={[\n    { value: 'eu', label: 'Europe (Frankfurt)' },\n    { value: 'us', label: 'United States (Virginia)' },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "Group label",
+      "description": "The legend-style label wired to the group through aria-labelledby."
+    },
+    {
+      "part": "Item control",
+      "description": "The circular radio that fills when its option is selected."
+    },
+    {
+      "part": "Item label",
+      "description": "Clickable text naming each option."
+    },
+    {
+      "part": "Item description",
+      "description": "Optional per-option supporting text."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Set a defaultValue so exactly one option is always selected.",
+      "Keep the set to about two to five options so every choice stays visible.",
+      "Use per-option descriptions when the choices need explanation."
+    ],
+    "donts": [
+      "Don't use radios for long or filterable lists; use Select or Combobox.",
+      "Don't leave all options unselected to imply a none state; add an explicit option.",
+      "Don't switch to horizontal orientation when labels would wrap."
+    ]
+  },
+  "related": [
+    "radio-card",
+    "select",
+    "checkbox",
+    "segmented-control"
+  ],
+  "examples": [
+    {
+      "title": "Single choice",
+      "description": "Keyboard arrows move and select within the group following the roving-focus pattern."
+    },
+    {
+      "title": "Horizontal options",
+      "description": "A horizontal orientation suits short labels like digest frequencies."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Users pick exactly one option from a small visible set.",
+    "avoidWhen": "The list is long or needs filtering; use Select or Combobox.",
+    "behavior": "Arrow keys move and select within the group; the label is wired through aria-labelledby.",
+    "responsive": "Switch to horizontal orientation only when labels stay on one line."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus to the selected radio, or the first option when none is selected."
+      },
+      {
+        "keys": [
+          "Arrow Up",
+          "Arrow Down",
+          "Arrow Left",
+          "Arrow Right"
+        ],
+        "action": "Moves focus and selection between options."
+      },
+      {
+        "keys": [
+          "Space"
+        ],
+        "action": "Selects the focused option when the group has no selection."
+      }
+    ],
+    "notes": [
+      "Implements the ARIA radiogroup pattern through the Radix primitive with roving tab index.",
+      "The group label is wired through aria-labelledby and each option keeps a clickable label.",
+      "Disabled options stay visible but are skipped during keyboard navigation."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "RadioGroup",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered below the group and linked to it for assistive technology.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label for the whole group.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Options rendered as radios inside the group.",
+          "name": "options",
+          "required": true,
+          "type": "RadioGroupOption[]"
+        },
+        {
+          "defaultValue": "vertical",
+          "description": "Layout direction of the options.",
+          "name": "orientation",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "asChild",
+          "required": false,
+          "type": "boolean"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "id": "number-input",
+  "name": "Number Input",
+  "apiNames": [
+    "NumberInput"
+  ],
+  "description": "A numeric field with stepper buttons and min/max clamping.",
+  "usage": "<NumberInput label=\"Seats\" defaultValue={4} min={1} max={12} />",
+  "anatomy": [
+    {
+      "part": "Input",
+      "description": "The numeric text field that re-clamps to the bounds on blur."
+    },
+    {
+      "part": "Steppers",
+      "description": "Increment and decrement buttons that step the value and disable at min and max."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Set min and max so clamping matches the business rule.",
+      "Choose a step that matches how people think, like 5 for story points.",
+      "Treat an empty field as undefined in the caller, not as zero."
+    ],
+    "donts": [
+      "Don't use it for identifiers like codes or phone numbers; use Input.",
+      "Don't use it when the value needs currency formatting; use CurrencyInput.",
+      "Don't hide the bounds; state them in the description."
+    ]
+  },
+  "related": [
+    "currency-input",
+    "slider",
+    "input",
+    "meter"
+  ],
+  "examples": [
+    {
+      "title": "Steppers and bounds",
+      "description": "Steppers disable at the bounds; typing re-clamps on blur."
+    },
+    {
+      "title": "Custom step",
+      "description": "A step of 5 with 0–100 bounds for story-point entry."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A numeric value benefits from quick stepping.",
+    "avoidWhen": "The value is an identifier, not a quantity; use Input.",
+    "behavior": "Steppers use 24px touch targets and blur clamps to min/max; empty means undefined.",
+    "responsive": "The field fills its container; constrain it in the form layout."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus through the field and the stepper buttons."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Activates the focused stepper to increment or decrement."
+      },
+      {
+        "keys": [
+          "Typing"
+        ],
+        "action": "Edits the value directly; the field re-clamps on blur."
+      }
+    ],
+    "notes": [
+      "Steppers are labeled Increment and Decrement and disable at the min and max bounds.",
+      "An empty field reports undefined rather than zero.",
+      "Inside a Field, descriptions and errors link through aria-describedby and aria-invalid."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "NumberInput",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "aria-describedby",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name when there is no visible label.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the input invalid for form validation and screen readers.",
+          "name": "aria-invalid",
+          "required": false,
+          "type": "boolean | \"true\" | \"false\""
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial value when uncontrolled.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered below the input.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Prevents interaction with the input.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Explicit id; otherwise Field or an internal id is used.",
+          "name": "id",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Largest allowed value; stepper clamps to it.",
+          "name": "max",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Smallest allowed value; stepper clamps to it.",
+          "name": "min",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the parsed number, or undefined when the field is emptied.",
+          "name": "onValueChange",
+          "required": false,
+          "type": "(value: number) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Text shown when the field is empty.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the input as required.",
+          "name": "required",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "1",
+          "description": "Amount added or removed by the stepper buttons.",
+          "name": "step",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled value.",
+          "name": "value",
+          "required": false,
+          "type": "number"
+        }
+      ]
+    }
+  ]
+}

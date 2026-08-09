@@ -1,0 +1,171 @@
+{
+  "id": "drawer",
+  "name": "Drawer",
+  "apiNames": [
+    "Drawer"
+  ],
+  "imports": [
+    "Drawer",
+    "Button"
+  ],
+  "description": "A slide-over panel for focused side tasks, built on the dialog focus model.",
+  "usage": "<Drawer\n  open={open}\n  onOpenChange={setOpen}\n  title=\"Project settings\"\n  side=\"right\"\n>\n  <SettingsForm />\n</Drawer>",
+  "anatomy": [
+    {
+      "part": "Scrim",
+      "description": "The dimmed backdrop that blocks the page and dismisses on click."
+    },
+    {
+      "part": "Panel",
+      "description": "The surface sliding in from the chosen side that traps focus like a dialog."
+    },
+    {
+      "part": "Header",
+      "description": "Title and optional description wired to the panel's accessible name and description."
+    },
+    {
+      "part": "Footer",
+      "description": "Optional action row pinned below the scrollable body, usually Cancel plus a primary action."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use a drawer for focused side tasks like settings or detail editing that need more room than a dialog.",
+      "Pick the side that matches the content's origin, for example left for navigation-adjacent panels.",
+      "Let long forms scroll inside the panel and keep footer actions visible."
+    ],
+    "donts": [
+      "Don't use a drawer for a simple confirmation; use Dialog or AlertDialog.",
+      "Don't open a second overlay from inside a drawer.",
+      "Don't treat it as page-length scrolling content; keep the task focused."
+    ]
+  },
+  "related": [
+    "dialog",
+    "bottom-sheet",
+    "floating-panel"
+  ],
+  "examples": [
+    {
+      "title": "Side panel",
+      "description": "The drawer slides from either edge and traps focus like a dialog."
+    },
+    {
+      "title": "Left-anchored",
+      "description": "side=\"left\" suits panels that extend navigation or list-level context."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A focused side task needs more room than a dialog but should not navigate away.",
+    "avoidWhen": "The task is a simple confirmation; use Dialog.",
+    "behavior": "Focus is trapped and restored, Escape dismisses, and the panel slides from the chosen edge.",
+    "responsive": "The default width caps at the viewport; forms inside own their own scroll."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the drawer and returns focus to the element that opened it."
+      },
+      {
+        "keys": [
+          "Tab",
+          "Shift+Tab"
+        ],
+        "action": "Cycles focus through the controls inside the drawer."
+      }
+    ],
+    "notes": [
+      "Shares the dialog focus model: focus is trapped while open and restored on close.",
+      "The panel is labelled by its title and described by its optional description.",
+      "Background content is inert and scroll-locked while the drawer is open."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Drawer",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Body content of the drawer.",
+          "name": "children",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "Close",
+          "description": "Accessible label for the close button.",
+          "name": "closeLabel",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial open state when uncontrolled.",
+          "name": "defaultOpen",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered under the title.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Action area rendered at the bottom of the drawer.",
+          "name": "footer",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the drawer opens or closes.",
+          "name": "onOpenChange",
+          "required": false,
+          "type": "(open: boolean) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled open state.",
+          "name": "open",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "right",
+          "description": "Edge of the viewport the drawer slides in from.",
+          "name": "side",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Title rendered at the top; also the accessible name of the drawer.",
+          "name": "title",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "min(28rem,calc(100vw - 1.5rem))",
+          "description": "Width of the drawer surface.",
+          "name": "width",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

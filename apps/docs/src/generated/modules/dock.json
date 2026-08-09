@@ -1,0 +1,119 @@
+{
+  "id": "dock",
+  "name": "Dock",
+  "apiNames": [
+    "Dock",
+    "DockItem"
+  ],
+  "description": "A macOS-style dock of icon buttons with hover tooltips, accessible names, and an active-app indicator dot.",
+  "usage": "<Dock>\n  <DockItem active icon={<Mail />} label=\"Mail\" />\n  <DockItem icon={<Music />} label=\"Music\" />\n  <DockItem icon={<Folder />} label=\"Files\" />\n</Dock>",
+  "anatomy": [
+    {
+      "part": "Dock",
+      "description": "Centered icon bar rendered as a named navigation landmark."
+    },
+    {
+      "part": "Items",
+      "description": "Icon buttons whose label is both the accessible name and the tooltip text."
+    },
+    {
+      "part": "Active dot",
+      "description": "Non-interactive indicator under the current app."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Keep the set small; every icon must stay recognizable.",
+      "Give the dock a distinct aria-label when other nav landmarks share the page."
+    ],
+    "donts": [
+      "Don't use it when items need visible text labels; use Bottom Nav.",
+      "Don't overload it with destinations; it is a launcher, not a full nav."
+    ]
+  },
+  "related": [
+    "nav-rail",
+    "bottom-nav",
+    "floating-toolbar"
+  ],
+  "examples": [
+    {
+      "title": "App dock",
+      "description": "Icon buttons lift on hover and show a tooltip label; active apps get a dot underneath."
+    },
+    {
+      "title": "Custom landmark name",
+      "description": "A custom aria-label scopes the dock when several navigation landmarks share the page."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A small set of apps or tools should be launchable from a playful, icon-only bar, such as in a desktop-like workspace.",
+    "avoidWhen": "Items need visible text labels or there are more than a handful of destinations; use BottomNav or VerticalNav instead.",
+    "behavior": "Every item is a real button whose label prop is both the accessible name and the tooltip text; active adds a non-interactive indicator dot.",
+    "responsive": "The dock sizes to its icons and centers in available space; on narrow screens keep the item count low or allow horizontal scrolling in a wrapper."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus between the icon buttons."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Activates the focused item."
+      }
+    ],
+    "notes": [
+      "Renders a navigation landmark labelled \"Dock\" by default.",
+      "Each item's label becomes its aria-label, so icon-only buttons stay announced.",
+      "The tooltip and active dot are aria-hidden; state is never conveyed by color alone to assistive technology."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Dock",
+      "props": [
+        {
+          "defaultValue": "Dock",
+          "description": "Accessible name for the dock landmark.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "DockItem",
+      "props": [
+        {
+          "defaultValue": "false",
+          "description": "Shows a dot under the icon marking the running or current app.",
+          "name": "active",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Icon content of the item.",
+          "name": "icon",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Name of the item; used as the accessible name and the tooltip text.",
+          "name": "label",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

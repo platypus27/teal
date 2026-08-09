@@ -1,0 +1,89 @@
+{
+  "id": "pulse-dot",
+  "name": "Pulse Dot",
+  "apiNames": [
+    "PulseDot"
+  ],
+  "description": "An animated pulsing dot that signals live presence or ongoing activity.",
+  "usage": "<PulseDot\n  label=\"3 editors online\"\n  variant=\"success\"\n/>",
+  "anatomy": [
+    {
+      "part": "Core dot",
+      "description": "Small solid marker colored by the semantic variant."
+    },
+    {
+      "part": "Pulse ring",
+      "description": "Expanding aria-hidden ring animated with ping; disabled under prefers-reduced-motion."
+    },
+    {
+      "part": "Label",
+      "description": "Accessible name describing the live state, applied as aria-label on the role=\"status\" element."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use it for things happening right now: live presence, recording, or a streaming connection.",
+      "Always pass a label that says what is live, such as \"3 editors online\"."
+    ],
+    "donts": [
+      "Don't use it for static states; use StatusDot instead.",
+      "Don't run several pulse dots in one view; keep one live signal per region."
+    ]
+  },
+  "related": [
+    "status-dot",
+    "badge",
+    "network-status"
+  ],
+  "examples": [
+    {
+      "title": "Live presence",
+      "description": "A pulsing dot next to a label for collaborators or live streams."
+    },
+    {
+      "title": "Semantic variants",
+      "description": "Danger, warning, and neutral pulses for recording, away, or idle states."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Something is actively happening right now — live presence, recording, or a streaming connection.",
+    "avoidWhen": "The state is static; use StatusDot instead, which has no animation.",
+    "behavior": "Pulses continuously while mounted; the animation is disabled under prefers-reduced-motion.",
+    "responsive": "Fixed small footprint that fits inline next to text at any width."
+  },
+  "accessibility": {
+    "notes": [
+      "Rendered as role=\"status\" with an aria-label that describes the live state.",
+      "The pulsing ring is aria-hidden and uses motion-reduce to respect prefers-reduced-motion."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "PulseDot",
+      "props": [
+        {
+          "defaultValue": "Live",
+          "description": "Accessible label describing the live state, for example \"3 editors online\".",
+          "name": "label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "md",
+          "description": "Size of the dot.",
+          "name": "size",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "success",
+          "description": "Semantic color of the dot.",
+          "name": "variant",
+          "required": false,
+          "type": "enum"
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,11 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Link } from 'lucide-react'
-import { CopyPageButton } from './CopyPageButton.jsx'
+import { TABLE_OF_CONTENTS_CHANGED_EVENT } from './TableOfContents.jsx'
+
+const CopyPageButton = lazy(() =>
+  import('./CopyPageButton.jsx').then((module) => ({ default: module.CopyPageButton })),
+)
+const PrevNext = lazy(() => import('./PrevNext.jsx').then((module) => ({ default: module.PrevNext })))
 
 export function slugify(value) {
   return value
@@ -16,6 +21,7 @@ export function Page({
   docTitle = undefined,
   eyebrow = undefined,
   markdown = undefined,
+  pagination = true,
   title,
 }) {
   useEffect(() => {
@@ -23,32 +29,49 @@ export function Page({
   }, [docTitle, title])
 
   return (
-    <article className="mx-auto w-full max-w-6xl px-5 py-10 sm:px-8 lg:px-12 lg:py-14">
-      <header className="mb-10">
-        <div className="flex items-start justify-between gap-4">
-          <div className="min-w-0 max-w-3xl">
-            {eyebrow ? (
-              <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-teal-primary">{eyebrow}</p>
-            ) : null}
-            <h1 className="font-teal-headline text-3xl font-extrabold tracking-tight text-teal-on-surface sm:text-4xl">{title}</h1>
-          </div>
-          {markdown ? (
-            <div className="shrink-0 pt-1.5">
-              <CopyPageButton markdown={markdown} />
+    <>
+      <article className="mx-auto w-full max-w-6xl px-5 py-10 sm:px-8 lg:px-12 lg:py-14">
+        <header className="mb-10">
+          <div className="flex items-start justify-between gap-4">
+            <div className="min-w-0 max-w-3xl">
+              {eyebrow ? (
+                <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-teal-primary">{eyebrow}</p>
+              ) : null}
+              <h1 className="font-teal-headline text-3xl font-extrabold tracking-tight text-teal-on-surface sm:text-4xl">{title}</h1>
             </div>
+            {markdown ? (
+              <div className="shrink-0 pt-1.5">
+                <Suspense fallback={null}>
+                  <CopyPageButton markdown={markdown} />
+                </Suspense>
+              </div>
+            ) : null}
+          </div>
+          {description ? (
+            <p className="mt-3 max-w-3xl text-base leading-relaxed text-teal-on-surface-variant sm:text-lg">{description}</p>
           ) : null}
-        </div>
-        {description ? (
-          <p className="mt-3 max-w-3xl text-base leading-relaxed text-teal-on-surface-variant sm:text-lg">{description}</p>
-        ) : null}
-      </header>
-      <div className="space-y-10">{children}</div>
-    </article>
+        </header>
+        <div className="space-y-10">{children}</div>
+      </article>
+      {pagination ? (
+        <Suspense fallback={null}>
+          <PrevNext />
+        </Suspense>
+      ) : null}
+    </>
   )
 }
 
 export function Section({ children, description = undefined, id = undefined, title }) {
   const anchorId = id ?? slugify(title)
+
+  useEffect(() => {
+    window.dispatchEvent(new Event(TABLE_OF_CONTENTS_CHANGED_EVENT))
+    return () => {
+      window.dispatchEvent(new Event(TABLE_OF_CONTENTS_CHANGED_EVENT))
+    }
+  }, [anchorId, title])
+
   return (
     <section id={anchorId} className="scroll-mt-24 space-y-4">
       <div>

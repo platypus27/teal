@@ -1,0 +1,110 @@
+{
+  "id": "input",
+  "name": "Input and TextArea",
+  "apiNames": [
+    "Input",
+    "TextArea"
+  ],
+  "description": "Native text controls with Teal sizing, invalid states, and forwarded refs.",
+  "usage": "<Input placeholder=\"Project name\" />\n<TextArea placeholder=\"Notes\" rows={4} />",
+  "anatomy": [
+    {
+      "part": "Control",
+      "description": "The native input or textarea element with Teal sizing, focus ring, and a forwarded ref."
+    },
+    {
+      "part": "Placeholder",
+      "description": "A short hint that disappears on entry; never a substitute for a label."
+    },
+    {
+      "part": "Invalid state",
+      "description": "Error styling applied through aria-invalid, either directly or from the surrounding Field."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Set type, inputMode, and autoComplete to match the value, like email or tel.",
+      "Wrap the control in a Field so the label and messages stay associated.",
+      "Set rows on TextArea to roughly the expected answer length."
+    ],
+    "donts": [
+      "Don't use placeholder text as the only label.",
+      "Don't disable a field the user must fix; show an error instead.",
+      "Don't use free text for a constrained choice; use Select or RadioGroup."
+    ]
+  },
+  "related": [
+    "field",
+    "search-input",
+    "autosize-textarea",
+    "input-group"
+  ],
+  "examples": [
+    {
+      "title": "States",
+      "description": "Default, invalid, and disabled inputs share the same sizing and focus treatment."
+    },
+    {
+      "title": "Semantic types",
+      "description": "type, inputMode, and autoComplete steer the on-screen keyboard and autofill."
+    },
+    {
+      "title": "Search and inline validation",
+      "description": "Use a compact search control alongside an input that reports its invalid state."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Users enter or search for short text.",
+    "avoidWhen": "A constrained set of choices or a long-form editor is clearer.",
+    "behavior": "Native input behavior is preserved, including browser validation and refs.",
+    "responsive": "Use full width on small screens and constrain width at larger sizes."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus to and from the control."
+      },
+      {
+        "keys": [
+          "Typing"
+        ],
+        "action": "Edits the value using native text editing keys."
+      }
+    ],
+    "notes": [
+      "Inputs are native elements, so autofill, spellcheck, and input modes work without configuration.",
+      "Inside a Field, aria-invalid and aria-describedby are applied automatically when the field has an error or description."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Input",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "size",
+          "required": false,
+          "type": "\"sm\" | \"md\" | \"lg\" | null"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "TextArea",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "size",
+          "required": false,
+          "type": "\"sm\" | \"md\" | \"lg\" | null"
+        }
+      ]
+    }
+  ]
+}

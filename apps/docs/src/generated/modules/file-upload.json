@@ -1,0 +1,178 @@
+{
+  "id": "file-upload",
+  "name": "File Upload",
+  "apiNames": [
+    "FileUpload"
+  ],
+  "description": "A drag-and-drop zone with a browse action and a removable file list.",
+  "usage": "<FileUpload label=\"Attachments\" multiple onFilesAdded={(files) => undefined} />",
+  "anatomy": [
+    {
+      "part": "Drop zone",
+      "description": "The drag target that highlights on drag-over and holds the browse action."
+    },
+    {
+      "part": "Browse action",
+      "description": "The explicit button that opens the file picker without drag-and-drop."
+    },
+    {
+      "part": "File list",
+      "description": "Rows with the name, size, and a remove action per file."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "State accepted types and size limits in the description.",
+      "Mirror the caller-owned value so removals stay in sync.",
+      "Use accept to narrow the picker, then validate again on the server."
+    ],
+    "donts": [
+      "Don't auto-upload on selection without telling the user.",
+      "Don't use it for a single text reference; use Input.",
+      "Don't swallow rejected files silently; surface why a file was refused."
+    ]
+  },
+  "related": [
+    "upload-progress",
+    "input",
+    "field",
+    "form"
+  ],
+  "examples": [
+    {
+      "title": "Drop or browse",
+      "description": "Drag-over highlights the zone; files list with sizes and remove actions."
+    },
+    {
+      "title": "Multiple attachments",
+      "description": "A controlled multi-file zone seeded with an existing file and a removal action."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Users attach files to a form.",
+    "avoidWhen": "A single URL or text reference suffices; use Input.",
+    "behavior": "Drag-over highlights the zone; the list mirrors the caller-owned value.",
+    "responsive": "The zone fills its container and the file list wraps below."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus through the browse button and each file remove button."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Opens the file picker from the browse button, or removes a file from its row."
+      }
+    ],
+    "notes": [
+      "The native file input is visually hidden; the visible Browse button opens it and the label still points at the input.",
+      "File rows are list items with the name, formatted size, and an IconButton labeled Remove plus the file name.",
+      "The upload and file icons are decorative and hidden from assistive technology."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "A labeled dropzone with a browsable file input and a removable file list.",
+      "displayName": "FileUpload",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "aria-describedby",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the control invalid for form validation and screen readers.",
+          "name": "aria-invalid",
+          "required": false,
+          "type": "boolean | \"true\" | \"false\""
+        },
+        {
+          "defaultValue": "",
+          "description": "Explicit id; otherwise Field or an internal id is used.",
+          "name": "id",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Comma-separated list of accepted file types, forwarded to the file input.",
+          "name": "accept",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered below the dropzone.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Prevents adding or removing files.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label rendered above the dropzone. Required outside a Field; inside a Field the Field's label is used.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Allows selecting more than one file at a time.",
+          "name": "multiple",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the raw File objects each time files are added.",
+          "name": "onFilesAdded",
+          "required": false,
+          "type": "(files: File[]) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the next file list whenever files are added or removed.",
+          "name": "onValueChange",
+          "required": false,
+          "type": "(files: FileUploadFile[]) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the control as required.",
+          "name": "required",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled file list. When omitted the component tracks the list internally.",
+          "name": "value",
+          "required": false,
+          "type": "FileUploadFile[]"
+        }
+      ]
+    }
+  ]
+}

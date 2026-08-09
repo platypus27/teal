@@ -1,0 +1,138 @@
+{
+  "id": "hover-card",
+  "name": "Hover Card",
+  "apiNames": [
+    "HoverCard"
+  ],
+  "imports": [
+    "HoverCard",
+    "Link"
+  ],
+  "description": "A rich preview surface revealed on hover or focus, for context without navigation.",
+  "usage": "<HoverCard trigger={<Link href=\"/projects/orion\">Orion</Link>}>\n  <ProjectSummary />\n</HoverCard>",
+  "anatomy": [
+    {
+      "part": "Trigger",
+      "description": "The inline element, often a Link or handle, that opens the card on hover or keyboard focus."
+    },
+    {
+      "part": "Content",
+      "description": "The rich preview surface with identity or summary content; read-only by convention."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use for entity previews, like a person or project summary, that help before navigating.",
+      "Tune openDelay and closeDelay when cards sit in dense lists so they don't flicker.",
+      "Keep the content a short read-only summary."
+    ],
+    "donts": [
+      "Don't put required actions inside; touch users can't hover, so offer another path.",
+      "Don't use it for a one-line hint; use Tooltip.",
+      "Don't rely on a hover card for information that only exists there."
+    ]
+  },
+  "related": [
+    "tooltip",
+    "popover",
+    "link"
+  ],
+  "examples": [
+    {
+      "title": "Preview on hover",
+      "description": "Delays are tunable; keyboard focus opens the card too."
+    },
+    {
+      "title": "Tuned delays and placement",
+      "description": "openDelay, closeDelay, side, and align adapt the card to dense layouts like member lists."
+    },
+    {
+      "title": "Identity preview",
+      "description": "Show a person or project summary without leaving the list."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Rich preview context helps before committing to navigation.",
+    "avoidWhen": "The content is a short hint; use Tooltip, or must be interacted with on touch; use Popover.",
+    "behavior": "Hover and keyboard focus open the card after a tunable delay.",
+    "responsive": "Provide the same content through another path on touch layouts."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Focus"
+        ],
+        "action": "Opens the card when the trigger receives keyboard focus."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Dismisses the open card."
+      }
+    ],
+    "notes": [
+      "Keyboard focus opens the card on the same content as hover, so the preview is not pointer-only.",
+      "Keep card content read-only; interactive content belongs in a Popover.",
+      "Touch users cannot hover, so anything important in the card needs another visible path."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "HoverCard",
+      "props": [
+        {
+          "defaultValue": "center",
+          "description": "Horizontal alignment of the content relative to the trigger.",
+          "name": "align",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Content rendered inside the hover card surface.",
+          "name": "children",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Delay in milliseconds before the card closes after the pointer leaves.",
+          "name": "closeDelay",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Delay in milliseconds before the card opens on hover.",
+          "name": "openDelay",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "bottom",
+          "description": "Side of the trigger the content opens on.",
+          "name": "side",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Element that opens the card on hover or focus; receives trigger props automatically.",
+          "name": "trigger",
+          "required": true,
+          "type": "ReactElement<unknown, string | JSXElementConstructor<any>>"
+        }
+      ]
+    }
+  ]
+}
