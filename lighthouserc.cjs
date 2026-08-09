@@ -2,11 +2,12 @@ module.exports = {
   ci: {
     collect: {
       startServerCommand: 'npm run preview --workspace @kryv/teal-docs -- --host 127.0.0.1',
-      startServerReadyPattern: '127.0.0.1:4173',
+      startServerReadyPattern: '127\\.0\\.0\\.1:(?:\\x1b\\[[0-9;]*m)*4173(?:\\x1b\\[[0-9;]*m)*/',
       url: ['http://127.0.0.1:4173/', 'http://127.0.0.1:4173/modules/field', 'http://127.0.0.1:4173/recipes'],
-      numberOfRuns: 1,
+      numberOfRuns: 3,
     },
     assert: {
+      aggregationMethod: 'median',
       assertions: {
         'categories:accessibility': ['error', { minScore: 1 }],
         'categories:performance': ['error', { minScore: 0.9 }],

@@ -49,6 +49,15 @@ test('browser gates surface flakes instead of retrying them away', async () => {
 
 test('Lighthouse makes layout stability a release-blocking web vital', () => {
   const config = require('../lighthouserc.cjs')
+  const readyPattern = new RegExp(config.ci.collect.startServerReadyPattern, 'i')
+  assert.equal(config.ci.collect.numberOfRuns, 3)
+  assert.equal(config.ci.assert.aggregationMethod, 'median')
+  assert.match('http://127.0.0.1:4173/', readyPattern)
+  assert.match(
+    '\u001b[36mhttp://127.0.0.1:\u001b[1m4173\u001b[22m/',
+    readyPattern,
+  )
+  assert.doesNotMatch('http://127.0.0.1:14173/', readyPattern)
   assert.deepEqual(config.ci.assert.assertions['categories:performance'], [
     'error',
     { minScore: 0.9 },
