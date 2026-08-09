@@ -119,6 +119,7 @@ jobs:
         with:
           node-version-file: .nvmrc
       - run: npm install --global npm@11.19.0 # zizmor: ignore[adhoc-packages] exact npm bootstrap precedes lockfile operations
+      - run: npm ci --ignore-scripts
       - uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         with:
           context: .
@@ -132,7 +133,12 @@ jobs:
       - name: Verify exact production image
         env:
           VERIFY_IMAGE: teal-docs:verify-${{ github.sha }}
-        run: npm run verify:docs-image -- --image "$VERIFY_IMAGE" --revision "${GITHUB_SHA}" --source "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
+        run: >-
+          npm run verify:docs-image --
+          --image "$VERIFY_IMAGE"
+          --revision "${GITHUB_SHA}"
+          --source "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
+          --temporary-root "${RUNNER_TEMP}"
 
   release_plan:
     name: Plan release
@@ -247,6 +253,7 @@ jobs:
           --image "teal-docs:candidate-${GITHUB_SHA}"
           --revision "${GITHUB_SHA}"
           --source "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
+          --temporary-root "${RUNNER_TEMP}"
           --descriptor .release/docs/artifact.json
           --repository ghcr.io/platypus27/teal/teal-docs
       - name: Build fixed production controller

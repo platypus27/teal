@@ -199,11 +199,20 @@ test('production image verification scans and smokes one isolated exact candidat
   const workflow = parse(await read('.github/workflows/pipeline.yml'))
   const imageJob = workflow.jobs.production_image
   const build = imageJob.steps.find((step) => String(step.uses).startsWith('docker/build-push-action@'))
+  const imageVerification = imageJob.steps.find((step) => step.name === 'Verify exact production image')
+  const retainedVerification = workflow.jobs.release_candidate.steps.find(
+    (step) => step.name === 'Retain exact image, SBOM, and scan receipts',
+  )
+  const imageInstallIndex = imageJob.steps.findIndex((step) => step.run === 'npm ci --ignore-scripts')
+  const imageVerificationIndex = imageJob.steps.indexOf(imageVerification)
   assert.equal(build.with.load, true)
   assert.equal(build.with.push, false)
   assert.match(build.with.labels, /org\.opencontainers\.image\.revision=\$\{\{ github\.sha \}\}/)
   assert.match(build.with.labels, /org\.opencontainers\.image\.source=\$\{\{ github\.server_url \}\}\/\$\{\{ github\.repository \}\}/)
   assert.ok(imageJob.steps.some((step) => /npm run verify:docs-image -- --image .* --revision "\$\{GITHUB_SHA\}" --source "\$\{GITHUB_SERVER_URL\}\/\$\{GITHUB_REPOSITORY\}"/.test(step.run ?? '')))
+  assert.match(imageVerification.run, /--temporary-root "\$\{RUNNER_TEMP\}"/)
+  assert.match(retainedVerification.run, /--temporary-root "\$\{RUNNER_TEMP\}"/)
+  assert.ok(imageInstallIndex >= 0 && imageInstallIndex < imageVerificationIndex)
   assert.ok(workflow.jobs.release_plan.needs.includes('production_image'))
   assert.ok(workflow.jobs.release_candidate.needs.includes('production_image'))
 

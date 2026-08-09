@@ -7,8 +7,10 @@ import {
   mkdir,
   mkdtemp,
   readFile,
+  realpath,
   rename,
   rm,
+  stat,
   writeFile,
 } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
@@ -52,12 +54,19 @@ function parseArguments(args) {
     const name = args[index]
     const value = args[index + 1]
     if (
-      !['--image', '--revision', '--source', '--descriptor', '--repository'].includes(name)
+      ![
+        '--image',
+        '--revision',
+        '--source',
+        '--descriptor',
+        '--repository',
+        '--temporary-root',
+      ].includes(name)
       || !value
       || value.startsWith('-')
       || values.has(name)
     ) {
-      throw new Error('Usage: node scripts/verify-docs-image.mjs --image <local-image> --revision <commit> --source <repository-url> [--descriptor .release/<file>.json --repository ghcr.io/<owner>/<image>]')
+      throw new Error('Usage: node scripts/verify-docs-image.mjs --image <local-image> --revision <commit> --source <repository-url> [--temporary-root <absolute-directory>] [--descriptor .release/<file>.json --repository ghcr.io/<owner>/<image>]')
     }
     values.set(name, value)
   }
@@ -111,7 +120,23 @@ function parseArguments(args) {
   ) {
     throw new Error('Repository must be a canonical lowercase GHCR repository')
   }
-  return { descriptor, image, repository, revision, source }
+  const temporaryRoot = values.get('--temporary-root')
+  if (temporaryRoot && !isAbsolute(temporaryRoot)) {
+    throw new Error('Temporary root must be an absolute existing directory')
+  }
+  return { descriptor, image, repository, revision, source, temporaryRoot }
+}
+
+async function resolveTemporaryRoot(requestedRoot) {
+  if (!requestedRoot) return tmpdir()
+  try {
+    const resolvedRoot = await realpath(requestedRoot)
+    const rootStat = await stat(resolvedRoot)
+    if (resolvedRoot !== requestedRoot || !rootStat.isDirectory()) throw new Error()
+    return resolvedRoot
+  } catch {
+    throw new Error('Temporary root must be an absolute existing canonical directory')
+  }
 }
 
 function sha256File(path) {
@@ -211,8 +236,9 @@ async function waitForRuntime(origin) {
 }
 
 async function main() {
-  const { descriptor, image, repository, revision, source } = parseArguments(process.argv.slice(2))
-  const temporaryDirectory = await mkdtemp(join(tmpdir(), 'teal-docs-integrity-'))
+  const { descriptor, image, repository, revision, source, temporaryRoot } = parseArguments(process.argv.slice(2))
+  const resolvedTemporaryRoot = await resolveTemporaryRoot(temporaryRoot)
+  const temporaryDirectory = await mkdtemp(join(resolvedTemporaryRoot, 'teal-docs-integrity-'))
   const cacheDirectory = join(temporaryDirectory, 'trivy-cache')
   const evidenceDirectory = join(temporaryDirectory, 'trivy-evidence')
   const archivePath = join(temporaryDirectory, 'image.tar')
