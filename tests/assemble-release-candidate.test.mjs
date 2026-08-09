@@ -233,6 +233,77 @@ test('assembles indexed docs evidence only when the archive binds its config ide
   }))
 })
 
+test('rejects every indexed config identity mismatch at the candidate boundary', async (t) => {
+  const changedConfigImageId = `sha256:${'f'.repeat(64)}`
+  const cases = [
+    {
+      name: 'descriptor',
+      pattern: /archive config image identity mismatch/i,
+      async mutate(inputs) {
+        const descriptorPath = join(inputs.docsRoot, 'artifact.json')
+        const descriptor = JSON.parse(await readFile(descriptorPath, 'utf8'))
+        await writeFile(descriptorPath, `${JSON.stringify({
+          ...descriptor,
+          configImageId: changedConfigImageId,
+        }, null, 2)}\n`)
+      },
+    },
+    {
+      name: 'scan receipt',
+      pattern: /receipt image or release identity mismatch/i,
+      async mutate(inputs) {
+        const receiptPath = join(inputs.docsRoot, 'docs-image.secret.json')
+        const receipt = JSON.parse(await readFile(receiptPath, 'utf8'))
+        const receiptBytes = Buffer.from(`${JSON.stringify({
+          ...receipt,
+          configImageId: changedConfigImageId,
+        }, null, 2)}\n`)
+        await writeFile(receiptPath, receiptBytes)
+        const descriptorPath = join(inputs.docsRoot, 'artifact.json')
+        const descriptor = JSON.parse(await readFile(descriptorPath, 'utf8'))
+        await writeFile(descriptorPath, `${JSON.stringify({
+          ...descriptor,
+          secretReceiptSha256: sha256Bytes(receiptBytes),
+        }, null, 2)}\n`)
+      },
+    },
+    {
+      name: 'SBOM',
+      pattern: /config-image-id mismatch/i,
+      async mutate(inputs) {
+        const sbomPath = join(inputs.docsRoot, 'docs-image.sbom.cdx.json')
+        const sbom = JSON.parse(await readFile(sbomPath, 'utf8'))
+        sbom.metadata.properties.find(
+          ({ name }) => name === 'org.kryv.teal.config-image-id',
+        ).value = changedConfigImageId
+        const sbomBytes = Buffer.from(`${JSON.stringify(sbom, null, 2)}\n`)
+        await writeFile(sbomPath, sbomBytes)
+        const descriptorPath = join(inputs.docsRoot, 'artifact.json')
+        const descriptor = JSON.parse(await readFile(descriptorPath, 'utf8'))
+        await writeFile(descriptorPath, `${JSON.stringify({
+          ...descriptor,
+          sbomSha256: sha256Bytes(sbomBytes),
+        }, null, 2)}\n`)
+      },
+    },
+  ]
+
+  for (const scenario of cases) {
+    await t.test(scenario.name, async (subtest) => {
+      const inputs = await fixture(subtest, { indexed: true })
+      await scenario.mutate(inputs)
+      await assert.rejects(assembleReleaseCandidate({
+        ...inputs,
+        createdAt: '2026-08-07T12:00:00.000Z',
+        sourceCommit,
+        sourceRunAttempt: 2,
+        sourceRunId: '1234567890123456789',
+        workspaceRoot: resolve(import.meta.dirname, '..'),
+      }), scenario.pattern)
+    })
+  }
+})
+
 test('rejects a docs receipt that is not bound to the exact image', async (t) => {
   const inputs = await fixture(t)
   const receiptPath = join(inputs.docsRoot, 'docs-image.secret.json')

@@ -30,6 +30,7 @@ const ARCHIVE_PATHS = [
   'config/kryv-teal-production-observation.timer',
   'config/release-owner-approval.json',
   'lib/assemble-release-candidate.mjs',
+  'lib/docker-archive.mjs',
   'lib/kryv_teal_production_controller.mjs',
   'lib/owner-approval.mjs',
   'lib/teal_owner_authority.mjs',

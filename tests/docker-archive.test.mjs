@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import test from 'node:test'
@@ -126,5 +126,65 @@ test('rejects unsafe config paths and multi-image archives', async (t) => {
   await assert.rejects(
     verifyDockerArchiveImageId(archive, fixture.imageId),
     /exactly one image/i,
+  )
+})
+
+function updateTarChecksum(bytes, offset = 0) {
+  bytes.fill(0x20, offset + 148, offset + 156)
+  let checksum = 0
+  for (let index = offset; index < offset + 512; index += 1) checksum += bytes[index]
+  const encoded = Buffer.from(`${checksum.toString(8).padStart(6, '0')}\0 `, 'ascii')
+  encoded.copy(bytes, offset + 148)
+}
+
+test('rejects corrupted, duplicate, and extension-based archive identities', async (t) => {
+  const fixture = await archiveFixture(t)
+  const directory = await mkdtemp(join(tmpdir(), 'teal-docker-adversarial-'))
+  t.after(() => rm(directory, { recursive: true, force: true }))
+
+  const corrupted = join(directory, 'corrupted.tar')
+  const corruptedBytes = await readFile(fixture.archive)
+  corruptedBytes[0] ^= 1
+  await writeFile(corrupted, corruptedBytes)
+  await assert.rejects(
+    verifyDockerArchiveImageId(corrupted, fixture.imageId),
+    /header checksum/i,
+  )
+
+  const duplicate = join(directory, 'duplicate.tar')
+  const root = join(directory, 'duplicate-root')
+  await mkdir(root)
+  const configName = `${fixture.imageId.slice('sha256:'.length)}.json`
+  await writeFile(join(root, configName), '{"architecture":"amd64"}\n')
+  await writeFile(join(root, 'manifest.json'), JSON.stringify([{
+    Config: configName,
+    RepoTags: ['teal-docs:test'],
+    Layers: [],
+  }]))
+  await createTar(
+    { cwd: root, file: duplicate },
+    ['manifest.json', 'manifest.json', configName],
+  )
+  await assert.rejects(
+    verifyDockerArchiveImageId(duplicate, fixture.imageId),
+    /exactly one manifest\.json/i,
+  )
+
+  const extended = join(directory, 'extended.tar')
+  const extendedBytes = await readFile(fixture.archive)
+  extendedBytes[156] = 'x'.charCodeAt(0)
+  updateTarChecksum(extendedBytes)
+  await writeFile(extended, extendedBytes)
+  await assert.rejects(
+    verifyDockerArchiveImageId(extended, fixture.imageId),
+    /ambiguous tar extension/i,
+  )
+
+  const unterminated = join(directory, 'unterminated.tar')
+  const completeBytes = await readFile(fixture.archive)
+  await writeFile(unterminated, completeBytes.subarray(0, completeBytes.length - 1024))
+  await assert.rejects(
+    verifyDockerArchiveImageId(unterminated, fixture.imageId),
+    /tar terminator/i,
   )
 })

@@ -1,9 +1,12 @@
 import { createHash } from 'node:crypto'
+import { constants } from 'node:fs'
+import { open } from 'node:fs/promises'
 import { posix } from 'node:path'
-import { list as listTar } from 'tar'
 
 const MAX_MANIFEST_BYTES = 1024 * 1024
 const MAX_CONFIG_BYTES = 16 * 1024 * 1024
+const MAX_ARCHIVE_BYTES = 8 * 1024 * 1024 * 1024
+const TAR_BLOCK_BYTES = 512
 const OCI_INDEX_MEDIA_TYPES = new Set([
   'application/vnd.oci.image.index.v1+json',
   'application/vnd.docker.distribution.manifest.list.v2+json',
@@ -13,56 +16,111 @@ const OCI_MANIFEST_MEDIA_TYPES = new Set([
   'application/vnd.docker.distribution.manifest.v2+json',
 ])
 
-function regularEntry(entry, label) {
-  if (entry.type !== 'File' && entry.type !== 'OldFile') {
-    throw new Error(`${label} is not a regular file`)
+function tarNumber(field, label) {
+  if ((field[0] & 0x80) !== 0) throw new Error(`${label} uses an unsupported base-256 value`)
+  const value = field.toString('ascii').replace(/\0.*$/s, '').trim()
+  if (!/^[0-7]+$/.test(value)) throw new Error(`${label} is not a canonical octal value`)
+  const parsed = Number.parseInt(value, 8)
+  if (!Number.isSafeInteger(parsed)) throw new Error(`${label} exceeds the safe integer range`)
+  return parsed
+}
+
+function tarText(field, label) {
+  const terminator = field.indexOf(0)
+  const body = terminator === -1 ? field : field.subarray(0, terminator)
+  try {
+    return new TextDecoder('utf-8', { fatal: true }).decode(body)
+  } catch {
+    throw new Error(`${label} is not valid UTF-8`)
   }
 }
 
-async function readArchiveFile(archivePath, targetPath, maximumBytes, label) {
-  let found = 0
-  let readError
-  const pending = []
-  await listTar({
-    file: archivePath,
-    noResume: true,
-    strict: true,
-    onReadEntry(entry) {
-      if (entry.path !== targetPath) {
-        entry.resume()
-        return
-      }
-      found += 1
-      try {
-        regularEntry(entry, label)
-      } catch (error) {
-        readError ??= error
-        entry.resume()
-        return
-      }
-      const chunks = []
-      let bytes = 0
-      pending.push(new Promise((resolve, reject) => {
-        entry.on('data', (chunk) => {
-          bytes += chunk.length
-          if (bytes > maximumBytes) {
-            readError ??= new Error(`${label} exceeds ${maximumBytes} bytes`)
-            return
-          }
-          chunks.push(chunk)
-        })
-        entry.on('error', reject)
-        entry.on('end', () => resolve(Buffer.concat(chunks)))
-        entry.resume()
-      }))
-    },
-  })
-  const bodies = await Promise.all(pending)
-  if (readError) throw readError
-  if (found !== 1 || bodies.length !== 1) {
-    throw new Error(`Docker archive must contain exactly one ${label}`)
+function tarHeader(header) {
+  const storedChecksum = tarNumber(header.subarray(148, 156), 'Tar header checksum')
+  let actualChecksum = 0
+  for (let index = 0; index < header.length; index += 1) {
+    actualChecksum += index >= 148 && index < 156 ? 32 : header[index]
   }
-  return bodies[0]
+  if (actualChecksum !== storedChecksum) throw new Error('Docker archive tar header checksum is invalid')
+  const name = tarText(header.subarray(0, 100), 'Tar entry name')
+  const prefix = tarText(header.subarray(345, 500), 'Tar entry prefix')
+  const path = prefix ? `${prefix}/${name}` : name
+  if (!path) throw new Error('Docker archive contains an empty tar entry path')
+  const type = header[156]
+  if ([0x4c, 0x4b, 0x78, 0x67].includes(type)) {
+    throw new Error('Docker archive contains an ambiguous tar extension record')
+  }
+  return {
+    path,
+    regular: type === 0 || type === 0x30,
+    size: tarNumber(header.subarray(124, 136), `Tar entry size for ${path}`),
+  }
+}
+
+async function readExact(handle, length, position, label) {
+  const body = Buffer.alloc(length)
+  let offset = 0
+  while (offset < length) {
+    const { bytesRead } = await handle.read(body, offset, length - offset, position + offset)
+    if (bytesRead < 1) throw new Error(`${label} is truncated`)
+    offset += bytesRead
+  }
+  return body
+}
+
+async function readArchiveFile(archivePath, targetPath, maximumBytes, label) {
+  const handle = await open(archivePath, constants.O_RDONLY | constants.O_NOFOLLOW)
+  try {
+    const metadata = await handle.stat()
+    if (
+      !metadata.isFile()
+      || metadata.size < TAR_BLOCK_BYTES * 3
+      || metadata.size > MAX_ARCHIVE_BYTES
+      || metadata.size % TAR_BLOCK_BYTES !== 0
+    ) {
+      throw new Error('Docker archive must be one bounded regular file')
+    }
+    let position = 0
+    let found = 0
+    let result
+    let terminated = false
+    while (position + TAR_BLOCK_BYTES <= metadata.size) {
+      const header = await readExact(handle, TAR_BLOCK_BYTES, position, 'Docker archive tar header')
+      if (header.every((byte) => byte === 0)) {
+        const terminator = await readExact(
+          handle,
+          TAR_BLOCK_BYTES,
+          position + TAR_BLOCK_BYTES,
+          'Docker archive tar terminator',
+        )
+        if (!terminator.every((byte) => byte === 0)) {
+          throw new Error('Docker archive tar terminator is invalid')
+        }
+        terminated = true
+        break
+      }
+      const entry = tarHeader(header)
+      const paddedSize = Math.ceil(entry.size / TAR_BLOCK_BYTES) * TAR_BLOCK_BYTES
+      const nextPosition = position + TAR_BLOCK_BYTES + paddedSize
+      if (!Number.isSafeInteger(nextPosition) || nextPosition > metadata.size) {
+        throw new Error(`Docker archive entry is truncated: ${entry.path}`)
+      }
+      if (entry.path === targetPath) {
+        found += 1
+        if (!entry.regular) throw new Error(`${label} is not a regular file`)
+        if (entry.size > maximumBytes) throw new Error(`${label} exceeds ${maximumBytes} bytes`)
+        result = await readExact(handle, entry.size, position + TAR_BLOCK_BYTES, label)
+      }
+      position = nextPosition
+    }
+    if (!terminated) throw new Error('Docker archive tar terminator is missing')
+    if (found !== 1 || !result) {
+      throw new Error(`Docker archive must contain exactly one ${label}`)
+    }
+    return result
+  } finally {
+    await handle.close()
+  }
 }
 
 function safeConfigPath(path) {

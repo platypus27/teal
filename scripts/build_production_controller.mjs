@@ -25,6 +25,7 @@ const SOURCE_FILES = new Map([
   ['infra/systemd/kryv-teal-production-observation.timer', 'config/kryv-teal-production-observation.timer'],
   ['infra/release-owner-approval.json', 'config/release-owner-approval.json'],
   ['scripts/assemble-release-candidate.mjs', 'lib/assemble-release-candidate.mjs'],
+  ['scripts/docker-archive.mjs', 'lib/docker-archive.mjs'],
   ['scripts/kryv_teal_production_controller.mjs', 'lib/kryv_teal_production_controller.mjs'],
   ['scripts/owner-approval.mjs', 'lib/owner-approval.mjs'],
   ['scripts/teal_owner_authority.mjs', 'lib/teal_owner_authority.mjs'],

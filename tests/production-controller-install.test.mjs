@@ -16,6 +16,7 @@ import {
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import test from 'node:test'
+import { pathToFileURL } from 'node:url'
 
 import { approvalPublicKey } from '../scripts/owner-approval.mjs'
 import { buildProductionController } from '../scripts/build_production_controller.mjs'
@@ -23,6 +24,7 @@ import { installProductionController } from '../scripts/install_production_contr
 
 const sourceFiles = [
   'scripts/assemble-release-candidate.mjs',
+  'scripts/docker-archive.mjs',
   'scripts/kryv_teal_production_controller.mjs',
   'scripts/owner-approval.mjs',
   'scripts/teal_owner_authority.mjs',
@@ -101,6 +103,7 @@ test('builds a byte-reproducible fixed controller archive with an exact file clo
     'config/kryv-teal-production-observation.timer',
     'config/release-owner-approval.json',
     'lib/assemble-release-candidate.mjs',
+    'lib/docker-archive.mjs',
     'lib/kryv_teal_production_controller.mjs',
     'lib/owner-approval.mjs',
     'lib/teal_owner_authority.mjs',
@@ -156,6 +159,9 @@ test('installs an exact archive into root-owned fixed paths and pins the owner k
     'usr/local/share/kryv-teal-production/generations',
     built.archiveSha256.slice('sha256:'.length),
   )
+  await assert.doesNotReject(import(
+    `${pathToFileURL(join(versionRoot, 'lib/kryv_teal_production_controller.mjs')).href}?archive=${built.archiveSha256}`,
+  ))
   await chmod(versionRoot, 0o777)
   await assert.rejects(
     installProductionController({
