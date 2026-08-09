@@ -1,0 +1,68 @@
+{
+  "id": "glass-panel",
+  "name": "Glass Panel",
+  "apiNames": [
+    "GlassPanel"
+  ],
+  "description": "A frosted-glass surface with backdrop blur and a translucent background, for content floating over imagery or color.",
+  "usage": "<GlassPanel>\n  <p>Content stays readable over busy backgrounds.</p>\n</GlassPanel>",
+  "anatomy": [
+    {
+      "part": "Surface",
+      "description": "The translucent background with backdrop blur that lets imagery show through."
+    },
+    {
+      "part": "Border highlight",
+      "description": "The hairline edge keeping the panel visible over busy backgrounds."
+    },
+    {
+      "part": "Overlay shadow",
+      "description": "The deeper shadow separating the panel from what sits behind it."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use it over imagery, gradients, or video where the backdrop adds depth.",
+      "Constrain the width with a wrapper or className.",
+      "Check text contrast against the busiest part of the backdrop."
+    ],
+    "donts": [
+      "Don't use it on plain app backgrounds; use Panel or Card instead.",
+      "Don't stack multiple blurred layers; backdrop blur is expensive to render."
+    ]
+  },
+  "related": [
+    "panel",
+    "card",
+    "dialog"
+  ],
+  "examples": [
+    {
+      "title": "Frosted content block",
+      "description": "A glass panel over a colorful gradient, showing how the blur and translucency keep text legible."
+    },
+    {
+      "title": "Centered floating panel",
+      "description": "A narrower, centered glass panel, the shape typically used for floating cards over hero imagery."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Content floats over imagery, gradients, or video, for example hero overlays, map chrome, or media captions.",
+    "avoidWhen": "The surface sits on a plain app background; use Panel or Card instead, since backdrop blur adds rendering cost and buys nothing on solid color.",
+    "behavior": "GlassPanel is a static container: it applies the glass treatment (translucent background, backdrop blur, border highlight, overlay shadow) and no interaction of its own.",
+    "responsive": "The panel is width-agnostic; constrain it with a wrapper or className and the blur treatment adapts to whatever shows through."
+  },
+  "accessibility": {
+    "notes": [
+      "Backdrop blur does not change contrast guarantees; keep body text on the panel at normal text sizes and weights.",
+      "The panel is a plain div, so supply your own headings or landmark roles when the content needs structure."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "GlassPanel",
+      "props": []
+    }
+  ]
+}

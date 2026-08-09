@@ -1,0 +1,12 @@
+[Unit]
+Description=Periodically observe Kryv Teal production identity and health
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+RandomizedDelaySec=30s
+Persistent=true
+Unit=kryv-teal-production-observation.service
+
+[Install]
+WantedBy=timers.target

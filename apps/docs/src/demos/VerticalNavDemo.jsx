@@ -1,5 +1,5 @@
 import { FolderKanban, Gauge, Inbox, LayoutDashboard, ListTodo, Map, PanelLeft, PanelTop, Rocket, Settings, Settings2, ShieldCheck, Table2, Tag, Users } from 'lucide-react'
-import { Link, useLocation } from 'react-router'
+import { Link, MemoryRouter, useLocation } from 'react-router'
 import { VerticalNav, VerticalNavBrand, VerticalNavFooter, VerticalNavItem, VerticalNavList, VerticalNavSection } from '@kryv/teal'
 
 function ApplicationShellNav() {
@@ -91,7 +91,11 @@ export function VerticalNavDemo({ exampleIndex = 0 }) {
     return <ApplicationShellNav />
   }
   if (exampleIndex === 2) {
-    return <RouterNav />
+    return (
+      <MemoryRouter initialEntries={['/modules/vertical-nav']}>
+        <RouterNav />
+      </MemoryRouter>
+    )
   }
 
   return (

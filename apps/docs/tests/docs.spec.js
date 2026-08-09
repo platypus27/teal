@@ -27,7 +27,20 @@ test.describe('module accessibility', () => {
       await page.goto(`/modules/${moduleId}`)
       await waitForVisualReady(page, moduleNames.get(moduleId), '#examples')
 
-      if (moduleId === 'dialog') await page.locator('#examples').getByRole('button', { name: 'Open dialog' }).click()
+      if (moduleId === 'dialog') {
+        const closedResults = await new AxeBuilder({ page })
+          .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+          .analyze()
+        expect(closedResults.violations, 'Accessibility violations on closed dialog page').toEqual([])
+        await page.locator('#examples').getByRole('button', { name: 'Open dialog' }).click()
+        const dialog = page.getByRole('dialog')
+        await expect(dialog).toBeVisible()
+        await dialog.evaluate(async (element) => {
+          await Promise.allSettled(
+            element.getAnimations({ subtree: true }).map((animation) => animation.finished),
+          )
+        })
+      }
       if (moduleId === 'tooltip') await page.getByRole('button', { name: 'Open search' }).hover()
       if (moduleId === 'menu') await page.getByRole('button', { name: 'Project actions' }).click()
       if (moduleId === 'popover') await page.getByRole('button', { name: 'Filters' }).click()
@@ -35,9 +48,9 @@ test.describe('module accessibility', () => {
 
       await page.waitForTimeout(250)
 
-      const results = await new AxeBuilder({ page })
-        .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
-        .analyze()
+      const accessibility = new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+      if (moduleId === 'dialog') accessibility.include('[role="dialog"]')
+      const results = await accessibility.analyze()
       expect(results.violations, `Accessibility violations on ${moduleId}`).toEqual([])
     })
   }
@@ -46,7 +59,9 @@ test.describe('module accessibility', () => {
 test('mobile navigation reaches a module', async ({ page, isMobile }) => {
   test.skip(!isMobile, 'Mobile navigation behavior')
   await page.goto('/')
+  await expect(page.getByRole('navigation', { name: 'Documentation' })).toHaveCount(0)
   await page.getByRole('button', { name: 'Open navigation' }).click()
+  await expect(page.getByRole('navigation', { name: 'Documentation' })).toBeVisible()
   await expect(page.getByRole('link', { name: 'Getting started' })).toBeFocused()
   await page
     .getByRole('navigation', { name: 'Documentation' })
@@ -83,6 +98,105 @@ test('documentation has no horizontal overflow on a narrow viewport', async ({ p
   expect(overflow).toBeLessThanOrEqual(0)
 })
 
+test('pagination waits for lazy route content before entering the layout', async ({ page }) => {
+  let markChunkRequested
+  let releaseChunk
+  const chunkRequested = new Promise((resolve) => {
+    markChunkRequested = resolve
+  })
+  const chunkReleased = new Promise((resolve) => {
+    releaseChunk = resolve
+  })
+
+  await page.route(/\/assets\/ModulePage-[^/]+\.js(?:\?.*)?$/, async (route) => {
+    markChunkRequested()
+    await chunkReleased
+    await route.continue()
+  })
+
+  const navigation = page.goto('/modules/field', { waitUntil: 'domcontentloaded' })
+  await chunkRequested
+  try {
+    await expect(page.getByRole('navigation', { name: 'Pagination' })).toHaveCount(0)
+  } finally {
+    releaseChunk()
+  }
+  await navigation
+  await expect(page.getByRole('heading', { level: 1, name: 'Field' })).toBeVisible()
+  await expect(page.getByRole('navigation', { name: 'Pagination' })).toBeVisible()
+})
+
+test('recipes keep their page shell usable while deferred content loads', async ({ page }) => {
+  let markRecipesRequested
+  let releaseRecipes
+  const recipesRequested = new Promise((resolve) => {
+    markRecipesRequested = resolve
+  })
+  const recipesReleased = new Promise((resolve) => {
+    releaseRecipes = resolve
+  })
+
+  await page.route(/\/assets\/RecipesContent-[^/]+\.js(?:\?.*)?$/, async (route) => {
+    markRecipesRequested()
+    await recipesReleased
+    await route.continue()
+  })
+
+  const navigation = page.goto('/recipes', { waitUntil: 'domcontentloaded' })
+  await recipesRequested
+  try {
+    await expect(page.getByRole('heading', { level: 1, name: 'Recipes' })).toBeVisible()
+    await expect(page.getByRole('status')).toContainText('Loading recipes')
+    await expect(page.getByRole('heading', { level: 2, name: 'Settings section' })).toHaveCount(0)
+    await expect(page.getByRole('navigation', { name: 'Pagination' })).toHaveCount(0)
+  } finally {
+    releaseRecipes()
+  }
+  await navigation
+  await expect(page.getByRole('heading', { level: 2, name: 'Settings section' })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 2, name: 'Promotion rule' })).toBeVisible()
+  await expect(page.getByRole('navigation', { name: 'Pagination' })).toBeVisible()
+})
+
+test('desktop table of contents follows lazy route content', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/modules/field')
+  await expect(page.getByRole('heading', { level: 1, name: 'Field' })).toBeVisible()
+  const tableOfContents = page.getByRole('navigation', { name: 'On this page' })
+  await expect(tableOfContents).toBeVisible()
+  expect(await tableOfContents.getByRole('link').count()).toBeGreaterThanOrEqual(2)
+})
+
+test('module pagination waits for its asynchronously loaded examples', async ({ page }) => {
+  let markDemoRequested
+  let releaseDemo
+  const demoRequested = new Promise((resolve) => {
+    markDemoRequested = resolve
+  })
+  const demoReleased = new Promise((resolve) => {
+    releaseDemo = resolve
+  })
+
+  await page.route(/\/assets\/FieldDemo-[^/]+\.js(?:\?.*)?$/, async (route) => {
+    markDemoRequested()
+    await demoReleased
+    await route.continue()
+  })
+
+  const navigation = page.goto('/modules/field', { waitUntil: 'domcontentloaded' })
+  await demoRequested
+  try {
+    await expect(page.getByRole('status')).toContainText('Loading module examples')
+    await expect(page.getByRole('region', { name: 'jsx code' })).toContainText("import { Field, Input } from '@kryv/teal'")
+    await expect(page.getByRole('navigation', { name: 'Pagination' })).toHaveCount(0)
+  } finally {
+    releaseDemo()
+  }
+  await navigation
+  await expect(page.getByRole('heading', { level: 2, name: 'Examples' })).toBeVisible()
+  await expect(page.getByRole('navigation', { name: 'Pagination' })).toBeVisible()
+})
+
 test('foundations documents the supported visual theming hooks', async ({ page }) => {
   await page.goto('/foundations')
   await expect(page.getByRole('heading', { name: 'Visual tokens' })).toBeVisible()
@@ -116,6 +230,11 @@ test('module pages match the approved desktop visual baseline', async ({ page, b
   test.skip(browserName !== 'chromium' || isMobile, 'Stable visual baseline uses desktop Chromium')
   await page.goto('/modules/button')
   await waitForVisualReady(page, 'Button', '#examples')
+  // The approved PR33 baseline covers the page content surface. The independently
+  // tested live table-of-contents rail must not change these frozen image bytes.
+  await page.addStyleTag({
+    content: 'aside:has(nav[aria-label="On this page"]) { display: none !important; }',
+  })
   // Allow small cross-machine rasterization variance in the light-theme baseline.
   await expect(page).toHaveScreenshot('button-module-light.png', { fullPage: true, maxDiffPixels: 650, animations: 'disabled' })
   await page.getByRole('button', { name: 'Dark mode' }).click()

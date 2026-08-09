@@ -1,0 +1,159 @@
+{
+  "id": "resizable",
+  "name": "Resizable",
+  "apiNames": [
+    "ResizablePanelGroup",
+    "ResizablePanel",
+    "ResizableHandle"
+  ],
+  "imports": [
+    "ResizablePanelGroup",
+    "ResizablePanel",
+    "ResizableHandle"
+  ],
+  "description": "Pointer- and keyboard-resizable panes with percentage sizing and double-click reset.",
+  "usage": "<ResizablePanelGroup direction=\"horizontal\">\n  <ResizablePanel defaultSize={30}>Sidebar</ResizablePanel>\n  <ResizableHandle />\n  <ResizablePanel>Content</ResizablePanel>\n</ResizablePanelGroup>",
+  "anatomy": [
+    {
+      "part": "Panel group",
+      "description": "Owns the direction and distributes percentage sizes across its panels."
+    },
+    {
+      "part": "Panel",
+      "description": "A sized region with defaultSize plus minSize and maxSize clamps in percent."
+    },
+    {
+      "part": "Handle",
+      "description": "The separator between two panels; drags with the pointer, steps with arrow keys, and resets on double-click."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Set minSize on every panel so a pane can never crush its content.",
+      "Keep panel content scrollable so small sizes stay usable.",
+      "Use direction=\"vertical\" for stacked summary-and-detail splits."
+    ],
+    "donts": [
+      "Don't make a layout resizable without a real user need; fixed layouts are simpler and have fewer focus stops.",
+      "Don't pack many panels into one group; nest groups for complex shells instead.",
+      "Don't remove the handle from the tab order; it is the keyboard user's only way to resize."
+    ]
+  },
+  "related": [
+    "app-shell",
+    "drawer",
+    "scroll-area"
+  ],
+  "examples": [
+    {
+      "title": "Split panes",
+      "description": "The handle exposes separator semantics with arrow-key steps and aria-valuenow."
+    },
+    {
+      "title": "Vertical split",
+      "description": "direction=\"vertical\" stacks panes top to bottom with the same drag and keyboard behavior."
+    },
+    {
+      "title": "Vertical stacks",
+      "description": "direction=\"vertical\" splits panes top to bottom with the same handle behavior."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Users genuinely benefit from adjusting the split between panes, such as sidebar-and-content consoles.",
+    "avoidWhen": "The layout is fixed or the split is decorative; unneeded interaction adds focus stops and complexity.",
+    "behavior": "Handles drag with the pointer, step by a percentage with arrow keys, and reset on double-click; sizes are percentages clamped by minSize and maxSize.",
+    "responsive": "Set minSize so panes stay usable on narrow screens, and consider locking the split below a breakpoint."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus to and from the resize handle."
+      },
+      {
+        "keys": [
+          "Arrow Left",
+          "Arrow Up"
+        ],
+        "action": "Shrinks the preceding panel by one step (default 5%)."
+      },
+      {
+        "keys": [
+          "Arrow Right",
+          "Arrow Down"
+        ],
+        "action": "Grows the preceding panel by one step (default 5%)."
+      }
+    ],
+    "notes": [
+      "The handle renders role=\"separator\" with aria-orientation and aria-valuenow/min/max, so assistive technology announces the current split.",
+      "Double-clicking the handle resets the panels to their default sizes.",
+      "A disabled handle sets aria-disabled and leaves the tab order.",
+      "Panel sizes are percentages clamped by minSize and maxSize, so panes can always keep usable space."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "Lays out ResizablePanels separated by ResizableHandles, letting users\nresize the panes with pointer drag, arrow keys or double-click reset.\nPanels and handles must be direct children of the group.",
+      "displayName": "ResizablePanelGroup",
+      "props": [
+        {
+          "defaultValue": "horizontal",
+          "description": "Axis along which panels are laid out; 'horizontal' (default) places panels side by side.",
+          "name": "direction",
+          "required": false,
+          "type": "enum"
+        }
+      ]
+    },
+    {
+      "description": "A single pane inside a ResizablePanelGroup.",
+      "displayName": "ResizablePanel",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Initial size as a percentage of the group (0–100). Panels without one share the remaining space.",
+          "name": "defaultSize",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Smallest size the panel can be resized to, in percent; defaults to 0.",
+          "name": "minSize",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Largest size the panel can be resized to, in percent; defaults to 100.",
+          "name": "maxSize",
+          "required": false,
+          "type": "number"
+        }
+      ]
+    },
+    {
+      "description": "Draggable separator between two ResizablePanels; also supports arrow keys and double-click reset.",
+      "displayName": "ResizableHandle",
+      "props": [
+        {
+          "defaultValue": "false",
+          "description": "Disables pointer, keyboard and double-click resizing when true.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "5",
+          "description": "Percentage step applied by arrow-key resizing; defaults to 5.",
+          "name": "step",
+          "required": false,
+          "type": "number"
+        }
+      ]
+    }
+  ]
+}

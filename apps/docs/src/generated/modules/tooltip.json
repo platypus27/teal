@@ -1,0 +1,141 @@
+{
+  "id": "tooltip",
+  "name": "Tooltip",
+  "apiNames": [
+    "Tooltip",
+    "TooltipProvider"
+  ],
+  "imports": [
+    "Tooltip",
+    "TooltipProvider",
+    "IconButton"
+  ],
+  "description": "A short contextual hint with accessible trigger association and collision handling.",
+  "usage": "// Mount once near the app root so tooltips share open-delay grouping\n<TooltipProvider>\n  <App />\n</TooltipProvider>\n\n// Per-instance delayDuration overrides the provider when needed\n<Tooltip content=\"Refresh search results\">\n  <IconButton label=\"Refresh results\">\n    <Search />\n  </IconButton>\n</Tooltip>",
+  "anatomy": [
+    {
+      "part": "Trigger",
+      "description": "The wrapped element, usually an IconButton; must be focusable so keyboard users get the hint."
+    },
+    {
+      "part": "Content",
+      "description": "The floating hint text, associated with the trigger through aria-describedby and never interactive."
+    },
+    {
+      "part": "Provider",
+      "description": "TooltipProvider mounted once near the root so adjacent tooltips share open-delay grouping."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Keep the content to one short line that names or explains the trigger.",
+      "Mirror the accessible label of icon-only buttons so sighted users get the same name.",
+      "Mount TooltipProvider once near the app root so moving between triggers skips the delay."
+    ],
+    "donts": [
+      "Don't place links, buttons, or any interactive content inside a tooltip.",
+      "Don't rely on a tooltip for information touch users need; show a visible label instead.",
+      "Don't repeat text that is already visible next to the trigger."
+    ]
+  },
+  "related": [
+    "hover-card",
+    "popover",
+    "tour"
+  ],
+  "examples": [
+    {
+      "title": "Icon button hint",
+      "description": "Tooltips label icon-only controls on hover and keyboard focus. Click the icon to expand the search field."
+    },
+    {
+      "title": "Placement sides",
+      "description": "The side prop points the hint left, right, or bottom when the default top placement would collide with neighbors."
+    },
+    {
+      "title": "Pure hover and focus hint",
+      "description": "Use Tooltip for short, non-interactive context around an unfamiliar icon.",
+      "demo": "tooltip-pure"
+    },
+    {
+      "title": "Action context",
+      "description": "Keep the hint short when it sits beside an unfamiliar product action.",
+      "demo": "tooltip-actions"
+    }
+  ],
+  "guidance": {
+    "useWhen": "An unfamiliar icon or abbreviated label needs a brief hint.",
+    "avoidWhen": "The user must read or interact with the content.",
+    "behavior": "Hover and focus reveal a short non-interactive description.",
+    "responsive": "Never rely on hover alone; provide a visible label on touch layouts."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Focus"
+        ],
+        "action": "Shows the tooltip when its trigger receives keyboard focus."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Dismisses the tooltip."
+      }
+    ],
+    "notes": [
+      "The trigger is described by the tooltip through aria-describedby.",
+      "Tooltips are for short hints only; never place interactive content inside them.",
+      "Wrap the app in TooltipProvider once so tooltips share open-delay grouping; moving between triggers then skips the delay."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Tooltip",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Element the tooltip describes; receives trigger props automatically.",
+          "name": "children",
+          "required": true,
+          "type": "ReactElement<unknown, string | JSXElementConstructor<any>>"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Text rendered inside the tooltip.",
+          "name": "content",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Per-instance open delay in milliseconds; overrides the nearest TooltipProvider.",
+          "name": "delayDuration",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "top",
+          "description": "Preferred side of the trigger for the tooltip.",
+          "name": "side",
+          "required": false,
+          "type": "enum"
+        }
+      ]
+    },
+    {
+      "description": "Rendered once near the app root so tooltips share open-delay grouping.",
+      "displayName": "TooltipProvider",
+      "props": []
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "id": "meter",
+  "name": "Meter",
+  "apiNames": [
+    "Meter"
+  ],
+  "description": "A scalar gauge for a known range with optimum-zone coloring.",
+  "usage": "<Meter label=\"Storage used\" value={72} low={60} high={85} optimum={20} />",
+  "anatomy": [
+    {
+      "part": "Label and readout",
+      "description": "Heading text and formatted value on one row; the label names the meter through aria-labelledby."
+    },
+    {
+      "part": "Track",
+      "description": "Rounded container bar that holds the fill."
+    },
+    {
+      "part": "Zone fill",
+      "description": "Colored fill whose tone maps the value against low, high, and optimum into neutral, success, warning, or danger."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Set low, high, and optimum together so the zone colors mean something.",
+      "Use formatValue for units such as GB; it also feeds the accessible value text."
+    ],
+    "donts": [
+      "Don't use Meter for task completion; use Progress.",
+      "Don't pass only one or two thresholds; without all three the fill stays neutral."
+    ]
+  },
+  "related": [
+    "progress-circle",
+    "loading",
+    "stat"
+  ],
+  "examples": [
+    {
+      "title": "Zones",
+      "description": "low, high, and optimum map the value onto neutral, success, warning, and danger fills."
+    },
+    {
+      "title": "Custom formatting",
+      "description": "formatValue renders units such as GB in the readout and the accessible value text."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A quantity within a known range needs a glanceable gauge.",
+    "avoidWhen": "Progress toward completing a task is shown; use Progress.",
+    "behavior": "role=\"meter\" carries min, max, and now; zones color the fill from low, high, and optimum.",
+    "responsive": "The track fills its container, so constrain width in the layout."
+  },
+  "accessibility": {
+    "notes": [
+      "role=\"meter\" exposes aria-valuemin, aria-valuemax, aria-valuenow, and an aria-valuetext built from formatValue.",
+      "Zone color is supplementary; the label and numeric readout carry the value.",
+      "The fill width transition is disabled under prefers-reduced-motion."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Meter",
+      "props": [
+        {
+          "defaultValue": "(v) => String(Math.round(v))",
+          "description": "Formats the visible value text. Defaults to the rounded raw value.",
+          "name": "formatValue",
+          "required": false,
+          "type": "(value: number) => string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Upper boundary of the middle range; used with `low` and `optimum` to color the fill.",
+          "name": "high",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name describing what the meter measures.",
+          "name": "label",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Lower boundary of the middle range; used with `high` and `optimum` to color the fill.",
+          "name": "low",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "100",
+          "description": "Largest value the meter can show.",
+          "name": "max",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "0",
+          "description": "Smallest value the meter can show.",
+          "name": "min",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "The value considered ideal; determines whether low or high readings are good.",
+          "name": "optimum",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Current value; clamped between `min` and `max`.",
+          "name": "value",
+          "required": true,
+          "type": "number"
+        }
+      ]
+    }
+  ]
+}

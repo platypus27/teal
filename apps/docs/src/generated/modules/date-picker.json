@@ -1,0 +1,210 @@
+{
+  "id": "date-picker",
+  "name": "Date Picker",
+  "apiNames": [
+    "DatePicker"
+  ],
+  "description": "A single-date field with a keyboard-navigable calendar popover.",
+  "usage": "<DatePicker label=\"Start date\" onValueChange={(date) => undefined} />",
+  "anatomy": [
+    {
+      "part": "Field",
+      "description": "The button-like input showing the formatted date."
+    },
+    {
+      "part": "Calendar popover",
+      "description": "The month grid with full keyboard navigation."
+    },
+    {
+      "part": "Month navigation",
+      "description": "Previous and next buttons around an announced month label."
+    },
+    {
+      "part": "Day cells",
+      "description": "Grid buttons bounded by the min and max dates."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Set minDate and maxDate when only a planning window is valid.",
+      "Explain what the date drives, like a milestone, in the description.",
+      "Keep the caller-owned value as a Date, not a string."
+    ],
+    "donts": [
+      "Don't use it for ranges; use DateRangePicker.",
+      "Don't expect free-typed input; the calendar is the parser.",
+      "Don't disable dates silently; state the valid window in the description."
+    ]
+  },
+  "related": [
+    "date-range-picker",
+    "date-time-picker",
+    "calendar",
+    "time-picker"
+  ],
+  "examples": [
+    {
+      "title": "Calendar selection",
+      "description": "Arrows move between days, Enter selects, min and max bound the range."
+    },
+    {
+      "title": "Bounded planning window",
+      "description": "minDate and maxDate limit picking to the current sprint window."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Users pick a single calendar date.",
+    "avoidWhen": "The value is free-form or a range; use Input or a dedicated range flow.",
+    "behavior": "The calendar supports full keyboard navigation and min/max bounds.",
+    "responsive": "The popover collision-handles; the field keeps its layout width."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Arrow Down"
+        ],
+        "action": "Opens the calendar from the field."
+      },
+      {
+        "keys": [
+          "Arrow Left",
+          "Arrow Right"
+        ],
+        "action": "Moves the focused day by one day."
+      },
+      {
+        "keys": [
+          "Arrow Up",
+          "Arrow Down"
+        ],
+        "action": "Moves the focused day by one week."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Selects the focused day and closes the calendar."
+      }
+    ],
+    "notes": [
+      "Day buttons use a roving tab index, so the calendar grid is a single Tab stop.",
+      "The month label is announced with aria-live as the view changes.",
+      "Dates outside minDate and maxDate are disabled and cannot be selected."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "DatePicker",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "aria-describedby",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name when there is no visible label.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the input invalid for form validation and screen readers.",
+          "name": "aria-invalid",
+          "required": false,
+          "type": "boolean | \"true\" | \"false\""
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial selected date when uncontrolled.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "Date"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered below the input.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Prevents interaction with the input.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Explicit id; otherwise Field or an internal id is used.",
+          "name": "id",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Latest selectable date (inclusive).",
+          "name": "maxDate",
+          "required": false,
+          "type": "Date"
+        },
+        {
+          "defaultValue": "",
+          "description": "Earliest selectable date (inclusive).",
+          "name": "minDate",
+          "required": false,
+          "type": "Date"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the selected date.",
+          "name": "onValueChange",
+          "required": false,
+          "type": "(date: Date) => void"
+        },
+        {
+          "defaultValue": "Pick a date",
+          "description": "Text shown when no date is selected.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the input as required.",
+          "name": "required",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled selected date.",
+          "name": "value",
+          "required": false,
+          "type": "Date"
+        }
+      ]
+    }
+  ]
+}

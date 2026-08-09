@@ -1,0 +1,101 @@
+{
+  "id": "alert",
+  "name": "Alert",
+  "apiNames": [
+    "Alert"
+  ],
+  "description": "An inline feedback banner with semantic variants, an optional title, and dismissal.",
+  "usage": "<Alert variant=\"warning\" title=\"Payment method expiring\">\n  The workspace card ends in 04/25. Update billing details to avoid interruption.\n</Alert>",
+  "anatomy": [
+    {
+      "part": "Variant icon",
+      "description": "Decorative severity glyph, hidden from assistive technology."
+    },
+    {
+      "part": "Title",
+      "description": "Optional bold lead-in naming the condition."
+    },
+    {
+      "part": "Body",
+      "description": "The explanatory message; wraps within the surface."
+    },
+    {
+      "part": "Dismiss",
+      "description": "Optional labeled IconButton rendered when onDismiss is passed."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Keep the alert mounted until the condition resolves or the user dismisses it.",
+      "Use the danger variant for failures that need immediate attention; it announces assertively."
+    ],
+    "donts": [
+      "Don't use Alert for brief confirmations; use Toast instead.",
+      "Don't rely on the icon or color alone; the text must carry the meaning."
+    ]
+  },
+  "related": [
+    "banner",
+    "toast",
+    "step-up-notice"
+  ],
+  "examples": [
+    {
+      "title": "Variants",
+      "description": "Semantic variants pair a standard icon with a matching surface treatment."
+    },
+    {
+      "title": "Dismissible",
+      "description": "Pass onDismiss to render a close button for feedback the user can clear."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Feedback must stay visible in context until it is read or dismissed.",
+    "avoidWhen": "A brief confirmation is enough; use a toast for transient feedback.",
+    "behavior": "Danger renders role=\"alert\" for immediate announcement; other variants render role=\"status\".",
+    "responsive": "Let the body text wrap and keep the title to a short phrase."
+  },
+  "accessibility": {
+    "notes": [
+      "Danger renders role=\"alert\" so the message is announced immediately; other variants render role=\"status\".",
+      "The variant icon is decorative and hidden from assistive technology; meaning is carried by the text.",
+      "The dismiss control is a labeled button in the normal tab order."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Alert",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Icon override; defaults to the variant's standard icon. Always hidden from assistive technology.",
+          "name": "icon",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Renders a dismiss button and calls this when it is pressed.",
+          "name": "onDismiss",
+          "required": false,
+          "type": "() => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Bold leading text of the alert.",
+          "name": "title",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "variant",
+          "required": false,
+          "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\" | null"
+        }
+      ]
+    }
+  ]
+}

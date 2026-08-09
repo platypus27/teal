@@ -4,12 +4,15 @@ on:
   pull_request:
   push:
     branches: [master]
+  workflow_dispatch:
 
 # Pull requests cancel stale runs. Master validation and deployment use job-specific
 # groups, while release runs are never cancelled halfway through a publish.
 concurrency:
   group: pipeline-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions: {}
 
 jobs:
   quality:
@@ -29,7 +32,7 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - run: npm install --global npm@11.19.0
+      - run: npm install --global npm@11.19.0 # zizmor: ignore[adhoc-packages] exact npm bootstrap precedes lockfile operations
       - run: npm ci
       - run: npm run audit:dependencies
       - run: npm run lint
@@ -63,11 +66,17 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - run: npm install --global npm@11.19.0
+      - run: npm install --global npm@11.19.0 # zizmor: ignore[adhoc-packages] exact npm bootstrap precedes lockfile operations
       - run: npm ci
-      - run: npm run install:browser --workspace @kryv/teal-docs -- --with-deps ${{ matrix.project == 'mobile-chromium' && 'chromium' || matrix.project }}
+      - name: Install exact browser project
+        env:
+          BROWSER_INSTALL_PROJECT: ${{ matrix.project == 'mobile-chromium' && 'chromium' || matrix.project }}
+        run: npm run install:browser --workspace @kryv/teal-docs -- --with-deps "$BROWSER_INSTALL_PROJECT"
       - run: npm run build --workspace @kryv/teal
-      - run: npm run test:e2e --workspace @kryv/teal-docs -- --project=${{ matrix.project }}
+      - name: Test exact browser project
+        env:
+          BROWSER_TEST_PROJECT: ${{ matrix.project }}
+        run: npm run test:e2e --workspace @kryv/teal-docs -- --project="$BROWSER_TEST_PROJECT"
 
   lighthouse:
     name: Lighthouse
@@ -87,7 +96,7 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - run: npm install --global npm@11.19.0
+      - run: npm install --global npm@11.19.0 # zizmor: ignore[adhoc-packages] exact npm bootstrap precedes lockfile operations
       - run: npm ci
       - run: npm run build
       - run: npm run lighthouse --workspace @kryv/teal-docs
@@ -109,7 +118,7 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version-file: .nvmrc
-      - run: npm install --global npm@11.19.0
+      - run: npm install --global npm@11.19.0 # zizmor: ignore[adhoc-packages] exact npm bootstrap precedes lockfile operations
       - uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         with:
           context: .
@@ -117,15 +126,20 @@ jobs:
           load: true
           push: false
           tags: teal-docs:verify-${{ github.sha }}
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
       - name: Verify exact production image
-        run: npm run verify:docs-image -- --image teal-docs:verify-${{ github.sha }}
+        env:
+          VERIFY_IMAGE: teal-docs:verify-${{ github.sha }}
+        run: npm run verify:docs-image -- --image "$VERIFY_IMAGE" --revision "${GITHUB_SHA}" --source "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
 
   release_plan:
     name: Plan release
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
     needs: [quality, browser, lighthouse, production_image]
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 20
     permissions:
       contents: read
     outputs:
@@ -138,38 +152,24 @@ jobs:
         with:
           node-version-file: .nvmrc
           registry-url: https://registry.npmjs.org
-      - run: npm install --global npm@11.19.0
+      - run: npm install --global npm@11.19.0 # zizmor: ignore[adhoc-packages] exact npm bootstrap precedes lockfile operations
+      - run: npm ci --ignore-scripts
+      - run: npm run create:release-package
       - name: Determine release mode
         id: plan
         run: |
           set -euo pipefail
-          version="$(node -p "require('./packages/teal/package.json').version")"
-          published=false
-          registry_error=$(mktemp)
-          trap 'rm -f "$registry_error"' EXIT
-          if npm view "@kryv/teal@$version" version >/dev/null 2>"$registry_error"; then
-            published=true
-          elif ! grep -qiE 'E404|404 Not Found|is not in this registry' "$registry_error"; then
-            cat "$registry_error" >&2
-            exit 1
-          fi
-          has_changesets=false
-          if find .changeset -maxdepth 1 -type f -name '*.md' ! -name 'README.md' -print -quit | grep -q .; then
-            has_changesets=true
-          fi
-          if [ "$has_changesets" = true ]; then
-            mode=version
-          elif [ "$published" = false ]; then
-            mode=publish
-          else
-            mode=none
-          fi
+          mode="$(npm run --silent plan:release)"
+          case "$mode" in
+            version|publish|reconcile|none) ;;
+            *) echo "::error::Invalid release mode: $mode"; exit 1 ;;
+          esac
           echo "mode=$mode" >> "$GITHUB_OUTPUT"
-          echo "Release mode: package=$version published=$published changesets=$has_changesets mode=$mode"
+          echo "Release mode: $mode"
 
   release_version:
     name: Version release
-    if: ${{ needs.release_plan.outputs.mode == 'version' }}
+    if: ${{ github.repository == 'platypus27/teal' && github.event_name == 'push' && github.ref == 'refs/heads/master' && github.ref_protected == true && needs.release_plan.outputs.mode == 'version' }}
     needs: release_plan
     runs-on: ubuntu-24.04
     timeout-minutes: 15
@@ -177,8 +177,8 @@ jobs:
       group: pipeline-release-version-master
       cancel-in-progress: false
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write # Changesets creates the exact version commit and branch.
+      pull-requests: write # Changesets opens or updates the version pull request.
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -188,7 +188,7 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - run: npm install --global npm@11.19.0
+      - run: npm install --global npm@11.19.0 # zizmor: ignore[adhoc-packages] exact npm bootstrap precedes lockfile operations
       - run: npm ci --ignore-scripts
       - uses: changesets/action@3841a0683d3cfa6dae0f9bb335290003010fe3f0 # v1.9.0
         with:
@@ -198,18 +198,24 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  release_publish:
-    name: Publish release
-    if: ${{ needs.release_plan.outputs.mode == 'publish' }}
-    needs: release_plan
+
+  release_candidate:
+    name: Attested release candidate
+    if: >-
+      ${{
+        github.event_name == 'push' &&
+        github.repository == 'platypus27/teal' &&
+        github.ref == 'refs/heads/master' &&
+        github.ref_protected == true
+      }}
+    needs: [quality, browser, lighthouse, production_image]
     runs-on: ubuntu-24.04
-    timeout-minutes: 35
-    concurrency:
-      group: pipeline-release-publish-master
-      cancel-in-progress: false
+    timeout-minutes: 60
     permissions:
-      contents: write
-      id-token: write
+      attestations: write # Publish provenance for the exact candidate manifest.
+      artifact-metadata: write # Associate the retained candidate with its workflow run.
+      contents: read
+      id-token: write # Obtain the GitHub OIDC identity used to sign provenance.
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -218,176 +224,79 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version-file: .nvmrc
-          registry-url: https://registry.npmjs.org
           cache: npm
-      - run: npm install --global npm@11.19.0
+      - run: npm install --global npm@11.19.0 # zizmor: ignore[adhoc-packages] exact npm bootstrap precedes lockfile operations
       - run: npm ci --ignore-scripts
-      - run: npm run install:browser --workspace @kryv/teal-docs -- --with-deps chromium
-      - name: Verify retained npm artifact
+      - run: npm run install:browser --workspace @kryv/teal-docs -- chromium
+      - name: Retain exact npm artifact
         run: npm run verify:release-package
-      - uses: changesets/action@3841a0683d3cfa6dae0f9bb335290003010fe3f0 # v1.9.0
-        with:
-          publish: npm run publish:package
-          createGithubReleases: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
-
-  documentation:
-    name: Documentation image and deploy
-    # Set the repository variable DOCS_DEPLOY_ENABLED=true after configuring the
-    # deployment secrets below. Until then this job is intentionally skipped.
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && vars.DOCS_DEPLOY_ENABLED == 'true' }}
-    needs: [quality, browser, lighthouse, production_image]
-    runs-on: ubuntu-24.04
-    timeout-minutes: 35
-    concurrency:
-      group: pipeline-documentation-master
-      cancel-in-progress: false
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version-file: .nvmrc
-      - run: npm install --global npm@11.19.0
-      - name: Check deployment configuration
-        env:
-          DEPLOY_KEY: ${{ secrets.DOCS_DEPLOY_SSH_KEY }}
-          DEPLOY_HOST: ${{ secrets.DOCS_DEPLOY_HOST }}
-          DEPLOY_USER: ${{ secrets.DOCS_DEPLOY_USER }}
-          DEPLOY_PATH: ${{ secrets.DOCS_DEPLOY_PATH }}
-          DEPLOY_KNOWN_HOSTS: ${{ secrets.DOCS_DEPLOY_KNOWN_HOSTS }}
-        run: |
-          set -euo pipefail
-          for name in DEPLOY_KEY DEPLOY_HOST DEPLOY_USER DEPLOY_PATH DEPLOY_KNOWN_HOSTS; do
-            if [ -z "${!name}" ]; then
-              echo "::error::Missing required docs deployment secret: $name"
-              exit 1
-            fi
-          done
-      - id: image
-        run: |
-          repository="ghcr.io/${GITHUB_REPOSITORY,,}/teal-docs"
-          echo "repository=$repository" >> "$GITHUB_OUTPUT"
-          echo "tag=$repository:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
-      - uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+      - name: Build exact documentation image
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         with:
           context: .
           file: apps/docs/Dockerfile
           load: true
           push: false
-          tags: ${{ steps.image.outputs.tag }}
+          tags: teal-docs:candidate-${{ github.sha }}
           labels: |
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
-      - name: Verify exact documentation image
-        run: npm run verify:docs-image -- --image "${{ steps.image.outputs.tag }}"
-      - uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+      - name: Retain exact image, SBOM, and scan receipts
+        run: >-
+          npm run verify:docs-image --
+          --image "teal-docs:candidate-${GITHUB_SHA}"
+          --revision "${GITHUB_SHA}"
+          --source "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
+          --descriptor .release/docs/artifact.json
+          --repository ghcr.io/platypus27/teal/teal-docs
+      - name: Build fixed production controller
+        run: node scripts/build_production_controller.mjs --output .release/kryv-teal-production-controller.tar
+      - name: Retain exact source closure
+        run: |
+          set -euo pipefail
+          install -d -m 0700 .release/source
+          git bundle create .release/source/repository.bundle HEAD
+          git bundle verify .release/source/repository.bundle
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Assemble and verify complete candidate
+        run: |
+          set -euo pipefail
+          for evidence in \
+            .release/docs/docs-image.tar \
+            .release/docs/docs-image.sbom.cdx.json \
+            .release/docs/docs-image.vulnerability.json \
+            .release/docs/docs-image.secret.json; do
+            test -f "$evidence"
+          done
+          created_at="$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"
+          node scripts/assemble-release-candidate.mjs \
+            --candidate-root .release/candidate \
+            --controller-archive .release/kryv-teal-production-controller.tar \
+            --created-at "$created_at" \
+            --deployment-model deploy.docs.yml \
+            --docs-root .release/docs \
+            --npm-root .release/npm \
+            --source-bundle .release/source/repository.bundle \
+            --source-commit "$GITHUB_SHA" \
+            --source-run-attempt "$GITHUB_RUN_ATTEMPT" \
+            --source-run-id "$GITHUB_RUN_ID" \
+            --workspace-root "$GITHUB_WORKSPACE"
+          node scripts/teal_release_candidate.mjs verify \
+            --root .release/candidate \
+            --repository "$GITHUB_REPOSITORY" \
+            --workflow platypus27/teal/.github/workflows/pipeline.yml \
+            --ref "$GITHUB_REF" \
+            --source-commit "$GITHUB_SHA" \
+            --source-run-id "$GITHUB_RUN_ID" \
+            --source-run-attempt "$GITHUB_RUN_ATTEMPT"
+      - name: Attest exact candidate manifest
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.0.0
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Push scanned tag and resolve repository digest
-        id: pushed
-        env:
-          IMAGE_REPOSITORY: ${{ steps.image.outputs.repository }}
-          IMAGE_TAG: ${{ steps.image.outputs.tag }}
-        run: |
-          set -euo pipefail
-          push_output="$(docker push "$IMAGE_TAG" 2>&1)"
-          printf '%s\n' "$push_output"
-          digest="$(printf '%s\n' "$push_output" | grep -oE 'digest: sha256:[0-9a-f]{64}' | tail -n 1 | awk '{print $2}')"
-          if ! [[ "$digest" =~ ^sha256:[0-9a-f]{64}$ ]]; then
-            echo "::error::docker push did not return an immutable repository digest"
-            exit 1
-          fi
-          immutable="$IMAGE_REPOSITORY@$digest"
-          docker pull "$immutable"
-          docker image inspect "$immutable" --format '{{range .RepoDigests}}{{println .}}{{end}}' | grep -Fx "$immutable"
-          echo "digest=$immutable" >> "$GITHUB_OUTPUT"
-      - name: Configure SSH
-        env:
-          DEPLOY_KEY: ${{ secrets.DOCS_DEPLOY_SSH_KEY }}
-          DEPLOY_KNOWN_HOSTS: ${{ secrets.DOCS_DEPLOY_KNOWN_HOSTS }}
-        run: |
-          set -euo pipefail
-          install -m 700 -d ~/.ssh
-          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/id_ed25519
-          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
-      - name: Deploy immutable image with verified rollback
-        env:
-          IMAGE_DIGEST: ${{ steps.pushed.outputs.digest }}
-          IMAGE_REPOSITORY: ${{ steps.image.outputs.repository }}
-          DEPLOY_HOST: ${{ secrets.DOCS_DEPLOY_HOST }}
-          DEPLOY_USER: ${{ secrets.DOCS_DEPLOY_USER }}
-          DEPLOY_PATH: ${{ secrets.DOCS_DEPLOY_PATH }}
-        run: |
-          set -euo pipefail
-          image_digest_arg="$(printf '%q' "$IMAGE_DIGEST")"
-          image_repository_arg="$(printf '%q' "$IMAGE_REPOSITORY")"
-          deploy_path_arg="$(printf '%q' "$DEPLOY_PATH")"
-          ssh "$DEPLOY_USER@$DEPLOY_HOST" "IMAGE_DIGEST=$image_digest_arg IMAGE_REPOSITORY=$image_repository_arg DEPLOY_PATH=$deploy_path_arg bash -s" <<'REMOTE'
-          set -euo pipefail
-          cd "$DEPLOY_PATH"
-
-          case "$IMAGE_DIGEST" in
-            "$IMAGE_REPOSITORY"@sha256:*) ;;
-            *) echo "Target is not an immutable digest for $IMAGE_REPOSITORY" >&2; exit 1 ;;
-          esac
-
-          current_container="$(docker compose ps -q docs 2>/dev/null || true)"
-          previous_digest=""
-          if [ -n "$current_container" ]; then
-            configured="$(docker inspect --format '{{.Config.Image}}' "$current_container")"
-            case "$configured" in
-              "$IMAGE_REPOSITORY"@sha256:*) previous_digest="$configured" ;;
-              *)
-                previous_id="$(docker inspect --format '{{.Image}}' "$current_container")"
-                while IFS= read -r candidate; do
-                  case "$candidate" in
-                    "$IMAGE_REPOSITORY"@sha256:*) previous_digest="$candidate"; break ;;
-                  esac
-                done < <(docker image inspect "$previous_id" --format '{{range .RepoDigests}}{{println .}}{{end}}')
-                ;;
-            esac
-            if [ -z "$previous_digest" ]; then
-              echo "Could not bind the current docs container to an immutable rollback digest" >&2
-              exit 1
-            fi
-          fi
-
-          rollout() {
-            local target="$1"
-            docker pull "$target" || return 1
-            export TEAL_DOCS_IMAGE="$target"
-            docker compose up -d --no-build docs || return 1
-            local container configured_image expected_id running_id
-            container="$(docker compose ps -q docs)" || return 1
-            [ -n "$container" ] || return 1
-            configured_image="$(docker inspect --format '{{.Config.Image}}' "$container")" || return 1
-            [ "$configured_image" = "$target" ] || return 1
-            expected_id="$(docker image inspect "$target" --format '{{.Id}}')" || return 1
-            running_id="$(docker inspect --format '{{.Image}}' "$container")" || return 1
-            [ "$running_id" = "$expected_id" ] || return 1
-            curl --fail --retry 12 --retry-delay 2 --silent http://127.0.0.1:8087/ >/dev/null || return 1
-          }
-
-          if ! rollout "$IMAGE_DIGEST"; then
-            if [ -n "$previous_digest" ]; then
-              echo "Deployment failed; starting rollback to $previous_digest" >&2
-              if ! rollout "$previous_digest"; then
-                echo "Rollback failed for $previous_digest" >&2
-                exit 2
-              fi
-              echo "Rollback verified at $previous_digest" >&2
-            fi
-            exit 1
-          fi
-          echo "Deployment verified at $IMAGE_DIGEST"
-          REMOTE
+          subject-path: .release/candidate/candidate-manifest.json
+      - name: Upload complete candidate
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: teal-release-candidate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .release/candidate
+          if-no-files-found: error
+          retention-days: 30

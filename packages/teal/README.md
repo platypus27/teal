@@ -81,15 +81,17 @@ The complete supported token list is documented at
 
 ## Modules
 
-Twenty-six documented module pages across seven groups:
+Teal has 200 documented module pages across nine groups:
 
-- **Actions** - Button, IconButton
-- **Forms** - Field, Input, TextArea, Select, Checkbox, Switch
-- **Surfaces** - Card, Badge, Accordion
-- **Overlays** - Dialog, Tooltip, Menu, Popover
-- **Feedback** - Toast, EmptyState, Spinner, Progress, Skeleton, LoadingState, Alert
-- **Navigation** - Tabs, Pagination, PageHeader, VerticalNav, TopBar, Breadcrumb
-- **Data** - Table, Separator, Avatar
+- **Actions** - 12 modules
+- **Forms** - 42 modules
+- **Surfaces** - 12 modules
+- **Overlays** - 21 modules
+- **Feedback** - 22 modules
+- **Navigation** - 25 modules
+- **Data** - 34 modules
+- **Layout** - 14 modules
+- **Utilities** - 18 modules
 
 Every module ships TypeScript declarations, keyboard interaction support, and
 visible focus states. Complex interactions (Select, Dialog, Toast, and others)

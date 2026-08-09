@@ -8,6 +8,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { moduleGroups } from '../src/data/module-meta.js'
+import { accessibility } from '../src/data/accessibility.js'
 import { recipes } from '../src/data/recipes.js'
 import {
   changelogMarkdown,
@@ -36,6 +37,7 @@ const modules = moduleGroups.flatMap((group) => group.modules)
 
 const modulePages = modules.map((module) => ({
   ...module,
+  accessibility: accessibility[module.id],
   examples: module.examples.map((example) => ({
     ...example,
     source: readDemo(example.demo ?? module.id),

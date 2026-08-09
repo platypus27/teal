@@ -1,0 +1,177 @@
+{
+  "id": "search-overlay",
+  "name": "Search Overlay",
+  "apiNames": [
+    "SearchOverlay"
+  ],
+  "description": "Full-screen search overlay with a large input and caller-rendered results navigated entirely from the keyboard.",
+  "usage": "<SearchOverlay\n  open={open}\n  onOpenChange={setOpen}\n  resultCount={results.length}\n  onSelect={(index) => openResult(results[index])}\n>\n  {({ query, activeIndex, optionId }) => <ResultList results={results} query={query} activeIndex={activeIndex} optionId={optionId} />}\n</SearchOverlay>",
+  "anatomy": [
+    {
+      "part": "Overlay",
+      "description": "The full-screen labelled dialog that traps focus and owns the search session."
+    },
+    {
+      "part": "Input",
+      "description": "The large query field, focused on open; query and highlight reset on every open."
+    },
+    {
+      "part": "Results",
+      "description": "Caller-rendered rows driven by the render prop's query, activeIndex, and optionId."
+    },
+    {
+      "part": "Highlight",
+      "description": "The keyboard-driven active result, cycled with arrows and submitted with Enter via onSelect."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Trigger it from a global shortcut like ⌘K when search is a primary task.",
+      "Use the render prop's optionId for the active-descendant wiring on result rows.",
+      "Render an explicit no-results state; the caller owns what empty means."
+    ],
+    "donts": [
+      "Don't use it as a command picker; use Command.",
+      "Don't use it for inline form autocomplete; use Combobox.",
+      "Don't make results mouse-only; Enter must activate the highlighted row."
+    ]
+  },
+  "related": [
+    "command",
+    "combobox",
+    "input"
+  ],
+  "examples": [
+    {
+      "title": "Docs search",
+      "description": "A render prop receives the query and highlight state so the caller renders and filters its own result rows."
+    },
+    {
+      "title": "Empty state",
+      "description": "The caller owns what shows when nothing matches, such as a 'no results' message."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Search is the primary task and deserves the whole screen, such as documentation or knowledge-base search triggered from a shortcut.",
+    "avoidWhen": "Choosing from a fixed set of commands; use Command, or Combobox for inline autocomplete inside a form.",
+    "behavior": "Arrow keys cycle the highlight through resultCount results and Enter reports the highlighted index via onSelect; query and highlight reset on every open.",
+    "responsive": "The input and results column cap at a readable width and the results area scrolls on short viewports."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Arrow Down"
+        ],
+        "action": "Moves the highlight to the next result, wrapping at the end."
+      },
+      {
+        "keys": [
+          "Arrow Up"
+        ],
+        "action": "Moves the highlight to the previous result, wrapping at the start."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Selects the highlighted result and reports its index."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the overlay."
+      }
+    ],
+    "notes": [
+      "The input is a combobox whose aria-activedescendant tracks the highlighted option; callers must spread the provided optionId onto each result.",
+      "Rendered as a labelled dialog that traps focus while open."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "Full-screen search overlay. The caller renders the results via a render\nprop; the overlay owns the query input and the keyboard highlight\n(Arrow Up/Down cycle, Enter selects, Escape closes).",
+      "displayName": "SearchOverlay",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Results rendered below the input; receives the query and highlight state.",
+          "name": "children",
+          "required": true,
+          "type": "(state: SearchOverlayRenderState) => ReactNode"
+        },
+        {
+          "defaultValue": "Close",
+          "description": "Accessible label for the close button.",
+          "name": "closeLabel",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial open state when uncontrolled.",
+          "name": "defaultOpen",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "Search",
+          "description": "Accessible name of the search dialog.",
+          "name": "label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the overlay opens or closes.",
+          "name": "onOpenChange",
+          "required": false,
+          "type": "(open: boolean) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the latest query whenever the input changes.",
+          "name": "onQueryChange",
+          "required": false,
+          "type": "(query: string) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the highlighted result's index when Enter is pressed.",
+          "name": "onSelect",
+          "required": false,
+          "type": "(index: number) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled open state.",
+          "name": "open",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "Search…",
+          "description": "Placeholder of the search input.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Number of results currently rendered; arrow keys cycle within this range.",
+          "name": "resultCount",
+          "required": true,
+          "type": "number"
+        }
+      ]
+    }
+  ]
+}

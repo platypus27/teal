@@ -1,0 +1,196 @@
+{
+  "id": "multi-select",
+  "name": "Multi Select",
+  "apiNames": [
+    "MultiSelect"
+  ],
+  "description": "A filterable picker for several values, shown as removable pills.",
+  "usage": "<MultiSelect\n  label=\"Project roles\"\n  options={[\n    { value: 'admin', label: 'Administrator' },\n    { value: 'editor', label: 'Editor' },\n    { value: 'viewer', label: 'Viewer' },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "Control",
+      "description": "The combobox-role trigger that hosts the selected pills."
+    },
+    {
+      "part": "Pills",
+      "description": "Removable tokens, one per value, each with its own labeled remove button."
+    },
+    {
+      "part": "Filter field",
+      "description": "The inline text input inside the open popup."
+    },
+    {
+      "part": "Listbox",
+      "description": "The multi-selectable option list with check marks on chosen rows."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Show every selected value as a pill so removal stays one click away.",
+      "Let the pill row wrap instead of truncating selections.",
+      "Keep the popup open between picks so multi-selection stays fast."
+    ],
+    "donts": [
+      "Don't use it when only one value is allowed; use Select or Combobox.",
+      "Don't collapse selections into a +N summary; the pills are the value.",
+      "Don't disable the whole control when only some options are unavailable."
+    ]
+  },
+  "related": [
+    "combobox",
+    "tags-input",
+    "select",
+    "transfer-list"
+  ],
+  "examples": [
+    {
+      "title": "Multiple values",
+      "description": "Options toggle without closing; pills remove individual values."
+    },
+    {
+      "title": "Filtering a label set",
+      "description": "A filterable label picker with a caller-owned value and one unavailable option."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Users pick several values from a filterable list.",
+    "avoidWhen": "Only one value is allowed; use Select or Combobox.",
+    "behavior": "Options toggle without closing and pills remove through compact 24px touch targets.",
+    "responsive": "Pills wrap inside the control as values accumulate."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Enter",
+          "Space",
+          "Arrow Down"
+        ],
+        "action": "Opens the listbox from the control."
+      },
+      {
+        "keys": [
+          "Typing"
+        ],
+        "action": "Filters the option list in the inline filter field."
+      },
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus between the control, pill remove buttons, and the open listbox."
+      }
+    ],
+    "notes": [
+      "The control uses combobox semantics with aria-expanded and a multi-selectable listbox popup.",
+      "Every pill has a remove button labeled Remove plus the option name.",
+      "Selected options keep a check mark and aria-selected in the list."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "Multi-value select: selected options render as removable pills inside the\ncontrol, and a filterable multi-select listbox toggles options without closing.",
+      "displayName": "MultiSelect",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "aria-describedby",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name when there is no visible label.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the control invalid for form validation and screen readers.",
+          "name": "aria-invalid",
+          "required": false,
+          "type": "boolean | \"true\" | \"false\""
+        },
+        {
+          "defaultValue": "",
+          "description": "Explicit id; otherwise Field or an internal id is used.",
+          "name": "id",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial selected values when uncontrolled.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "string[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered below the control.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Prevents interaction with the control.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label rendered above the control. Required outside a Field; inside a Field the Field's label is used.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the full list of selected values whenever it changes.",
+          "name": "onValueChange",
+          "required": false,
+          "type": "(values: string[]) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Options rendered in the popover listbox.",
+          "name": "options",
+          "required": true,
+          "type": "MultiSelectOption[]"
+        },
+        {
+          "defaultValue": "Select…",
+          "description": "Text shown when nothing is selected.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the control as required.",
+          "name": "required",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled selected values.",
+          "name": "value",
+          "required": false,
+          "type": "string[]"
+        }
+      ]
+    }
+  ]
+}

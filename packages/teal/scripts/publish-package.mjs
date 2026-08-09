@@ -125,6 +125,9 @@ export async function validateReleaseArtifact({ artifactDirectory, currentPackag
   if (archivedPackageJson.version !== currentPackageJson.version) {
     throw new Error('Archive package version mismatch')
   }
+  if (archivedPackageJson.gitHead !== currentSourceCommit) {
+    throw new Error('Archive gitHead mismatch')
+  }
 
   const archiveFiles = [...entries]
     .filter(([, entry]) => entry.type === 'File' || entry.type === 'OldFile')
@@ -169,6 +172,63 @@ export async function publishValidatedArtifact(
   )
 }
 
+function assertRegistryArtifact(artifact, registry) {
+  if (registry?.name !== artifact.archivedPackageJson.name) {
+    throw new Error('Registry package name mismatch')
+  }
+  if (registry?.version !== artifact.archivedPackageJson.version) {
+    throw new Error('Registry package version mismatch')
+  }
+  if (registry?.gitHead !== artifact.sourceCommit) {
+    throw new Error('Registry gitHead mismatch')
+  }
+  if (registry?.dist?.integrity !== artifact.integrity) {
+    throw new Error('Registry artifact integrity mismatch')
+  }
+  let attestationUrl
+  try {
+    attestationUrl = new URL(registry?.dist?.attestations?.url)
+  } catch {
+    throw new Error('Registry provenance attestation is missing')
+  }
+  if (attestationUrl.protocol !== 'https:' || attestationUrl.username || attestationUrl.password) {
+    throw new Error('Registry provenance attestation is invalid')
+  }
+}
+
+export async function publishOrVerifyArtifact(artifact, adapter) {
+  if (artifact?.[validatedArtifact] !== true) {
+    throw new Error('Release artifact was not validated')
+  }
+  let registry = await adapter.inspect(artifact.archivedPackageJson)
+  let published = false
+  if (registry === undefined || registry === null) {
+    await adapter.publish(artifact)
+    published = true
+    registry = await adapter.inspect(artifact.archivedPackageJson)
+    if (registry === undefined || registry === null) {
+      throw new Error('Published package did not become visible in the registry')
+    }
+  }
+  assertRegistryArtifact(artifact, registry)
+  return { published, registry }
+}
+
+async function inspectRegistry(packageJson) {
+  try {
+    const { stdout } = await exec(
+      'npm',
+      ['view', `${packageJson.name}@${packageJson.version}`, '--json'],
+      { cwd: workspaceRoot, env: process.env, maxBuffer: 1024 * 1024 },
+    )
+    return JSON.parse(stdout)
+  } catch (error) {
+    const message = `${error?.stderr ?? ''}\n${error?.message ?? ''}`
+    if (/\bE404\b|404 Not Found|is not in this registry/i.test(message)) return undefined
+    throw error
+  }
+}
+
 async function main() {
   const descriptorArgument = process.argv[2] ?? '.release/npm/artifact.json'
   if (process.argv.length > 3 || descriptorArgument.startsWith('-')) {
@@ -195,7 +255,13 @@ async function main() {
     descriptor,
     packageRoot,
   })
-  await publishValidatedArtifact(artifact)
+  const result = await publishOrVerifyArtifact(artifact, {
+    inspect: inspectRegistry,
+    publish: (candidate) => publishValidatedArtifact(candidate, runCommand, () => {}),
+  })
+  process.stdout.write(
+    `${result.published ? 'Published' : 'Verified existing'} ${artifact.archivedPackageJson.name}@${artifact.archivedPackageJson.version}\n`,
+  )
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

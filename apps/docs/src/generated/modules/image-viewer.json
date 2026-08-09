@@ -1,0 +1,153 @@
+{
+  "id": "image-viewer",
+  "name": "Image Viewer",
+  "apiNames": [
+    "ImageViewer"
+  ],
+  "description": "Inline viewer for a single image with toolbar and keyboard zoom plus pointer-drag panning while zoomed.",
+  "usage": "<ImageViewer\n  src=\"/blueprint.svg\"\n  alt=\"Floor plan\"\n  maxZoom={4}\n/>",
+  "anatomy": [
+    {
+      "part": "Stage",
+      "description": "The container the image renders into, sized by the caller's layout."
+    },
+    {
+      "part": "Toolbar",
+      "description": "Zoom-in, zoom-out, and reset controls that mirror the keyboard shortcuts."
+    },
+    {
+      "part": "Image",
+      "description": "The asset itself; panning by pointer drag engages once zoom passes the minimum."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Write alt text that describes the image content, not just \"image\".",
+      "Clamp maxZoom to the asset's real resolution so zooming stays meaningful.",
+      "Use for single diagrams, maps, or exports that users inspect in place."
+    ],
+    "donts": [
+      "Don't use it to page through a set of images; use Lightbox.",
+      "Don't wrap decorative images; a plain img is enough.",
+      "Don't rely on drag alone; the toolbar and keyboard zoom cover pointer-free use."
+    ]
+  },
+  "related": [
+    "lightbox",
+    "fullscreen-dialog",
+    "dialog"
+  ],
+  "examples": [
+    {
+      "title": "Default viewer",
+      "description": "Zoom in and out with the toolbar buttons or the + and − keys, and drag to pan once past 100%."
+    },
+    {
+      "title": "Custom bounds",
+      "description": "Starts pre-zoomed with finer zoom steps and a lower maximum for detail inspection."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A single diagram, map, or photo needs in-place inspection with zoom and pan, such as a blueprint or chart export.",
+    "avoidWhen": "Browsing a set of images; use Lightbox for galleries, or a plain img when no inspection is needed.",
+    "behavior": "Zoom is clamped between minZoom and maxZoom; panning only engages above minZoom and the offset resets when zoom returns to the minimum.",
+    "responsive": "The viewer fills its container and the image scales within it; sizing is controlled by the caller's layout."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "+"
+        ],
+        "action": "Zooms in one step."
+      },
+      {
+        "keys": [
+          "-"
+        ],
+        "action": "Zooms out one step."
+      },
+      {
+        "keys": [
+          "0"
+        ],
+        "action": "Resets zoom and pan to the fitted view."
+      }
+    ],
+    "notes": [
+      "The viewer is a labelled region; the zoomed viewport itself is focusable for keyboard control.",
+      "The current zoom percentage is announced via a polite live region."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "Inline single-image viewer. Zoom via the toolbar buttons or the `+`/`-`\nkeys; while zoomed in, drag the image to pan. `0` resets the view.",
+      "displayName": "ImageViewer",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Alternative text announced for the image.",
+          "name": "alt",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "1",
+          "description": "Initial zoom factor when uncontrolled.",
+          "name": "defaultZoom",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "Image viewer",
+          "description": "Accessible name of the viewer region.",
+          "name": "label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "4",
+          "description": "Maximum zoom factor.",
+          "name": "maxZoom",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "1",
+          "description": "Minimum zoom factor; at this level panning is disabled.",
+          "name": "minZoom",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the zoom factor changes.",
+          "name": "onZoomChange",
+          "required": false,
+          "type": "(zoom: number) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Image URL.",
+          "name": "src",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled zoom factor where 1 fits the image to the viewport.",
+          "name": "zoom",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "0.5",
+          "description": "Amount added or subtracted per zoom step.",
+          "name": "zoomStep",
+          "required": false,
+          "type": "number"
+        }
+      ]
+    }
+  ]
+}

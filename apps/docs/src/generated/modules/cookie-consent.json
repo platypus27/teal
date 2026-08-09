@@ -1,0 +1,147 @@
+{
+  "id": "cookie-consent",
+  "name": "Cookie Consent",
+  "apiNames": [
+    "CookieConsent"
+  ],
+  "description": "Polite, non-modal bottom banner for cookie consent with accept and decline actions and an optional preferences link.",
+  "usage": "<CookieConsent\n  message=\"We use cookies to improve your experience.\"\n  manageHref=\"/settings/cookies\"\n  onAccept={allowAll}\n  onDecline={allowEssential}\n/>",
+  "anatomy": [
+    {
+      "part": "Message",
+      "description": "The plain-language disclosure of what cookies or tracking are used for."
+    },
+    {
+      "part": "Manage link",
+      "description": "An optional link to granular preferences, via manageHref."
+    },
+    {
+      "part": "Accept and decline",
+      "description": "Equal-weight actions that report the choice through onAccept and onDecline and dismiss the banner."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Write the message in plain language and keep it to one or two sentences.",
+      "Wire onAccept and onDecline to real consent state, not just dismissal.",
+      "Control visibility so users can re-open consent from a settings page later."
+    ],
+    "donts": [
+      "Don't block the page until consent; the banner is intentionally non-modal.",
+      "Don't style accept and decline asymmetrically to nudge one choice.",
+      "Don't show the banner again after a recorded choice unless consent expires."
+    ]
+  },
+  "related": [
+    "banner",
+    "alert",
+    "dialog"
+  ],
+  "examples": [
+    {
+      "title": "Consent banner",
+      "description": "Pins to the bottom of the viewport with a message, manage link, and accept/decline actions that dismiss it."
+    },
+    {
+      "title": "Custom labels, controlled",
+      "description": "Controlled visibility with tailored action labels and no manage link."
+    }
+  ],
+  "guidance": {
+    "useWhen": "You must collect consent without interrupting the task at hand, as required for cookie and tracking disclosures.",
+    "avoidWhen": "The decision blocks use of the product; use AlertDialog for a mandatory acknowledgement.",
+    "behavior": "Accept and decline both report the choice and dismiss the banner; visibility is controllable so consent can be re-opened later.",
+    "responsive": "Actions stack above the message on narrow screens and sit inline from the sm breakpoint up."
+  },
+  "accessibility": {
+    "notes": [
+      "Rendered as a labelled region, not a dialog: it never traps focus, blocks the page, or auto-announces over other content.",
+      "Both actions are plain buttons and the manage option is a real link."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "Polite, non-modal consent banner pinned to the bottom of the viewport.\nAccept and decline both dismiss the banner; it never traps focus or\nblocks interaction with the page behind it.",
+      "displayName": "CookieConsent",
+      "props": [
+        {
+          "defaultValue": "Accept",
+          "description": "Label of the accept button.",
+          "name": "acceptLabel",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "Decline",
+          "description": "Label of the decline button.",
+          "name": "declineLabel",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "true",
+          "description": "Initial visibility when uncontrolled.",
+          "name": "defaultOpen",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "Cookie consent",
+          "description": "Accessible name of the banner region.",
+          "name": "label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "URL of the cookie preferences page; renders a manage link when set.",
+          "name": "manageHref",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "Manage preferences",
+          "description": "Label of the manage link.",
+          "name": "manageLabel",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Consent message, supplied sanitized by the caller.",
+          "name": "message",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the accept button is pressed; also dismisses the banner.",
+          "name": "onAccept",
+          "required": false,
+          "type": "() => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the decline button is pressed; also dismisses the banner.",
+          "name": "onDecline",
+          "required": false,
+          "type": "() => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the banner is shown or dismissed.",
+          "name": "onOpenChange",
+          "required": false,
+          "type": "(open: boolean) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled visibility.",
+          "name": "open",
+          "required": false,
+          "type": "boolean"
+        }
+      ]
+    }
+  ]
+}

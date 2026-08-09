@@ -1,17 +1,21 @@
 import { lazy, Suspense } from 'react'
-import { Route, Routes } from 'react-router'
+import { Outlet, Route, Routes } from 'react-router'
 import { Spinner } from '@kryv/teal'
 import { Layout } from './components/Layout.jsx'
 
-const HomePage = lazy(() => import('./pages/HomePage.jsx').then((module) => ({ default: module.HomePage })))
+const LazyHomePage = lazy(() => import('./pages/HomePage.jsx').then((module) => ({ default: module.HomePage })))
 const FoundationsPage = lazy(() =>
   import('./pages/FoundationsPage.jsx').then((module) => ({ default: module.FoundationsPage })),
 )
 const ChangelogPage = lazy(() =>
   import('./pages/ChangelogPage.jsx').then((module) => ({ default: module.ChangelogPage })),
 )
-const ModulePage = lazy(() => import('./pages/ModulePage.jsx').then((module) => ({ default: module.ModulePage })))
-const RecipesPage = lazy(() => import('./pages/RecipesPage.jsx').then((module) => ({ default: module.RecipesPage })))
+const LazyModulePage = lazy(() =>
+  import('./pages/ModulePage.jsx').then((module) => ({ default: module.ModulePage })),
+)
+const LazyRecipesPage = lazy(() =>
+  import('./pages/RecipesPage.jsx').then((module) => ({ default: module.RecipesPage })),
+)
 const NotFoundPage = lazy(() =>
   import('./pages/NotFoundPage.jsx').then((module) => ({ default: module.NotFoundPage })),
 )
@@ -30,7 +34,32 @@ function PageLoader() {
   )
 }
 
-export default function App() {
+function ModulePageLoader() {
+  return (
+    <div role="status" className="flex min-h-[60vh] items-center justify-center gap-3 text-sm text-teal-on-surface-variant">
+      <Spinner size="lg" aria-hidden="true" />
+      <span>Loading module examples...</span>
+    </div>
+  )
+}
+
+function DocumentPage({ children }) {
+  return <Suspense fallback={<PageLoader />}>{children}</Suspense>
+}
+
+function RoutedLayout() {
+  return (
+    <Layout>
+      <Outlet />
+    </Layout>
+  )
+}
+
+export default function App({
+  HomePageComponent = LazyHomePage,
+  ModulePageComponent = LazyModulePage,
+  RecipesPageComponent = LazyRecipesPage,
+}) {
   return (
     <Routes>
       <Route
@@ -49,53 +78,53 @@ export default function App() {
           </Suspense>
         }
       />
-      <Route element={<Layout />}>
+      <Route element={<RoutedLayout />}>
         <Route
           index
           element={
-            <Suspense fallback={<PageLoader />}>
-              <HomePage />
-            </Suspense>
+            <DocumentPage>
+              <HomePageComponent />
+            </DocumentPage>
           }
         />
         <Route
           path="foundations"
           element={
-            <Suspense fallback={<PageLoader />}>
+            <DocumentPage>
               <FoundationsPage />
-            </Suspense>
+            </DocumentPage>
           }
         />
         <Route
           path="changelog"
           element={
-            <Suspense fallback={<PageLoader />}>
+            <DocumentPage>
               <ChangelogPage />
-            </Suspense>
+            </DocumentPage>
           }
         />
         <Route
           path="modules/:moduleId"
           element={
-            <Suspense fallback={<PageLoader />}>
-              <ModulePage />
+            <Suspense fallback={<ModulePageLoader />}>
+              <ModulePageComponent />
             </Suspense>
           }
         />
         <Route
           path="recipes"
           element={
-            <Suspense fallback={<PageLoader />}>
-              <RecipesPage />
-            </Suspense>
+            <DocumentPage>
+              <RecipesPageComponent />
+            </DocumentPage>
           }
         />
         <Route
           path="*"
           element={
-            <Suspense fallback={<PageLoader />}>
+            <DocumentPage>
               <NotFoundPage />
-            </Suspense>
+            </DocumentPage>
           }
         />
       </Route>

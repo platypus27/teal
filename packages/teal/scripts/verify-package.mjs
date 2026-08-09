@@ -363,9 +363,11 @@ export default {
 if (options.keepArtifact) {
   const temporaryDescriptor = `${descriptorPath}.tmp-${process.pid}`
   await writeFile(temporaryDescriptor, `${JSON.stringify({
-    tarballPath,
     integrity: artifact.integrity,
+    name: artifact.name,
     sourceCommit: artifact.sourceCommit,
+    tarballPath,
+    version: artifact.version,
   }, null, 2)}\n`, { flag: 'wx' })
   await rename(temporaryDescriptor, descriptorPath)
 }

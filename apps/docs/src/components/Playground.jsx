@@ -1,5 +1,4 @@
-import { createElement, useMemo } from 'react'
-import { useSearchParams } from 'react-router'
+import { createElement, useMemo, useState } from 'react'
 import { RotateCcw } from 'lucide-react'
 import {
   Badge,
@@ -66,9 +65,12 @@ function PlaygroundControl({ control, value, onChange }) {
   )
 }
 
-export function Playground({ config }) {
-  const controls = useMemo(() => resolveControls(config.component, config.controls), [config])
-  const [searchParams, setSearchParams] = useSearchParams()
+export function Playground({ config, apiEntries }) {
+  const controls = useMemo(
+    () => resolveControls(config.component, config.controls, apiEntries),
+    [apiEntries, config],
+  )
+  const [searchParams, setSearchParams] = useState(() => new URLSearchParams(window.location.search))
 
   const values = {}
   for (const control of controls) {
@@ -82,7 +84,10 @@ export function Playground({ config }) {
       if (value === control.defaultValue || value === '' || value === undefined || value === null) continue
       next.set(control.name, String(value))
     }
-    setSearchParams(next, { replace: true })
+    const query = next.toString()
+    const url = `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`
+    window.history.replaceState(window.history.state, '', url)
+    setSearchParams(next)
   }
 
   function update(name, value) {

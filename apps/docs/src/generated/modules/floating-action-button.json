@@ -1,0 +1,124 @@
+{
+  "id": "floating-action-button",
+  "name": "Floating Action Button",
+  "apiNames": [
+    "FloatingActionButton"
+  ],
+  "description": "A fixed-position primary action button for the single most important creation task on a screen.",
+  "usage": "<FloatingActionButton\n  label=\"Create item\"\n  tooltip=\"Add a new item\"\n  position=\"bottom-right\"\n  onClick={createItem}\n/>",
+  "anatomy": [
+    {
+      "part": "Button",
+      "description": "The round, fixed-position button named by the required label prop."
+    },
+    {
+      "part": "Icon",
+      "description": "The centered glyph, a plus by default, hidden from assistive technology."
+    },
+    {
+      "part": "Tooltip",
+      "description": "The optional hover and focus hint defaulting to the label."
+    },
+    {
+      "part": "Extended label",
+      "description": "The optional text that turns the round button into a labelled pill."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Reserve it for the single most important creation action on a screen.",
+      "Always provide label so the icon-only button has an accessible name.",
+      "Use extendedLabel where space allows for extra clarity."
+    ],
+    "donts": [
+      "Don't use it for destructive or secondary actions.",
+      "Don't show more than one floating action button per screen.",
+      "Don't let it cover primary content; pick the corner that stays clear."
+    ]
+  },
+  "related": [
+    "speed-dial",
+    "action-bar",
+    "button"
+  ],
+  "examples": [
+    {
+      "title": "Round FAB with tooltip",
+      "description": "Icon-only button fixed to a viewport corner; the tooltip supplies the visible name on hover."
+    },
+    {
+      "title": "Extended FAB",
+      "description": "An extendedLabel turns the round button into a pill with text for extra clarity."
+    }
+  ],
+  "guidance": {
+    "useWhen": "One creation action dominates the screen, such as composing a message or adding a record to a long list.",
+    "avoidWhen": "Several actions compete or the action is destructive; use an ActionBar or regular Button instead.",
+    "behavior": "Stays fixed to the chosen viewport corner while content scrolls; label always names the button for assistive tech.",
+    "responsive": "Keeps a constant offset from the viewport edges at all widths; prefer the extended pill only when space allows."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus to and from the button."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Activates the button."
+      }
+    ],
+    "notes": [
+      "Icon-only by default, so the required label prop provides the accessible name via aria-label.",
+      "The optional tooltip also exposes the name to sighted keyboard users on focus."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "FloatingActionButton",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Text rendered next to the icon; turns the round FAB into an extended pill.",
+          "name": "extendedLabel",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Icon rendered inside the button. Defaults to a plus icon.",
+          "name": "icon",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name for the button; also the default tooltip text.",
+          "name": "label",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "bottom-right",
+          "description": "Viewport corner the button is fixed to.",
+          "name": "position",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Tooltip text shown on hover and focus; pass the label or a longer hint.",
+          "name": "tooltip",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

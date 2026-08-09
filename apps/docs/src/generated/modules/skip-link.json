@@ -1,0 +1,85 @@
+{
+  "id": "skip-link",
+  "name": "Skip Link",
+  "apiNames": [
+    "SkipLink"
+  ],
+  "description": "A visually-hidden-until-focused \"Skip to content\" link that becomes the first tab stop of the page.",
+  "usage": "<SkipLink href=\"#main\" />",
+  "anatomy": [
+    {
+      "part": "Link",
+      "description": "Anchor to the main landmark, visually hidden off-screen until it receives focus."
+    },
+    {
+      "part": "Target",
+      "description": "The #main element it points to, which must exist on the page."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Make it the first focusable element on the page.",
+      "Point it at a landmark that exists, such as <main id=\"main\">."
+    ],
+    "donts": [
+      "Don't add one on pages with no repeated blocks before the content.",
+      "Don't hide it with display: none; it must stay focusable while off-screen."
+    ]
+  },
+  "related": [
+    "app-shell",
+    "top-bar",
+    "page-header"
+  ],
+  "examples": [
+    {
+      "title": "Default skip link",
+      "description": "Hidden off-screen until focused, then slides into view at the top corner; targets #main by default."
+    },
+    {
+      "title": "Custom target and label",
+      "description": "Point at a different landmark and rename the link for multi-landmark pages."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Every page with repeated navigation should offer keyboard users a way to jump straight to the main content.",
+    "avoidWhen": "The page has no repeated blocks before the main content; a skip link adds a tab stop without saving any.",
+    "behavior": "An ordinary anchor to the target id; it stays focusable while visually hidden and slides into view on focus, so it works as the first tab stop.",
+    "responsive": "Position is absolute near the top corner and does not depend on viewport width."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Reveals the link as the first tab stop on the page."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Follows the anchor to the main content target."
+      }
+    ],
+    "notes": [
+      "The link remains in the accessibility tree while hidden, so screen reader users can also reach it.",
+      "Make sure the target (usually the main landmark) exists and can receive focus if the browser does not move it automatically."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "SkipLink",
+      "props": [
+        {
+          "defaultValue": "#main",
+          "description": "Target of the skip link, usually the main content landmark.",
+          "name": "href",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router'
+
+export const TABLE_OF_CONTENTS_CHANGED_EVENT = 'teal:table-of-contents-changed'
 
 export function TableOfContents() {
-  const { pathname } = useLocation()
   const [items, setItems] = useState([])
   const [activeId, setActiveId] = useState(null)
 
   useEffect(() => {
-    const frame = requestAnimationFrame(() => {
+    let frame = null
+
+    function collect() {
+      frame = null
       const sections = [...document.querySelectorAll('main section[id]')]
       setActiveId(null)
       setItems(
@@ -18,9 +21,19 @@ export function TableOfContents() {
           }))
           .filter((item) => item.label),
       )
-    })
-    return () => cancelAnimationFrame(frame)
-  }, [pathname])
+    }
+
+    function scheduleCollection() {
+      if (frame === null) frame = requestAnimationFrame(collect)
+    }
+
+    scheduleCollection()
+    window.addEventListener(TABLE_OF_CONTENTS_CHANGED_EVENT, scheduleCollection)
+    return () => {
+      window.removeEventListener(TABLE_OF_CONTENTS_CHANGED_EVENT, scheduleCollection)
+      if (frame !== null) cancelAnimationFrame(frame)
+    }
+  }, [])
 
   useEffect(() => {
     if (!items.length) return undefined

@@ -4,10 +4,9 @@
  * same functions run in the browser and in Node build scripts.
  */
 
-import { accessibility } from '../data/accessibility.js'
 import { authentikAdapter, colorTokens, shapeNotes, typeTokens, visualTokens } from '../data/foundations.js'
 import { installSteps, packageManagers, principles } from '../data/getting-started.js'
-import { moduleGroups } from '../data/module-meta.js'
+import moduleGroups from '../generated/module-index.json' with { type: 'json' }
 import { mergePropDocs } from '../data/prop-docs.js'
 import { promotionRule } from '../data/recipes.js'
 
@@ -39,7 +38,7 @@ export function propsTableMarkdown(name, props) {
 }
 
 /**
- * @param {{ id: string, name: string, description: string, usage: string, apiNames: string[], imports?: string[], guidance?: { useWhen: string, avoidWhen: string, behavior: string, responsive: string }, anatomy?: Array<{ part: string, description: string }>, dosDonts?: { dos?: string[], donts?: string[] }, related?: string[], examples?: Array<{ title: string, description?: string, source?: string }> }} module
+ * @param {{ id: string, name: string, description: string, usage: string, apiNames: string[], imports?: string[], guidance?: { useWhen: string, avoidWhen: string, behavior: string, responsive: string }, anatomy?: Array<{ part: string, description: string }>, dosDonts?: { dos?: string[], donts?: string[] }, related?: string[], examples?: Array<{ title: string, description?: string, source?: string }>, accessibility?: { keyboard?: Array<{ keys: string[], action: string }>, notes?: string[] } }} module
  * @param {Array<{ displayName: string, props: Array<object> }>} apiEntries
  */
 export function moduleMarkdown(module, apiEntries) {
@@ -96,7 +95,7 @@ export function moduleMarkdown(module, apiEntries) {
     }
   }
 
-  const guide = accessibility[module.id]
+  const guide = module.accessibility
   if (guide) {
     lines.push('', '## Accessibility')
     if (guide.keyboard?.length) {

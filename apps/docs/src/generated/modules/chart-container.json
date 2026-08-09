@@ -1,0 +1,235 @@
+{
+  "id": "chart-container",
+  "name": "Chart Container",
+  "apiNames": [
+    "ChartContainer",
+    "ChartAxis",
+    "ChartGrid",
+    "ChartLegend"
+  ],
+  "description": "Accessible SVG frame for hand-rolled charts with an aria-label summary, a toggleable screen-reader data table, and reusable axis, grid, and legend primitives.",
+  "usage": "<ChartContainer\n  label=\"Visits per weekday\"\n  columns={[\n    { key: 'day', label: 'Day' },\n    { key: 'visits', label: 'Visits' },\n  ]}\n  data={rows}\n>\n  <ChartGrid positions={[40, 90, 140]} start={44} end={404} />\n  <ChartAxis orientation=\"x\" offset={190} start={44} end={404} ticks={ticks} />\n</ChartContainer>",
+  "anatomy": [
+    {
+      "part": "Labelled SVG",
+      "description": "The role=\"img\" frame named by the label prop, scaling with its viewBox."
+    },
+    {
+      "part": "Chart content",
+      "description": "Whatever SVG children you draw inside the frame."
+    },
+    {
+      "part": "Axis, grid, and legend primitives",
+      "description": "ChartAxis, ChartGrid, and ChartLegend, all aria-hidden so only the summary and table carry information."
+    },
+    {
+      "part": "Data table",
+      "description": "A visually hidden table built from columns and data, revealed by a toggle button exposing aria-expanded."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Write the label as the chart's takeaway, not just its type.",
+      "Always pass columns and data so screen-reader users get the exact values.",
+      "Reuse ChartAxis, ChartGrid, and ChartLegend so bespoke charts match the built-in ones."
+    ],
+    "donts": [
+      "Don't hand-roll a chart type the library already ships; use LineChart, AreaChart, BarChart, or PieChart.",
+      "Don't put unlabeled interactive elements inside the SVG."
+    ]
+  },
+  "related": [
+    "line-chart",
+    "area-chart",
+    "bar-chart"
+  ],
+  "examples": [
+    {
+      "title": "Custom chart content",
+      "description": "Any SVG markup can be drawn inside the frame; the container supplies the accessible summary and the hidden data table with its toggle."
+    },
+    {
+      "title": "Axis, grid, and legend primitives",
+      "description": "ChartAxis, ChartGrid, and ChartLegend compose inside the container so bespoke charts share the same ticks, gridlines, and swatches as the built-in charts."
+    }
+  ],
+  "guidance": {
+    "useWhen": "You are building a chart type the library does not ship, or you want full control over the SVG while keeping an accessible summary and data table.",
+    "avoidWhen": "A standard line, area, bar, or pie chart fits the data; use LineChart, AreaChart, BarChart, or PieChart, which wrap this container already.",
+    "behavior": "Renders the SVG with role=\"img\" and the label as its accessible name; the data table stays visually hidden for screen readers until the toggle reveals it, and its visibility can be controlled.",
+    "responsive": "The SVG scales down with max-width while keeping its viewBox proportions; the data table and legend wrap below the chart on narrow screens."
+  },
+  "accessibility": {
+    "notes": [
+      "The chart is exposed as a single labelled image; pass a label that summarizes the takeaway, not just the chart type.",
+      "Providing columns and data adds a visually hidden table so screen-reader users get the exact values; the toggle button exposes it visually with aria-expanded.",
+      "Decorative axis and grid primitives are aria-hidden; only the summary and the table carry information."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "ChartContainer",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Accessible chart summary, applied as the SVG aria-label.",
+          "name": "label",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Chart content rendered inside the SVG frame.",
+          "name": "children",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Rows shown in the hidden data table.",
+          "name": "data",
+          "required": false,
+          "type": "Record<string, string | number>[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Columns of the hidden data table; required together with `data` to enable the table.",
+          "name": "columns",
+          "required": false,
+          "type": "ChartDataColumn[]"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Initial visibility of the data table when uncontrolled.",
+          "name": "defaultShowDataTable",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "300",
+          "description": "SVG height in pixels.",
+          "name": "height",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Content rendered between the chart and the data-table toggle, typically a ChartLegend.",
+          "name": "legend",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the data table visibility changes.",
+          "name": "onShowDataTableChange",
+          "required": false,
+          "type": "(show: boolean) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled visibility of the data table.",
+          "name": "showDataTable",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "560",
+          "description": "SVG width in pixels.",
+          "name": "width",
+          "required": false,
+          "type": "number"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "ChartAxis",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "End coordinate of the axis line along its direction.",
+          "name": "end",
+          "required": true,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Cross-axis coordinate of the axis line (y for an x axis, x for a y axis).",
+          "name": "offset",
+          "required": true,
+          "type": "number"
+        },
+        {
+          "defaultValue": "horizontal",
+          "description": "Axis orientation.",
+          "name": "orientation",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Start coordinate of the axis line along its direction.",
+          "name": "start",
+          "required": true,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Ticks drawn along the axis.",
+          "name": "ticks",
+          "required": true,
+          "type": "ChartAxisTick[]"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "ChartGrid",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "End coordinate of each grid line along its direction.",
+          "name": "end",
+          "required": true,
+          "type": "number"
+        },
+        {
+          "defaultValue": "horizontal",
+          "description": "Line direction: horizontal lines (default) or vertical lines.",
+          "name": "orientation",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Coordinate of each grid line along the cross axis.",
+          "name": "positions",
+          "required": true,
+          "type": "number[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Start coordinate of each grid line along its direction.",
+          "name": "start",
+          "required": true,
+          "type": "number"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "ChartLegend",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Entries shown in the legend.",
+          "name": "items",
+          "required": true,
+          "type": "ChartLegendItem[]"
+        }
+      ]
+    }
+  ]
+}

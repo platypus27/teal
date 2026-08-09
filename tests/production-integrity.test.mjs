@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
+import { createRequire } from 'node:module'
 import test from 'node:test'
 import { parse } from 'yaml'
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8')
+const require = createRequire(import.meta.url)
 
 test('package lifecycle builds and validates a non-recursive dry-run pack', async () => {
   const packageJson = JSON.parse(await read('packages/teal/package.json'))
@@ -16,6 +18,7 @@ test('package lifecycle builds and validates a non-recursive dry-run pack', asyn
 test('locks the Node, npm, browser, Lighthouse, and audit toolchain', async () => {
   const rootPackage = JSON.parse(await read('package.json'))
   const docsPackage = JSON.parse(await read('apps/docs/package.json'))
+  const lock = JSON.parse(await read('package-lock.json'))
   assert.equal((await read('.nvmrc')).trim(), '24.19.0')
   assert.equal((await read('.node-version')).trim(), '24.19.0')
   assert.equal(rootPackage.packageManager, 'npm@11.19.0')
@@ -23,6 +26,7 @@ test('locks the Node, npm, browser, Lighthouse, and audit toolchain', async () =
   assert.equal(rootPackage.scripts['audit:dependencies'], 'npm audit --audit-level=high')
   assert.equal(docsPackage.scripts['install:browser'], 'playwright install')
   assert.equal(docsPackage.scripts.lighthouse, 'lhci autorun --config=../../lighthouserc.cjs')
+  assert.equal(lock.packages['node_modules/nanoid'].version, '3.3.18')
   assert.doesNotMatch(await read('.github/workflows/pipeline.yml'), /\bnpx\s/)
   assert.doesNotMatch(await read('packages/teal/scripts/verify-package.mjs'), /npm['"], \['exec'/)
 })
@@ -43,36 +47,68 @@ test('browser gates surface flakes instead of retrying them away', async () => {
   assert.doesNotMatch(config, /process\.env\.CI\s*\?\s*[1-9]/)
 })
 
+test('Lighthouse makes layout stability a release-blocking web vital', () => {
+  const config = require('../lighthouserc.cjs')
+  assert.deepEqual(config.ci.assert.assertions['categories:performance'], [
+    'error',
+    { minScore: 0.9 },
+  ])
+  assert.deepEqual(config.ci.assert.assertions['cumulative-layout-shift'], [
+    'error',
+    { maxNumericValue: 0.1 },
+  ])
+})
+
 test('all workflow actions are approved immutable SHAs and every job is bounded', async () => {
-  const workflow = parse(await read('.github/workflows/pipeline.yml'))
+  const workflows = [
+    parse(await read('.github/workflows/pipeline.yml')),
+    parse(await read('.github/workflows/protected-release.yml')),
+  ]
   const approvedActions = new Set([
+    'actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6',
     'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1',
+    'actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093',
     'actions/setup-node@820762786026740c76f36085b0efc47a31fe5020',
+    'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02',
     'changesets/action@3841a0683d3cfa6dae0f9bb335290003010fe3f0',
-    'docker/login-action@dbcb813823bdd20940b903addbd779551569679f',
     'docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a',
   ])
-  for (const [name, job] of Object.entries(workflow.jobs)) {
-    assert.equal(job['runs-on'], 'ubuntu-24.04', `${name} runner must be pinned`)
-    assert.ok(Number.isInteger(job['timeout-minutes']), `${name} needs timeout-minutes`)
-    for (const step of job.steps ?? []) {
-      if (!step.uses) continue
-      assert.match(step.uses, /^[^@]+@[0-9a-f]{40}$/)
-      assert.ok(approvedActions.has(step.uses), `${name} uses unapproved action ${step.uses}`)
-      if (step.uses.startsWith('actions/checkout@')) {
-        assert.equal(step.with?.['persist-credentials'], false, `${name} checkout must not persist credentials`)
+  for (const workflow of workflows) {
+    for (const [name, job] of Object.entries(workflow.jobs)) {
+      if (name === 'docs_deploy') {
+        assert.deepEqual(job['runs-on'], ['self-hosted', 'linux', 'teal-production'])
+      } else {
+        assert.equal(job['runs-on'], 'ubuntu-24.04', `${name} runner must be pinned`)
+      }
+      assert.ok(Number.isInteger(job['timeout-minutes']), `${name} needs timeout-minutes`)
+      for (const step of job.steps ?? []) {
+        if (!step.uses) continue
+        assert.match(step.uses, /^[^@]+@[0-9a-f]{40}$/)
+        assert.ok(approvedActions.has(step.uses), `${name} uses unapproved action ${step.uses}`)
+        if (step.uses.startsWith('actions/checkout@')) {
+          assert.equal(step.with?.['persist-credentials'], false, `${name} checkout must not persist credentials`)
+        }
       }
     }
   }
 })
 
-test('trusted release planning, versioning, and publishing are separate least-privilege jobs', async () => {
-  const workflow = parse(await read('.github/workflows/pipeline.yml'))
-  const { release_plan: plan, release_version: version, release_publish: publish } = workflow.jobs
+test('planning, versioning, candidate creation, and protected mutation are separate least-privilege jobs', async () => {
+  const pipeline = parse(await read('.github/workflows/pipeline.yml'))
+  const protectedRelease = parse(await read('.github/workflows/protected-release.yml'))
+  const { release_candidate: candidate, release_plan: plan, release_version: version } = pipeline.jobs
+  const publish = protectedRelease.jobs.npm_publish
+  assert.equal(pipeline.on.workflow_dispatch, null)
+  assert.deepEqual(protectedRelease.permissions, {})
   assert.deepEqual(plan.permissions, { contents: 'read' })
   assert.ok(plan.needs.includes('production_image'))
   assert.equal(plan.outputs.mode, '${{ steps.plan.outputs.mode }}')
+  assert.ok(plan.steps.some((step) => step.run === 'npm run create:release-package'))
+  assert.ok(plan.steps.some((step) => /npm run (?:--silent )?plan:release/.test(step.run ?? '')))
   assert.deepEqual(version.permissions, { contents: 'write', 'pull-requests': 'write' })
+  assert.match(version.if, /github\.repository == 'platypus27\/teal'/)
+  assert.match(version.if, /github\.ref == 'refs\/heads\/master'/)
+  assert.match(version.if, /github\.ref_protected == true/)
   assert.equal(version.permissions['id-token'], undefined)
   assert.equal(version.concurrency['cancel-in-progress'], false)
   const versionAction = version.steps.find((step) => String(step.uses).startsWith('changesets/action@'))
@@ -80,15 +116,50 @@ test('trusted release planning, versioning, and publishing are separate least-pr
   assert.equal(versionAction.with.createGithubReleases, false)
   assert.equal(versionAction.with.publish, undefined)
 
-  assert.deepEqual(publish.permissions, { contents: 'write', 'id-token': 'write' })
+  assert.deepEqual(candidate.needs, ['quality', 'browser', 'lighthouse', 'production_image'])
+  assert.deepEqual(candidate.permissions, {
+    attestations: 'write',
+    'artifact-metadata': 'write',
+    contents: 'read',
+    'id-token': 'write',
+  })
+  assert.match(candidate.if, /github\.repository == 'platypus27\/teal'/)
+  assert.match(candidate.if, /github\.ref_protected == true/)
+  assert.equal(candidate.environment, undefined)
+  assert.ok(candidate.steps.some((step) => step.run === 'npm run verify:release-package'))
+  assert.ok(candidate.steps.some((step) => (
+    step.run === 'npm run install:browser --workspace @kryv/teal-docs -- chromium'
+  )))
+  assert.ok(candidate.steps.every((step) => step.run !== 'npm run create:release-package'))
+
+  assert.deepEqual(publish.permissions, {
+    actions: 'read',
+    attestations: 'read',
+    contents: 'write',
+    'id-token': 'write',
+  })
   assert.equal(publish.permissions['pull-requests'], undefined)
-  assert.equal(publish.concurrency['cancel-in-progress'], false)
-  const verifyIndex = publish.steps.findIndex((step) => step.name === 'Verify retained npm artifact')
-  const publishIndex = publish.steps.findIndex((step) => String(step.uses).startsWith('changesets/action@'))
-  assert.equal(verifyIndex, publishIndex - 1)
-  assert.match(publish.steps[verifyIndex].run, /npm run verify:release-package/)
-  assert.equal(publish.steps[publishIndex].with.publish, 'npm run publish:package')
-  assert.equal(publish.steps[publishIndex].with.createGithubReleases, true)
+  assert.equal(publish.environment, 'teal-release')
+  assert.match(publish.if, /npm-publish/)
+  assert.match(publish.if, /github\.repository == 'platypus27\/teal'/)
+  assert.match(publish.if, /github\.ref_protected == true/)
+  const verifyIndex = publish.steps.findIndex((step) => step.name === 'Verify protected candidate provenance and closure')
+  const approvalIndex = publish.steps.findIndex((step) => step.name === 'Verify and durably consume exact owner approval')
+  const publishIndex = publish.steps.findIndex((step) => /publish-candidate-package\.mjs/.test(step.run ?? ''))
+  const reconcileIndex = publish.steps.findIndex((step) => /reconcile-candidate-release\.mjs/.test(step.run ?? ''))
+  assert.ok(verifyIndex >= 0 && verifyIndex < approvalIndex && approvalIndex < publishIndex && publishIndex < reconcileIndex)
+  assert.match(publish.steps[verifyIndex].run, /gh attestation verify/)
+  assert.match(publish.steps[verifyIndex].run, /teal_release_candidate\.mjs/)
+  assert.match(publish.steps[approvalIndex].run, /verify-owner-approval\.mjs/)
+  assert.match(publish.steps[approvalIndex].run, /--operation npm-publish/)
+  assert.match(publish.steps[approvalIndex].run, /--repository "\$GITHUB_REPOSITORY"/)
+  assert.match(publish.steps[approvalIndex].run, /--environment teal-release/)
+  assert.match(publish.steps[approvalIndex].run, /--workflow platypus27\/teal\/\.github\/workflows\/protected-release\.yml/)
+  assert.match(publish.steps[approvalIndex].run, /refs\/tags\/kryv-approval\/npm-publish\/\$\{CANDIDATE_SHA256#sha256:\}\/\$\{APPROVAL_DIGEST#sha256:\}/)
+  assert.match(publish.steps[approvalIndex].run, /test "\$GITHUB_SHA" = "\$SOURCE_REVISION"/)
+  assert.match(publish.steps[publishIndex].run, /--recovery-only/)
+  assert.ok(publish.steps.every((step) => !String(step.uses).startsWith('changesets/action@')))
+  assert.ok(publish.steps.every((step) => !String(step.uses).startsWith('actions/checkout@')))
 })
 
 test('docs and Authentik images use exact identities and an unprivileged runtime', async () => {
@@ -130,42 +201,203 @@ test('production image verification scans and smokes one isolated exact candidat
   const build = imageJob.steps.find((step) => String(step.uses).startsWith('docker/build-push-action@'))
   assert.equal(build.with.load, true)
   assert.equal(build.with.push, false)
-  assert.ok(imageJob.steps.some((step) => /npm run verify:docs-image/.test(step.run ?? '')))
+  assert.match(build.with.labels, /org\.opencontainers\.image\.revision=\$\{\{ github\.sha \}\}/)
+  assert.match(build.with.labels, /org\.opencontainers\.image\.source=\$\{\{ github\.server_url \}\}\/\$\{\{ github\.repository \}\}/)
+  assert.ok(imageJob.steps.some((step) => /npm run verify:docs-image -- --image .* --revision "\$\{GITHUB_SHA\}" --source "\$\{GITHUB_SERVER_URL\}\/\$\{GITHUB_REPOSITORY\}"/.test(step.run ?? '')))
   assert.ok(workflow.jobs.release_plan.needs.includes('production_image'))
-  assert.ok(workflow.jobs.documentation.needs.includes('production_image'))
+  assert.ok(workflow.jobs.release_candidate.needs.includes('production_image'))
 
   const verifier = await read('scripts/verify-docs-image.mjs')
+  const candidateEvidence = await read('scripts/teal_release_candidate.mjs')
+  const verifierClosure = `${verifier}\n${candidateEvidence}`
   for (const required of [
     'docker', 'save', '--output', '--read-only', '--cap-drop', 'ALL',
     'no-new-privileges:true', '--no-build', 'config', '--format', 'json',
     '127.0.0.1', "'port'", '.Image',
+    'org.opencontainers.image.revision', 'org.opencontainers.image.source',
+    'verifyDockerArchiveImageId',
+    'archiveSha256', 'sourceCommit', '--descriptor', '--repository',
+    'docs-image.tar', 'docs-image.sbom.cdx.json',
+    'docs-image.vulnerability.json', 'docs-image.secret.json',
+    'org.kryv.teal.image-id', 'org.kryv.teal.archive-sha256',
+    'scanType', 'reportSha256',
   ]) {
-    assert.ok(verifier.includes(required), `image verifier must contain ${required}`)
+    assert.ok(verifierClosure.includes(required), `image verifier must contain ${required}`)
   }
   assert.match(verifier, /teal-integrity-/)
+  assert.match(verifier, /\['save', '--output', archivePath, localImageId\]/)
+  assert.match(verifier, /docs\.image = localImageId/)
+  assert.doesNotMatch(verifier, /--ignore-unfixed/)
   assert.match(verifier, /delete generatedConfig\.name/)
   assert.match(verifier, /delete network\.name/)
   assert.match(verifier, /aquasec\/trivy:0\.73\.0@sha256:7cced7cae583819fc7806d4cbc0dbbc7cad18b99f7d3e235192e6da8c091045c/)
+  assert.match(verifier, /--user/)
+  assert.match(verifier, /trivy-evidence/)
+  assert.doesNotMatch(verifier, /trivyRunArgs\([\s\S]{0,200}temporaryDirectory/)
   assert.doesNotMatch(verifier, /\/var\/run\/docker\.sock|teal-docs-1/)
 })
 
-test('documentation deployment pushes the scanned tag and rolls out only immutable digests', async () => {
-  const workflow = parse(await read('.github/workflows/pipeline.yml'))
-  const steps = workflow.jobs.documentation.steps
-  const buildIndex = steps.findIndex((step) => String(step.uses).startsWith('docker/build-push-action@'))
-  const verifyIndex = steps.findIndex((step) => /npm run verify:docs-image/.test(step.run ?? ''))
-  const loginIndex = steps.findIndex((step) => String(step.uses).startsWith('docker/login-action@'))
-  const pushIndex = steps.findIndex((step) => /docker push/.test(step.run ?? ''))
-  assert.ok(buildIndex >= 0 && buildIndex < verifyIndex && verifyIndex < loginIndex && loginIndex < pushIndex)
-  assert.equal(steps[buildIndex].with.load, true)
-  assert.equal(steps[buildIndex].with.push, false)
-  const deploy = steps.find((step) => step.name === 'Deploy immutable image with verified rollback')
-  assert.ok(deploy)
+test('fixed production controller repeats archive scan and hardened smoke before registry push', async () => {
+  const controller = await read('scripts/kryv_teal_production_controller.mjs')
+  assert.match(controller, /aquasec\/trivy:0\.73\.0@sha256:7cced7cae583819fc7806d4cbc0dbbc7cad18b99f7d3e235192e6da8c091045c/)
+  assert.match(controller, /async verifyCandidate\(\{ archivePath, imageId \}\)/)
+  assert.match(controller, /--scanners[\s\S]{0,120}vuln/)
+  assert.match(controller, /--scanners[\s\S]{0,120}secret/)
+  assert.match(controller, /--read-only/)
+  assert.match(controller, /no-new-privileges:true/)
+  assert.match(controller, /--cap-drop[\s\S]{0,30}ALL/)
+  assert.match(controller, /await adapter\.verifyCandidate\([\s\S]{0,500}await authorizeAndConsumeOwnerApproval/)
+  assert.match(controller, /await adapter\.verifyCandidate\([\s\S]{0,1200}await adapter\.publishImage/)
+})
+
+test('documentation mutation uses one fixed controller for push, rollout, observation, and rollback', async () => {
+  const workflow = parse(await read('.github/workflows/protected-release.yml'))
+  const documentation = workflow.jobs.docs_deploy
+  const steps = documentation.steps
+  assert.equal(documentation.environment, 'teal-production')
+  assert.deepEqual(documentation['runs-on'], ['self-hosted', 'linux', 'teal-production'])
+  assert.deepEqual(documentation.permissions, {
+    actions: 'read',
+    attestations: 'read',
+    contents: 'read',
+    packages: 'write',
+  })
+  assert.match(documentation.if, /docs-deploy/)
+  assert.match(documentation.if, /github\.repository == 'platypus27\/teal'/)
+  assert.match(documentation.if, /github\.ref_protected == true/)
+  const verifyIndex = steps.findIndex((step) => step.name === 'Verify protected candidate attestation')
+  const delegateIndex = steps.findIndex((step) => step.name === 'Delegate exact candidate to fixed production controller')
+  assert.ok(verifyIndex >= 0 && verifyIndex < delegateIndex)
+  assert.match(steps[verifyIndex].run, /gh attestation verify/)
+  assert.match(steps[verifyIndex].run, /--deny-self-hosted-runners/)
+  assert.match(steps[delegateIndex].run, /\/usr\/local\/libexec\/kryv-teal-production-controller deploy/)
+  assert.match(steps[delegateIndex].run, /--candidate-sha256 "\$CANDIDATE_SHA256"/)
+  assert.match(steps[delegateIndex].run, /--approval-digest "\$APPROVAL_DIGEST"/)
+  const workflowSource = JSON.stringify(documentation)
+  assert.doesNotMatch(workflowSource, /docker (?:build|push|pull|compose)|ssh |scp |node scripts\//)
+
+  const controller = await read('scripts/kryv_teal_production_controller.mjs')
   for (const required of [
-    'IMAGE_DIGEST', 'previous_digest', '@sha256:', 'TEAL_DOCS_IMAGE',
-    'docker compose up -d --no-build docs', '.Config.Image', '.Image', 'rollback',
+    "['load', '--input'",
+    "['push', tag]",
+    "'up', '-d', '--no-build', '--wait', 'docs'",
+    'previousCandidateSha256',
+    'rollbackStatus',
+    'observeProductionRelease',
+    'current-release.json',
+    'observation.json',
+    '--retry-all-errors',
+    '--retry-connrefused',
   ]) {
-    assert.ok(deploy.run.includes(required), `deployment must contain ${required}`)
+    assert.ok(controller.includes(required), `fixed controller must contain ${required}`)
   }
-  assert.doesNotMatch(deploy.run, /docker compose (?:build|up -d docs)/)
+})
+
+test('local production instructions include all immutable image provenance inputs', async () => {
+  const readme = await read('README.md')
+  assert.match(readme, /--revision "\$\(git rev-parse HEAD\)"/)
+  assert.match(readme, /--source https:\/\/github\.com\/platypus27\/teal/)
+})
+
+test('direct docs routes use generated records, specialized entries, and bounded initial bundles', async () => {
+  const docsPackage = JSON.parse(await read('apps/docs/package.json'))
+  assert.match(docsPackage.scripts.generate, /generate:module-index/)
+  assert.match(docsPackage.scripts['check:generated'], /generate:module-index -- --check/)
+  assert.match(docsPackage.scripts.build, /check:bundle/)
+  const registry = await read('apps/docs/src/data/docs-module-registry.js')
+  assert.match(registry, /generated\/module-index\.json/)
+  assert.doesNotMatch(registry, /module-meta/)
+  const catalog = await read('apps/docs/src/data/catalog.jsx')
+  assert.match(catalog, /import\.meta\.glob\('\.\.\/generated\/modules\/\*\.json'/)
+  assert.doesNotMatch(catalog, /from ['"]\.\/module-meta\.js['"]/)
+  const budget = await read('apps/docs/scripts/check-bundle.mjs')
+  assert.match(budget, /module-meta/)
+  assert.match(budget, /160 \* 1024/)
+  assert.match(budget, /\['index\.html', 'module\.html', 'recipes\.html'\]/)
+
+  assert.doesNotMatch(await read('apps/docs/src/bootstrap.jsx'), /react-router/)
+  for (const entry of ['main-module.jsx', 'main-recipes.jsx']) {
+    const source = await read(`apps/docs/src/${entry}`)
+    assert.doesNotMatch(source, /App\.jsx|react-router/)
+    assert.match(source, /<Layout>/)
+  }
+
+  const vite = await read('apps/docs/vite.config.js')
+  assert.match(vite, /module:\s*resolve\(import\.meta\.dirname, 'module\.html'\)/)
+  assert.match(vite, /recipes:\s*resolve\(import\.meta\.dirname, 'recipes\.html'\)/)
+  const nginx = await read('apps/docs/nginx.conf')
+  assert.match(nginx, /location ~ \^\/modules\//)
+  assert.match(nginx, /try_files \/module\.html =404;/)
+  assert.match(nginx, /try_files \/recipes\.html =404;/)
+})
+
+test('public documentation matches the current catalog and fail-closed protected release contract', async () => {
+  const readme = await read('README.md')
+  const packageReadme = await read('packages/teal/README.md')
+  const security = await read('SECURITY.md')
+  for (const document of [readme, packageReadme]) {
+    assert.match(document, /200 documented module pages across nine groups/)
+    assert.doesNotMatch(document, /Twenty-six documented module pages/)
+  }
+  assert.match(security, /\| 0\.5\.x\s+\| :white_check_mark: \|/)
+  assert.doesNotMatch(security, /\| 0\.2\.x\s+\| :white_check_mark: \|/)
+  assert.match(await read('apps/docs/src/pages/HomeContent.jsx'), /200 typed modules across nine groups/)
+  for (const required of [
+    'teal-release',
+    'teal-production',
+    '.github/workflows/protected-release.yml',
+    'infra/release-owner-approval.json',
+    'sha256:5bbbce350b985715b402c4af0b8ff88c8a50e25243f848aa4076509bb652403c',
+    'source_run_id',
+    'source_run_attempt',
+    'source_revision',
+    'candidate_sha256',
+    'approval_manifest_base64',
+    'approval_digest',
+    'approval_signature',
+    'TEAL_OWNER_APPROVAL_PUBLIC_KEY',
+    '/usr/local/libexec/kryv-teal-production-controller',
+    '/usr/local/share/kryv-teal-production/current',
+  ]) {
+    assert.ok(readme.includes(required), `release documentation must contain ${required}`)
+  }
+  const trustAnchor = JSON.parse(await read('infra/release-owner-approval.json'))
+  assert.deepEqual(trustAnchor, {
+    schemaVersion: 2,
+    algorithm: 'Ed25519',
+    owner: 'kryv-owner',
+    publicKeyFingerprint: 'sha256:5bbbce350b985715b402c4af0b8ff88c8a50e25243f848aa4076509bb652403c',
+    repository: 'platypus27/teal',
+    workflow: 'platypus27/teal/.github/workflows/protected-release.yml',
+    ref: 'refs/heads/master',
+    operationEnvironments: {
+      'npm-publish': 'teal-release',
+      'docs-deploy': 'teal-production',
+    },
+  })
+  assert.equal(
+    trustAnchor.publicKeyFingerprint,
+    'sha256:5bbbce350b985715b402c4af0b8ff88c8a50e25243f848aa4076509bb652403c',
+  )
+  for (const required of [
+    '"schemaVersion": 3',
+    '"decision": "approve"',
+    '"owner": "kryv-owner"',
+    '"mutations": [',
+    '"npm-publish-if-absent"',
+    '"github-tag-reconcile"',
+    '"github-release-reconcile"',
+    '"nonce":',
+    '"repository": "platypus27/teal"',
+    '"environment": "teal-release"',
+    '"workflow": "platypus27/teal/.github/workflows/protected-release.yml"',
+    '"ref": "refs/heads/master"',
+    '"sourceRunId":',
+    '"sourceRunAttempt":',
+    '"candidateSha256":',
+    'no more than 15 minutes',
+  ]) {
+    assert.ok(readme.includes(required), `release documentation must contain ${required}`)
+  }
+  assert.match(readme, /No\s+new\s+publish,\s+push,\s+or\s+deployment\s+is\s+authorized/)
 })

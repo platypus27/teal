@@ -1,39 +1,29 @@
-import { ExampleBlock } from '../components/ExampleBlock.jsx'
-import { Page, Section } from '../components/Page.jsx'
-import { recipes, promotionRule } from '../data/recipes.js'
-import { ReviewQueueRecipe } from '../demos/recipe-review-queue.jsx'
-import reviewQueueSource from '../demos/recipe-review-queue.jsx?raw'
-import { SettingsRecipe } from '../demos/recipe-settings.jsx'
-import settingsSource from '../demos/recipe-settings.jsx?raw'
-import { FilterToolbarRecipe } from '../demos/recipe-filter-toolbar.jsx'
-import filterToolbarSource from '../demos/recipe-filter-toolbar.jsx?raw'
-import { ConfirmationFlowRecipe } from '../demos/recipe-confirmation-flow.jsx'
-import confirmationFlowSource from '../demos/recipe-confirmation-flow.jsx?raw'
-import { EmptyTableRecipe } from '../demos/recipe-empty-table.jsx'
-import emptyTableSource from '../demos/recipe-empty-table.jsx?raw'
-import { ResponsiveShellRecipe } from '../demos/recipe-responsive-shell.jsx'
-import responsiveShellSource from '../demos/recipe-responsive-shell.jsx?raw'
-import { DisclosedSearchRecipe } from '../demos/recipe-disclosed-search.jsx'
-import disclosedSearchSource from '../demos/recipe-disclosed-search.jsx?raw'
-import { recipesMarkdown } from '../lib/markdown.js'
+import { lazy, Suspense, useEffect, useState } from 'react'
+import { Page } from '../components/Page.jsx'
 
-const recipeContent = {
-  settings: { Recipe: SettingsRecipe, source: settingsSource },
-  'review-queue': { Recipe: ReviewQueueRecipe, source: reviewQueueSource },
-  'filter-toolbar': { Recipe: FilterToolbarRecipe, source: filterToolbarSource },
-  'confirmation-flow': { Recipe: ConfirmationFlowRecipe, source: confirmationFlowSource },
-  'empty-table': { Recipe: EmptyTableRecipe, source: emptyTableSource },
-  'responsive-shell': { Recipe: ResponsiveShellRecipe, source: responsiveShellSource },
-  'disclosed-search': { Recipe: DisclosedSearchRecipe, source: disclosedSearchSource },
-}
+const RecipesContent = lazy(() =>
+  import('./RecipesContent.jsx').then((module) => ({ default: module.RecipesContent })),
+)
 
 export function RecipesPage() {
-  const markdown = recipesMarkdown(
-    recipes.map((recipe) => ({
-      title: recipe.title,
-      description: recipe.description,
-      source: recipeContent[recipe.id].source,
-    })),
+  const [markdown, setMarkdown] = useState(null)
+  const [contentReady, setContentReady] = useState(false)
+
+  useEffect(() => {
+    let secondFrame = null
+    const firstFrame = requestAnimationFrame(() => {
+      secondFrame = requestAnimationFrame(() => setContentReady(true))
+    })
+    return () => {
+      cancelAnimationFrame(firstFrame)
+      if (secondFrame !== null) cancelAnimationFrame(secondFrame)
+    }
+  }, [])
+
+  const loading = (
+    <div role="status" className="rounded-2xl border border-teal-outline-variant/30 bg-teal-surface-container p-6 text-sm text-teal-on-surface-variant">
+      Loading recipes...
+    </div>
   )
 
   return (
@@ -42,22 +32,13 @@ export function RecipesPage() {
       eyebrow="Patterns"
       description="Recipes demonstrate product composition without expanding the supported package interface prematurely."
       markdown={markdown}
+      pagination={Boolean(markdown)}
     >
-      {recipes.map((recipe) => {
-        const { Recipe, source } = recipeContent[recipe.id]
-        return (
-          <Section key={recipe.id} title={recipe.title} description={recipe.description}>
-            <ExampleBlock source={source}>
-              <Recipe />
-            </ExampleBlock>
-          </Section>
-        )
-      })}
-      <Section title="Promotion rule">
-        <p className="max-w-3xl rounded-2xl border border-teal-outline-variant/30 bg-teal-surface-container p-5 text-sm leading-relaxed text-teal-on-surface-variant">
-          {promotionRule}
-        </p>
-      </Section>
+      {contentReady ? (
+        <Suspense fallback={loading}>
+          <RecipesContent onMarkdown={setMarkdown} />
+        </Suspense>
+      ) : loading}
     </Page>
   )
 }

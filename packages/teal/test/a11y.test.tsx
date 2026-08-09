@@ -243,7 +243,6 @@ import {
   VisuallyHidden,
   YearPicker,
   type SearchOverlayRenderState,
-  dismissToast,
   toast,
 } from '../src/index'
 
@@ -588,14 +587,16 @@ describe('axe: overlays and feedback', () => {
   })
 
   it('toasts have no violations', async () => {
+    const user = userEvent.setup()
     const { baseElement } = render(<Toaster />)
-    let id = ''
     act(() => {
-      id = toast({ title: 'Changes saved', description: 'Draft updated', variant: 'success', duration: Infinity })
+      toast({ title: 'Changes saved', description: 'Draft updated', variant: 'success', duration: Infinity })
     })
     await screen.findByText('Changes saved')
-    expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
-    act(() => dismissToast(id))
+    const results = await act(async () => axe(baseElement, axeOptions))
+    expect(results).toHaveNoViolations()
+    await user.click(screen.getByRole('button', { name: 'Dismiss notification' }))
+    expect(screen.queryByText('Changes saved')).not.toBeInTheDocument()
   })
 })
 

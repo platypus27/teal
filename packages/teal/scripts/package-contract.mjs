@@ -69,6 +69,9 @@ export function assertPackedFiles({ packageJson, packedFiles, builtDistFiles = [
   if (missing.length > 0) {
     throw new Error(`Missing declared package files: ${missing.join(', ')}`)
   }
+  if (builtDistFiles.length === 0) {
+    throw new Error('Package build produced no dist files')
+  }
   const missingBuilt = builtDistFiles.filter((file) => !packed.has(file))
   if (missingBuilt.length > 0) {
     throw new Error(`Missing built dist files: ${missingBuilt.join(', ')}`)

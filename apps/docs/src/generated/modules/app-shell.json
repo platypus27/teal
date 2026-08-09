@@ -1,0 +1,105 @@
+{
+  "id": "app-shell",
+  "name": "AppShell",
+  "apiNames": [
+    "AppShell",
+    "AppShellHeader",
+    "AppShellSidebar",
+    "AppShellMain",
+    "AppShellFooter"
+  ],
+  "description": "An application frame that places header, sidebar, main and footer regions into named grid areas.",
+  "usage": "<AppShell>\n  <AppShellHeader>…</AppShellHeader>\n  <AppShellSidebar>…</AppShellSidebar>\n  <AppShellMain>…</AppShellMain>\n  <AppShellFooter>…</AppShellFooter>\n</AppShell>",
+  "anatomy": [
+    {
+      "part": "Header",
+      "description": "The banner landmark spanning the top of the frame; holds global actions and identity."
+    },
+    {
+      "part": "Sidebar",
+      "description": "The complementary navigation region beside main; optional."
+    },
+    {
+      "part": "Main",
+      "description": "The primary content landmark; keep exactly one per page."
+    },
+    {
+      "part": "Footer",
+      "description": "The contentinfo landmark at the bottom of the frame; optional."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Keep exactly one AppShellMain and put the primary content inside it.",
+      "Hide or restyle the sidebar at small breakpoints with responsive classes such as hidden md:block.",
+      "Put global navigation in the sidebar and page-level actions in the header."
+    ],
+    "donts": [
+      "Don't use AppShell for marketing or content pages; compose Container and Section instead.",
+      "Don't nest a second AppShell inside the main region.",
+      "Don't let scrollable page content live outside the main area."
+    ]
+  },
+  "related": [
+    "sidebar",
+    "sticky-header",
+    "container"
+  ],
+  "examples": [
+    {
+      "title": "Full application frame",
+      "description": "All four regions compose into a full-height console layout with hairline separators."
+    },
+    {
+      "title": "Header and main only",
+      "description": "Regions are optional; without a sidebar the main area spans the full width."
+    }
+  ],
+  "guidance": {
+    "useWhen": "An app or admin console needs a persistent frame with landmark regions that stay consistent across views.",
+    "avoidWhen": "You are building a marketing or content page; Container and Section express that structure more directly.",
+    "behavior": "AppShell is a plain grid with named areas; regions are independent slots, so any subset renders correctly and each region fills its area.",
+    "responsive": "The shell itself does not collapse; hide or restyle the sidebar at small breakpoints through className (for example hidden md:block)."
+  },
+  "accessibility": {
+    "notes": [
+      "Regions render semantic landmarks (header, aside, main, footer) so assistive technology can jump between them.",
+      "Keep exactly one AppShellMain on the page and put the primary content inside it."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "AppShell",
+      "props": []
+    },
+    {
+      "description": "",
+      "displayName": "AppShellHeader",
+      "props": []
+    },
+    {
+      "description": "",
+      "displayName": "AppShellSidebar",
+      "props": [
+        {
+          "defaultValue": "256",
+          "description": "Width of the sidebar column (e.g. 240 or '16rem').",
+          "name": "width",
+          "required": false,
+          "type": "string | number"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "AppShellMain",
+      "props": []
+    },
+    {
+      "description": "",
+      "displayName": "AppShellFooter",
+      "props": []
+    }
+  ]
+}

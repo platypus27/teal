@@ -1,0 +1,157 @@
+{
+  "id": "range-slider",
+  "name": "Range Slider",
+  "apiNames": [
+    "RangeSlider"
+  ],
+  "description": "A dual-thumb slider for choosing a low/high pair, with per-thumb labels and an optional value readout.",
+  "usage": "<RangeSlider\n  label=\"Price range\"\n  defaultValue={[20, 80]}\n  onChange={([low, high]) => console.log(low, high)}\n  showValue\n/>",
+  "anatomy": [
+    {
+      "part": "Label and readout",
+      "description": "The group label plus an optional text mirror of the current low/high pair."
+    },
+    {
+      "part": "Track",
+      "description": "The full-scale rail both thumbs travel on."
+    },
+    {
+      "part": "Thumbs",
+      "description": "Two keyboard-operable thumbs, each with its own accessible name from thumbLabels."
+    },
+    {
+      "part": "Range fill",
+      "description": "The highlighted segment between the thumbs, which never cross by at least one step."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Label both ends with thumbLabels, such as Minimum price and Maximum price.",
+      "Show the current pair as text with showValue, since thumb position alone is imprecise.",
+      "Choose min, max, and step so the useful values land on stops."
+    ],
+    "donts": [
+      "Don't use it for a single value; use Slider.",
+      "Don't use it when exact numbers matter; pair two NumberInputs instead."
+    ]
+  },
+  "related": [
+    "slider",
+    "number-input",
+    "currency-input"
+  ],
+  "examples": [
+    {
+      "title": "Basic range",
+      "description": "Two thumbs share one track and stay at least one step apart; showValue mirrors the current pair above the track."
+    },
+    {
+      "title": "Custom domain and thumb labels",
+      "description": "min, max, and step adapt the scale, and thumbLabels give each end a meaningful accessible name."
+    }
+  ],
+  "guidance": {
+    "useWhen": "The user filters or configures a bounded interval, such as price, date offsets, or team size.",
+    "avoidWhen": "Only one value is needed; use Slider. For precise numeric entry, pair two NumberInputs instead.",
+    "behavior": "Emits the [low, high] tuple on every thumb move and guarantees the thumbs never cross, keeping minStepsBetweenThumbs steps between them.",
+    "responsive": "The track stretches to fill its container; thumbs remain keyboard-operable at any width."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Arrow Left",
+          "Arrow Down"
+        ],
+        "action": "Decrements the focused thumb by one step."
+      },
+      {
+        "keys": [
+          "Arrow Right",
+          "Arrow Up"
+        ],
+        "action": "Increments the focused thumb by one step."
+      },
+      {
+        "keys": [
+          "Home"
+        ],
+        "action": "Moves the focused thumb to the minimum."
+      },
+      {
+        "keys": [
+          "End"
+        ],
+        "action": "Moves the focused thumb to the maximum."
+      }
+    ],
+    "notes": [
+      "Each thumb is a separate slider with its own accessible name from thumbLabels.",
+      "Thumbs expose aria-valuemin, aria-valuemax, and aria-valuenow reflecting the current pair."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "RangeSlider",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Initial low/high pair when uncontrolled.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "RangeSliderValue"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered below the slider and linked to it for assistive technology.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label rendered above the slider.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the new low/high pair when either thumb moves.",
+          "name": "onChange",
+          "required": false,
+          "type": "(value: RangeSliderValue) => void"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Renders the current range right-aligned above the track.",
+          "name": "showValue",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "['Minimum value', 'Maximum value']",
+          "description": "Accessible names for the low and high thumbs.",
+          "name": "thumbLabels",
+          "required": false,
+          "type": "[string, string]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled low/high pair.",
+          "name": "value",
+          "required": false,
+          "type": "RangeSliderValue"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "asChild",
+          "required": false,
+          "type": "boolean"
+        }
+      ]
+    }
+  ]
+}

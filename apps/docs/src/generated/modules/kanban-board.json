@@ -1,0 +1,146 @@
+{
+  "id": "kanban-board",
+  "name": "Kanban Board",
+  "apiNames": [
+    "KanbanBoard"
+  ],
+  "description": "A column-based board where cards move between workflow stages with full keyboard support.",
+  "usage": "<KanbanBoard\n  label=\"Sprint board\"\n  defaultColumns={[\n    { id: 'todo', title: 'To do', cards: [{ id: 'a', title: 'Design tokens' }] },\n    { id: 'done', title: 'Done', cards: [] },\n  ]}\n  onColumnsChange={(columns) => undefined}\n/>",
+  "anatomy": [
+    {
+      "part": "Column",
+      "description": "Fixed-width section named by its heading, with a live card count beside the title."
+    },
+    {
+      "part": "Card",
+      "description": "Button with a title and optional description; a single tab stop roves across all cards."
+    },
+    {
+      "part": "Grab state",
+      "description": "A grabbed card gets a primary border and shadow plus aria-pressed while it moves."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use onColumnsChange to persist moves; uncontrolled state resets on remount.",
+      "Keep it to three to five columns; each column holds a fixed 16rem width.",
+      "Announce the outcome of a move yourself (for example a toast) if it matters beyond the board."
+    ],
+    "donts": [
+      "Don't reach for it when rows need sorting or filtering; that is DataTable territory.",
+      "Don't put interactive controls inside cards; the whole card is the grab button.",
+      "Don't expect pointer drag-and-drop; movement is keyboard-first by design."
+    ]
+  },
+  "related": [
+    "data-table",
+    "card",
+    "list"
+  ],
+  "examples": [
+    {
+      "title": "Sprint board",
+      "description": "A three-stage uncontrolled board; Enter grabs a card and arrow keys move it between columns."
+    },
+    {
+      "title": "Compact checklist",
+      "description": "Two columns with optional card descriptions, showing the board adapts to smaller workflows."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Users track work items across a small set of named stages, such as a sprint board or a review pipeline.",
+    "avoidWhen": "Rows need sorting, filtering, or many columns — use DataTable; for pure drag-and-drop file or list ordering, a dedicated sortable list fits better.",
+    "behavior": "Cards move one step per arrow key press. Enter or Space grabs the focused card, arrows move it, Enter or Space drops it, and Escape cancels the grab. Focus always follows the grabbed card.",
+    "responsive": "Columns keep a fixed width and the board scrolls horizontally when they overflow the viewport."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus to the board's single tab stop (the last active card)."
+      },
+      {
+        "keys": [
+          "Arrow Up",
+          "Arrow Down"
+        ],
+        "action": "Moves focus between cards within a column."
+      },
+      {
+        "keys": [
+          "Arrow Left",
+          "Arrow Right"
+        ],
+        "action": "Moves focus to the adjacent column."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Grabs the focused card, or drops a grabbed card."
+      },
+      {
+        "keys": [
+          "Arrow keys (while grabbed)"
+        ],
+        "action": "Moves the grabbed card within or across columns."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Cancels the grab without moving the card."
+      },
+      {
+        "keys": [
+          "Home",
+          "End"
+        ],
+        "action": "Moves focus to the first or last card in the column."
+      }
+    ],
+    "notes": [
+      "The board is a labelled region; each column is a section named by its heading, and each card is a button.",
+      "A grabbed card exposes aria-pressed=\"true\" so screen reader users know a move is in progress."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "A column-based board. Arrow keys move focus between cards and columns;\nEnter or Space grabs a card, arrows move the grabbed card, Enter or Space\ndrops it, and Escape cancels the grab.",
+      "displayName": "KanbanBoard",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Controlled columns. When provided, the board never mutates its own state.",
+          "name": "columns",
+          "required": false,
+          "type": "KanbanColumn[]"
+        },
+        {
+          "defaultValue": "[]",
+          "description": "Initial columns when uncontrolled.",
+          "name": "defaultColumns",
+          "required": false,
+          "type": "KanbanColumn[]"
+        },
+        {
+          "defaultValue": "Kanban board",
+          "description": "Accessible name for the board region.",
+          "name": "label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the next columns whenever a card is moved.",
+          "name": "onColumnsChange",
+          "required": false,
+          "type": "(columns: KanbanColumn[]) => void"
+        }
+      ]
+    }
+  ]
+}

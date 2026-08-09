@@ -1,0 +1,165 @@
+{
+  "id": "area-chart",
+  "name": "Area Chart",
+  "apiNames": [
+    "AreaChart"
+  ],
+  "description": "Line chart with a filled area under each series, an adjustable fill opacity, and a stacked mode for part-to-whole trends.",
+  "usage": "<AreaChart\n  label=\"Stacked sessions by channel\"\n  labels={['Jan', 'Feb', 'Mar', 'Apr']}\n  series={[\n    { name: 'Organic', data: [80, 95, 90, 110] },\n    { name: 'Paid', data: [20, 25, 22, 30] },\n  ]}\n  stacked\n  opacity={0.5}\n/>",
+  "anatomy": [
+    {
+      "part": "Chart frame",
+      "description": "The shared container exposing the SVG as a labelled image with the summary from label."
+    },
+    {
+      "part": "Series lines",
+      "description": "One path per series in palette colors; focusable points carry tooltips."
+    },
+    {
+      "part": "Filled areas",
+      "description": "A translucent fill under each line; stacked mode accumulates series so the top edge reads as the total."
+    },
+    {
+      "part": "Legend and data table",
+      "description": "An optional legend plus the hidden per-series data table behind the container's toggle."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use stacked only when the series sum to a meaningful total.",
+      "Lower opacity when overlapping series start to obscure each other.",
+      "Keep the series count small; two or three fills stay readable."
+    ],
+    "donts": [
+      "Don't stack series with unrelated units.",
+      "Don't use an area chart when precise per-point comparison matters; choose LineChart."
+    ]
+  },
+  "related": [
+    "line-chart",
+    "bar-chart",
+    "chart-container"
+  ],
+  "examples": [
+    {
+      "title": "Single series area",
+      "description": "A translucent fill under the line emphasizes volume over time; opacity controls how much of the grid shows through."
+    },
+    {
+      "title": "Stacked series",
+      "description": "stacked accumulates series on top of each other so the top edge reads as the total; tooltips and the data table keep the raw per-series values."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A trend should emphasize magnitude or cumulative volume, or several series should read as parts of a changing total when stacked.",
+    "avoidWhen": "Precise comparison between overlapping series matters more than volume; overlapping fills obscure each other, so prefer a LineChart instead.",
+    "behavior": "Shares the LineChart contract: focusable points with simple or custom tooltips, a legend, and a hidden data table. When stacked, points sit at their cumulative position while tooltips and the table report raw values.",
+    "responsive": "Scales down proportionally with its container; legends wrap and the data table stays available below on narrow screens."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus through the data points; focusing a point shows its tooltip."
+      }
+    ],
+    "notes": [
+      "The label prop provides the chart summary; points expose series, category, and raw value via aria-label even in stacked mode.",
+      "A visually hidden data table with per-series raw values is always available behind the built-in toggle."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "AreaChart",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Accessible chart summary, applied as the SVG aria-label.",
+          "name": "label",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "X-axis category labels.",
+          "name": "labels",
+          "required": true,
+          "type": "string[]"
+        },
+        {
+          "defaultValue": "0.25",
+          "description": "Fill opacity of the area between 0 and 1.",
+          "name": "opacity",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Custom tooltip renderer for the hovered or focused point; falls back to a simple SVG title.",
+          "name": "renderTooltip",
+          "required": false,
+          "type": "(point: AreaChartPoint) => ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "One or more series to plot.",
+          "name": "series",
+          "required": true,
+          "type": "AreaChartSeries[]"
+        },
+        {
+          "defaultValue": "300",
+          "description": "SVG height in pixels.",
+          "name": "height",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "true",
+          "description": "Shows axes with tick labels.",
+          "name": "showAxis",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "true",
+          "description": "Shows horizontal grid lines.",
+          "name": "showGrid",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "true",
+          "description": "Shows a legend below the chart.",
+          "name": "showLegend",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "true",
+          "description": "Draws focusable point markers at each value.",
+          "name": "showPoints",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Stacks series on top of each other instead of overlaying them.",
+          "name": "stacked",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "560",
+          "description": "SVG width in pixels.",
+          "name": "width",
+          "required": false,
+          "type": "number"
+        }
+      ]
+    }
+  ]
+}

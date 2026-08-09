@@ -1,0 +1,209 @@
+{
+  "id": "cascader",
+  "name": "Cascader",
+  "apiNames": [
+    "Cascader"
+  ],
+  "description": "A multi-level option picker that walks a hierarchy column by column and commits the full path of values.",
+  "usage": "<Cascader\n  label=\"Owning team\"\n  placeholder=\"Pick a team…\"\n  options={[\n    { value: 'engineering', label: 'Engineering', children: [{ value: 'frontend', label: 'Frontend' }] },\n    { value: 'operations', label: 'Operations' },\n  ]}\n  onValueChange={(path) => undefined}\n/>",
+  "anatomy": [
+    {
+      "part": "Trigger",
+      "description": "A combobox-styled button that shows the joined labels of the committed path."
+    },
+    {
+      "part": "Column",
+      "description": "One labelled listbox per hierarchy level; a new column opens for the highlighted branch."
+    },
+    {
+      "part": "Branch option",
+      "description": "An option with children, marked with a chevron; it only expands, never commits."
+    },
+    {
+      "part": "Leaf option",
+      "description": "A terminal option that commits the full path of values and closes the popover."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Keep hierarchies to three or four levels so columns stay scannable.",
+      "Show the full committed path in the trigger so the choice stays unambiguous.",
+      "Use it for strict taxonomies such as departments, categories, or locations."
+    ],
+    "donts": [
+      "Don't use it for flat option lists; Select or Combobox is simpler.",
+      "Don't use it when parents should be selectable; use TreeSelect instead."
+    ]
+  },
+  "related": [
+    "tree-select",
+    "select",
+    "combobox"
+  ],
+  "examples": [
+    {
+      "title": "Basic cascader",
+      "description": "The popover opens one column per level; choosing a leaf commits the path and shows the joined labels."
+    },
+    {
+      "title": "Controlled path",
+      "description": "A controlled value preselects a path and reports every new selection as an array of values."
+    }
+  ],
+  "guidance": {
+    "useWhen": "The user must pick one leaf from a deep, strictly hierarchical taxonomy such as departments, categories, or locations.",
+    "avoidWhen": "Options are flat — use Select or Combobox instead; if parents should be selectable, use TreeSelect.",
+    "behavior": "Only leaf options commit; onValueChange receives the full path of values from root to leaf, and the trigger shows the joined labels.",
+    "responsive": "Columns keep a fixed width and the popover scrolls horizontally when the hierarchy outgrows narrow screens."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Arrow Down"
+        ],
+        "action": "Opens the popover or moves the highlight to the next option in the column."
+      },
+      {
+        "keys": [
+          "Arrow Up"
+        ],
+        "action": "Moves the highlight to the previous option in the column."
+      },
+      {
+        "keys": [
+          "Arrow Right"
+        ],
+        "action": "Expands the highlighted branch and focuses its first child."
+      },
+      {
+        "keys": [
+          "Arrow Left"
+        ],
+        "action": "Moves focus back to the parent column."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Selects a leaf and closes, or expands a branch."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the popover and returns focus to the trigger."
+      }
+    ],
+    "notes": [
+      "The trigger is a combobox with aria-haspopup=\"listbox\"; each column is a labelled listbox.",
+      "Disabled options are exposed with aria-disabled and skipped by keyboard navigation."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "Multi-level option picker: the popover renders one column per level, and\nchoosing a leaf commits the full path of values from root to leaf.",
+      "displayName": "Cascader",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "aria-describedby",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name when there is no visible label.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the control invalid for form validation and screen readers.",
+          "name": "aria-invalid",
+          "required": false,
+          "type": "boolean | \"true\" | \"false\""
+        },
+        {
+          "defaultValue": "",
+          "description": "Explicit id; otherwise Field or an internal id is used.",
+          "name": "id",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial selected path when uncontrolled.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "string[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered below the control.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Prevents interaction with the control.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label rendered above the control. Required outside a Field; inside a Field the Field's label is used.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the full path of values whenever a leaf option is chosen.",
+          "name": "onValueChange",
+          "required": false,
+          "type": "(path: string[]) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Options rendered as cascading columns in the popover.",
+          "name": "options",
+          "required": true,
+          "type": "CascaderOption[]"
+        },
+        {
+          "defaultValue": "Select…",
+          "description": "Text shown when nothing is selected.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the control as required.",
+          "name": "required",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled selected path, one value per level.",
+          "name": "value",
+          "required": false,
+          "type": "string[]"
+        }
+      ]
+    }
+  ]
+}

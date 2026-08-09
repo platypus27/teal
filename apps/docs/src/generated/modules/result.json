@@ -1,0 +1,117 @@
+{
+  "id": "result",
+  "name": "Result",
+  "apiNames": [
+    "Result"
+  ],
+  "imports": [
+    "Result",
+    "Button"
+  ],
+  "description": "A full-area outcome state for success, error, and HTTP results with a standard icon and actions.",
+  "usage": "<Result\n  status=\"404\"\n  title=\"Page not found\"\n  description=\"The report may have been moved or deleted.\"\n  actions={<Button>Back to projects</Button>}\n/>",
+  "anatomy": [
+    {
+      "part": "Status icon",
+      "description": "A standard icon per status with a matching tint; always hidden from assistive technology and overridable via icon."
+    },
+    {
+      "part": "Title",
+      "description": "A bold headline stating the outcome."
+    },
+    {
+      "part": "Description",
+      "description": "Optional supporting text capped at a readable measure."
+    },
+    {
+      "part": "Actions",
+      "description": "Caller-supplied buttons rendered below the description, typically one primary recovery action."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Lead the title with the outcome, like \"Report published\" or \"Page not found\".",
+      "Offer one primary action that recovers or navigates away.",
+      "Use EmptyState for \"no data yet\" and Result for completed outcomes or error pages."
+    ],
+    "donts": [
+      "Don't rely on the icon to convey the status; it is decorative, the title carries the meaning.",
+      "Don't stack more than two actions in the actions area.",
+      "Don't use Result for inline or transient feedback; use Alert or Toast."
+    ]
+  },
+  "related": [
+    "empty-state",
+    "alert",
+    "error-boundary"
+  ],
+  "examples": [
+    {
+      "title": "Outcome states",
+      "description": "Seven statuses pair a standard icon with a matching tint and optional actions."
+    },
+    {
+      "title": "HTTP status",
+      "description": "404, 403, and 500 statuses suit full-page error results with a way back."
+    },
+    {
+      "title": "HTTP states",
+      "description": "404, 403, and 500 statuses cover routing and server outcomes."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A page or panel needs a full-area outcome: success, error, warning, info, or an HTTP status like 404.",
+    "avoidWhen": "The feedback is inline or transient; use Alert, Banner, or Toast. \"No data yet\" fits EmptyState better.",
+    "behavior": "The status picks a standard icon and tint; the icon is always aria-hidden so the title carries the meaning, and actions render caller-supplied buttons.",
+    "responsive": "Content stays centered and wraps; the description caps at a readable measure on wide screens."
+  },
+  "accessibility": {
+    "notes": [
+      "The status icon is always aria-hidden, including custom icon overrides; the title and description carry the meaning.",
+      "Actions are caller-rendered buttons, so they keep normal keyboard and focus behavior."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Result",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Action area rendered below the description, typically Buttons.",
+          "name": "actions",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text that explains the outcome.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Icon override; defaults to the status's standard icon. Always hidden from assistive technology.",
+          "name": "icon",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Outcome shown; picks the default icon and its tint.",
+          "name": "status",
+          "required": true,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Short heading for the outcome.",
+          "name": "title",
+          "required": true,
+          "type": "ReactNode"
+        }
+      ]
+    }
+  ]
+}

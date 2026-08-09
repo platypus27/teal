@@ -1,0 +1,107 @@
+{
+  "id": "scroll-area",
+  "name": "Scroll Area",
+  "apiNames": [
+    "ScrollArea"
+  ],
+  "description": "A scrollable region with styled, theme-consistent scrollbars.",
+  "usage": "<ScrollArea maxHeight=\"16rem\">\n  <LongList />\n</ScrollArea>",
+  "anatomy": [
+    {
+      "part": "Viewport",
+      "description": "The keyboard-focusable scrollable region, capped by maxHeight."
+    },
+    {
+      "part": "Scrollbar",
+      "description": "The styled vertical and horizontal tracks shown while scrolling is possible."
+    },
+    {
+      "part": "Thumb",
+      "description": "The draggable indicator sized to the visible fraction of the content."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Cap the height in relative units so the region adapts to the viewport.",
+      "Use it for bounded panels, sidebars, and pickers.",
+      "Keep one scroll region per panel."
+    ],
+    "donts": [
+      "Don't nest scroll areas inside each other.",
+      "Don't use it for page-level scrolling; let the page scroll natively.",
+      "Don't hide critical actions below the fold without a visible affordance."
+    ]
+  },
+  "related": [
+    "panel",
+    "card",
+    "data-table"
+  ],
+  "examples": [
+    {
+      "title": "Bounded lists",
+      "description": "Cap the height and the custom scrollbar appears only while scrolling is possible."
+    },
+    {
+      "title": "Panel lists",
+      "description": "Pair with a fixed maxHeight so the page itself keeps its own scroll."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A panel needs a bounded height with theme-consistent scrollbars.",
+    "avoidWhen": "The page itself should scroll; do not nest page-level scrolling.",
+    "behavior": "The custom thumb appears over a transparent track only where scrolling is possible; the viewport is keyboard focusable.",
+    "responsive": "Set maxHeight in relative units so the region adapts to viewport height."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus to the scrollable viewport."
+      },
+      {
+        "keys": [
+          "Arrow keys",
+          "Page Up",
+          "Page Down"
+        ],
+        "action": "Scrolls the focused viewport."
+      }
+    ],
+    "notes": [
+      "The viewport is focusable with tabIndex 0, so keyboard users can scroll content that has no focusable children.",
+      "The styled scrollbar and thumb are visual only; scrolling itself stays native."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "ScrollArea",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Content rendered inside the scrollable viewport.",
+          "name": "children",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Caps the viewport height; content beyond it scrolls.",
+          "name": "maxHeight",
+          "required": false,
+          "type": "string | number"
+        }
+      ]
+    }
+  ]
+}

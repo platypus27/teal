@@ -1,0 +1,150 @@
+{
+  "id": "search-input",
+  "name": "Search Input",
+  "apiNames": [
+    "SearchInput"
+  ],
+  "description": "A text field with a leading search affordance, clear action, and loading state.",
+  "usage": "<SearchInput label=\"Search projects\" placeholder=\"Name or owner…\" />",
+  "anatomy": [
+    {
+      "part": "Leading icon",
+      "description": "The decorative search glyph pinned inside the field."
+    },
+    {
+      "part": "Input",
+      "description": "The native text field that owns the query."
+    },
+    {
+      "part": "Clear button",
+      "description": "A labeled action that appears once the field has a value and resets it."
+    },
+    {
+      "part": "Loading spinner",
+      "description": "Replaces the clear button while results load."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Handle onClear and reset the caller-owned value when the clear action fires.",
+      "Use the loading state while fetching so typing stays uninterrupted.",
+      "Write placeholders as examples, like Name or owner…."
+    ],
+    "donts": [
+      "Don't use SearchInput for general text entry; use Input.",
+      "Don't navigate on every keystroke without debouncing the query.",
+      "Don't keep the spinner on after results arrive; it hides the clear action."
+    ]
+  },
+  "related": [
+    "input",
+    "combobox",
+    "search-overlay",
+    "command"
+  ],
+  "examples": [
+    {
+      "title": "Clearable search",
+      "description": "The clear button appears once the field has a value; loading swaps in a spinner."
+    },
+    {
+      "title": "Filled, loading, and disabled",
+      "description": "The clear action shows on filled fields, swaps for a spinner while loading, and disappears when disabled."
+    },
+    {
+      "title": "Loading results",
+      "description": "The loading state replaces the clear action while results refresh."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A field exists specifically to query a collection.",
+    "avoidWhen": "The input is general-purpose text entry; use Input.",
+    "behavior": "The clear action appears only with a value, and loading swaps it for a spinner.",
+    "responsive": "Icons stay pinned inside the field at any width."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus through the field and the clear button when it is visible."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Activates the clear button and resets the value."
+      },
+      {
+        "keys": [
+          "Typing"
+        ],
+        "action": "Edits the query using native text editing keys."
+      }
+    ],
+    "notes": [
+      "The leading search icon is decorative and hidden from assistive technology.",
+      "The clear action is an IconButton labeled Clear search.",
+      "The loading state swaps the clear action for a spinner, keeping focus on the field."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "SearchInput",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered below the input and linked to it for assistive technology.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label rendered above the input.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled value.",
+          "name": "value",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial value for uncontrolled usage.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the new string whenever the value changes, including clears.",
+          "name": "onValueChange",
+          "required": false,
+          "type": "(value: string) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the clear button is pressed, after the value is cleared.",
+          "name": "onClear",
+          "required": false,
+          "type": "() => void"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Replaces the clear button with a spinner.",
+          "name": "loading",
+          "required": false,
+          "type": "boolean"
+        }
+      ]
+    }
+  ]
+}

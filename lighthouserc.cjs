@@ -9,7 +9,8 @@ module.exports = {
     assert: {
       assertions: {
         'categories:accessibility': ['error', { minScore: 1 }],
-        'categories:performance': ['warn', { minScore: 0.9 }],
+        'categories:performance': ['error', { minScore: 0.9 }],
+        'cumulative-layout-shift': ['error', { maxNumericValue: 0.1 }],
       },
     },
   },

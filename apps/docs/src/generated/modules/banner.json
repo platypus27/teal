@@ -1,0 +1,123 @@
+{
+  "id": "banner",
+  "name": "Banner",
+  "apiNames": [
+    "Banner"
+  ],
+  "imports": [
+    "Banner",
+    "Button"
+  ],
+  "description": "A page-level notice strip for workspace-wide feedback that owns the top of a view.",
+  "usage": "<Banner variant=\"warning\" title=\"Scheduled maintenance\">\n  The workspace is read-only on Saturday, 02:00–03:00 UTC.\n</Banner>",
+  "anatomy": [
+    {
+      "part": "Surface",
+      "description": "Full-width strip with a variant-tinted border and background; danger renders role=\"alert\", the other variants role=\"status\"."
+    },
+    {
+      "part": "Title",
+      "description": "Optional bold lead-in for the notice."
+    },
+    {
+      "part": "Message",
+      "description": "Children text that wraps beneath the title."
+    },
+    {
+      "part": "Action",
+      "description": "Caller-supplied trailing control, such as a Button."
+    },
+    {
+      "part": "Dismiss",
+      "description": "Optional labeled IconButton rendered when onDismiss is passed."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Reserve Banner for workspace-wide conditions such as maintenance windows or degraded service.",
+      "Offer the action that resolves the notice, such as \"Update billing\"."
+    ],
+    "donts": [
+      "Don't stack several banners at the top of one view; consolidate them.",
+      "Don't use Banner for field- or task-local feedback; use Field or Alert."
+    ]
+  },
+  "related": [
+    "alert",
+    "offline-banner",
+    "toast"
+  ],
+  "examples": [
+    {
+      "title": "Page-level feedback",
+      "description": "A stronger accent than Alert, for notices that apply to the whole view."
+    },
+    {
+      "title": "Dismissible notices",
+      "description": "Pass onDismiss for notices the user can clear for the session."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Feedback applies to the entire view, not one field or task.",
+    "avoidWhen": "The message is local to a control or a transient confirmation; use Field, Alert, or Toast.",
+    "behavior": "Danger renders role=\"alert\" for immediate announcement; other variants render role=\"status\".",
+    "responsive": "The action wraps beneath the message on narrow screens."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus to the action and dismiss controls."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Activates the focused action or dismiss control."
+      }
+    ],
+    "notes": [
+      "Danger renders role=\"alert\" for immediate announcement; other variants render role=\"status\".",
+      "The dismiss button has an explicit \"Dismiss\" label."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Banner",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Bold leading text of the banner.",
+          "name": "title",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Optional action (for example a Button) rendered at the trailing edge of the strip.",
+          "name": "action",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Renders a dismiss button and calls this when it is pressed.",
+          "name": "onDismiss",
+          "required": false,
+          "type": "() => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "variant",
+          "required": false,
+          "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | null"
+        }
+      ]
+    }
+  ]
+}

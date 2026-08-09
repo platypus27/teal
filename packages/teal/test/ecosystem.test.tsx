@@ -11,6 +11,10 @@ import {
   StepUpNotice,
 } from '../src/index'
 
+function preventJsdomNavigationOnce() {
+  document.addEventListener('click', (event) => event.preventDefault(), { once: true })
+}
+
 describe('ecosystem modules', () => {
   describe('EcosystemRail', () => {
     it('keeps Home first and renders only caller-supplied destinations', () => {
@@ -62,7 +66,9 @@ describe('ecosystem modules', () => {
         />,
       )
 
-      await user.click(screen.getByRole('link', { name: /Trict/ }))
+      const currentApp = screen.getByRole('link', { name: /Trict/ })
+      preventJsdomNavigationOnce()
+      await user.click(currentApp)
       expect(onNavigate).toHaveBeenCalledWith('trict')
       expect(screen.getByRole('link', { name: /Trict/ })).toHaveAttribute('aria-current', 'page')
       expect(screen.getByRole('button', { name: 'Avery account' })).toBeInTheDocument()
@@ -141,6 +147,7 @@ describe('ecosystem modules', () => {
       screen.getByRole('button', { name: 'Apps' }).focus()
       await user.keyboard('{Enter}')
       await screen.findByRole('menu')
+      preventJsdomNavigationOnce()
       await user.keyboard('{ArrowDown}{ArrowDown}{Enter}')
       expect(onNavigate).toHaveBeenCalledWith('photos')
     })

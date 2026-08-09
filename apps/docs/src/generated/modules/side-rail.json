@@ -1,0 +1,125 @@
+{
+  "id": "side-rail",
+  "name": "Side Rail",
+  "apiNames": [
+    "SideRail"
+  ],
+  "imports": [
+    "SideRail",
+    "VerticalNavBrand",
+    "VerticalNavList",
+    "VerticalNavSection",
+    "VerticalNavItem",
+    "VerticalNavFooter"
+  ],
+  "description": "A floating glass rail that expands from an icon strip to a full label list on hover or focus.",
+  "usage": "<SideRail>\n  <VerticalNavBrand>...</VerticalNavBrand>\n  <VerticalNavList>\n    <VerticalNavSection label=\"Workspace\">\n      <VerticalNavItem active icon={<LayoutDashboard />}>Overview</VerticalNavItem>\n    </VerticalNavSection>\n  </VerticalNavList>\n  <VerticalNavFooter>...</VerticalNavFooter>\n</SideRail>",
+  "anatomy": [
+    {
+      "part": "Rail surface",
+      "description": "The floating translucent container; a nav landmark with backdrop blur that expands from an icon strip to full width."
+    },
+    {
+      "part": "Brand",
+      "description": "Optional header slot for the product mark, composed with VerticalNavBrand."
+    },
+    {
+      "part": "Sections and items",
+      "description": "VerticalNavSection groups labeled destinations; each VerticalNavItem keeps its icon visible while labels fade in on expansion."
+    },
+    {
+      "part": "Footer",
+      "description": "VerticalNavFooter pins account or settings destinations to the bottom of the rail."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Float the rail over the content with className positioning so it glides above the page.",
+      "Pair every item with an icon; icons stay visible and carry the navigation while labels are collapsed.",
+      "Pass mode=\"full\" when labels should stay visible, such as on wide desktop layouts."
+    ],
+    "donts": [
+      "Don't attach it flush to a page edge; use Vertical Nav for edge-anchored navigation.",
+      "Don't use it as a dense icon-only strip with tooltips; use Nav Rail instead.",
+      "Don't rely on expansion alone on touch screens; fold destinations into a drawer where hover is unavailable."
+    ]
+  },
+  "related": [
+    "vertical-nav",
+    "nav-rail",
+    "app-shell"
+  ],
+  "examples": [
+    {
+      "title": "Floating glass pill",
+      "description": "SideRail floats over content with a translucent blurred surface and expands to reveal labels on hover or keyboard focus."
+    },
+    {
+      "title": "Full label mode",
+      "description": "Pass mode=\"full\" to keep labels visible and pin the rail open at its expanded width."
+    }
+  ],
+  "guidance": {
+    "useWhen": "An application needs a floating rail that glides over content and expands to labeled sections.",
+    "avoidWhen": "The nav is attached to a page edge; use Vertical Nav. For a dense icon strip with tooltips, use Nav Rail.",
+    "behavior": "Rail mode collapses to a glass pill that expands on hover or focus; section and item labels fade in together, and the active item shows a circular background around its icon.",
+    "responsive": "Position it with className and fold destinations into a drawer on narrow screens."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus between nav items. Focusing an item expands the rail to reveal labels."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Activates the focused item link."
+      }
+    ],
+    "notes": [
+      "Renders a nav landmark named through aria-label, defaulting to \"Primary\".",
+      "The rail expands on focus-within as well as hover, so keyboard users get the same labels mouse users see.",
+      "The active item sets aria-current=\"page\" and shows a circular icon background in rail mode."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "SideRail",
+      "props": [
+        {
+          "defaultValue": "Primary",
+          "description": "Accessible name for the floating rail landmark.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "rail",
+          "description": "Rail collapses labels until hover or focus; full keeps labels visible.",
+          "name": "mode",
+          "required": false,
+          "type": "\"full\" | \"rail\" | null"
+        },
+        {
+          "defaultValue": "",
+          "description": "Edge where the navigation is attached; a floating rail usually keeps this unset.",
+          "name": "side",
+          "required": false,
+          "type": "\"left\" | \"right\" | null"
+        },
+        {
+          "defaultValue": "nav",
+          "description": "",
+          "name": "as",
+          "required": false,
+          "type": "ElementType"
+        }
+      ]
+    }
+  ]
+}

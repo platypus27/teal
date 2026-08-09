@@ -44,6 +44,17 @@ test('rejects a pack manifest that omits any built dist file', () => {
   )
 })
 
+test('rejects a package with no built dist files even when declared targets are present', () => {
+  assert.throws(
+    () => assertPackedFiles({
+      packageJson,
+      packedFiles: ['package.json', 'dist/index.js', 'dist/index.d.ts', 'dist/styles.css'],
+      builtDistFiles: [],
+    }),
+    /package build produced no dist files/i,
+  )
+})
+
 test('accepts a complete exact pack manifest', () => {
   assert.doesNotThrow(() => assertPackedFiles({
     packageJson,

@@ -1,0 +1,110 @@
+{
+  "id": "breadcrumb",
+  "name": "Breadcrumb",
+  "apiNames": [
+    "Breadcrumb"
+  ],
+  "description": "A hierarchical trail with router-ready items and automatic middle-item collapse.",
+  "usage": "<Breadcrumb\n  items={[\n    { label: 'Workspace', href: '/' },\n    { label: 'Projects', href: '/projects' },\n    { label: 'Orion' },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "Trail",
+      "description": "Nav landmark rendering the items in order as links."
+    },
+    {
+      "part": "Separators",
+      "description": "Chevron icons between items, hidden from assistive technology."
+    },
+    {
+      "part": "Current page",
+      "description": "The last item, rendered as text with aria-current=\"page\"."
+    },
+    {
+      "part": "Collapse menu",
+      "description": "Middle items fold into an overflow menu past collapseAfter."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Keep the last item as plain text; it is the current page, not a link.",
+      "Prefer collapsing middle items over truncating labels on narrow screens."
+    ],
+    "donts": [
+      "Don't use breadcrumbs on flat structures or as a back button.",
+      "Don't duplicate the primary navigation in the trail."
+    ]
+  },
+  "related": [
+    "page-header",
+    "sub-nav",
+    "anchor-nav"
+  ],
+  "examples": [
+    {
+      "title": "Hierarchy",
+      "description": "Items render in order; the last item is the current page."
+    },
+    {
+      "title": "Collapsed middle items",
+      "description": "Trails longer than collapseAfter move middle items into a labeled menu."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Users need to see and move within a deep page hierarchy.",
+    "avoidWhen": "The structure is flat or the trail would duplicate primary navigation.",
+    "behavior": "The last item is the current page; middle items collapse into a menu past collapseAfter.",
+    "responsive": "Let items wrap and prefer collapsing over shrinking labels."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus through the trail links and the collapsed-items menu trigger."
+      }
+    ],
+    "notes": [
+      "Renders a nav landmark with an ordered list; the landmark label defaults to \"Breadcrumb\".",
+      "The current page is a span with aria-current=\"page\", not a link.",
+      "Middle items beyond collapseAfter move into a labeled menu.",
+      "Pass a router link component through an item's as prop, mirroring VerticalNavItem."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Breadcrumb",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "5",
+          "description": "Maximum items shown before middle items collapse into a menu.",
+          "name": "collapseAfter",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Items in hierarchy order; the last item is the current page.",
+          "name": "items",
+          "required": true,
+          "type": "BreadcrumbItem[]"
+        },
+        {
+          "defaultValue": "Breadcrumb",
+          "description": "Accessible name for the navigation landmark.",
+          "name": "label",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "id": "segmented-control",
+  "name": "Segmented Control",
+  "apiNames": [
+    "SegmentedControl"
+  ],
+  "description": "A mutually exclusive option switcher with a sliding selection pill.",
+  "usage": "<SegmentedControl\n  aria-label=\"Billing period\"\n  defaultValue=\"monthly\"\n  options={[\n    { value: 'monthly', label: 'Monthly' },\n    { value: 'yearly', label: 'Yearly' },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "Track",
+      "description": "The rounded container holding the options, named by the required aria-label."
+    },
+    {
+      "part": "Option",
+      "description": "A toggle item with a label and an optional leading icon."
+    },
+    {
+      "part": "Selection pill",
+      "description": "The measured indicator that slides behind the active option and honors reduced motion."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use for two to five mutually exclusive options with equal weight.",
+      "Always pass aria-label naming the choice the control makes.",
+      "Keep labels to one or two words so options never wrap."
+    ],
+    "donts": [
+      "Don't use for navigation between views; use Tabs.",
+      "Don't use for independent on/off flags; use Toggle or Checkbox.",
+      "Don't crowd in long option lists; use a Select instead."
+    ]
+  },
+  "related": [
+    "tabs",
+    "toggle-group",
+    "radio-group"
+  ],
+  "examples": [
+    {
+      "title": "View switcher",
+      "description": "A measured pill slides behind the active option, honoring reduced motion."
+    },
+    {
+      "title": "Compact periods",
+      "description": "The small size keeps dense toolbars scannable."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Users switch one setting between a few mutually exclusive options.",
+    "avoidWhen": "Options navigate to different views; use Tabs, or toggle independent flags with Checkbox.",
+    "behavior": "A measured pill slides behind the active option and the group behaves as radiogroup semantics.",
+    "responsive": "Keep option labels short so the control never wraps."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus into and out of the control."
+      },
+      {
+        "keys": [
+          "Arrow Left",
+          "Arrow Right"
+        ],
+        "action": "Moves focus between options with roving tabindex."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Selects the focused option."
+      }
+    ],
+    "notes": [
+      "Built on a single-select toggle group, so the selected option is announced as pressed.",
+      "The required aria-label names the control; there is no visible label, so choose a descriptive one.",
+      "The sliding selection pill is decorative and hidden from assistive technology.",
+      "Disabled options are skipped during keyboard navigation."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "SegmentedControl",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Accessible name for the control.",
+          "name": "aria-label",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initially selected value when uncontrolled. Defaults to the first enabled option.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the new value when the selection changes.",
+          "name": "onValueChange",
+          "required": false,
+          "type": "(value: string) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Options rendered by the control.",
+          "name": "options",
+          "required": true,
+          "type": "SegmentedControlOption[]"
+        },
+        {
+          "defaultValue": "md",
+          "description": "Density of the control.",
+          "name": "size",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled selected value.",
+          "name": "value",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

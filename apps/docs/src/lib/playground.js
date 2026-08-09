@@ -1,5 +1,4 @@
 import { propDocs } from '../data/prop-docs.js'
-import api from '../generated/api.json'
 
 function parseUnion(type) {
   if (typeof type !== 'string') return null
@@ -44,8 +43,8 @@ function fallbackDefault(kind, options) {
  * Merges curated control specs with generated api.json metadata and the
  * prop-docs overlay so options and defaults stay in sync with the source.
  */
-export function resolveControls(componentName, specs) {
-  const entry = api.find((item) => item.displayName === componentName)
+export function resolveControls(componentName, specs, apiEntries) {
+  const entry = apiEntries.find((item) => item.displayName === componentName)
   return specs.map((spec) => {
     const generated = entry?.props.find((prop) => prop.name === spec.name)
     const overlay = propDocs[componentName]?.[spec.name]

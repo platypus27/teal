@@ -1,0 +1,145 @@
+{
+  "id": "command",
+  "name": "Command",
+  "apiNames": [
+    "Command"
+  ],
+  "imports": [
+    "Command",
+    "Button"
+  ],
+  "description": "A command palette dialog with grouped, filterable actions and keyboard navigation.",
+  "usage": "<Command\n  open={open}\n  onOpenChange={setOpen}\n  groups={[\n    { label: 'Projects', items: [{ id: 'orion', label: 'Open Orion', onSelect: () => undefined }] },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "Dialog shell",
+      "description": "The modal surface that owns focus, dismissal, and scroll locking while the palette is open."
+    },
+    {
+      "part": "Input",
+      "description": "The filter field, focused on open, with a caller-set placeholder."
+    },
+    {
+      "part": "Group",
+      "description": "A labelled cluster of related commands, like \"Project\" or \"Danger zone\"."
+    },
+    {
+      "part": "Item",
+      "description": "One command with a label, optional icon, and a keyboard hint such as ⌘N."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Group commands under short labels so filtering reads as structured sections.",
+      "Write verb-led item labels and show shortcut hints where they exist.",
+      "Set placeholder and emptyMessage to match the palette's scope."
+    ],
+    "donts": [
+      "Don't use the palette as site search over content; use SearchOverlay.",
+      "Don't run destructive commands without a follow-up AlertDialog confirmation.",
+      "Don't overload it with every possible action; keep it to high-frequency commands."
+    ]
+  },
+  "related": [
+    "search-overlay",
+    "menu",
+    "dialog"
+  ],
+  "examples": [
+    {
+      "title": "Palette",
+      "description": "Arrows cycle filtered items, Enter runs the action, state resets on open."
+    },
+    {
+      "title": "Scoped palette",
+      "description": "A palette scoped to admin commands with its own placeholder and empty message."
+    },
+    {
+      "title": "Keyboard first",
+      "description": "Bind a global shortcut to open the palette; keep item hints scannable."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Power users need fast keyboard access to many actions.",
+    "avoidWhen": "There are few actions; use visible buttons or a Menu.",
+    "behavior": "Filtering, highlight, and selection reset on every open.",
+    "responsive": "The panel caps at viewport width with its own internal scroll."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Arrow Up",
+          "Arrow Down"
+        ],
+        "action": "Moves the highlight through the filtered commands."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Runs the highlighted command and closes the palette."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the palette without running a command."
+      },
+      {
+        "keys": [
+          "Typing"
+        ],
+        "action": "Filters the command list; query and highlight reset on every open."
+      }
+    ],
+    "notes": [
+      "The input renders role=\"combobox\" with aria-activedescendant pointing at the highlighted option in the listbox.",
+      "Each command renders role=\"option\" with aria-selected reflecting the highlight.",
+      "Focus is trapped in the dialog shell while the palette is open."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "Command palette dialog: a filterable list of actions grouped by section,\ndriven entirely from the keyboard or by clicking.",
+      "displayName": "Command",
+      "props": [
+        {
+          "defaultValue": "No results",
+          "description": "Message shown when no item matches the query.",
+          "name": "emptyMessage",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Groups of commands rendered in the palette.",
+          "name": "groups",
+          "required": true,
+          "type": "CommandGroup[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the palette opens or closes.",
+          "name": "onOpenChange",
+          "required": true,
+          "type": "(open: boolean) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled open state.",
+          "name": "open",
+          "required": true,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "Type a command…",
+          "description": "Placeholder of the search input.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "id": "prompt-dialog",
+  "name": "Prompt Dialog",
+  "apiNames": [
+    "PromptDialog"
+  ],
+  "description": "A modal dialog with a single labeled input that returns the entered value on confirm.",
+  "usage": "<PromptDialog\n  open={open}\n  onOpenChange={setOpen}\n  title=\"Rename report\"\n  label=\"Report name\"\n  defaultValue=\"Q3 revenue\"\n  onSubmit={(value) => rename(value)}\n/>",
+  "anatomy": [
+    {
+      "part": "Title",
+      "description": "The verb-led heading that names the dialog, like \"Rename report\"."
+    },
+    {
+      "part": "Input",
+      "description": "The single labeled text field, focused on open and optionally prefilled with defaultValue."
+    },
+    {
+      "part": "Confirm and cancel",
+      "description": "The action pair; confirm or Enter submits the value, cancel and Escape discard it."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Prefill defaultValue when editing an existing name so users adjust rather than retype.",
+      "Use a verb-led title and a visible input label, not placeholder-only naming.",
+      "Validate the submitted value in onSubmit and give feedback on empty or invalid input."
+    ],
+    "donts": [
+      "Don't use it for multi-field or validation-heavy forms; compose Dialog with Field instead.",
+      "Don't submit on behalf of the user; Enter is the only implicit submit.",
+      "Don't reuse one prompt for unrelated actions; keep one intent per dialog."
+    ]
+  },
+  "related": [
+    "dialog",
+    "alert-dialog",
+    "field"
+  ],
+  "examples": [
+    {
+      "title": "Rename flow",
+      "description": "The input is prefilled with the current value and focused on open."
+    },
+    {
+      "title": "Create flow",
+      "description": "An empty input with a placeholder collects a brand-new name."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Quick single-value captures like renaming, creating folders, or tagging, where a full form would be overkill.",
+    "avoidWhen": "Multiple fields or validation-heavy input; compose a Dialog with Field components instead.",
+    "behavior": "Confirm (or Enter) calls onSubmit with the entered value and closes; cancel and Escape close without submitting.",
+    "responsive": "A compact centered dialog capped to the viewport width with comfortable margins on small screens."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Submits the entered value and closes the dialog."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the dialog without submitting."
+      },
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus between the input and the footer buttons."
+      }
+    ],
+    "notes": [
+      "Renders with role=\"dialog\" named by its title; the input is associated with a visible label.",
+      "The input receives focus automatically when the dialog opens."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "PromptDialog",
+      "props": [
+        {
+          "defaultValue": "Cancel",
+          "description": "Text of the cancel button.",
+          "name": "cancelLabel",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "Confirm",
+          "description": "Text of the confirm button.",
+          "name": "confirmLabel",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial open state when uncontrolled.",
+          "name": "defaultOpen",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial input value; restored each time the dialog opens.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered under the title.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Label of the input.",
+          "name": "label",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the cancel button is pressed.",
+          "name": "onCancel",
+          "required": false,
+          "type": "() => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the dialog opens or closes.",
+          "name": "onOpenChange",
+          "required": false,
+          "type": "(open: boolean) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the entered value when the dialog is confirmed.",
+          "name": "onSubmit",
+          "required": false,
+          "type": "(value: string) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled open state.",
+          "name": "open",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Placeholder of the input.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Title rendered at the top; also the accessible name of the dialog.",
+          "name": "title",
+          "required": true,
+          "type": "ReactNode"
+        }
+      ]
+    }
+  ]
+}

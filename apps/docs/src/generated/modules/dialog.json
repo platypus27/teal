@@ -1,0 +1,175 @@
+{
+  "id": "dialog",
+  "name": "Dialog",
+  "apiNames": [
+    "Dialog"
+  ],
+  "description": "A modal surface that owns focus management, naming, dismissal, and scroll locking.",
+  "usage": "const [open, setOpen] = useState(false)\n\n<Button onClick={() => setOpen(true)}>Open dialog</Button>\n<Dialog\n  open={open}\n  onOpenChange={setOpen}\n  title=\"Archive project?\"\n  description=\"The project can be restored later.\"\n>\n  <p>Project Orion will leave the active workspace.</p>\n</Dialog>",
+  "anatomy": [
+    {
+      "part": "Trigger",
+      "description": "The control that opens the dialog, usually a Button; callers own it."
+    },
+    {
+      "part": "Scrim",
+      "description": "The dimmed backdrop that blocks the page and dismisses on click."
+    },
+    {
+      "part": "Content",
+      "description": "The modal surface that traps focus and carries the title, description, and children."
+    },
+    {
+      "part": "Title and description",
+      "description": "Header text wired to aria-labelledby and aria-describedby automatically."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use a verb-led title that states the outcome, like \"Archive project?\".",
+      "Keep the content short; move long forms into a dedicated page or a Drawer.",
+      "Restore focus to the trigger when the dialog closes (built in)."
+    ],
+    "donts": [
+      "Don't stack a second dialog on top of an open one.",
+      "Don't use a dialog for destructive confirmations; use AlertDialog.",
+      "Don't hide required information behind the scrim dismissal."
+    ]
+  },
+  "related": [
+    "alert-dialog",
+    "drawer",
+    "popover"
+  ],
+  "examples": [
+    {
+      "title": "Confirmation",
+      "description": "Dialog traps focus, restores it on close, and dismisses with Escape or the scrim."
+    },
+    {
+      "title": "Form dialog",
+      "description": "size=\"lg\" gives a short form room; Field wraps each Input with a label and description."
+    },
+    {
+      "title": "Destructive confirmation",
+      "description": "Use a danger action only when the consequence is clear and reversible where possible."
+    },
+    {
+      "title": "Long-form task",
+      "description": "For focused tasks, keep the title visible and let the dialog body own its scroll."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A decision or focused task must temporarily block the page.",
+    "avoidWhen": "The content can be inline or handled by a popover.",
+    "behavior": "Focus is trapped, Escape dismisses, and focus returns to the trigger.",
+    "responsive": "Use the built-in size and allow the body to scroll inside the panel."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the dialog and returns focus to the trigger."
+      },
+      {
+        "keys": [
+          "Tab",
+          "Shift+Tab"
+        ],
+        "action": "Cycles focus through the focusable elements inside the dialog."
+      }
+    ],
+    "notes": [
+      "Renders role=\"dialog\" with aria-modal, labelled by the title and described by the description.",
+      "Focus moves into the dialog on open and is restored to the trigger on close.",
+      "Background content is scroll-locked while the dialog is open."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Dialog",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Body content of the dialog.",
+          "name": "children",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "Close",
+          "description": "Accessible label for the close button.",
+          "name": "closeLabel",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial open state when uncontrolled.",
+          "name": "defaultOpen",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered under the title.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Action area rendered at the bottom of the dialog.",
+          "name": "footer",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the dialog opens or closes.",
+          "name": "onOpenChange",
+          "required": false,
+          "type": "(open: boolean) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled open state.",
+          "name": "open",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Element that receives focus after a controlled dialog closes.",
+          "name": "restoreFocusRef",
+          "required": false,
+          "type": "RefObject<HTMLElement | null>"
+        },
+        {
+          "defaultValue": "md",
+          "description": "Width of the dialog surface.",
+          "name": "size",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Title rendered at the top; also the accessible name of the dialog.",
+          "name": "title",
+          "required": true,
+          "type": "ReactNode"
+        }
+      ]
+    }
+  ]
+}

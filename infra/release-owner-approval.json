@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 2,
+  "algorithm": "Ed25519",
+  "owner": "kryv-owner",
+  "publicKeyFingerprint": "sha256:5bbbce350b985715b402c4af0b8ff88c8a50e25243f848aa4076509bb652403c",
+  "repository": "platypus27/teal",
+  "workflow": "platypus27/teal/.github/workflows/protected-release.yml",
+  "ref": "refs/heads/master",
+  "operationEnvironments": {
+    "npm-publish": "teal-release",
+    "docs-deploy": "teal-production"
+  }
+}

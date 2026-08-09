@@ -1,9 +1,16 @@
 import { useState } from 'react'
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Dialog, Progress, Separator } from '@kryv/teal'
-import { catalogGroups as metadataGroups } from './docs-module-registry.js'
+import metadataGroups from '../generated/module-index.json'
+import moduleRouteIndex from '../generated/module-route-index.json'
+import { playgroundModuleIds } from './playground-module-ids.js'
+
+const playgroundModules = new Set(playgroundModuleIds)
 
 const demoLoaders = import.meta.glob('../demos/*Demo.jsx')
 const sourceLoaders = import.meta.glob('../demos/*Demo.jsx', { query: '?raw', import: 'default' })
+const metadataLoaders = import.meta.glob('../generated/modules/*.json', { import: 'default' })
+const moduleRecordLoads = new Map()
+const loadedModuleRecords = new Map()
 
 function pascalCase(id) {
   return id
@@ -12,24 +19,28 @@ function pascalCase(id) {
     .join('')
 }
 
-/** Load a module's demo and source only when its route is opened. */
-export async function loadModuleRecord(id) {
+async function buildModuleRecord(id) {
   const module = catalog.find((entry) => entry.id === id)
   if (!module) return null
-  const files = [...new Set(module.examples.map((example) => `../demos/${pascalCase(example.demo ?? id)}Demo.jsx`))]
-  const loaded = await Promise.all(files.map(async (file) => {
+  const metadataLoader = metadataLoaders[`../generated/modules/${id}.json`]
+  if (!metadataLoader) throw new Error(`Missing generated module record for ${id}`)
+  const files = module.demos.map((demo) => `../demos/${pascalCase(demo)}Demo.jsx`)
+  const [loadedMetadata, ...loaded] = await Promise.all([metadataLoader(), ...files.map(async (file) => {
     const demoLoader = demoLoaders[file]
     const sourceLoader = sourceLoaders[file]
     if (!demoLoader || !sourceLoader) throw new Error(`Missing documentation demo for ${file}`)
     const [demoModule, source] = await Promise.all([demoLoader(), sourceLoader()])
     return /** @type {[string, Record<string, any>, string]} */ ([file, demoModule, source])
-  }))
+  })])
+  const metadata = /** @type {Record<string, any>} */ (loadedMetadata)
   const records = new Map(
     loaded.map(([file, demoModule, source]) => [file, { demoModule, source }]),
   )
   return {
-    ...module,
-    examples: module.examples.map((example, index) => {
+    ...metadata,
+    ...(extras[id] ?? {}),
+    hasPlayground: playgroundModules.has(id),
+    examples: metadata.examples.map((example, index) => {
       const file = `../demos/${pascalCase(example.demo ?? id)}Demo.jsx`
       const record = records.get(file)
       const demoModule = record.demoModule
@@ -39,6 +50,28 @@ export async function loadModuleRecord(id) {
       return { ...example, Demo, source }
     }),
   }
+}
+
+/** Load a module's demo and source only when its route is opened. */
+export function loadModuleRecord(id) {
+  const activeLoad = moduleRecordLoads.get(id)
+  if (activeLoad) return activeLoad
+
+  const load = buildModuleRecord(id)
+    .then((record) => {
+      loadedModuleRecords.set(id, record)
+      return record
+    })
+    .catch((error) => {
+      if (moduleRecordLoads.get(id) === load) moduleRecordLoads.delete(id)
+      throw error
+    })
+  moduleRecordLoads.set(id, load)
+  return load
+}
+
+export function getLoadedModuleRecord(id) {
+  return loadedModuleRecords.get(id) ?? null
 }
 
 function DialogPlayground({ description, size, title }) {
@@ -268,8 +301,12 @@ export const catalogGroups = metadataGroups.map((group) => ({
   name: group.name,
   modules: group.modules.map((module) => ({
     ...module,
-    ...(extras[module.id] ?? {}),
+    ...moduleRouteIndex[module.id],
+    hasPlayground: playgroundModules.has(module.id),
   })),
 }))
 
 export const catalog = catalogGroups.flatMap((group) => group.modules)
+
+const initialModuleId = window.location.pathname.match(/^\/modules\/([^/]+)\/?$/)?.[1]
+if (initialModuleId) void loadModuleRecord(initialModuleId)

@@ -1,0 +1,219 @@
+{
+  "id": "month-picker",
+  "name": "Month Picker",
+  "apiNames": [
+    "MonthPicker"
+  ],
+  "description": "A popover grid of the twelve months with a year stepper for fast month-and-year selection.",
+  "usage": "<MonthPicker\n  label=\"Billing month\"\n  value={month}\n  onValueChange={setMonth}\n/>",
+  "anatomy": [
+    {
+      "part": "Input trigger",
+      "description": "A read-only field showing the selected month and year, with a calendar affordance."
+    },
+    {
+      "part": "Year header",
+      "description": "Stepper buttons that move the visible year; the year is announced through an aria-live region."
+    },
+    {
+      "part": "Month grid",
+      "description": "Twelve buttons, one per month; the selected month is aria-pressed and the current month aria-current."
+    },
+    {
+      "part": "Disabled months",
+      "description": "Months outside minDate and maxDate stay visible but cannot be chosen."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use it for periods like billing months, reports, or expiration dates.",
+      "Bound the selectable window with minDate and maxDate for planning horizons.",
+      "Format the emitted first-of-month Date for display; the raw Date is the contract."
+    ],
+    "donts": [
+      "Don't use it when the exact day matters; use DatePicker.",
+      "Don't use it for credit-card expiry text entry; a MaskedInput is faster there."
+    ]
+  },
+  "related": [
+    "date-picker",
+    "year-picker",
+    "calendar"
+  ],
+  "examples": [
+    {
+      "title": "Month grid with year stepper",
+      "description": "All twelve months stay visible while the header steps the year, emitting the first day of the chosen month."
+    },
+    {
+      "title": "Bounded planning window",
+      "description": "minDate and maxDate disable months outside the allowed range, such as the current planning horizon."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Only the month and year matter, such as billing periods, reports, or expiration dates.",
+    "avoidWhen": "A specific day is required; use DatePicker so the user can pick the exact date.",
+    "behavior": "Clicking or pressing Enter on a month commits the first of that month and closes the popover; arrow keys move within the visible year and clamp at January and December.",
+    "responsive": "The input fills its container; the three-column month grid keeps a fixed compact width."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Arrow Down"
+        ],
+        "action": "Opens the popover from the input."
+      },
+      {
+        "keys": [
+          "Arrow Left",
+          "Arrow Right"
+        ],
+        "action": "Moves the focused month by one."
+      },
+      {
+        "keys": [
+          "Arrow Up",
+          "Arrow Down"
+        ],
+        "action": "Moves the focused month by three."
+      },
+      {
+        "keys": [
+          "Home",
+          "End"
+        ],
+        "action": "Jumps to January or December."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Selects the focused month."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the popover."
+      }
+    ],
+    "notes": [
+      "The selected month is exposed with aria-pressed and the current month with aria-current.",
+      "The visible year is announced through an aria-live region as it changes."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "MonthPicker",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "aria-describedby",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name when there is no visible label.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the input invalid for form validation and screen readers.",
+          "name": "aria-invalid",
+          "required": false,
+          "type": "boolean | \"true\" | \"false\""
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial selected month when uncontrolled; the day is always the first.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "Date"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered below the input.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Prevents interaction with the input.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Explicit id; otherwise Field or an internal id is used.",
+          "name": "id",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Latest selectable month (inclusive).",
+          "name": "maxDate",
+          "required": false,
+          "type": "Date"
+        },
+        {
+          "defaultValue": "",
+          "description": "Earliest selectable month (inclusive).",
+          "name": "minDate",
+          "required": false,
+          "type": "Date"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the first day of the selected month.",
+          "name": "onValueChange",
+          "required": false,
+          "type": "(date: Date) => void"
+        },
+        {
+          "defaultValue": "Pick a month",
+          "description": "Text shown when no month is selected.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the input as required.",
+          "name": "required",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled selected month; only the year and month are significant.",
+          "name": "value",
+          "required": false,
+          "type": "Date"
+        }
+      ]
+    }
+  ]
+}

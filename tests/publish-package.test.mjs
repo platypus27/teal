@@ -7,6 +7,7 @@ import { create as createTar } from 'tar'
 
 import { sha512Integrity } from '../packages/teal/scripts/package-contract.mjs'
 import {
+  publishOrVerifyArtifact,
   publishValidatedArtifact,
   validateReleaseArtifact,
 } from '../packages/teal/scripts/publish-package.mjs'
@@ -21,7 +22,7 @@ const packageJson = {
 }
 const sourceCommit = '0123456789abcdef0123456789abcdef01234567'
 
-async function artifactFixture(t, archivedPackageJson = packageJson) {
+async function artifactFixture(t, archivedPackageJson = { ...packageJson, gitHead: sourceCommit }) {
   const artifactDirectory = await mkdtemp(join(tmpdir(), 'teal-publish-contract-'))
   t.after(() => rm(artifactDirectory, { recursive: true, force: true }))
   const packageRoot = join(artifactDirectory, 'package')
@@ -66,7 +67,7 @@ test('binds the retained artifact to the full source commit', async (t) => {
 })
 
 test('derives package identity from the exact tarball', async (t) => {
-  const fixture = await artifactFixture(t, { ...packageJson, version: '0.4.0' })
+  const fixture = await artifactFixture(t, { ...packageJson, version: '0.4.0', gitHead: sourceCommit })
   await assert.rejects(
     validateReleaseArtifact({
       ...fixture,
@@ -74,6 +75,18 @@ test('derives package identity from the exact tarball', async (t) => {
       currentSourceCommit: sourceCommit,
     }),
     /archive package version mismatch/i,
+  )
+})
+
+test('rejects an archive without the exact source gitHead', async (t) => {
+  const fixture = await artifactFixture(t, packageJson)
+  await assert.rejects(
+    validateReleaseArtifact({
+      ...fixture,
+      currentPackageJson: packageJson,
+      currentSourceCommit: sourceCommit,
+    }),
+    /archive gitHead mismatch/i,
   )
 })
 
@@ -94,6 +107,84 @@ test('publishes only the validated retained tarball', async (t) => {
     args: ['publish', fixture.descriptor.tarballPath, '--access', 'public', '--provenance'],
   }])
   assert.deepEqual(announcements, ['New tag: @kryv/teal@0.4.1\n'])
+})
+
+test('publishes an absent version then requires exact registry integrity, gitHead, and provenance', async (t) => {
+  const fixture = await artifactFixture(t)
+  const validated = await validateReleaseArtifact({
+    ...fixture,
+    currentPackageJson: packageJson,
+    currentSourceCommit: sourceCommit,
+  })
+  const calls = []
+  let registry
+  const result = await publishOrVerifyArtifact(validated, {
+    inspect: async () => registry,
+    publish: async (artifact) => {
+      calls.push(artifact.tarballPath)
+      registry = {
+        name: packageJson.name,
+        version: packageJson.version,
+        gitHead: sourceCommit,
+        dist: {
+          integrity: fixture.descriptor.integrity,
+          attestations: { url: 'https://registry.npmjs.org/-/npm/v1/attestations/example' },
+        },
+      }
+    },
+  })
+
+  assert.deepEqual(calls, [fixture.descriptor.tarballPath])
+  assert.deepEqual(result, { published: true, registry })
+})
+
+test('reconciles an exact already-published version without publishing again', async (t) => {
+  const fixture = await artifactFixture(t)
+  const validated = await validateReleaseArtifact({
+    ...fixture,
+    currentPackageJson: packageJson,
+    currentSourceCommit: sourceCommit,
+  })
+  const registry = {
+    name: packageJson.name,
+    version: packageJson.version,
+    gitHead: sourceCommit,
+    dist: {
+      integrity: fixture.descriptor.integrity,
+      attestations: { url: 'https://registry.npmjs.org/-/npm/v1/attestations/example' },
+    },
+  }
+  const result = await publishOrVerifyArtifact(validated, {
+    inspect: async () => registry,
+    publish: async () => assert.fail('exact published artifact must not be republished'),
+  })
+
+  assert.deepEqual(result, { published: false, registry })
+})
+
+test('fails closed when an existing registry version differs from the reviewed artifact', async (t) => {
+  const fixture = await artifactFixture(t)
+  const validated = await validateReleaseArtifact({
+    ...fixture,
+    currentPackageJson: packageJson,
+    currentSourceCommit: sourceCommit,
+  })
+
+  await assert.rejects(
+    publishOrVerifyArtifact(validated, {
+      inspect: async () => ({
+        name: packageJson.name,
+        version: packageJson.version,
+        gitHead: 'f'.repeat(40),
+        dist: {
+          integrity: fixture.descriptor.integrity,
+          attestations: { url: 'https://registry.npmjs.org/-/npm/v1/attestations/example' },
+        },
+      }),
+      publish: async () => assert.fail('conflicting version must not be overwritten'),
+    }),
+    /registry gitHead mismatch/i,
+  )
 })
 
 test('rejects symlink ambiguity in the exact tarball', async (t) => {

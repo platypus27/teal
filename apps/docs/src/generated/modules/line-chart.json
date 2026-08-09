@@ -1,0 +1,152 @@
+{
+  "id": "line-chart",
+  "name": "Line Chart",
+  "apiNames": [
+    "LineChart"
+  ],
+  "description": "Multi-series SVG line chart with axis ticks, focusable points, simple or custom tooltips, a legend, and a built-in accessible data table.",
+  "usage": "<LineChart\n  label=\"Revenue and costs per month\"\n  labels={['Jan', 'Feb', 'Mar', 'Apr']}\n  series={[\n    { name: 'Revenue', data: [42, 55, 48, 61] },\n    { name: 'Costs', data: [30, 34, 32, 38] },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "Axes and grid",
+      "description": "Y ticks from a nice-number scale (baseline includes zero unless all values are negative); x ticks from the category labels."
+    },
+    {
+      "part": "Series line",
+      "description": "One polyline per series in a palette or custom color."
+    },
+    {
+      "part": "Point markers",
+      "description": "Focusable circles that enlarge on hover or focus and show a title or renderTooltip content."
+    },
+    {
+      "part": "Legend and data table",
+      "description": "Color-keyed legend below the chart plus a toggleable, visually hidden data table."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Keep it to about four series so lines stay distinguishable.",
+      "Use renderTooltip when values need units or formatting beyond the default title.",
+      "Write the label as the chart's takeaway; it is the SVG accessible name."
+    ],
+    "donts": [
+      "Don't use it for unordered category comparisons; use BarChart.",
+      "Don't disable showPoints when keyboard users must read values; the points are the tab stops.",
+      "Don't exceed a dozen x labels; they collide at small widths."
+    ]
+  },
+  "related": [
+    "area-chart",
+    "sparkline",
+    "chart-container"
+  ],
+  "examples": [
+    {
+      "title": "Multi-series with legend",
+      "description": "Each series gets a palette color, a legend entry, and focusable points with simple title tooltips; axes and grid lines come from shared primitives."
+    },
+    {
+      "title": "Custom tooltip",
+      "description": "renderTooltip replaces the simple title with a floating tooltip fed the hovered or focused point, its series, and its coordinates."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Showing trends over ordered categories or time for one or more series, where the shape of change matters more than individual values.",
+    "avoidWhen": "Comparing discrete categories where lengths read better than slopes; use a BarChart, or a Sparkline for an inline glanceable trend.",
+    "behavior": "Points are hoverable and keyboard-focusable; hovering or focusing a point enlarges it and shows either a simple SVG title or the renderTooltip content. The y axis always includes zero unless every value is negative.",
+    "responsive": "The SVG scales down proportionally with its container while the legend and data table wrap below; keep label counts small on narrow screens."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus through the data points; focusing a point shows its tooltip."
+      }
+    ],
+    "notes": [
+      "The chart is a labelled image whose summary comes from the label prop; every point also carries an aria-label with series, category, and value.",
+      "A visually hidden data table with all series values is always present and can be revealed with the built-in toggle."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "LineChart",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Accessible chart summary, applied as the SVG aria-label.",
+          "name": "label",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "X-axis category labels.",
+          "name": "labels",
+          "required": true,
+          "type": "string[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Custom tooltip renderer for the hovered or focused point; falls back to a simple SVG title.",
+          "name": "renderTooltip",
+          "required": false,
+          "type": "(point: LineChartPoint) => ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "One or more series to plot.",
+          "name": "series",
+          "required": true,
+          "type": "LineChartSeries[]"
+        },
+        {
+          "defaultValue": "300",
+          "description": "SVG height in pixels.",
+          "name": "height",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "true",
+          "description": "Shows axes with tick labels.",
+          "name": "showAxis",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "true",
+          "description": "Shows horizontal grid lines.",
+          "name": "showGrid",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "true",
+          "description": "Shows a legend below the chart.",
+          "name": "showLegend",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "true",
+          "description": "Draws focusable point markers at each value.",
+          "name": "showPoints",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "560",
+          "description": "SVG width in pixels.",
+          "name": "width",
+          "required": false,
+          "type": "number"
+        }
+      ]
+    }
+  ]
+}

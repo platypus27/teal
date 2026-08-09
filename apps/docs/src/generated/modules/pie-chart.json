@@ -1,0 +1,139 @@
+{
+  "id": "pie-chart",
+  "name": "Pie Chart",
+  "apiNames": [
+    "PieChart"
+  ],
+  "description": "SVG pie and donut chart with keyboard-focusable segments, percentage labels, a legend, and a built-in accessible data table.",
+  "usage": "<PieChart\n  label=\"Budget share per department\"\n  data={[\n    { name: 'Engineering', value: 45 },\n    { name: 'Design', value: 20 },\n    { name: 'Marketing', value: 25 },\n  ]}\n  innerRadius={0.6}\n/>",
+  "anatomy": [
+    {
+      "part": "Segment",
+      "description": "Focusable path per positive value, sweeping clockwise from the top."
+    },
+    {
+      "part": "Percentage label",
+      "description": "Text drawn on segments of five percent or larger, hidden from assistive tech."
+    },
+    {
+      "part": "Donut hole",
+      "description": "innerRadius carves the center out as a fraction of the outer radius."
+    },
+    {
+      "part": "Legend and data table",
+      "description": "Color-keyed legend plus a toggleable, visually hidden table of values and shares."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Limit it to about five segments; merge the tail into 'Other'.",
+      "Order segments meaningfully, largest first, since the sweep starts at the top.",
+      "Keep the legend or labels visible so every segment is named."
+    ],
+    "donts": [
+      "Don't compare similar-sized values; angles deceive, so use BarChart.",
+      "Don't pass zero or negative values expecting a slice; they are skipped.",
+      "Don't stack multiple pies for comparison; use a stacked BarChart or DataTable."
+    ]
+  },
+  "related": [
+    "bar-chart",
+    "chart-container",
+    "gauge-chart"
+  ],
+  "examples": [
+    {
+      "title": "Pie with labels and legend",
+      "description": "Segments are drawn clockwise from the top with percentage labels on any slice large enough to fit them, plus a color-keyed legend."
+    },
+    {
+      "title": "Donut",
+      "description": "innerRadius sets the hole as a fraction of the outer radius, turning the pie into a donut while keeping the same labels and keyboard support."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Showing a small set of parts that make up a whole, where rough proportions matter more than exact comparison.",
+    "avoidWhen": "Comparing more than about five segments or values of similar size; angles are hard to judge, so use a BarChart instead.",
+    "behavior": "Segments are tab stops and arrow keys cycle focus between them with Home and End jumping to the first and last; each segment announces its name, value, and percentage. Non-positive values are skipped.",
+    "responsive": "The square SVG scales down proportionally with its container while the legend wraps below; percentage labels drop off segments under five percent."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Arrow Right",
+          "Arrow Down"
+        ],
+        "action": "Moves focus to the next segment, wrapping at the end."
+      },
+      {
+        "keys": [
+          "Arrow Left",
+          "Arrow Up"
+        ],
+        "action": "Moves focus to the previous segment, wrapping at the start."
+      },
+      {
+        "keys": [
+          "Home",
+          "End"
+        ],
+        "action": "Moves focus to the first or last segment."
+      }
+    ],
+    "notes": [
+      "The chart is a labelled image; every segment is focusable with an aria-label of name, value, and percentage.",
+      "A visually hidden data table lists each segment with its value and computed share, revealed by the built-in toggle."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "PieChart",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Segments of the pie.",
+          "name": "data",
+          "required": true,
+          "type": "PieChartDatum[]"
+        },
+        {
+          "defaultValue": "0",
+          "description": "Inner radius as a fraction (0–0.95) of the outer radius; values above 0 render a donut.",
+          "name": "innerRadius",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible chart summary, applied as the SVG aria-label.",
+          "name": "label",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "true",
+          "description": "Shows percentage labels on segments large enough to fit them.",
+          "name": "showLabels",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "true",
+          "description": "Shows a legend below the chart.",
+          "name": "showLegend",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "280",
+          "description": "Chart size in pixels (both width and height).",
+          "name": "size",
+          "required": false,
+          "type": "number"
+        }
+      ]
+    }
+  ]
+}

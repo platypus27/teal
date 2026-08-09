@@ -1,0 +1,135 @@
+{
+  "id": "tags-input",
+  "name": "Tags Input",
+  "apiNames": [
+    "TagsInput"
+  ],
+  "description": "A token entry field that turns typed text into removable chips.",
+  "usage": "const [tags, setTags] = useState(['design'])\n\n<TagsInput label=\"Add label\" value={tags} onChange={setTags} placeholder=\"Add a label…\" />",
+  "anatomy": [
+    {
+      "part": "Field",
+      "description": "The container hosting the committed chips and the draft input."
+    },
+    {
+      "part": "Chips",
+      "description": "Committed tokens with individual remove actions."
+    },
+    {
+      "part": "Draft input",
+      "description": "The inline text field where the next tag is typed."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Commit on Enter and comma so both habits work.",
+      "Set max when the backend caps the list, and say so nearby.",
+      "Keep tokens to one or two words so chips stay scannable."
+    ],
+    "donts": [
+      "Don't use it for a fixed option set; use MultiSelect.",
+      "Don't commit empty or whitespace-only tags.",
+      "Don't expect fuzzy dedupe; exact duplicates are ignored, so normalize case before commit if needed."
+    ]
+  },
+  "related": [
+    "multi-select",
+    "chip",
+    "input",
+    "combobox"
+  ],
+  "examples": [
+    {
+      "title": "Token entry",
+      "description": "Enter or comma commits a tag; Backspace on an empty draft removes the last one."
+    },
+    {
+      "title": "Capped list",
+      "description": "max limits the reviewer list to three entries and the cap is stated nearby."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A field collects an open-ended list of short tokens.",
+    "avoidWhen": "Values come from a fixed set; use MultiSelect.",
+    "behavior": "Enter or comma commits; duplicates are ignored and chips remove individually.",
+    "responsive": "Chips wrap inside the field as the list grows."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Enter",
+          ","
+        ],
+        "action": "Commits the draft as a new tag."
+      },
+      {
+        "keys": [
+          "Backspace"
+        ],
+        "action": "Removes the last tag when the draft is empty."
+      },
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus to the chip remove buttons and out of the field."
+      }
+    ],
+    "notes": [
+      "Chips mirror the caller-owned value and each carries a labeled remove action.",
+      "Duplicate tags are ignored instead of being committed twice.",
+      "The max prop stops new entries once the cap is reached."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "TagsInput",
+      "props": [
+        {
+          "defaultValue": "false",
+          "description": "Prevents adding or removing tags.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "Add tag",
+          "description": "Accessible name for the text entry.",
+          "name": "label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Maximum number of tags; further entries are ignored.",
+          "name": "max",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the next tag list after every add or remove.",
+          "name": "onChange",
+          "required": false,
+          "type": "(tags: string[]) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Placeholder shown in the text entry.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Current tags.",
+          "name": "value",
+          "required": true,
+          "type": "string[]"
+        }
+      ]
+    }
+  ]
+}

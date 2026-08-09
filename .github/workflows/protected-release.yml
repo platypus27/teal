@@ -1,0 +1,318 @@
+name: Protected release
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: Exact protected mutation to authorize
+        required: true
+        type: choice
+        options:
+          - npm-publish
+          - docs-deploy
+      source_run_id:
+        description: Pipeline run that produced the attested candidate
+        required: true
+        type: string
+      source_run_attempt:
+        description: Attempt of the pipeline run that produced the candidate
+        required: true
+        type: string
+      source_revision:
+        description: Exact 40-character candidate source commit
+        required: true
+        type: string
+      candidate_sha256:
+        description: Exact sha256 of candidate-manifest.json
+        required: true
+        type: string
+      approval_manifest_base64:
+        description: Canonical owner approval manifest encoded as base64
+        required: true
+        type: string
+      approval_digest:
+        description: Exact sha256 of the canonical approval manifest
+        required: true
+        type: string
+      approval_signature:
+        description: Base64 Ed25519 signature over the approval digest
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: protected-release-${{ inputs.operation }}
+  cancel-in-progress: false
+
+jobs:
+  npm_publish:
+    name: Publish exact npm candidate
+    if: >-
+      ${{
+        github.repository == 'platypus27/teal' &&
+        github.ref == 'refs/heads/master' &&
+        github.ref_protected == true &&
+        inputs.operation == 'npm-publish'
+      }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: teal-release
+    permissions:
+      actions: read # Download the exact artifact from its producing workflow run.
+      attestations: read # Verify candidate provenance before owner authorization.
+      contents: write # Create the replay tag and reconcile the exact release.
+      id-token: write # Publish to npm through trusted OIDC publishing.
+    steps:
+      - name: Download prior candidate
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: teal-release-candidate-${{ inputs.source_run_id }}-${{ inputs.source_run_attempt }}
+          path: ${{ runner.temp }}/teal-release-candidate
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ github.token }}
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.19.0
+          registry-url: https://registry.npmjs.org
+      - run: npm install --global npm@11.19.0 # zizmor: ignore[adhoc-packages] exact npm bootstrap precedes retained-package verification
+      - name: Verify protected candidate provenance and closure
+        env:
+          CANDIDATE_SHA256: ${{ inputs.candidate_sha256 }}
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_REVISION: ${{ inputs.source_revision }}
+          SOURCE_RUN_ATTEMPT: ${{ inputs.source_run_attempt }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_RUN_ID" =~ ^[1-9][0-9]{0,19}$ ]]
+          [[ "$SOURCE_RUN_ATTEMPT" =~ ^[1-9][0-9]{0,2}$ ]]
+          [[ "$SOURCE_REVISION" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$CANDIDATE_SHA256" =~ ^sha256:[0-9a-f]{64}$ ]]
+          candidate_root="$RUNNER_TEMP/teal-release-candidate"
+          manifest="$candidate_root/candidate-manifest.json"
+          test -f "$manifest"
+          test "$CANDIDATE_SHA256" = "sha256:$(sha256sum "$manifest" | cut -d' ' -f1)"
+          gh attestation verify "$manifest" \
+            --repo "$GITHUB_REPOSITORY" \
+            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/pipeline.yml" \
+            --source-ref refs/heads/master \
+            --source-digest "$SOURCE_REVISION" \
+            --deny-self-hosted-runners
+          node "$candidate_root/runtime/teal_release_candidate.mjs" verify \
+            --root "$candidate_root" \
+            --repository "$GITHUB_REPOSITORY" \
+            --workflow platypus27/teal/.github/workflows/pipeline.yml \
+            --ref refs/heads/master \
+            --source-commit "$SOURCE_REVISION" \
+            --source-run-id "$SOURCE_RUN_ID" \
+            --source-run-attempt "$SOURCE_RUN_ATTEMPT"
+      - name: Reconstruct exact owner decision
+        env:
+          APPROVAL_MANIFEST_BASE64: ${{ inputs.approval_manifest_base64 }}
+          OWNER_PUBLIC_KEY: ${{ secrets.TEAL_OWNER_APPROVAL_PUBLIC_KEY }}
+        run: |
+          set -euo pipefail
+          approval_root="$RUNNER_TEMP/teal-owner-approval"
+          install -d -m 0700 "$approval_root"
+          test -n "$APPROVAL_MANIFEST_BASE64"
+          test -n "$OWNER_PUBLIC_KEY"
+          printf '%s' "$APPROVAL_MANIFEST_BASE64" | base64 --decode > "$approval_root/manifest.json"
+          printf '%s\n' "$OWNER_PUBLIC_KEY" > "$approval_root/owner.pub.pem"
+          chmod 0600 "$approval_root/manifest.json" "$approval_root/owner.pub.pem"
+      - name: Verify and durably consume exact owner approval
+        env:
+          APPROVAL_DIGEST: ${{ inputs.approval_digest }}
+          APPROVAL_SIGNATURE: ${{ inputs.approval_signature }}
+          CANDIDATE_SHA256: ${{ inputs.candidate_sha256 }}
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_REVISION: ${{ inputs.source_revision }}
+          SOURCE_RUN_ATTEMPT: ${{ inputs.source_run_attempt }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          set -euo pipefail
+          candidate_root="$RUNNER_TEMP/teal-release-candidate"
+          approval_root="$RUNNER_TEMP/teal-owner-approval"
+          verify=(
+            node "$candidate_root/runtime/verify-owner-approval.mjs"
+            --manifest "$approval_root/manifest.json"
+            --descriptor "$candidate_root/npm/artifact.json"
+            --digest "$APPROVAL_DIGEST"
+            --signature "$APPROVAL_SIGNATURE"
+            --public-key "$approval_root/owner.pub.pem"
+            --trust-anchor "$candidate_root/infra/release-owner-approval.json"
+            --operation npm-publish
+            --candidate-sha256 "$CANDIDATE_SHA256"
+            --repository "$GITHUB_REPOSITORY"
+            --environment teal-release
+            --workflow platypus27/teal/.github/workflows/protected-release.yml
+            --ref refs/heads/master
+            --source-commit "$SOURCE_REVISION"
+            --source-run-attempt "$SOURCE_RUN_ATTEMPT"
+            --source-run-id "$SOURCE_RUN_ID"
+          )
+          authorization_root="$RUNNER_TEMP/teal-npm-authorization"
+          install -d -m 0700 "$authorization_root"
+          approval_ref="refs/tags/kryv-approval/npm-publish/${CANDIDATE_SHA256#sha256:}/${APPROVAL_DIGEST#sha256:}"
+          approval_api_ref="${approval_ref#refs/}"
+          verification_mode=fresh
+          if existing_ref="$(gh api \
+            "repos/$GITHUB_REPOSITORY/git/ref/$approval_api_ref" \
+            --jq '.object.type + " " + .object.sha' \
+            2>"$authorization_root/ref-error")"; then
+            test "$existing_ref" = "commit $SOURCE_REVISION"
+            verification_mode=durable-recovery
+          else
+            if ! grep -Eq 'HTTP 404|Not Found' "$authorization_root/ref-error"; then
+              cat "$authorization_root/ref-error" >&2
+              exit 1
+            fi
+            test "$GITHUB_SHA" = "$SOURCE_REVISION"
+          fi
+          "${verify[@]}" --verification-mode "$verification_mode"
+          if [[ "$verification_mode" == fresh ]]; then
+            gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" \
+              -f "ref=$approval_ref" \
+              -f "sha=$SOURCE_REVISION"
+          fi
+          printf '%s\n' "$verification_mode" > "$authorization_root/mode"
+          chmod 0600 "$authorization_root/mode"
+      - name: Publish exact artifact with publish:package
+        env:
+          APPROVAL_DIGEST: ${{ inputs.approval_digest }}
+          APPROVAL_SIGNATURE: ${{ inputs.approval_signature }}
+          CANDIDATE_SHA256: ${{ inputs.candidate_sha256 }}
+          NPM_CONFIG_PROVENANCE: true
+          PUBLICATION_RUN_ATTEMPT: ${{ github.run_attempt }}
+          PUBLICATION_RUN_ID: ${{ github.run_id }}
+          SOURCE_REVISION: ${{ inputs.source_revision }}
+          SOURCE_RUN_ATTEMPT: ${{ inputs.source_run_attempt }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          set -euo pipefail
+          candidate_root="$RUNNER_TEMP/teal-release-candidate"
+          approval_root="$RUNNER_TEMP/teal-owner-approval"
+          authorization_root="$RUNNER_TEMP/teal-npm-authorization"
+          verification_mode="$(<"$authorization_root/mode")"
+          publication_mode=()
+          if [[ "$verification_mode" == durable-recovery ]]; then
+            publication_mode+=(--recovery-only)
+          else
+            test "$verification_mode" = fresh
+            test "$GITHUB_SHA" = "$SOURCE_REVISION"
+          fi
+          node "$candidate_root/runtime/verify-owner-approval.mjs" \
+            --manifest "$approval_root/manifest.json" \
+            --descriptor "$candidate_root/npm/artifact.json" \
+            --digest "$APPROVAL_DIGEST" \
+            --signature "$APPROVAL_SIGNATURE" \
+            --public-key "$approval_root/owner.pub.pem" \
+            --trust-anchor "$candidate_root/infra/release-owner-approval.json" \
+            --operation npm-publish \
+            --candidate-sha256 "$CANDIDATE_SHA256" \
+            --repository "$GITHUB_REPOSITORY" \
+            --environment teal-release \
+            --workflow platypus27/teal/.github/workflows/protected-release.yml \
+            --ref refs/heads/master \
+            --source-commit "$SOURCE_REVISION" \
+            --source-run-attempt "$SOURCE_RUN_ATTEMPT" \
+            --source-run-id "$SOURCE_RUN_ID" \
+            --verification-mode "$verification_mode"
+          node "$candidate_root/runtime/publish-candidate-package.mjs" \
+            --candidate-root "$candidate_root" \
+            --publication-run-id "$PUBLICATION_RUN_ID" \
+            --publication-run-attempt "$PUBLICATION_RUN_ATTEMPT" \
+            --source-commit "$SOURCE_REVISION" \
+            "${publication_mode[@]}"
+      - name: Reconcile exact tag and GitHub release with reconcile:release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_REVISION: ${{ inputs.source_revision }}
+        run: |
+          set -euo pipefail
+          candidate_root="$RUNNER_TEMP/teal-release-candidate"
+          node "$candidate_root/runtime/reconcile-candidate-release.mjs" \
+            --candidate-root "$candidate_root" \
+            --repository "$GITHUB_REPOSITORY" \
+            --source-commit "$SOURCE_REVISION"
+
+  docs_deploy:
+    name: Deploy exact documentation candidate
+    if: >-
+      ${{
+        github.repository == 'platypus27/teal' &&
+        github.ref == 'refs/heads/master' &&
+        github.ref_protected == true &&
+        inputs.operation == 'docs-deploy'
+      }}
+    runs-on: [self-hosted, linux, teal-production]
+    timeout-minutes: 90
+    environment: teal-production
+    permissions:
+      actions: read # Download the exact artifact from its producing workflow run.
+      attestations: read # Verify candidate provenance before owner authorization.
+      contents: read
+      packages: write # Push the owner-approved docs image to GHCR.
+    steps:
+      - name: Download prior candidate
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: teal-release-candidate-${{ inputs.source_run_id }}-${{ inputs.source_run_attempt }}
+          path: ${{ runner.temp }}/teal-release-candidate
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ github.token }}
+      - name: Verify protected candidate attestation
+        env:
+          CANDIDATE_SHA256: ${{ inputs.candidate_sha256 }}
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_REVISION: ${{ inputs.source_revision }}
+          SOURCE_RUN_ATTEMPT: ${{ inputs.source_run_attempt }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_RUN_ID" =~ ^[1-9][0-9]{0,19}$ ]]
+          [[ "$SOURCE_RUN_ATTEMPT" =~ ^[1-9][0-9]{0,2}$ ]]
+          [[ "$SOURCE_REVISION" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$CANDIDATE_SHA256" =~ ^sha256:[0-9a-f]{64}$ ]]
+          manifest="$RUNNER_TEMP/teal-release-candidate/candidate-manifest.json"
+          test "$CANDIDATE_SHA256" = "sha256:$(sha256sum "$manifest" | cut -d' ' -f1)"
+          gh attestation verify "$manifest" \
+            --repo "$GITHUB_REPOSITORY" \
+            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/pipeline.yml" \
+            --source-ref refs/heads/master \
+            --source-digest "$SOURCE_REVISION" \
+            --deny-self-hosted-runners
+      - name: Reconstruct exact owner decision
+        env:
+          APPROVAL_MANIFEST_BASE64: ${{ inputs.approval_manifest_base64 }}
+        run: |
+          set -euo pipefail
+          approval_root="$RUNNER_TEMP/teal-owner-approval"
+          install -d -m 0700 "$approval_root"
+          test -n "$APPROVAL_MANIFEST_BASE64"
+          printf '%s' "$APPROVAL_MANIFEST_BASE64" | base64 --decode > "$approval_root/manifest.json"
+          chmod 0600 "$approval_root/manifest.json"
+      - name: Delegate exact candidate to fixed production controller
+        env:
+          APPROVAL_DIGEST: ${{ inputs.approval_digest }}
+          APPROVAL_SIGNATURE: ${{ inputs.approval_signature }}
+          CANDIDATE_SHA256: ${{ inputs.candidate_sha256 }}
+          REGISTRY_TOKEN: ${{ github.token }}
+          SOURCE_REVISION: ${{ inputs.source_revision }}
+          SOURCE_RUN_ATTEMPT: ${{ inputs.source_run_attempt }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$REGISTRY_TOKEN" | sudo -n /usr/local/libexec/kryv-teal-production-controller deploy \
+            --candidate-root "$RUNNER_TEMP/teal-release-candidate" \
+            --candidate-sha256 "$CANDIDATE_SHA256" \
+            --source-commit "$SOURCE_REVISION" \
+            --source-run-id "$SOURCE_RUN_ID" \
+            --source-run-attempt "$SOURCE_RUN_ATTEMPT" \
+            --approval-manifest "$RUNNER_TEMP/teal-owner-approval/manifest.json" \
+            --approval-digest "$APPROVAL_DIGEST" \
+            --approval-signature "$APPROVAL_SIGNATURE" \
+            --registry-user "$GITHUB_ACTOR" \
+            --registry-token-stdin

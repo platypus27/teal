@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ToggleGroup, ToggleGroupItem } from '../src/ToggleGroup'
 
@@ -49,12 +49,13 @@ describe('ToggleGroup', () => {
     )
 
     const left = screen.getByRole('radio', { name: 'Left' })
-    left.focus()
+    await user.tab()
+    expect(left).toHaveFocus()
     // The focused item becomes the group's only tab stop.
     await waitFor(() => expect(left).toHaveAttribute('tabIndex', '0'))
     expect(screen.getByRole('radio', { name: 'Center' })).toHaveAttribute('tabIndex', '-1')
 
-    fireEvent.keyDown(left, { key: 'ArrowRight' })
+    await user.keyboard('{ArrowRight}')
 
     const center = screen.getByRole('radio', { name: 'Center' })
     await waitFor(() => expect(center).toHaveFocus())

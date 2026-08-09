@@ -1,0 +1,123 @@
+{
+  "id": "flex",
+  "name": "Flex",
+  "apiNames": [
+    "Flex"
+  ],
+  "description": "A flex container primitive with direction, gap, alignment and distribution props; defaults to a horizontal row.",
+  "usage": "<Flex\n  gap={3}\n  align=\"center\"\n  justify=\"between\"\n>\n  <span>Label</span>\n  <Button>Action</Button>\n</Flex>",
+  "anatomy": [
+    {
+      "part": "Flex container",
+      "description": "A display-flex root; direction defaults to row."
+    },
+    {
+      "part": "Direction",
+      "description": "row, row-reverse, column or column-reverse along the main axis."
+    },
+    {
+      "part": "Alignment and distribution",
+      "description": "align and justify map to align-items and justify-content."
+    },
+    {
+      "part": "Wrap",
+      "description": "Lets rows flow onto multiple lines when space runs out."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use justify=\"between\" for label-plus-action toolbar rows.",
+      "Enable wrap for tag rows and button groups that must survive narrow widths.",
+      "Use the as prop when the grouping has semantics, such as nav or a list."
+    ],
+    "donts": [
+      "Don't use Flex for a plain evenly spaced stack; Stack is the more specific choice.",
+      "Don't reverse the direction when that would make visual order contradict the DOM reading order.",
+      "Don't duplicate the gap with margins on children."
+    ]
+  },
+  "related": [
+    "stack",
+    "grid",
+    "box"
+  ],
+  "examples": [
+    {
+      "title": "Row with distribution",
+      "description": "Children spread across the row with wrapping enabled, the common toolbar and tag-row shape."
+    },
+    {
+      "title": "Column direction",
+      "description": "The same container stacks children vertically with consistent gaps and start alignment."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Children need one-dimensional arrangement with control over direction, wrapping, alignment and distribution.",
+    "avoidWhen": "You only need an evenly spaced vertical or horizontal stack; Stack is the simpler, more specific choice.",
+    "behavior": "Flex maps props to flexbox values and merges any caller className and style, so one-off overrides stay possible.",
+    "responsive": "Wrap lets rows collapse onto multiple lines; pair with responsive classes when direction itself must change per breakpoint."
+  },
+  "accessibility": {
+    "notes": [
+      "Flex is purely visual; use the as prop for a semantic element (nav, list) when the grouping has meaning.",
+      "Reverse directions change only visual order, so keep the DOM order matching the reading order."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "A flex container primitive with direction, spacing, alignment and\ndistribution props; defaults to a horizontal row.",
+      "displayName": "Flex",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Cross-axis alignment of children.",
+          "name": "align",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "row",
+          "description": "Main axis direction; defaults to 'row'.",
+          "name": "direction",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Spacing between children. Numbers follow the Tailwind spacing scale (n × 0.25rem); strings are used as-is.",
+          "name": "gap",
+          "required": false,
+          "type": "string | number"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Renders as an inline flex container that shrinks to its content.",
+          "name": "inline",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Main-axis distribution of children.",
+          "name": "justify",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Allows children to wrap onto multiple lines when true.",
+          "name": "wrap",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "div",
+          "description": "",
+          "name": "as",
+          "required": false,
+          "type": "ElementType"
+        }
+      ]
+    }
+  ]
+}

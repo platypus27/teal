@@ -1,0 +1,182 @@
+{
+  "id": "speed-dial",
+  "name": "Speed Dial",
+  "apiNames": [
+    "SpeedDial",
+    "SpeedDialAction"
+  ],
+  "description": "A floating button that expands into a fan of related creation actions with full keyboard support.",
+  "usage": "<SpeedDial label=\"Create actions\" position=\"bottom-right\">\n  <SpeedDialAction label=\"New file\" icon={<FilePlus />} />\n  <SpeedDialAction label=\"New folder\" icon={<FolderPlus />} />\n</SpeedDial>",
+  "anatomy": [
+    {
+      "part": "Trigger",
+      "description": "The floating button with aria-haspopup=\"menu\" that expands the fan."
+    },
+    {
+      "part": "Menu",
+      "description": "The role=\"menu\" container whose orientation matches the fan direction."
+    },
+    {
+      "part": "Actions",
+      "description": "SpeedDialAction items rendered as labelled menuitems, each with an icon and label."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Keep the fan to three to six related creation actions.",
+      "Choose the direction that fans into the page rather than off-screen.",
+      "Give every action a short, distinct label."
+    ],
+    "donts": [
+      "Don't use a speed dial for a single action; a FloatingActionButton is faster.",
+      "Don't mix destructive actions into a creation fan."
+    ]
+  },
+  "related": [
+    "floating-action-button",
+    "menu",
+    "action-sheet"
+  ],
+  "examples": [
+    {
+      "title": "Vertical fan",
+      "description": "The default dial expands upward from the bottom-right corner into a stack of labelled actions."
+    },
+    {
+      "title": "Horizontal fan",
+      "description": "Direction left or right fans the actions out sideways, useful near screen edges."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A screen offers three to six related creation actions that deserve one persistent entry point.",
+    "avoidWhen": "There is a single primary action; a plain FloatingActionButton is simpler and faster to use.",
+    "behavior": "Opens on click or keyboard, focuses the first action, closes on Escape or after an action runs, and returns focus to the trigger.",
+    "responsive": "The fixed corner and fan direction keep actions on-screen at any width; choose the direction that points into the page."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Opens or closes the fan from the trigger."
+      },
+      {
+        "keys": [
+          "Arrow Down",
+          "Arrow Right"
+        ],
+        "action": "Moves focus to the next action."
+      },
+      {
+        "keys": [
+          "Arrow Up",
+          "Arrow Left"
+        ],
+        "action": "Moves focus to the previous action."
+      },
+      {
+        "keys": [
+          "Home",
+          "End"
+        ],
+        "action": "Moves focus to the first or last action."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the fan and returns focus to the trigger."
+      }
+    ],
+    "notes": [
+      "The trigger exposes aria-haspopup menu and aria-expanded so the state is announced.",
+      "Actions are menuitems in a labelled menu whose orientation matches the fan direction."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "SpeedDial",
+      "props": [
+        {
+          "defaultValue": "false",
+          "description": "Initial open state when uncontrolled.",
+          "name": "defaultOpen",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "up",
+          "description": "Direction the actions fan out toward.",
+          "name": "direction",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Icon shown on the closed trigger. Defaults to a plus icon.",
+          "name": "icon",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name for the trigger button.",
+          "name": "label",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the dial opens or closes.",
+          "name": "onOpenChange",
+          "required": false,
+          "type": "(open: boolean) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled open state.",
+          "name": "open",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Icon shown on the open trigger. Defaults to an X icon.",
+          "name": "openIcon",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "bottom-right",
+          "description": "Viewport corner the dial is fixed to.",
+          "name": "position",
+          "required": false,
+          "type": "enum"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "SpeedDialAction",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Icon rendered inside the action button.",
+          "name": "icon",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name; also shown as the visible label chip next to the icon.",
+          "name": "label",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

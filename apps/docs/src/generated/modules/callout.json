@@ -1,0 +1,94 @@
+{
+  "id": "callout",
+  "name": "Callout",
+  "apiNames": [
+    "Callout"
+  ],
+  "description": "A quiet admonition surface with a variant icon and accent border, for guidance that informs without interrupting.",
+  "usage": "<Callout variant=\"warning\" title=\"Trial ending soon\">\n  Your trial ends in 5 days. Add a payment method to keep your workspace active.\n</Callout>",
+  "anatomy": [
+    {
+      "part": "Icon",
+      "description": "The variant glyph in a fixed column at the start of the callout."
+    },
+    {
+      "part": "Title",
+      "description": "The optional bold lead-in naming the message."
+    },
+    {
+      "part": "Body",
+      "description": "The flexible text block that wraps beside the icon."
+    },
+    {
+      "part": "Accent border",
+      "description": "The variant-colored edge distinguishing info, success, warning, and danger."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Match the variant to the tone of the message.",
+      "Keep one idea per callout and place it near the content it clarifies.",
+      "Give warnings a title so scanners get the gist first."
+    ],
+    "donts": [
+      "Don't use a callout for urgent or dismissible feedback; use Alert.",
+      "Don't stack callouts until the page becomes a wall of warnings."
+    ]
+  },
+  "related": [
+    "alert",
+    "banner",
+    "card"
+  ],
+  "examples": [
+    {
+      "title": "Info callout",
+      "description": "The default informational admonition, for tips and contextual notes inside a page's flow."
+    },
+    {
+      "title": "Semantic variants",
+      "description": "Success, warning, and danger callouts pair a status color and icon with the message's tone."
+    }
+  ],
+  "guidance": {
+    "useWhen": "You want to highlight guidance, tips, or consequences inline with content, for example notes in settings pages or documentation-style warnings.",
+    "avoidWhen": "The message must be announced immediately or can be dismissed; use Alert instead, which carries live-region semantics and a dismiss action.",
+    "behavior": "Callout is static and non-assertive: it renders no live region and no role by default, so screen readers meet it in reading order rather than as an announcement.",
+    "responsive": "The icon column stays fixed while the text block flexes and wraps, so long messages remain readable at narrow widths."
+  },
+  "accessibility": {
+    "notes": [
+      "No role=alert or role=status is set by default; the callout is part of the normal reading flow. Add role='note' or a live region yourself if the context requires it.",
+      "Variant icons are decorative and hidden from assistive technology; the variant is conveyed by the title and body text."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Callout",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Icon override; defaults to the variant's standard icon. Always hidden from assistive technology.",
+          "name": "icon",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Bold leading text of the callout.",
+          "name": "title",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "variant",
+          "required": false,
+          "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | null"
+        }
+      ]
+    }
+  ]
+}

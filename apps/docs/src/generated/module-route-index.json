@@ -1,0 +1,2336 @@
+{
+  "button": {
+    "name": "Button",
+    "apiNames": [
+      "Button",
+      "IconButton"
+    ],
+    "description": "Actions with consistent hierarchy, sizing, loading, and accessible icon treatment.",
+    "imports": [
+      "Button",
+      "IconButton"
+    ],
+    "usage": "<Button variant=\"primary\">Save changes</Button>\n<IconButton label=\"More options\"><MoreHorizontal /></IconButton>"
+  },
+  "button-group": {
+    "name": "Button Group",
+    "apiNames": [
+      "ButtonGroup"
+    ],
+    "description": "An attached cluster of related actions with hairline seams and shared corner radius.",
+    "imports": [
+      "ButtonGroup",
+      "Button"
+    ],
+    "usage": "<ButtonGroup>\n  <Button variant=\"secondary\">Day</Button>\n  <Button variant=\"secondary\">Week</Button>\n  <Button variant=\"secondary\">Month</Button>\n</ButtonGroup>"
+  },
+  "segmented-control": {
+    "name": "Segmented Control",
+    "apiNames": [
+      "SegmentedControl"
+    ],
+    "description": "A mutually exclusive option switcher with a sliding selection pill.",
+    "imports": [
+      "SegmentedControl"
+    ],
+    "usage": "<SegmentedControl\n  aria-label=\"Billing period\"\n  defaultValue=\"monthly\"\n  options={[\n    { value: 'monthly', label: 'Monthly' },\n    { value: 'yearly', label: 'Yearly' },\n  ]}\n/>"
+  },
+  "link": {
+    "name": "Link",
+    "apiNames": [
+      "Link"
+    ],
+    "description": "Themed inline and standalone links with an external indicator.",
+    "imports": [
+      "Link"
+    ],
+    "usage": "<Link href=\"/projects\">View projects</Link>\n<Link href=\"https://status.example\" external>Status page</Link>"
+  },
+  "toggle": {
+    "name": "Toggle",
+    "apiNames": [
+      "Toggle"
+    ],
+    "description": "A pressed-state button for binary preferences in toolbars and filter rows.",
+    "imports": [
+      "Toggle"
+    ],
+    "usage": "<Toggle aria-label=\"Bold\"><Bold /></Toggle>"
+  },
+  "toolbar": {
+    "name": "Toolbar",
+    "apiNames": [
+      "Toolbar",
+      "ToolbarGroup",
+      "ToolbarSeparator"
+    ],
+    "description": "A horizontal action bar with grouped controls and hairline separators.",
+    "imports": [
+      "Toolbar",
+      "ToolbarGroup",
+      "ToolbarSeparator",
+      "IconButton"
+    ],
+    "usage": "<Toolbar>\n  <ToolbarGroup>\n    <IconButton label=\"Undo\"><Undo2 /></IconButton>\n  </ToolbarGroup>\n  <ToolbarSeparator />\n  <ToolbarGroup>\n    <IconButton label=\"Bold\"><Bold /></IconButton>\n  </ToolbarGroup>\n</Toolbar>"
+  },
+  "split-button": {
+    "name": "Split Button",
+    "apiNames": [
+      "SplitButton"
+    ],
+    "description": "A primary action joined to a menu of related alternatives.",
+    "imports": [
+      "SplitButton"
+    ],
+    "usage": "<SplitButton\n  label=\"Deploy\"\n  onClick={() => undefined}\n  items={[{ id: 'staging', label: 'Deploy to staging', onSelect: () => undefined }]}\n/>"
+  },
+  "action-bar": {
+    "name": "Action Bar",
+    "apiNames": [
+      "ActionBar"
+    ],
+    "description": "A horizontal bar for contextual page-level actions such as a sticky save/cancel bar at the bottom of an editing surface.",
+    "imports": [
+      "ActionBar"
+    ],
+    "usage": "<ActionBar sticky label=\"Edit actions\">\n  <Button variant=\"ghost\">Cancel</Button>\n  <Button variant=\"primary\">Save changes</Button>\n</ActionBar>"
+  },
+  "bulk-action-bar": {
+    "name": "Bulk Action Bar",
+    "apiNames": [
+      "BulkActionBar"
+    ],
+    "description": "A bar that appears when list or table rows are selected, announcing the selection count and offering bulk actions.",
+    "imports": [
+      "BulkActionBar"
+    ],
+    "usage": "<BulkActionBar count={selected.length} onClear={clearSelection}>\n  <Button variant=\"secondary\" size=\"sm\">Archive</Button>\n  <Button variant=\"danger\" size=\"sm\">Delete</Button>\n</BulkActionBar>"
+  },
+  "floating-action-button": {
+    "name": "Floating Action Button",
+    "apiNames": [
+      "FloatingActionButton"
+    ],
+    "description": "A fixed-position primary action button for the single most important creation task on a screen.",
+    "imports": [
+      "FloatingActionButton"
+    ],
+    "usage": "<FloatingActionButton\n  label=\"Create item\"\n  tooltip=\"Add a new item\"\n  position=\"bottom-right\"\n  onClick={createItem}\n/>"
+  },
+  "share-button": {
+    "name": "Share Button",
+    "apiNames": [
+      "ShareButton"
+    ],
+    "description": "A button that opens a small popover with a copy-link action and, where supported, the native share sheet.",
+    "imports": [
+      "ShareButton"
+    ],
+    "usage": "<ShareButton\n  url=\"https://example.com/report/42\"\n  title=\"Q3 report\"\n/>"
+  },
+  "speed-dial": {
+    "name": "Speed Dial",
+    "apiNames": [
+      "SpeedDial",
+      "SpeedDialAction"
+    ],
+    "description": "A floating button that expands into a fan of related creation actions with full keyboard support.",
+    "imports": [
+      "SpeedDial",
+      "SpeedDialAction"
+    ],
+    "usage": "<SpeedDial label=\"Create actions\" position=\"bottom-right\">\n  <SpeedDialAction label=\"New file\" icon={<FilePlus />} />\n  <SpeedDialAction label=\"New folder\" icon={<FolderPlus />} />\n</SpeedDial>"
+  },
+  "field": {
+    "name": "Field",
+    "apiNames": [
+      "Field",
+      "Label"
+    ],
+    "description": "A deep form seam that connects labels, descriptions, errors, and required state.",
+    "imports": [
+      "Field",
+      "Input"
+    ],
+    "usage": "<Field label=\"Display name\" description=\"Shown to other workspace members\" required>\n  <Input defaultValue=\"Avery Chen\" />\n</Field>"
+  },
+  "input": {
+    "name": "Input and TextArea",
+    "apiNames": [
+      "Input",
+      "TextArea"
+    ],
+    "description": "Native text controls with Teal sizing, invalid states, and forwarded refs.",
+    "imports": [
+      "Input",
+      "TextArea"
+    ],
+    "usage": "<Input placeholder=\"Project name\" />\n<TextArea placeholder=\"Notes\" rows={4} />"
+  },
+  "select": {
+    "name": "Select",
+    "apiNames": [
+      "Select"
+    ],
+    "description": "An accessible single-value picker with keyboard navigation, typeahead, and collision-aware positioning.",
+    "imports": [
+      "Select"
+    ],
+    "usage": "<Select\n  aria-label=\"Role\"\n  defaultValue=\"viewer\"\n  options={[\n    { value: 'admin', label: 'Administrator' },\n    { value: 'viewer', label: 'Viewer' },\n  ]}\n/>"
+  },
+  "checkbox": {
+    "name": "Checkbox",
+    "apiNames": [
+      "Checkbox"
+    ],
+    "description": "Boolean and indeterminate selection with an integrated label and description.",
+    "imports": [
+      "Checkbox"
+    ],
+    "usage": "<Checkbox label=\"Include archived projects\" defaultChecked />"
+  },
+  "switch": {
+    "name": "Switch",
+    "apiNames": [
+      "Switch"
+    ],
+    "description": "An immediate boolean setting with explicit labeling and controlled or uncontrolled state.",
+    "imports": [
+      "Switch"
+    ],
+    "usage": "<Switch label=\"Security notifications\" description=\"High-risk account activity\" defaultChecked />"
+  },
+  "radio-group": {
+    "name": "Radio Group",
+    "apiNames": [
+      "RadioGroup"
+    ],
+    "description": "A single-choice option set with an integrated label, description, and subtle borders.",
+    "imports": [
+      "RadioGroup"
+    ],
+    "usage": "<RadioGroup\n  label=\"Home region\"\n  defaultValue=\"eu\"\n  options={[\n    { value: 'eu', label: 'Europe (Frankfurt)' },\n    { value: 'us', label: 'United States (Virginia)' },\n  ]}\n/>"
+  },
+  "slider": {
+    "name": "Slider",
+    "apiNames": [
+      "Slider"
+    ],
+    "description": "A numeric value scrubber with an optional live value readout.",
+    "imports": [
+      "Slider"
+    ],
+    "usage": "<Slider label=\"Notification volume\" defaultValue={[60]} showValue />"
+  },
+  "search-input": {
+    "name": "Search Input",
+    "apiNames": [
+      "SearchInput"
+    ],
+    "description": "A text field with a leading search affordance, clear action, and loading state.",
+    "imports": [
+      "SearchInput"
+    ],
+    "usage": "<SearchInput label=\"Search projects\" placeholder=\"Name or owner…\" />"
+  },
+  "combobox": {
+    "name": "Combobox",
+    "apiNames": [
+      "Combobox"
+    ],
+    "description": "A filterable single-value picker combining free text with a suggestion list.",
+    "imports": [
+      "Combobox"
+    ],
+    "usage": "<Combobox\n  label=\"Assignee\"\n  options={[\n    { value: 'avery', label: 'Avery Chen' },\n    { value: 'morgan', label: 'Morgan Reyes' },\n  ]}\n/>"
+  },
+  "multi-select": {
+    "name": "Multi Select",
+    "apiNames": [
+      "MultiSelect"
+    ],
+    "description": "A filterable picker for several values, shown as removable pills.",
+    "imports": [
+      "MultiSelect"
+    ],
+    "usage": "<MultiSelect\n  label=\"Project roles\"\n  options={[\n    { value: 'admin', label: 'Administrator' },\n    { value: 'editor', label: 'Editor' },\n    { value: 'viewer', label: 'Viewer' },\n  ]}\n/>"
+  },
+  "date-picker": {
+    "name": "Date Picker",
+    "apiNames": [
+      "DatePicker"
+    ],
+    "description": "A single-date field with a keyboard-navigable calendar popover.",
+    "imports": [
+      "DatePicker"
+    ],
+    "usage": "<DatePicker label=\"Start date\" onValueChange={(date) => undefined} />"
+  },
+  "number-input": {
+    "name": "Number Input",
+    "apiNames": [
+      "NumberInput"
+    ],
+    "description": "A numeric field with stepper buttons and min/max clamping.",
+    "imports": [
+      "NumberInput"
+    ],
+    "usage": "<NumberInput label=\"Seats\" defaultValue={4} min={1} max={12} />"
+  },
+  "password-input": {
+    "name": "Password Input",
+    "apiNames": [
+      "PasswordInput"
+    ],
+    "description": "A secret field with an accessible visibility toggle.",
+    "imports": [
+      "PasswordInput"
+    ],
+    "usage": "<PasswordInput label=\"Password\" />"
+  },
+  "file-upload": {
+    "name": "File Upload",
+    "apiNames": [
+      "FileUpload"
+    ],
+    "description": "A drag-and-drop zone with a browse action and a removable file list.",
+    "imports": [
+      "FileUpload"
+    ],
+    "usage": "<FileUpload label=\"Attachments\" multiple onFilesAdded={(files) => undefined} />"
+  },
+  "pin-input": {
+    "name": "PIN Input",
+    "apiNames": [
+      "PinInput"
+    ],
+    "description": "A segmented one-time code field with per-cell navigation, paste support, and masking.",
+    "imports": [
+      "PinInput"
+    ],
+    "usage": "<PinInput label=\"Verification code\" length={6} onComplete={(code) => undefined} />"
+  },
+  "tags-input": {
+    "name": "Tags Input",
+    "apiNames": [
+      "TagsInput"
+    ],
+    "description": "A token entry field that turns typed text into removable chips.",
+    "imports": [
+      "TagsInput"
+    ],
+    "usage": "const [tags, setTags] = useState(['design'])\n\n<TagsInput label=\"Add label\" value={tags} onChange={setTags} placeholder=\"Add a label…\" />"
+  },
+  "input-group": {
+    "name": "Input Group",
+    "apiNames": [
+      "InputGroup",
+      "InputAddon"
+    ],
+    "description": "An input joined with leading or trailing addons such as protocols and units.",
+    "imports": [
+      "InputGroup",
+      "InputAddon",
+      "Input"
+    ],
+    "usage": "<InputGroup>\n  <InputAddon position=\"leading\">https://</InputAddon>\n  <Input aria-label=\"Domain\" placeholder=\"workspace.example\" />\n</InputGroup>"
+  },
+  "editable": {
+    "name": "Editable",
+    "apiNames": [
+      "Editable"
+    ],
+    "description": "Click-to-edit text that commits on Enter or blur and cancels with Escape.",
+    "imports": [
+      "Editable"
+    ],
+    "usage": "<Editable label=\"Project name\" defaultValue=\"Orion\" onSubmit={(value) => undefined} />"
+  },
+  "time-picker": {
+    "name": "Time Picker",
+    "apiNames": [
+      "TimePicker"
+    ],
+    "description": "A segmented hour and minute field with 12- and 24-hour cycles.",
+    "imports": [
+      "TimePicker"
+    ],
+    "usage": "<TimePicker label=\"Start time\" defaultValue=\"09:30\" onChange={(value) => undefined} />"
+  },
+  "date-range-picker": {
+    "name": "Date Range Picker",
+    "apiNames": [
+      "DateRangePicker"
+    ],
+    "description": "A two-click range field with presets and a keyboard-navigable calendar popover.",
+    "imports": [
+      "DateRangePicker"
+    ],
+    "usage": "<DateRangePicker label=\"Report period\" onChange={(range) => undefined} />"
+  },
+  "color-picker": {
+    "name": "Color Picker",
+    "apiNames": [
+      "ColorPicker"
+    ],
+    "description": "A swatch trigger with preset colors and a validated hex field.",
+    "imports": [
+      "ColorPicker"
+    ],
+    "usage": "<ColorPicker label=\"Brand color\" defaultValue=\"#006a6c\" onChange={(value) => undefined} />"
+  },
+  "autosize-textarea": {
+    "name": "Autosize Textarea",
+    "apiNames": [
+      "AutosizeTextarea"
+    ],
+    "description": "A textarea that grows and shrinks with its content, capped by a maximum row count.",
+    "imports": [
+      "AutosizeTextarea"
+    ],
+    "usage": "<AutosizeTextarea\n  label=\"Bio\"\n  minRows={2}\n  maxRows={6}\n  placeholder=\"Tell us about yourself\"\n/>"
+  },
+  "cascader": {
+    "name": "Cascader",
+    "apiNames": [
+      "Cascader"
+    ],
+    "description": "A multi-level option picker that walks a hierarchy column by column and commits the full path of values.",
+    "imports": [
+      "Cascader"
+    ],
+    "usage": "<Cascader\n  label=\"Owning team\"\n  placeholder=\"Pick a team…\"\n  options={[\n    { value: 'engineering', label: 'Engineering', children: [{ value: 'frontend', label: 'Frontend' }] },\n    { value: 'operations', label: 'Operations' },\n  ]}\n  onValueChange={(path) => undefined}\n/>"
+  },
+  "checkbox-card": {
+    "name": "Checkbox Card",
+    "apiNames": [
+      "CheckboxCard"
+    ],
+    "description": "A checkbox rendered as a selectable card with a title, description, and optional icon; works standalone or stacked in groups.",
+    "imports": [
+      "CheckboxCard"
+    ],
+    "usage": "<CheckboxCard\n  title=\"Email digest\"\n  description=\"A weekly summary of activity\"\n  defaultChecked\n  onCheckedChange={(checked) => console.log(checked)}\n/>"
+  },
+  "currency-input": {
+    "name": "Currency Input",
+    "apiNames": [
+      "CurrencyInput"
+    ],
+    "description": "A numeric amount field with a leading currency symbol that formats the value with Intl.NumberFormat on blur.",
+    "imports": [
+      "CurrencyInput"
+    ],
+    "usage": "<CurrencyInput\n  label=\"Invoice total\"\n  currency=\"USD\"\n  locale=\"en-US\"\n  defaultValue={1234.5}\n  onChange={(amount) => console.log(amount)}\n/>"
+  },
+  "date-time-picker": {
+    "name": "Date Time Picker",
+    "apiNames": [
+      "DateTimePicker"
+    ],
+    "description": "A single popover that pairs a calendar grid with time fields and emits one Date.",
+    "imports": [
+      "DateTimePicker"
+    ],
+    "usage": "<DateTimePicker\n  label=\"Meeting start\"\n  value={startsAt}\n  onValueChange={setStartsAt}\n/>"
+  },
+  "fieldset": {
+    "name": "Fieldset",
+    "apiNames": [
+      "Fieldset"
+    ],
+    "description": "A semantic fieldset/legend group for related fields, with optional help text linked to the whole group.",
+    "imports": [
+      "Fieldset",
+      "Field",
+      "Input"
+    ],
+    "usage": "<Fieldset legend=\"Shipping address\">\n  <Field label=\"Street\" required>\n    <Input />\n  </Field>\n</Fieldset>"
+  },
+  "form": {
+    "name": "Form",
+    "apiNames": [
+      "Form"
+    ],
+    "description": "A lightweight form wrapper that collects field values on submit and shares an error map through context, with no form library.",
+    "imports": [
+      "Form",
+      "Field",
+      "Input",
+      "Button"
+    ],
+    "usage": "<Form\n  errors={{ email: 'Use your work email' }}\n  onSubmit={(values) => console.log(values)}\n>\n  <Field label=\"Work email\" required>\n    <Input name=\"email\" type=\"email\" />\n  </Field>\n  <Button type=\"submit\" variant=\"primary\">Save</Button>\n</Form>"
+  },
+  "form-error-summary": {
+    "name": "Form Error Summary",
+    "apiNames": [
+      "FormErrorSummary"
+    ],
+    "description": "A top-of-form alert that lists validation errors as anchor links which focus the offending field.",
+    "imports": [
+      "FormErrorSummary"
+    ],
+    "usage": "<FormErrorSummary\n  errors={[\n    { fieldId: \"email\", label: \"Email\", message: \"Enter a valid email address.\" },\n  ]}\n/>"
+  },
+  "masked-input": {
+    "name": "Masked Input",
+    "apiNames": [
+      "MaskedInput"
+    ],
+    "description": "A text field that enforces a simple digit mask, inserting separators automatically as the user types.",
+    "imports": [
+      "MaskedInput"
+    ],
+    "usage": "<MaskedInput\n  label=\"Date\"\n  mask=\"##/##/####\"\n  onChange={(value) => console.log(value)}\n/>"
+  },
+  "mention-input": {
+    "name": "Mention Input",
+    "apiNames": [
+      "MentionInput"
+    ],
+    "description": "A textarea with @-mention autocomplete that inserts chosen people as plain text tokens.",
+    "imports": [
+      "MentionInput"
+    ],
+    "usage": "<MentionInput\n  label=\"Comment\"\n  placeholder=\"Type @ to mention a teammate…\"\n  options={[{ value: 'ada', label: 'Ada Lovelace' }]}\n  onMentionSelect={(option) => undefined}\n/>"
+  },
+  "month-picker": {
+    "name": "Month Picker",
+    "apiNames": [
+      "MonthPicker"
+    ],
+    "description": "A popover grid of the twelve months with a year stepper for fast month-and-year selection.",
+    "imports": [
+      "MonthPicker"
+    ],
+    "usage": "<MonthPicker\n  label=\"Billing month\"\n  value={month}\n  onValueChange={setMonth}\n/>"
+  },
+  "password-strength-meter": {
+    "name": "Password Strength Meter",
+    "apiNames": [
+      "PasswordStrengthMeter"
+    ],
+    "description": "A progressbar-style meter that visualizes password strength from a caller-supplied or built-in score.",
+    "imports": [
+      "PasswordStrengthMeter"
+    ],
+    "usage": "<PasswordStrengthMeter\n  password={password}\n  score={(value) => zxcvbn(value).score}\n/>"
+  },
+  "phone-input": {
+    "name": "Phone Input",
+    "apiNames": [
+      "PhoneInput"
+    ],
+    "description": "A country calling-code dropdown paired with a national number field that emits an E.164-ish string.",
+    "imports": [
+      "PhoneInput"
+    ],
+    "usage": "<PhoneInput\n  label=\"Phone number\"\n  defaultValue=\"+14155552671\"\n  onChange={(value) => console.log(value)}\n/>"
+  },
+  "radio-card": {
+    "name": "Radio Card",
+    "apiNames": [
+      "RadioCard"
+    ],
+    "description": "A radio group rendered as selectable cards with a title, description, and optional icon, for choices that need explanation.",
+    "imports": [
+      "RadioCard"
+    ],
+    "usage": "<RadioCard\n  label=\"Choose a plan\"\n  defaultValue=\"pro\"\n  options={[\n    { value: 'starter', title: 'Starter', description: 'For side projects' },\n    { value: 'pro', title: 'Pro', description: 'For growing teams' },\n  ]}\n/>"
+  },
+  "range-slider": {
+    "name": "Range Slider",
+    "apiNames": [
+      "RangeSlider"
+    ],
+    "description": "A dual-thumb slider for choosing a low/high pair, with per-thumb labels and an optional value readout.",
+    "imports": [
+      "RangeSlider"
+    ],
+    "usage": "<RangeSlider\n  label=\"Price range\"\n  defaultValue={[20, 80]}\n  onChange={([low, high]) => console.log(low, high)}\n  showValue\n/>"
+  },
+  "rich-text-editor": {
+    "name": "Rich Text Editor",
+    "apiNames": [
+      "RichTextEditor"
+    ],
+    "description": "A lightweight markdown editor whose toolbar formats the textarea selection, with an optional live preview pane.",
+    "imports": [
+      "RichTextEditor"
+    ],
+    "usage": "<RichTextEditor\n  label=\"Release notes\"\n  preview\n  defaultValue=\"## Highlights\n\n- Faster sync for **large workspaces**\"\n  onChange={(value) => undefined}\n/>"
+  },
+  "timezone-select": {
+    "name": "Timezone Select",
+    "apiNames": [
+      "TimezoneSelect"
+    ],
+    "description": "A searchable select over a curated set of IANA timezones with UTC offset labels.",
+    "imports": [
+      "TimezoneSelect"
+    ],
+    "usage": "<TimezoneSelect\n  label=\"Workspace time zone\"\n  value={zone}\n  onValueChange={setZone}\n/>"
+  },
+  "toggle-group": {
+    "name": "Toggle Group",
+    "apiNames": [
+      "ToggleGroup",
+      "ToggleGroupItem"
+    ],
+    "description": "A cluster of Toggle-styled options with roving focus, in mutually exclusive single mode or independent multiple mode.",
+    "imports": [
+      "ToggleGroup",
+      "ToggleGroupItem"
+    ],
+    "usage": "<ToggleGroup type=\"single\" defaultValue=\"left\" aria-label=\"Text alignment\">\n  <ToggleGroupItem value=\"left\">Left</ToggleGroupItem>\n  <ToggleGroupItem value=\"center\">Center</ToggleGroupItem>\n  <ToggleGroupItem value=\"right\">Right</ToggleGroupItem>\n</ToggleGroup>"
+  },
+  "transfer-list": {
+    "name": "Transfer List",
+    "apiNames": [
+      "TransferList"
+    ],
+    "description": "A dual listbox that moves options between an available list and a chosen list with buttons or the keyboard.",
+    "imports": [
+      "TransferList"
+    ],
+    "usage": "<TransferList\n  sourceLabel=\"Available\"\n  targetLabel=\"Selected\"\n  options={[\n    { value: 'design', label: 'Design' },\n    { value: 'engineering', label: 'Engineering' },\n  ]}\n  onValueChange={(values) => undefined}\n/>"
+  },
+  "tree-select": {
+    "name": "Tree Select",
+    "apiNames": [
+      "TreeSelect"
+    ],
+    "description": "A single-select control whose popover shows an expandable, typeahead-enabled tree of options.",
+    "imports": [
+      "TreeSelect"
+    ],
+    "usage": "<TreeSelect\n  label=\"Office\"\n  options={[\n    { value: 'emea', label: 'EMEA', children: [{ value: 'berlin', label: 'Berlin' }] },\n    { value: 'singapore', label: 'Singapore' },\n  ]}\n  onValueChange={(value) => undefined}\n/>"
+  },
+  "year-picker": {
+    "name": "Year Picker",
+    "apiNames": [
+      "YearPicker"
+    ],
+    "description": "A popover grid of years with decade paging for fast year-only selection.",
+    "imports": [
+      "YearPicker"
+    ],
+    "usage": "<YearPicker\n  label=\"Graduation year\"\n  value={year}\n  onValueChange={setYear}\n/>"
+  },
+  "card": {
+    "name": "Card",
+    "apiNames": [
+      "Card",
+      "CardHeader",
+      "CardTitle",
+      "CardDescription",
+      "CardContent",
+      "CardFooter"
+    ],
+    "description": "A structural surface for related content without ambiguous interactive behavior.",
+    "imports": [
+      "Card",
+      "CardHeader",
+      "CardTitle",
+      "CardDescription",
+      "CardContent",
+      "CardFooter"
+    ],
+    "usage": "<Card>\n  <CardHeader>\n    <CardTitle>Security report</CardTitle>\n    <CardDescription>Updated five minutes ago</CardDescription>\n  </CardHeader>\n  <CardContent>No critical findings were detected.</CardContent>\n</Card>"
+  },
+  "launcher-card": {
+    "name": "Launcher Card",
+    "apiNames": [
+      "LauncherCard"
+    ],
+    "description": "An interactive application destination card with an icon, description, optional status, and an honest unavailable state.",
+    "imports": [
+      "LauncherCard",
+      "Badge"
+    ],
+    "usage": "<LauncherCard\n  href=\"https://photos.example\"\n  label=\"Photos\"\n  description=\"Household media, albums, and sharing\"\n  icon={<Camera />}\n  status={<Badge variant=\"success\">Healthy</Badge>}\n/>"
+  },
+  "badge": {
+    "name": "Badge",
+    "apiNames": [
+      "Badge"
+    ],
+    "description": "A compact semantic status indicator using canonical information variants.",
+    "imports": [
+      "Badge"
+    ],
+    "usage": "<Badge variant=\"success\">Deployed</Badge>"
+  },
+  "accordion": {
+    "name": "Accordion",
+    "apiNames": [
+      "Accordion"
+    ],
+    "description": "A stacked disclosure list with single and multi-open modes driven by a compact item interface.",
+    "imports": [
+      "Accordion"
+    ],
+    "usage": "<Accordion\n  defaultValue=\"sign-in\"\n  items={[\n    { value: 'sign-in', title: 'Sign-in notifications', content: 'Get alerted when a new device signs in.' },\n    { value: 'sessions', title: 'Active sessions', content: 'Review and revoke sessions.' },\n  ]}\n/>"
+  },
+  "chip": {
+    "name": "Chip",
+    "apiNames": [
+      "Chip"
+    ],
+    "description": "A compact filter or selection token with an optional remove affordance.",
+    "imports": [
+      "Chip"
+    ],
+    "usage": "<Chip label=\"Active only\" selected onRemove={() => undefined} />"
+  },
+  "kbd": {
+    "name": "Kbd",
+    "apiNames": [
+      "Kbd"
+    ],
+    "description": "An inline keyboard shortcut hint with a raised keycap treatment.",
+    "imports": [
+      "Kbd"
+    ],
+    "usage": "Save with <Kbd>Ctrl</Kbd> + <Kbd>S</Kbd>"
+  },
+  "scroll-area": {
+    "name": "Scroll Area",
+    "apiNames": [
+      "ScrollArea"
+    ],
+    "description": "A scrollable region with styled, theme-consistent scrollbars.",
+    "imports": [
+      "ScrollArea"
+    ],
+    "usage": "<ScrollArea maxHeight=\"16rem\">\n  <LongList />\n</ScrollArea>"
+  },
+  "code-block": {
+    "name": "Code Block",
+    "apiNames": [
+      "CodeBlock"
+    ],
+    "description": "A code panel with a language label, optional line numbers, and copy-to-clipboard.",
+    "imports": [
+      "CodeBlock"
+    ],
+    "usage": "<CodeBlock language=\"bash\" code=\"npm install @kryv/teal\" />"
+  },
+  "callout": {
+    "name": "Callout",
+    "apiNames": [
+      "Callout"
+    ],
+    "description": "A quiet admonition surface with a variant icon and accent border, for guidance that informs without interrupting.",
+    "imports": [
+      "Callout"
+    ],
+    "usage": "<Callout variant=\"warning\" title=\"Trial ending soon\">\n  Your trial ends in 5 days. Add a payment method to keep your workspace active.\n</Callout>"
+  },
+  "expandable-card": {
+    "name": "Expandable Card",
+    "apiNames": [
+      "ExpandableCard"
+    ],
+    "description": "A card that expands and collapses its extra content with a built-in trigger, chevron affordance, and smooth height animation.",
+    "imports": [
+      "ExpandableCard"
+    ],
+    "usage": "<ExpandableCard title=\"Release notes\">\n  <p>Version 2.4 adds dark surface tokens and fixes drawer scroll locking.</p>\n</ExpandableCard>"
+  },
+  "glass-panel": {
+    "name": "Glass Panel",
+    "apiNames": [
+      "GlassPanel"
+    ],
+    "description": "A frosted-glass surface with backdrop blur and a translucent background, for content floating over imagery or color.",
+    "imports": [
+      "GlassPanel"
+    ],
+    "usage": "<GlassPanel>\n  <p>Content stays readable over busy backgrounds.</p>\n</GlassPanel>"
+  },
+  "panel": {
+    "name": "Panel",
+    "apiNames": [
+      "Panel"
+    ],
+    "description": "A lightweight bordered surface with optional header and actions, for grouping content without Card's elevation.",
+    "imports": [
+      "Panel"
+    ],
+    "usage": "<Panel\n  title=\"Storage usage\"\n  actions={<Button size=\"sm\" variant=\"ghost\">Manage</Button>}\n>\n  <p>You have used 6.2 GB of your 10 GB quota.</p>\n</Panel>"
+  },
+  "dialog": {
+    "name": "Dialog",
+    "apiNames": [
+      "Dialog"
+    ],
+    "description": "A modal surface that owns focus management, naming, dismissal, and scroll locking.",
+    "imports": [
+      "Dialog"
+    ],
+    "usage": "const [open, setOpen] = useState(false)\n\n<Button onClick={() => setOpen(true)}>Open dialog</Button>\n<Dialog\n  open={open}\n  onOpenChange={setOpen}\n  title=\"Archive project?\"\n  description=\"The project can be restored later.\"\n>\n  <p>Project Orion will leave the active workspace.</p>\n</Dialog>"
+  },
+  "tooltip": {
+    "name": "Tooltip",
+    "apiNames": [
+      "Tooltip",
+      "TooltipProvider"
+    ],
+    "description": "A short contextual hint with accessible trigger association and collision handling.",
+    "imports": [
+      "Tooltip",
+      "TooltipProvider",
+      "IconButton"
+    ],
+    "usage": "// Mount once near the app root so tooltips share open-delay grouping\n<TooltipProvider>\n  <App />\n</TooltipProvider>\n\n// Per-instance delayDuration overrides the provider when needed\n<Tooltip content=\"Refresh search results\">\n  <IconButton label=\"Refresh results\">\n    <Search />\n  </IconButton>\n</Tooltip>"
+  },
+  "menu": {
+    "name": "Menu",
+    "apiNames": [
+      "Menu"
+    ],
+    "description": "A structured action menu with keyboard navigation, disabled items, icons, and danger styling.",
+    "imports": [
+      "Menu",
+      "IconButton"
+    ],
+    "usage": "<Menu\n  trigger={<IconButton label=\"Project actions\"><MoreVertical /></IconButton>}\n  items={[\n    { id: 'settings', label: 'Settings', onSelect: () => undefined },\n    { id: 'archive', label: 'Archive', variant: 'danger', onSelect: () => undefined },\n  ]}\n/>"
+  },
+  "popover": {
+    "name": "Popover",
+    "apiNames": [
+      "Popover"
+    ],
+    "description": "An anchored surface for arbitrary controls and supplemental content.",
+    "imports": [
+      "Popover",
+      "Button",
+      "Checkbox"
+    ],
+    "usage": "<Popover label=\"Filter projects\" trigger={<Button variant=\"secondary\">Filters</Button>}>\n  <div className=\"grid gap-3\">\n    <Checkbox label=\"Active only\" defaultChecked />\n    <Button size=\"sm\">Apply filters</Button>\n  </div>\n</Popover>"
+  },
+  "drawer": {
+    "name": "Drawer",
+    "apiNames": [
+      "Drawer"
+    ],
+    "description": "A slide-over panel for focused side tasks, built on the dialog focus model.",
+    "imports": [
+      "Drawer",
+      "Button"
+    ],
+    "usage": "<Drawer\n  open={open}\n  onOpenChange={setOpen}\n  title=\"Project settings\"\n  side=\"right\"\n>\n  <SettingsForm />\n</Drawer>"
+  },
+  "hover-card": {
+    "name": "Hover Card",
+    "apiNames": [
+      "HoverCard"
+    ],
+    "description": "A rich preview surface revealed on hover or focus, for context without navigation.",
+    "imports": [
+      "HoverCard",
+      "Link"
+    ],
+    "usage": "<HoverCard trigger={<Link href=\"/projects/orion\">Orion</Link>}>\n  <ProjectSummary />\n</HoverCard>"
+  },
+  "command": {
+    "name": "Command",
+    "apiNames": [
+      "Command"
+    ],
+    "description": "A command palette dialog with grouped, filterable actions and keyboard navigation.",
+    "imports": [
+      "Command",
+      "Button"
+    ],
+    "usage": "<Command\n  open={open}\n  onOpenChange={setOpen}\n  groups={[\n    { label: 'Projects', items: [{ id: 'orion', label: 'Open Orion', onSelect: () => undefined }] },\n  ]}\n/>"
+  },
+  "alert-dialog": {
+    "name": "Alert Dialog",
+    "apiNames": [
+      "AlertDialog"
+    ],
+    "description": "A blocking confirmation that holds focus until an explicit choice is made.",
+    "imports": [
+      "AlertDialog",
+      "Button"
+    ],
+    "usage": "<AlertDialog\n  trigger={<Button variant=\"danger\">Delete project</Button>}\n  title=\"Delete project?\"\n  description=\"This removes Orion and its reports permanently.\"\n  tone=\"danger\"\n  confirmText=\"Delete\"\n  onConfirm={() => undefined}\n/>"
+  },
+  "popconfirm": {
+    "name": "Popconfirm",
+    "apiNames": [
+      "Popconfirm"
+    ],
+    "description": "A lightweight anchored confirmation for small destructive or irreversible actions.",
+    "imports": [
+      "Popconfirm",
+      "Button"
+    ],
+    "usage": "<Popconfirm\n  trigger={<Button variant=\"secondary\">Remove member</Button>}\n  title=\"Remove Avery?\"\n  message=\"They lose access to this workspace.\"\n  tone=\"danger\"\n  confirmText=\"Remove\"\n  onConfirm={() => undefined}\n/>"
+  },
+  "context-menu": {
+    "name": "Context Menu",
+    "apiNames": [
+      "ContextMenu"
+    ],
+    "description": "A right-click action menu attached to any element, sharing the Menu item contract.",
+    "imports": [
+      "ContextMenu"
+    ],
+    "usage": "<ContextMenu\n  label=\"Project actions\"\n  items={[{ id: 'rename', label: 'Rename', onSelect: () => undefined }]}\n>\n  <div>Right-click this project row</div>\n</ContextMenu>"
+  },
+  "tour": {
+    "name": "Tour",
+    "apiNames": [
+      "Tour"
+    ],
+    "description": "A guided walkthrough that highlights target elements step by step.",
+    "imports": [
+      "Tour",
+      "Button"
+    ],
+    "usage": "const [open, setOpen] = useState(false)\n\n<Tour\n  open={open}\n  onOpenChange={setOpen}\n  steps={[\n    { target: '#search-field', title: 'Search everything', content: 'Find projects and people from one field.' },\n  ]}\n/>"
+  },
+  "action-sheet": {
+    "name": "Action Sheet",
+    "apiNames": [
+      "ActionSheet"
+    ],
+    "description": "An iOS-style bottom sheet listing actions with a destructive option and a separated cancel button.",
+    "imports": [
+      "ActionSheet"
+    ],
+    "usage": "<ActionSheet\n  open={open}\n  onOpenChange={setOpen}\n  title=\"Report options\"\n  actions={[\n    { label: 'Duplicate' },\n    { label: 'Delete', destructive: true },\n  ]}\n/>"
+  },
+  "bottom-sheet": {
+    "name": "Bottom Sheet",
+    "apiNames": [
+      "BottomSheet"
+    ],
+    "description": "A sheet that slides up from the bottom edge with snap heights, ideal for mobile-first flows.",
+    "imports": [
+      "BottomSheet"
+    ],
+    "usage": "<BottomSheet\n  open={open}\n  onOpenChange={setOpen}\n  snap=\"half\"\n  title=\"Share report\"\n>\n  <p>Sheet content</p>\n</BottomSheet>"
+  },
+  "cookie-consent": {
+    "name": "Cookie Consent",
+    "apiNames": [
+      "CookieConsent"
+    ],
+    "description": "Polite, non-modal bottom banner for cookie consent with accept and decline actions and an optional preferences link.",
+    "imports": [
+      "CookieConsent"
+    ],
+    "usage": "<CookieConsent\n  message=\"We use cookies to improve your experience.\"\n  manageHref=\"/settings/cookies\"\n  onAccept={allowAll}\n  onDecline={allowEssential}\n/>"
+  },
+  "floating-panel": {
+    "name": "Floating Panel",
+    "apiNames": [
+      "FloatingPanel"
+    ],
+    "description": "A non-modal panel anchored to a viewport corner for tools that coexist with the page.",
+    "imports": [
+      "FloatingPanel"
+    ],
+    "usage": "<FloatingPanel\n  open={open}\n  onOpenChange={setOpen}\n  anchor=\"bottom-right\"\n  title=\"Clipboard history\"\n>\n  <p>Panel content</p>\n</FloatingPanel>"
+  },
+  "fullscreen-dialog": {
+    "name": "Fullscreen Dialog",
+    "apiNames": [
+      "FullscreenDialog"
+    ],
+    "description": "A dialog that occupies the entire viewport with a header close button for immersive tasks.",
+    "imports": [
+      "FullscreenDialog"
+    ],
+    "usage": "<FullscreenDialog\n  open={open}\n  onOpenChange={setOpen}\n  title=\"Edit report\"\n>\n  <p>Editor content</p>\n</FullscreenDialog>"
+  },
+  "image-viewer": {
+    "name": "Image Viewer",
+    "apiNames": [
+      "ImageViewer"
+    ],
+    "description": "Inline viewer for a single image with toolbar and keyboard zoom plus pointer-drag panning while zoomed.",
+    "imports": [
+      "ImageViewer"
+    ],
+    "usage": "<ImageViewer\n  src=\"/blueprint.svg\"\n  alt=\"Floor plan\"\n  maxZoom={4}\n/>"
+  },
+  "lightbox": {
+    "name": "Lightbox",
+    "apiNames": [
+      "Lightbox"
+    ],
+    "description": "Full-screen gallery overlay for paging through images with arrow keys, on-screen controls, and a live counter.",
+    "imports": [
+      "Lightbox"
+    ],
+    "usage": "<Lightbox\n  open={open}\n  onOpenChange={setOpen}\n  images={[{ src: \"/photo.jpg\", alt: \"Team offsite\", caption: \"Spring offsite\" }]}\n/>"
+  },
+  "notification-center": {
+    "name": "Notification Center",
+    "apiNames": [
+      "NotificationCenter"
+    ],
+    "description": "Popover panel that lists recent notifications with read states and a mark-all-read action.",
+    "imports": [
+      "NotificationCenter"
+    ],
+    "usage": "<NotificationCenter\n  trigger={<Button variant=\"secondary\">Notifications</Button>}\n  items={notifications}\n  onMarkAllRead={markAllRead}\n/>"
+  },
+  "prompt-dialog": {
+    "name": "Prompt Dialog",
+    "apiNames": [
+      "PromptDialog"
+    ],
+    "description": "A modal dialog with a single labeled input that returns the entered value on confirm.",
+    "imports": [
+      "PromptDialog"
+    ],
+    "usage": "<PromptDialog\n  open={open}\n  onOpenChange={setOpen}\n  title=\"Rename report\"\n  label=\"Report name\"\n  defaultValue=\"Q3 revenue\"\n  onSubmit={(value) => rename(value)}\n/>"
+  },
+  "search-overlay": {
+    "name": "Search Overlay",
+    "apiNames": [
+      "SearchOverlay"
+    ],
+    "description": "Full-screen search overlay with a large input and caller-rendered results navigated entirely from the keyboard.",
+    "imports": [
+      "SearchOverlay"
+    ],
+    "usage": "<SearchOverlay\n  open={open}\n  onOpenChange={setOpen}\n  resultCount={results.length}\n  onSelect={(index) => openResult(results[index])}\n>\n  {({ query, activeIndex, optionId }) => <ResultList results={results} query={query} activeIndex={activeIndex} optionId={optionId} />}\n</SearchOverlay>"
+  },
+  "toast": {
+    "name": "Toast",
+    "apiNames": [
+      "Toaster"
+    ],
+    "description": "Imperative, announced feedback with semantic variants, optional actions, and dismissal.",
+    "imports": [
+      "Toaster",
+      "toast"
+    ],
+    "usage": "// Mount once near the app root\n<Toaster />\n\n// Call toast() from anywhere\ntoast({ title: 'Changes saved', variant: 'success' })"
+  },
+  "empty-state": {
+    "name": "Empty State",
+    "apiNames": [
+      "EmptyState"
+    ],
+    "description": "An explanatory empty result with an optional action and SVG icon.",
+    "imports": [
+      "EmptyState",
+      "Button"
+    ],
+    "usage": "<EmptyState\n  title=\"No reports\"\n  description=\"Create a report to begin tracking results.\"\n  action={<Button>Create report</Button>}\n/>"
+  },
+  "loading": {
+    "name": "Loading",
+    "apiNames": [
+      "LoadingState",
+      "Spinner",
+      "Skeleton",
+      "Progress"
+    ],
+    "description": "Named progress and loading treatments for local, skeleton, and full-surface states.",
+    "imports": [
+      "Spinner",
+      "Progress",
+      "Skeleton",
+      "LoadingState"
+    ],
+    "usage": "<Spinner label=\"Saving\" />\n<Progress label=\"Import progress\" value={64} />\n<Skeleton className=\"h-4 w-40\" />\n<LoadingState label=\"Loading reports\" />"
+  },
+  "alert": {
+    "name": "Alert",
+    "apiNames": [
+      "Alert"
+    ],
+    "description": "An inline feedback banner with semantic variants, an optional title, and dismissal.",
+    "imports": [
+      "Alert"
+    ],
+    "usage": "<Alert variant=\"warning\" title=\"Payment method expiring\">\n  The workspace card ends in 04/25. Update billing details to avoid interruption.\n</Alert>"
+  },
+  "notification-item": {
+    "name": "Notification Item",
+    "apiNames": [
+      "NotificationItem"
+    ],
+    "description": "A sanitized ecosystem inbox row with severity, source application, read state, deep link, and delivery-state controls.",
+    "imports": [
+      "NotificationItem"
+    ],
+    "usage": "<NotificationItem\n  severity=\"warning\"\n  appLabel=\"Yang Operations\"\n  timestamp=\"2 hours ago\"\n  title=\"photos-api restarted unexpectedly\"\n  href=\"https://yang.example/incidents/photos-api\"\n  onMute={() => undefined}\n  onArchive={() => undefined}\n/>"
+  },
+  "health-indicator": {
+    "name": "Health Indicator",
+    "apiNames": [
+      "HealthIndicator"
+    ],
+    "description": "An explicit ecosystem health status that reports unknown and stale evidence instead of implying health.",
+    "imports": [
+      "HealthIndicator"
+    ],
+    "usage": "<HealthIndicator status=\"healthy\" label=\"Photos\" />\n<HealthIndicator status=\"unknown\" label=\"Trict\" />"
+  },
+  "step-up-notice": {
+    "name": "Step-Up Notice",
+    "apiNames": [
+      "StepUpNotice"
+    ],
+    "description": "An inline warning that explains a required fresh verification and hosts the caller’s verification action.",
+    "imports": [
+      "StepUpNotice",
+      "Button"
+    ],
+    "usage": "<StepUpNotice\n  title=\"Confirm it's you\"\n  action={<Button size=\"sm\">Verify with passkey</Button>}\n>\n  Approving a repair requires fresh verification.\n</StepUpNotice>"
+  },
+  "banner": {
+    "name": "Banner",
+    "apiNames": [
+      "Banner"
+    ],
+    "description": "A page-level notice strip for workspace-wide feedback that owns the top of a view.",
+    "imports": [
+      "Banner",
+      "Button"
+    ],
+    "usage": "<Banner variant=\"warning\" title=\"Scheduled maintenance\">\n  The workspace is read-only on Saturday, 02:00–03:00 UTC.\n</Banner>"
+  },
+  "progress-circle": {
+    "name": "Progress Circle",
+    "apiNames": [
+      "ProgressCircle"
+    ],
+    "description": "A radial progress indicator with determinate and indeterminate modes.",
+    "imports": [
+      "ProgressCircle"
+    ],
+    "usage": "<ProgressCircle value={64} label=\"Import progress\" />"
+  },
+  "timeline": {
+    "name": "Timeline",
+    "apiNames": [
+      "Timeline"
+    ],
+    "description": "A vertical activity feed with tone dots, connectors, and timestamps.",
+    "imports": [
+      "Timeline"
+    ],
+    "usage": "<Timeline\n  items={[\n    { id: '1', title: 'Deploy finished', timestamp: '2 min ago', tone: 'success' },\n  ]}\n/>"
+  },
+  "meter": {
+    "name": "Meter",
+    "apiNames": [
+      "Meter"
+    ],
+    "description": "A scalar gauge for a known range with optimum-zone coloring.",
+    "imports": [
+      "Meter"
+    ],
+    "usage": "<Meter label=\"Storage used\" value={72} low={60} high={85} optimum={20} />"
+  },
+  "rating": {
+    "name": "Rating",
+    "apiNames": [
+      "Rating"
+    ],
+    "description": "A star rating input with radio semantics, arrow keys, and a read-only display mode.",
+    "imports": [
+      "Rating"
+    ],
+    "usage": "<Rating label=\"Rate this report\" defaultValue={3} onChange={(value) => undefined} />"
+  },
+  "announcer": {
+    "name": "Announcer",
+    "apiNames": [
+      "Announcer"
+    ],
+    "description": "A visually hidden live region that re-announces a message whenever it changes.",
+    "imports": [
+      "Announcer",
+      "Button"
+    ],
+    "usage": "<Announcer message={statusMessage} politeness=\"polite\" />"
+  },
+  "blocking-overlay": {
+    "name": "Blocking Overlay",
+    "apiNames": [
+      "BlockingOverlay"
+    ],
+    "description": "A full-surface overlay with a spinner that blocks interaction with the wrapped content during async work.",
+    "imports": [
+      "BlockingOverlay"
+    ],
+    "usage": "<BlockingOverlay\n  visible={isSaving}\n  label=\"Saving changes\"\n>\n  <SettingsForm />\n</BlockingOverlay>"
+  },
+  "error-boundary": {
+    "name": "Error Boundary",
+    "apiNames": [
+      "ErrorBoundary"
+    ],
+    "description": "A class-based error boundary that isolates render failures behind a fallback UI with reset support.",
+    "imports": [
+      "ErrorBoundary"
+    ],
+    "usage": "<ErrorBoundary\n  fallback={(error, reset) => <Fallback error={error} onRetry={reset} />}\n  onError={(error, info) => log(error)}\n  resetKeys={[pageId]}\n>\n  <Report />\n</ErrorBoundary>"
+  },
+  "loading-bar": {
+    "name": "Loading Bar",
+    "apiNames": [
+      "LoadingBar"
+    ],
+    "description": "A thin top-of-page progress bar with determinate and indeterminate modes.",
+    "imports": [
+      "LoadingBar"
+    ],
+    "usage": "<LoadingBar\n  value={65}\n  label=\"Loading assets\"\n/>"
+  },
+  "network-status": {
+    "name": "Network Status",
+    "apiNames": [
+      "NetworkStatus"
+    ],
+    "description": "An inline indicator of the browser's online/offline state with a render prop for custom display.",
+    "imports": [
+      "NetworkStatus"
+    ],
+    "usage": "<NetworkStatus\n  onlineLabel=\"Connected\"\n  offlineLabel=\"No connection\"\n/>"
+  },
+  "offline-banner": {
+    "name": "Offline Banner",
+    "apiNames": [
+      "OfflineBanner"
+    ],
+    "description": "A dismissible banner that appears at the top of the page when the browser loses connectivity.",
+    "imports": [
+      "OfflineBanner"
+    ],
+    "usage": "<OfflineBanner\n  message=\"You are offline. Changes may not be saved.\"\n  onDismiss={() => logDismiss()}\n/>"
+  },
+  "pulse-dot": {
+    "name": "Pulse Dot",
+    "apiNames": [
+      "PulseDot"
+    ],
+    "description": "An animated pulsing dot that signals live presence or ongoing activity.",
+    "imports": [
+      "PulseDot"
+    ],
+    "usage": "<PulseDot\n  label=\"3 editors online\"\n  variant=\"success\"\n/>"
+  },
+  "save-status": {
+    "name": "Save Status",
+    "apiNames": [
+      "SaveStatus"
+    ],
+    "description": "An inline saved/saving/error indicator with an optional relative timestamp.",
+    "imports": [
+      "SaveStatus"
+    ],
+    "usage": "<SaveStatus\n  status=\"saved\"\n  savedAt={lastSavedAt}\n/>"
+  },
+  "status-dot": {
+    "name": "Status Dot",
+    "apiNames": [
+      "StatusDot"
+    ],
+    "description": "A small colored dot with an optional text label for compact entity status.",
+    "imports": [
+      "StatusDot"
+    ],
+    "usage": "<StatusDot\n  variant=\"success\"\n  label=\"Online\"\n/>"
+  },
+  "upload-progress": {
+    "name": "Upload Progress",
+    "apiNames": [
+      "UploadProgress"
+    ],
+    "description": "A file upload progress row with file name, determinate bar, formatted size, and a cancel button.",
+    "imports": [
+      "UploadProgress"
+    ],
+    "usage": "<UploadProgress\n  fileName=\"design-spec.fig\"\n  progress={62}\n  size={4718592}\n  onCancel={cancelUpload}\n/>"
+  },
+  "app-switcher": {
+    "name": "App Switcher",
+    "apiNames": [
+      "AppSwitcher"
+    ],
+    "description": "An entitlement-filtered application switcher with an explicit Home destination and keyboard navigation.",
+    "imports": [
+      "AppSwitcher",
+      "Button"
+    ],
+    "usage": "<AppSwitcher\n  trigger={<Button variant=\"secondary\">Switch application</Button>}\n  homeHref=\"https://home.example\"\n  homeLabel=\"Home\"\n  apps={[\n    { id: 'yang', label: 'Yang Operations', href: 'https://yang.example' },\n    { id: 'photos', label: 'Photos', href: 'https://photos.example', current: true },\n  ]}\n/>"
+  },
+  "account-menu": {
+    "name": "Account Menu",
+    "apiNames": [
+      "AccountMenu"
+    ],
+    "description": "A household account menu with an identity header, product items, and distinct app and SSO sign-out actions.",
+    "imports": [
+      "AccountMenu"
+    ],
+    "usage": "<AccountMenu\n  user={{ name: 'Avery Chen', email: 'avery@example.com' }}\n  items={[{ id: 'sessions', label: 'Active sessions', onSelect: () => undefined }]}\n  appSignOut={{ label: 'Sign out of Photos', onSelect: () => undefined }}\n  ssoSignOut={{ label: 'Sign out everywhere', onSelect: () => undefined }}\n/>"
+  },
+  "tabs": {
+    "name": "Tabs",
+    "apiNames": [
+      "Tabs"
+    ],
+    "description": "Keyboard-navigable content switching through a compact item interface.",
+    "imports": [
+      "Tabs"
+    ],
+    "usage": "<Tabs\n  aria-label=\"Account sections\"\n  defaultValue=\"profile\"\n  items={[\n    { value: 'profile', label: 'Profile', content: <ProfilePanel /> },\n    { value: 'billing', label: 'Billing', content: <BillingPanel /> },\n  ]}\n/>"
+  },
+  "pagination": {
+    "name": "Pagination",
+    "apiNames": [
+      "Pagination"
+    ],
+    "description": "A controlled page navigator with compact ranges and unavailable directions.",
+    "imports": [
+      "Pagination"
+    ],
+    "usage": "const [page, setPage] = useState(1)\n\n<Pagination page={page} pageCount={12} onPageChange={setPage} />"
+  },
+  "page-header": {
+    "name": "Page Header",
+    "apiNames": [
+      "PageHeader"
+    ],
+    "description": "A responsive page title, supporting text, and action area.",
+    "imports": [
+      "PageHeader",
+      "Button"
+    ],
+    "usage": "<PageHeader\n  title=\"Workspace settings\"\n  subtitle=\"Manage security and notifications\"\n  actions={<Button>Save changes</Button>}\n/>"
+  },
+  "vertical-nav": {
+    "name": "Vertical Nav",
+    "apiNames": [
+      "VerticalNav",
+      "VerticalNavBrand",
+      "VerticalNavList",
+      "VerticalNavSection",
+      "VerticalNavItem",
+      "VerticalNavFooter"
+    ],
+    "description": "A compound vertical navigation with icon-rail and full-text modes.",
+    "imports": [
+      "VerticalNav",
+      "VerticalNavBrand",
+      "VerticalNavList",
+      "VerticalNavSection",
+      "VerticalNavItem",
+      "VerticalNavFooter"
+    ],
+    "usage": "<VerticalNav mode=\"rail\">\n  <VerticalNavBrand>...</VerticalNavBrand>\n  <VerticalNavList>\n    <VerticalNavSection label=\"Workspace\">\n      <VerticalNavItem active icon={<LayoutDashboard />}>Overview</VerticalNavItem>\n    </VerticalNavSection>\n  </VerticalNavList>\n  <VerticalNavFooter>...</VerticalNavFooter>\n</VerticalNav>"
+  },
+  "nav-rail": {
+    "name": "Nav Rail",
+    "apiNames": [
+      "NavRail",
+      "NavRailItem"
+    ],
+    "description": "A fully rounded floating icon rail for dense product navigation.",
+    "imports": [
+      "NavRail",
+      "NavRailItem"
+    ],
+    "usage": "<NavRail aria-label=\"Primary\">\n  <NavRailItem icon={<Home />} label=\"Home\" href=\"/\" active />\n  <NavRailItem icon={<Search />} label=\"Search\" href=\"/search\" />\n  <NavRailItem icon={<Settings />} label=\"Settings\" href=\"/settings\" />\n</NavRail>"
+  },
+  "side-rail": {
+    "name": "Side Rail",
+    "apiNames": [
+      "SideRail"
+    ],
+    "description": "A floating glass rail that expands from an icon strip to a full label list on hover or focus.",
+    "imports": [
+      "SideRail",
+      "VerticalNavBrand",
+      "VerticalNavList",
+      "VerticalNavSection",
+      "VerticalNavItem",
+      "VerticalNavFooter"
+    ],
+    "usage": "<SideRail>\n  <VerticalNavBrand>...</VerticalNavBrand>\n  <VerticalNavList>\n    <VerticalNavSection label=\"Workspace\">\n      <VerticalNavItem active icon={<LayoutDashboard />}>Overview</VerticalNavItem>\n    </VerticalNavSection>\n  </VerticalNavList>\n  <VerticalNavFooter>...</VerticalNavFooter>\n</SideRail>"
+  },
+  "ecosystem-rail": {
+    "name": "Ecosystem Rail",
+    "apiNames": [
+      "EcosystemRail"
+    ],
+    "description": "A persistent cross-product rail with a stable Home destination, caller-filtered applications, and honest health status.",
+    "imports": [
+      "EcosystemRail",
+      "VerticalNavItem"
+    ],
+    "usage": "<EcosystemRail\n  home={{ href: 'https://home.example', label: 'Home', icon: <Home /> }}\n  destinations={[\n    { id: 'yang', label: 'Yang Operations', href: 'https://yang.example', icon: <Gauge />, current: true },\n    { id: 'photos', label: 'Photos', href: 'https://photos.example', icon: <Camera />, status: 'degraded' },\n  ]}\n/>"
+  },
+  "top-bar": {
+    "name": "Top Bar",
+    "apiNames": [
+      "TopBar",
+      "TopBarBrand",
+      "TopBarSearch",
+      "TopBarActions"
+    ],
+    "description": "A sticky top bar with brand, search, and action slots.",
+    "imports": [
+      "TopBar",
+      "TopBarBrand",
+      "TopBarSearch",
+      "TopBarActions"
+    ],
+    "usage": "<TopBar sticky>\n  <TopBarBrand>...</TopBarBrand>\n  <TopBarSearch>...</TopBarSearch>\n  <TopBarActions>...</TopBarActions>\n</TopBar>"
+  },
+  "breadcrumb": {
+    "name": "Breadcrumb",
+    "apiNames": [
+      "Breadcrumb"
+    ],
+    "description": "A hierarchical trail with router-ready items and automatic middle-item collapse.",
+    "imports": [
+      "Breadcrumb"
+    ],
+    "usage": "<Breadcrumb\n  items={[\n    { label: 'Workspace', href: '/' },\n    { label: 'Projects', href: '/projects' },\n    { label: 'Orion' },\n  ]}\n/>"
+  },
+  "steps": {
+    "name": "Steps",
+    "apiNames": [
+      "Steps"
+    ],
+    "description": "A numbered flow indicator with done, current, and upcoming states.",
+    "imports": [
+      "Steps"
+    ],
+    "usage": "<Steps\n  current={1}\n  steps={[\n    { label: 'Workspace' },\n    { label: 'Members' },\n    { label: 'Review' },\n  ]}\n/>"
+  },
+  "tree-view": {
+    "name": "Tree View",
+    "apiNames": [
+      "TreeView"
+    ],
+    "description": "A hierarchical disclosure list with keyboard navigation and selection.",
+    "imports": [
+      "TreeView"
+    ],
+    "usage": "<TreeView\n  aria-label=\"Project files\"\n  items={[\n    { id: 'src', label: 'src', children: [{ id: 'app', label: 'App.tsx' }] },\n  ]}\n/>"
+  },
+  "menubar": {
+    "name": "Menubar",
+    "apiNames": [
+      "Menubar"
+    ],
+    "description": "An application command bar of labeled dropdown menus with full keyboard navigation.",
+    "imports": [
+      "Menubar"
+    ],
+    "usage": "<Menubar\n  label=\"Application\"\n  menus={[\n    { label: 'File', items: [{ id: 'new', label: 'New project', onSelect: () => undefined }] },\n    { label: 'Edit', items: [{ id: 'undo', label: 'Undo', onSelect: () => undefined }] },\n  ]}\n/>"
+  },
+  "navigation-menu": {
+    "name": "Navigation Menu",
+    "apiNames": [
+      "NavigationMenu"
+    ],
+    "description": "A top-level navigation bar mixing links with rich content panels in a shared viewport.",
+    "imports": [
+      "NavigationMenu"
+    ],
+    "usage": "<NavigationMenu\n  label=\"Primary\"\n  items={[\n    { type: 'link', label: 'Overview', href: '/', active: true },\n    { type: 'panel', label: 'Products', content: <ProductsPanel /> },\n  ]}\n/>"
+  },
+  "back-top": {
+    "name": "Back Top",
+    "apiNames": [
+      "BackTop"
+    ],
+    "description": "A floating button that appears after scrolling and returns to the top of the page.",
+    "imports": [
+      "BackTop"
+    ],
+    "usage": "<BackTop threshold={400} />"
+  },
+  "anchor-nav": {
+    "name": "Anchor Nav",
+    "apiNames": [
+      "AnchorNav"
+    ],
+    "description": "A scroll-spy nav of page section anchors that highlights the section in view and smooth-scrolls on click.",
+    "imports": [
+      "AnchorNav"
+    ],
+    "usage": "<AnchorNav\n  items={[\n    { id: 'overview', label: 'Overview' },\n    { id: 'features', label: 'Features' },\n    { id: 'pricing', label: 'Pricing' },\n  ]}\n/>"
+  },
+  "bottom-nav": {
+    "name": "Bottom Nav",
+    "apiNames": [
+      "BottomNav",
+      "BottomNavItem"
+    ],
+    "description": "A mobile bottom navigation bar of three to five icon-and-label items with aria-current and safe-area padding.",
+    "imports": [
+      "BottomNav",
+      "BottomNavItem"
+    ],
+    "usage": "<BottomNav>\n  <BottomNavItem active href=\"/home\" icon={<Home />} label=\"Home\" />\n  <BottomNavItem href=\"/search\" icon={<Search />} label=\"Search\" />\n  <BottomNavItem badge={3} href=\"/alerts\" icon={<Bell />} label=\"Alerts\" />\n  <BottomNavItem href=\"/profile\" icon={<User />} label=\"Profile\" />\n</BottomNav>"
+  },
+  "dock": {
+    "name": "Dock",
+    "apiNames": [
+      "Dock",
+      "DockItem"
+    ],
+    "description": "A macOS-style dock of icon buttons with hover tooltips, accessible names, and an active-app indicator dot.",
+    "imports": [
+      "Dock",
+      "DockItem"
+    ],
+    "usage": "<Dock>\n  <DockItem active icon={<Mail />} label=\"Mail\" />\n  <DockItem icon={<Music />} label=\"Music\" />\n  <DockItem icon={<Folder />} label=\"Files\" />\n</Dock>"
+  },
+  "floating-toolbar": {
+    "name": "Floating Toolbar",
+    "apiNames": [
+      "FloatingToolbar"
+    ],
+    "description": "A floating contextual toolbar that appears near a selection or anchored element, with roving tabindex and arrow-key navigation.",
+    "imports": [
+      "FloatingToolbar"
+    ],
+    "usage": "<FloatingToolbar open={hasSelection} className=\"left-1/2 top-2 -translate-x-1/2\">\n  <button aria-label=\"Bold\"><Bold /></button>\n  <button aria-label=\"Italic\"><Italic /></button>\n  <button aria-label=\"Underline\"><Underline /></button>\n</FloatingToolbar>"
+  },
+  "mega-menu": {
+    "name": "Mega Menu",
+    "apiNames": [
+      "MegaMenu",
+      "MegaMenuItem",
+      "MegaMenuColumn",
+      "MegaMenuLink"
+    ],
+    "description": "A top-level navigation item that opens a multi-column link panel on hover, focus, or click, with full keyboard support.",
+    "imports": [
+      "MegaMenu",
+      "MegaMenuItem",
+      "MegaMenuColumn",
+      "MegaMenuLink"
+    ],
+    "usage": "<MegaMenu>\n  <MegaMenuItem label=\"Products\">\n    <MegaMenuColumn heading=\"Build\">\n      <MegaMenuLink href=\"/editor\">Editor</MegaMenuLink>\n      <MegaMenuLink href=\"/preview\">Preview</MegaMenuLink>\n    </MegaMenuColumn>\n    <MegaMenuColumn heading=\"Ship\">\n      <MegaMenuLink href=\"/hosting\">Hosting</MegaMenuLink>\n    </MegaMenuColumn>\n  </MegaMenuItem>\n</MegaMenu>"
+  },
+  "sidebar": {
+    "name": "Sidebar",
+    "apiNames": [
+      "Sidebar",
+      "SidebarHeader",
+      "SidebarContent",
+      "SidebarFooter",
+      "SidebarSection",
+      "SidebarItem",
+      "SidebarCollapseButton"
+    ],
+    "description": "A full app sidebar with header, content, and footer slots that collapses to an icon rail, with aria-current on the active item.",
+    "imports": [
+      "Sidebar",
+      "SidebarHeader",
+      "SidebarContent",
+      "SidebarFooter",
+      "SidebarSection",
+      "SidebarItem",
+      "SidebarCollapseButton"
+    ],
+    "usage": "<Sidebar>\n  <SidebarHeader>\n    <Logo />\n  </SidebarHeader>\n  <SidebarContent>\n    <SidebarSection label=\"Workspace\">\n      <SidebarItem active href=\"/overview\" icon={<LayoutDashboard />}>\n        Overview\n      </SidebarItem>\n      <SidebarItem href=\"/projects\" icon={<FolderKanban />}>\n        Projects\n      </SidebarItem>\n    </SidebarSection>\n  </SidebarContent>\n  <SidebarFooter>\n    <SidebarCollapseButton />\n  </SidebarFooter>\n</Sidebar>"
+  },
+  "skip-link": {
+    "name": "Skip Link",
+    "apiNames": [
+      "SkipLink"
+    ],
+    "description": "A visually-hidden-until-focused \"Skip to content\" link that becomes the first tab stop of the page.",
+    "imports": [
+      "SkipLink"
+    ],
+    "usage": "<SkipLink href=\"#main\" />"
+  },
+  "sub-nav": {
+    "name": "Sub Nav",
+    "apiNames": [
+      "SubNav",
+      "SubNavItem"
+    ],
+    "description": "A secondary horizontal nav row with an underline indicator for the active item that scrolls when items overflow.",
+    "imports": [
+      "SubNav",
+      "SubNavItem"
+    ],
+    "usage": "<SubNav aria-label=\"Project settings\">\n  <SubNavItem active href=\"#general\">General</SubNavItem>\n  <SubNavItem href=\"#members\">Members</SubNavItem>\n  <SubNavItem href=\"#billing\">Billing</SubNavItem>\n</SubNav>"
+  },
+  "table-of-contents": {
+    "name": "Table of Contents",
+    "apiNames": [
+      "TableOfContents"
+    ],
+    "description": "A nested list of heading links that indents by heading level and highlights the section in view with an IntersectionObserver.",
+    "imports": [
+      "TableOfContents"
+    ],
+    "usage": "<TableOfContents\n  headings={[\n    { id: 'installation', level: 2, title: 'Installation' },\n    { id: 'npm', level: 3, title: 'With npm' },\n    { id: 'usage', level: 2, title: 'Usage' },\n  ]}\n/>"
+  },
+  "permission-matrix": {
+    "name": "Permission Matrix",
+    "apiNames": [
+      "PermissionMatrix"
+    ],
+    "description": "A people-by-applications access matrix with caller-supplied cell content and explicit no-access cells.",
+    "imports": [
+      "PermissionMatrix",
+      "Badge"
+    ],
+    "usage": "<PermissionMatrix\n  caption=\"Household application access\"\n  columns={[\n    { id: 'photos', label: 'Photos' },\n    { id: 'trict', label: 'Trict' },\n  ]}\n  rows={[\n    { id: 'avery', label: 'Avery', cells: { photos: <Badge variant=\"success\">Owner</Badge> } },\n  ]}\n/>"
+  },
+  "table": {
+    "name": "Table",
+    "apiNames": [
+      "Table"
+    ],
+    "description": "Accessible data presentation driven by column definitions, density, loading, and empty state.",
+    "imports": [
+      "Table"
+    ],
+    "usage": "<Table\n  caption=\"Team members\"\n  columns={[{ key: 'name', header: 'Name', cell: (row) => row.name }]}\n  rows={rows}\n  getRowKey={(row) => row.id}\n/>"
+  },
+  "separator": {
+    "name": "Separator",
+    "apiNames": [
+      "Separator"
+    ],
+    "description": "A semantic or decorative divider for related content.",
+    "imports": [
+      "Separator"
+    ],
+    "usage": "<Separator />"
+  },
+  "avatar": {
+    "name": "Avatar",
+    "apiNames": [
+      "Avatar"
+    ],
+    "description": "A compact identity image with initials and icon fallbacks.",
+    "imports": [
+      "Avatar"
+    ],
+    "usage": "<Avatar src=\"/users/avery.png\" name=\"Avery Chen\" />\n<Avatar name=\"Morgan\" size=\"sm\" />"
+  },
+  "description-list": {
+    "name": "Description List",
+    "apiNames": [
+      "DescriptionList"
+    ],
+    "description": "A label/value definition list for detail pages, stacked or two-column.",
+    "imports": [
+      "DescriptionList"
+    ],
+    "usage": "<DescriptionList\n  items={[\n    { label: 'Owner', value: 'Avery Chen' },\n    { label: 'Created', value: 'March 4, 2026' },\n  ]}\n/>"
+  },
+  "data-table": {
+    "name": "Data Table",
+    "apiNames": [
+      "DataTable"
+    ],
+    "description": "A data grid with sortable columns and row selection, built on the Table contract.",
+    "imports": [
+      "DataTable"
+    ],
+    "usage": "<DataTable\n  caption=\"Projects\"\n  columns={[{ key: 'name', header: 'Name', cell: (row) => row.name, sortable: true }]}\n  rows={rows}\n  getRowKey={(row) => row.id}\n  sort={sort}\n  onSortChange={setSort}\n  selectable\n/>"
+  },
+  "avatar-group": {
+    "name": "Avatar Group",
+    "apiNames": [
+      "AvatarGroup"
+    ],
+    "description": "An overlapping identity stack with an overflow count.",
+    "imports": [
+      "AvatarGroup"
+    ],
+    "usage": "<AvatarGroup names={[\"Avery Chen\", \"Morgan Reyes\", \"Riley Okafor\"]} />"
+  },
+  "stat": {
+    "name": "Stat",
+    "apiNames": [
+      "Stat"
+    ],
+    "description": "A labeled metric with a trend delta and optional supporting content.",
+    "imports": [
+      "Stat"
+    ],
+    "usage": "<Stat\n  label=\"Monthly recurring revenue\"\n  value=\"$48.2k\"\n  delta={{ direction: 'up', value: '+12.4%' }}\n  description=\"vs. previous month\"\n/>"
+  },
+  "list": {
+    "name": "List",
+    "apiNames": [
+      "List",
+      "ListItem"
+    ],
+    "description": "A vertical item list with leading and trailing slots, secondary text, and a dense mode.",
+    "imports": [
+      "List",
+      "ListItem"
+    ],
+    "usage": "<List>\n  <ListItem leading={<Folder />} title=\"Reports\" secondary=\"12 files\" trailing=\"2 GB\" />\n  <ListItem title=\"Archive\" onClick={() => undefined} />\n</List>"
+  },
+  "sparkline": {
+    "name": "Sparkline",
+    "apiNames": [
+      "Sparkline"
+    ],
+    "description": "A tiny inline trend chart in line, area, or bar form with an accessible summary.",
+    "imports": [
+      "Sparkline"
+    ],
+    "usage": "<Sparkline aria-label=\"Sign-ups trending up\" data={[4, 8, 6, 12, 9, 14]} variant=\"area\" />"
+  },
+  "calendar": {
+    "name": "Calendar",
+    "apiNames": [
+      "Calendar"
+    ],
+    "description": "A month grid for picking a single date with bounds and disabled days.",
+    "imports": [
+      "Calendar"
+    ],
+    "usage": "const [date, setDate] = useState(new Date())\n\n<Calendar value={date} onSelect={setDate} />"
+  },
+  "result": {
+    "name": "Result",
+    "apiNames": [
+      "Result"
+    ],
+    "description": "A full-area outcome state for success, error, and HTTP results with a standard icon and actions.",
+    "imports": [
+      "Result",
+      "Button"
+    ],
+    "usage": "<Result\n  status=\"404\"\n  title=\"Page not found\"\n  description=\"The report may have been moved or deleted.\"\n  actions={<Button>Back to projects</Button>}\n/>"
+  },
+  "activity-feed": {
+    "name": "Activity Feed",
+    "apiNames": [
+      "ActivityFeed"
+    ],
+    "description": "Chronological list of actor-plus-action events with avatars or icons and timestamps, optionally grouped under day headings.",
+    "imports": [
+      "ActivityFeed"
+    ],
+    "usage": "<ActivityFeed\n  label=\"Project activity\"\n  groupByDay\n  items={[\n    { id: \"1\", actor: \"Ada Lovelace\", action: \"merged the parser rewrite\", timestamp: new Date() },\n  ]}\n/>"
+  },
+  "area-chart": {
+    "name": "Area Chart",
+    "apiNames": [
+      "AreaChart"
+    ],
+    "description": "Line chart with a filled area under each series, an adjustable fill opacity, and a stacked mode for part-to-whole trends.",
+    "imports": [
+      "AreaChart"
+    ],
+    "usage": "<AreaChart\n  label=\"Stacked sessions by channel\"\n  labels={['Jan', 'Feb', 'Mar', 'Apr']}\n  series={[\n    { name: 'Organic', data: [80, 95, 90, 110] },\n    { name: 'Paid', data: [20, 25, 22, 30] },\n  ]}\n  stacked\n  opacity={0.5}\n/>"
+  },
+  "bar-chart": {
+    "name": "Bar Chart",
+    "apiNames": [
+      "BarChart"
+    ],
+    "description": "Grouped SVG bar chart with vertical or horizontal bars, optional value labels, a legend, and a built-in accessible data table.",
+    "imports": [
+      "BarChart"
+    ],
+    "usage": "<BarChart\n  label=\"Revenue and costs per quarter\"\n  labels={['Q1', 'Q2', 'Q3', 'Q4']}\n  series={[\n    { name: 'Revenue', data: [42, 55, 48, 61] },\n    { name: 'Costs', data: [30, 34, 32, 38] },\n  ]}\n  showValues\n/>"
+  },
+  "calendar-heatmap": {
+    "name": "Calendar Heatmap",
+    "apiNames": [
+      "CalendarHeatmap"
+    ],
+    "description": "GitHub-style year calendar heatmap with weeks-by-weekday cells, a 0–4 level color scale, and month labels.",
+    "imports": [
+      "CalendarHeatmap"
+    ],
+    "usage": "<CalendarHeatmap\n  aria-label=\"Commit activity in 2025\"\n  year={2025}\n  data={[{ date: \"2025-03-14\", level: 3 }]}\n/>"
+  },
+  "chart-container": {
+    "name": "Chart Container",
+    "apiNames": [
+      "ChartContainer",
+      "ChartAxis",
+      "ChartGrid",
+      "ChartLegend"
+    ],
+    "description": "Accessible SVG frame for hand-rolled charts with an aria-label summary, a toggleable screen-reader data table, and reusable axis, grid, and legend primitives.",
+    "imports": [
+      "ChartContainer",
+      "ChartAxis",
+      "ChartGrid",
+      "ChartLegend"
+    ],
+    "usage": "<ChartContainer\n  label=\"Visits per weekday\"\n  columns={[\n    { key: 'day', label: 'Day' },\n    { key: 'visits', label: 'Visits' },\n  ]}\n  data={rows}\n>\n  <ChartGrid positions={[40, 90, 140]} start={44} end={404} />\n  <ChartAxis orientation=\"x\" offset={190} start={44} end={404} ticks={ticks} />\n</ChartContainer>"
+  },
+  "comment-thread": {
+    "name": "Comment Thread",
+    "apiNames": [
+      "CommentThread"
+    ],
+    "description": "Nested comment list with author avatars, timestamps, caller-wired reply buttons, and collapsible reply threads.",
+    "imports": [
+      "CommentThread"
+    ],
+    "usage": "<CommentThread\n  comments={[\n    {\n      id: \"1\",\n      author: \"Ada Lovelace\",\n      body: \"Looks good overall.\",\n      timestamp: new Date(),\n      replies: [{ id: \"1a\", author: \"Alan Turing\", body: \"Needs tests.\" }],\n    },\n  ]}\n  onReply={(comment) => openComposer(comment.id)}\n/>"
+  },
+  "diff-viewer": {
+    "name": "Diff Viewer",
+    "apiNames": [
+      "DiffViewer"
+    ],
+    "description": "Line-based diff view with added/removed/context coloring, a +/- gutter, and old/new line numbers.",
+    "imports": [
+      "DiffViewer"
+    ],
+    "usage": "<DiffViewer\n  label=\"config.js changes\"\n  oldValue={before}\n  newValue={after}\n/>"
+  },
+  "funnel-chart": {
+    "name": "Funnel Chart",
+    "apiNames": [
+      "FunnelChart"
+    ],
+    "description": "SVG funnel of stages whose widths follow their values, with stage-to-stage conversion percentages.",
+    "imports": [
+      "FunnelChart"
+    ],
+    "usage": "<FunnelChart\n  aria-label=\"Signup conversion funnel\"\n  stages={[\n    { name: \"Visited\", value: 10000 },\n    { name: \"Signed up\", value: 3200 },\n    { name: \"Paid\", value: 480 },\n  ]}\n/>"
+  },
+  "gantt-chart": {
+    "name": "Gantt Chart",
+    "apiNames": [
+      "GanttChart"
+    ],
+    "description": "A read-only SVG Gantt chart that plots task bars on a day grid with a today marker.",
+    "imports": [
+      "GanttChart"
+    ],
+    "usage": "<GanttChart\n  label=\"Release plan\"\n  tasks={[\n    { id: 'design', label: 'Design', start: '2025-03-03', end: '2025-03-07' },\n    { id: 'build', label: 'Build', start: '2025-03-10', end: '2025-03-19' },\n  ]}\n/>"
+  },
+  "gauge-chart": {
+    "name": "Gauge Chart",
+    "apiNames": [
+      "GaugeChart"
+    ],
+    "description": "Semicircle SVG gauge with min/max scale, threshold zones, and a centered value label.",
+    "imports": [
+      "GaugeChart"
+    ],
+    "usage": "<GaugeChart\n  aria-label=\"Latency score\"\n  value={64}\n  label=\"Latency score\"\n  thresholds={[{ upTo: 50 }, { upTo: 80 }, { upTo: 100 }]}\n/>"
+  },
+  "heatmap": {
+    "name": "Heatmap",
+    "apiNames": [
+      "Heatmap"
+    ],
+    "description": "Matrix heatmap that maps values to a color scale with row/column labels and cell tooltips.",
+    "imports": [
+      "Heatmap"
+    ],
+    "usage": "<Heatmap\n  aria-label=\"Tickets by day and hour\"\n  rows={[{ label: \"Mon\", values: [12, 30, 44] }]}\n  columnLabels={[\"Morning\", \"Midday\", \"Evening\"]}\n/>"
+  },
+  "json-viewer": {
+    "name": "JSON Viewer",
+    "apiNames": [
+      "JsonViewer"
+    ],
+    "description": "Collapsible JSON tree with type-colored values, key-count summaries, and optional hover copy-path buttons.",
+    "imports": [
+      "JsonViewer"
+    ],
+    "usage": "<JsonViewer\n  data={{ name: \"teal\", version: 5, tags: [\"design\", \"system\"] }}\n  copyable\n  defaultExpandedDepth={2}\n/>"
+  },
+  "kanban-board": {
+    "name": "Kanban Board",
+    "apiNames": [
+      "KanbanBoard"
+    ],
+    "description": "A column-based board where cards move between workflow stages with full keyboard support.",
+    "imports": [
+      "KanbanBoard"
+    ],
+    "usage": "<KanbanBoard\n  label=\"Sprint board\"\n  defaultColumns={[\n    { id: 'todo', title: 'To do', cards: [{ id: 'a', title: 'Design tokens' }] },\n    { id: 'done', title: 'Done', cards: [] },\n  ]}\n  onColumnsChange={(columns) => undefined}\n/>"
+  },
+  "line-chart": {
+    "name": "Line Chart",
+    "apiNames": [
+      "LineChart"
+    ],
+    "description": "Multi-series SVG line chart with axis ticks, focusable points, simple or custom tooltips, a legend, and a built-in accessible data table.",
+    "imports": [
+      "LineChart"
+    ],
+    "usage": "<LineChart\n  label=\"Revenue and costs per month\"\n  labels={['Jan', 'Feb', 'Mar', 'Apr']}\n  series={[\n    { name: 'Revenue', data: [42, 55, 48, 61] },\n    { name: 'Costs', data: [30, 34, 32, 38] },\n  ]}\n/>"
+  },
+  "log-viewer": {
+    "name": "Log Viewer",
+    "apiNames": [
+      "LogViewer"
+    ],
+    "description": "Scrollable monospace log pane with severity coloring, a follow/auto-scroll toggle, and optional search highlighting.",
+    "imports": [
+      "LogViewer"
+    ],
+    "usage": "<LogViewer\n  label=\"Deploy logs\"\n  lines={[\n    { id: \"1\", level: \"info\", message: \"build started\", timestamp: \"10:00:01\" },\n    { id: \"2\", level: \"error\", message: \"type check failed\", timestamp: \"10:00:33\" },\n  ]}\n  search=\"failed\"\n/>"
+  },
+  "markdown-view": {
+    "name": "Markdown View",
+    "apiNames": [
+      "MarkdownView"
+    ],
+    "description": "Renders a safe markdown subset — headings, emphasis, links, lists, code, and quotes — as teal-styled elements with no raw HTML.",
+    "imports": [
+      "MarkdownView"
+    ],
+    "usage": "<MarkdownView\n  content={\"## Release notes\\n\\nShips the **parser rewrite**.\\n\\n- Faster tokens\\n- Inline `diff`\"}\n/>"
+  },
+  "org-chart": {
+    "name": "Org Chart",
+    "apiNames": [
+      "OrgChart"
+    ],
+    "description": "A hierarchy of person nodes rendered as connected boxes, with collapsible subtrees.",
+    "imports": [
+      "OrgChart"
+    ],
+    "usage": "<OrgChart\n  root={{\n    id: 'ceo',\n    name: 'Ada',\n    title: 'CEO',\n    children: [{ id: 'cto', name: 'Ben', title: 'CTO' }],\n  }}\n/>"
+  },
+  "pie-chart": {
+    "name": "Pie Chart",
+    "apiNames": [
+      "PieChart"
+    ],
+    "description": "SVG pie and donut chart with keyboard-focusable segments, percentage labels, a legend, and a built-in accessible data table.",
+    "imports": [
+      "PieChart"
+    ],
+    "usage": "<PieChart\n  label=\"Budget share per department\"\n  data={[\n    { name: 'Engineering', value: 45 },\n    { name: 'Design', value: 20 },\n    { name: 'Marketing', value: 25 },\n  ]}\n  innerRadius={0.6}\n/>"
+  },
+  "qr-code": {
+    "name": "QR Code",
+    "apiNames": [
+      "QrCode"
+    ],
+    "description": "Dependency-free SVG QR code renderer with a hand-rolled byte-mode encoder (error-correction level L).",
+    "imports": [
+      "QrCode"
+    ],
+    "usage": "<QrCode\n  value=\"https://example.com/app/invite\"\n  label=\"QR code for the invite link\"\n  size={160}\n/>"
+  },
+  "radar-chart": {
+    "name": "Radar Chart",
+    "apiNames": [
+      "RadarChart"
+    ],
+    "description": "SVG radar (spider) chart that overlays multi-series polygons across a shared set of axes.",
+    "imports": [
+      "RadarChart"
+    ],
+    "usage": "<RadarChart\n  aria-label=\"Skill profiles\"\n  axes={[\"Frontend\", \"Backend\", \"Testing\", \"DevOps\"]}\n  series={[{ name: \"Ada\", values: [5, 3, 4, 2] }]}\n/>"
+  },
+  "scatter-chart": {
+    "name": "Scatter Chart",
+    "apiNames": [
+      "ScatterChart"
+    ],
+    "description": "Hand-rolled SVG scatter plot with x/y axes, multi-series dots, and optional size encoding.",
+    "imports": [
+      "ScatterChart"
+    ],
+    "usage": "<ScatterChart\n  aria-label=\"Latency by payload size\"\n  series={[{ name: \"Baseline\", data: [{ x: 12, y: 40 }, { x: 24, y: 55 }] }]}\n  xAxisLabel=\"Payload (KB)\"\n  yAxisLabel=\"Latency (ms)\"\n/>"
+  },
+  "tree-grid": {
+    "name": "Tree Grid",
+    "apiNames": [
+      "TreeGrid"
+    ],
+    "description": "A data table whose rows form an expandable tree, following the WAI-ARIA treegrid pattern.",
+    "imports": [
+      "TreeGrid"
+    ],
+    "usage": "<TreeGrid\n  aria-label=\"Project files\"\n  columns={[\n    { key: 'name', label: 'Name' },\n    { key: 'size', label: 'Size' },\n  ]}\n  rows={[\n    { id: 'src', name: 'src', size: '—', children: [{ id: 'app', name: 'app.ts', size: '2 KB' }] },\n  ]}\n/>"
+  },
+  "stack": {
+    "name": "Stack",
+    "apiNames": [
+      "Stack"
+    ],
+    "description": "A flex primitive that stacks children along one axis with consistent spacing and alignment.",
+    "imports": [
+      "Stack",
+      "Badge"
+    ],
+    "usage": "<Stack direction=\"row\" gap={4} align=\"center\">\n  <Badge variant=\"success\">Ready</Badge>\n  <Badge>Paused</Badge>\n</Stack>"
+  },
+  "grid": {
+    "name": "Grid",
+    "apiNames": [
+      "Grid"
+    ],
+    "description": "A grid primitive with fixed columns or responsive auto-fit tracks.",
+    "imports": [
+      "Grid",
+      "Card"
+    ],
+    "usage": "<Grid minChildWidth=\"14rem\" gap={4}>\n  <Card>...</Card>\n  <Card>...</Card>\n</Grid>"
+  },
+  "resizable": {
+    "name": "Resizable",
+    "apiNames": [
+      "ResizablePanelGroup",
+      "ResizablePanel",
+      "ResizableHandle"
+    ],
+    "description": "Pointer- and keyboard-resizable panes with percentage sizing and double-click reset.",
+    "imports": [
+      "ResizablePanelGroup",
+      "ResizablePanel",
+      "ResizableHandle"
+    ],
+    "usage": "<ResizablePanelGroup direction=\"horizontal\">\n  <ResizablePanel defaultSize={30}>Sidebar</ResizablePanel>\n  <ResizableHandle />\n  <ResizablePanel>Content</ResizablePanel>\n</ResizablePanelGroup>"
+  },
+  "aspect-ratio": {
+    "name": "Aspect Ratio",
+    "apiNames": [
+      "AspectRatio"
+    ],
+    "description": "Keeps media or content at a consistent width-to-height ratio.",
+    "imports": [
+      "AspectRatio"
+    ],
+    "usage": "<AspectRatio ratio={16 / 9}>\n  <img src=\"/charts/usage.png\" alt=\"Weekly usage chart\" />\n</AspectRatio>"
+  },
+  "app-shell": {
+    "name": "AppShell",
+    "apiNames": [
+      "AppShell",
+      "AppShellHeader",
+      "AppShellSidebar",
+      "AppShellMain",
+      "AppShellFooter"
+    ],
+    "description": "An application frame that places header, sidebar, main and footer regions into named grid areas.",
+    "imports": [
+      "AppShell",
+      "AppShellHeader",
+      "AppShellSidebar",
+      "AppShellMain",
+      "AppShellFooter"
+    ],
+    "usage": "<AppShell>\n  <AppShellHeader>…</AppShellHeader>\n  <AppShellSidebar>…</AppShellSidebar>\n  <AppShellMain>…</AppShellMain>\n  <AppShellFooter>…</AppShellFooter>\n</AppShell>"
+  },
+  "box": {
+    "name": "Box",
+    "apiNames": [
+      "Box"
+    ],
+    "description": "The lowest-level layout primitive: a polymorphic box with spacing props, leaving surfaces and colors to className.",
+    "imports": [
+      "Box"
+    ],
+    "usage": "<Box\n  p={4}\n  className=\"teal-u-rounded-xl teal-u-bg-surface-container\"\n>\n  Content\n</Box>"
+  },
+  "center": {
+    "name": "Center",
+    "apiNames": [
+      "Center"
+    ],
+    "description": "Centers children horizontally and vertically inside their box, with an inline option for flow content.",
+    "imports": [
+      "Center"
+    ],
+    "usage": "<Center\n  className=\"h-40\"\n>\n  <Spinner />\n</Center>"
+  },
+  "columns": {
+    "name": "Columns",
+    "apiNames": [
+      "Columns"
+    ],
+    "description": "An equal-width grid column layout that keeps row alignment and collapses to fewer columns on narrow screens.",
+    "imports": [
+      "Columns"
+    ],
+    "usage": "<Columns\n  columns={3}\n  gap={3}\n>\n  {features.map((f) => <FeatureCard key={f.id} {...f} />)}\n</Columns>"
+  },
+  "container": {
+    "name": "Container",
+    "apiNames": [
+      "Container"
+    ],
+    "description": "Centers content in a max-width column with responsive horizontal padding and fixed size steps.",
+    "imports": [
+      "Container"
+    ],
+    "usage": "<Container\n  size=\"lg\"\n>\n  <p>Centered page content.</p>\n</Container>"
+  },
+  "flex": {
+    "name": "Flex",
+    "apiNames": [
+      "Flex"
+    ],
+    "description": "A flex container primitive with direction, gap, alignment and distribution props; defaults to a horizontal row.",
+    "imports": [
+      "Flex"
+    ],
+    "usage": "<Flex\n  gap={3}\n  align=\"center\"\n  justify=\"between\"\n>\n  <span>Label</span>\n  <Button>Action</Button>\n</Flex>"
+  },
+  "masonry": {
+    "name": "Masonry",
+    "apiNames": [
+      "Masonry"
+    ],
+    "description": "A CSS-columns masonry layout where unequal-height items pack tightly down each column without row gaps.",
+    "imports": [
+      "Masonry"
+    ],
+    "usage": "<Masonry\n  columns={3}\n  gap={3}\n>\n  {notes.map((note) => <NoteCard key={note.id} {...note} />)}\n</Masonry>"
+  },
+  "scroll-shadow": {
+    "name": "ScrollShadow",
+    "apiNames": [
+      "ScrollShadow"
+    ],
+    "description": "A scroll container that fades the top and bottom edges to signal that more content exists in that direction.",
+    "imports": [
+      "ScrollShadow"
+    ],
+    "usage": "<ScrollShadow\n  className=\"max-h-64\"\n>\n  <MessageList />\n</ScrollShadow>"
+  },
+  "section": {
+    "name": "Section",
+    "apiNames": [
+      "Section"
+    ],
+    "description": "A semantic page section with vertical rhythm spacing and an optional centered container wrap.",
+    "imports": [
+      "Section"
+    ],
+    "usage": "<Section\n  container\n  spacing=\"md\"\n>\n  <h2>Release notes</h2>\n</Section>"
+  },
+  "sticky-header": {
+    "name": "StickyHeader",
+    "apiNames": [
+      "StickyHeader"
+    ],
+    "description": "A header that sticks to the top of its scrolling container and gains a shadow once it is stuck.",
+    "imports": [
+      "StickyHeader"
+    ],
+    "usage": "<StickyHeader\n  offset={0}\n>\n  <h2>Recent activity</h2>\n</StickyHeader>"
+  },
+  "visually-hidden": {
+    "name": "Visually Hidden",
+    "apiNames": [
+      "VisuallyHidden"
+    ],
+    "description": "Hides content visually while keeping it available to assistive technology.",
+    "imports": [
+      "VisuallyHidden"
+    ],
+    "usage": "<button type=\"button\">\n  <Trash aria-hidden=\"true\" />\n  <VisuallyHidden>Delete report</VisuallyHidden>\n</button>"
+  },
+  "copy-button": {
+    "name": "Copy Button",
+    "apiNames": [
+      "CopyButton"
+    ],
+    "description": "A button that copies a value to the clipboard and confirms with an icon swap and live feedback.",
+    "imports": [
+      "CopyButton"
+    ],
+    "usage": "<CopyButton value=\"npm install @kryv/teal\" />"
+  },
+  "theme-toggle": {
+    "name": "Theme Toggle",
+    "apiNames": [
+      "ThemeToggle"
+    ],
+    "description": "An icon button that toggles the dark class on the document root and reports its state.",
+    "imports": [
+      "ThemeToggle"
+    ],
+    "usage": "<ThemeToggle onChange={(theme) => persistTheme(theme)} />"
+  },
+  "carousel": {
+    "name": "Carousel",
+    "apiNames": [
+      "Carousel",
+      "CarouselSlide"
+    ],
+    "description": "A scroll-snap carousel with previous and next controls, dot indicators, and arrow-key support.",
+    "imports": [
+      "Carousel",
+      "CarouselSlide"
+    ],
+    "usage": "<Carousel label=\"Featured reports\">\n  <ReportCard title=\"Q1 security\" />\n  <ReportCard title=\"Q2 reliability\" />\n</Carousel>"
+  },
+  "collapse": {
+    "name": "Collapse",
+    "apiNames": [
+      "Collapse"
+    ],
+    "description": "Animates a region's height to show or hide content, marking it hidden and inert while closed.",
+    "imports": [
+      "Collapse"
+    ],
+    "usage": "<Collapse open={showDetails}>\n  <p>Extra details revealed on demand.</p>\n</Collapse>"
+  },
+  "countdown-timer": {
+    "name": "Countdown Timer",
+    "apiNames": [
+      "CountdownTimer"
+    ],
+    "description": "Counts down to a target date with a default HH:MM:SS display or a custom render prop, firing onComplete at zero.",
+    "imports": [
+      "CountdownTimer"
+    ],
+    "usage": "<CountdownTimer\n  targetDate={launchDate}\n  onComplete={openLaunch}\n  completionMessage=\"The launch window has opened.\"\n/>"
+  },
+  "focus-trap": {
+    "name": "Focus Trap",
+    "apiNames": [
+      "FocusTrap"
+    ],
+    "description": "Keeps Tab and Shift+Tab focus cycling within a container and restores focus when deactivated.",
+    "imports": [
+      "FocusTrap"
+    ],
+    "usage": "<FocusTrap active={isEditing}>\n  <Input aria-label=\"Project name\" />\n  <Button>Save</Button>\n</FocusTrap>"
+  },
+  "highlight-text": {
+    "name": "Highlight Text",
+    "apiNames": [
+      "HighlightText"
+    ],
+    "description": "Wraps every case-insensitive match of a query in a styled mark element.",
+    "imports": [
+      "HighlightText"
+    ],
+    "usage": "<HighlightText\n  text=\"Audit report for Q3\"\n  query=\"report\"\n/>"
+  },
+  "infinite-scroll": {
+    "name": "Infinite Scroll",
+    "apiNames": [
+      "InfiniteScroll"
+    ],
+    "description": "Loads the next batch of content automatically when a sentinel scrolls into view via IntersectionObserver.",
+    "imports": [
+      "InfiniteScroll"
+    ],
+    "usage": "<InfiniteScroll\n  hasMore={hasMore}\n  loading={loading}\n  onLoadMore={loadNextPage}\n  endMessage=\"All caught up\"\n>\n  <ReportRows rows={rows} />\n</InfiniteScroll>"
+  },
+  "lazy-image": {
+    "name": "Lazy Image",
+    "apiNames": [
+      "LazyImage"
+    ],
+    "description": "Defers an image request until it nears the viewport, showing a placeholder and fading the image in on load.",
+    "imports": [
+      "LazyImage"
+    ],
+    "usage": "<LazyImage\n  src=\"/charts/signups.png\"\n  alt=\"Bar chart of quarterly signups\"\n  width={640}\n  height={360}\n/>"
+  },
+  "marquee": {
+    "name": "Marquee",
+    "apiNames": [
+      "Marquee"
+    ],
+    "description": "Scrolls content horizontally in a seamless CSS-animation loop with pause-on-hover and reduced-motion support.",
+    "imports": [
+      "Marquee"
+    ],
+    "usage": "<Marquee duration={16} pauseOnHover>\n  <StatusChip label=\"All systems operational\" />\n  <StatusChip label=\"Deploy complete\" />\n</Marquee>"
+  },
+  "number-ticker": {
+    "name": "Number Ticker",
+    "apiNames": [
+      "NumberTicker"
+    ],
+    "description": "Animates a number toward its target with a requestAnimationFrame count-up and a pluggable formatter.",
+    "imports": [
+      "NumberTicker"
+    ],
+    "usage": "<NumberTicker\n  value={revenue}\n  duration={1200}\n  formatter={(v) => currency.format(v)}\n/>"
+  },
+  "portal": {
+    "name": "Portal",
+    "apiNames": [
+      "Portal"
+    ],
+    "description": "Renders children into a different DOM container, escaping overflow and stacking-context traps.",
+    "imports": [
+      "Portal"
+    ],
+    "usage": "<Portal>\n  <div className=\"fixed bottom-4 right-4\">Floating notice</div>\n</Portal>"
+  },
+  "presence": {
+    "name": "Presence",
+    "apiNames": [
+      "Presence"
+    ],
+    "description": "Keeps children mounted through their exit transition before unmounting them.",
+    "imports": [
+      "Presence"
+    ],
+    "usage": "<Presence present={showCard}>\n  <Card>Sync complete</Card>\n</Presence>"
+  },
+  "reveal": {
+    "name": "Reveal",
+    "apiNames": [
+      "Reveal"
+    ],
+    "description": "Fades and slides children in when they scroll into the viewport via IntersectionObserver.",
+    "imports": [
+      "Reveal"
+    ],
+    "usage": "<Reveal>\n  <Card title=\"Reliability\" />\n</Reveal>"
+  },
+  "time-ago": {
+    "name": "Time Ago",
+    "apiNames": [
+      "TimeAgo"
+    ],
+    "description": "Renders a self-updating relative timestamp like \"5 minutes ago\" with the absolute time on hover.",
+    "imports": [
+      "TimeAgo"
+    ],
+    "usage": "<TimeAgo\n  date={event.createdAt}\n  updateInterval={30000}\n/>"
+  },
+  "truncated-text": {
+    "name": "Truncated Text",
+    "apiNames": [
+      "TruncatedText"
+    ],
+    "description": "Clamps text to one or more lines with a show more/less toggle and a tooltip for the full text.",
+    "imports": [
+      "TruncatedText"
+    ],
+    "usage": "<TruncatedText\n  text=\"The full audit summary that may not fit...\"\n  lines={3}\n/>"
+  },
+  "virtual-list": {
+    "name": "Virtual List",
+    "apiNames": [
+      "VirtualList"
+    ],
+    "description": "Renders only the visible slice of a large fixed-height list, keeping thousands of rows scrolling smoothly.",
+    "imports": [
+      "VirtualList"
+    ],
+    "usage": "<VirtualList\n  items={people}\n  itemHeight={36}\n  height={320}\n  label=\"Teammates\"\n  renderItem={(person) => <Row>{person.name}</Row>}\n/>"
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "id": "sidebar",
+  "name": "Sidebar",
+  "apiNames": [
+    "Sidebar",
+    "SidebarHeader",
+    "SidebarContent",
+    "SidebarFooter",
+    "SidebarSection",
+    "SidebarItem",
+    "SidebarCollapseButton"
+  ],
+  "description": "A full app sidebar with header, content, and footer slots that collapses to an icon rail, with aria-current on the active item.",
+  "usage": "<Sidebar>\n  <SidebarHeader>\n    <Logo />\n  </SidebarHeader>\n  <SidebarContent>\n    <SidebarSection label=\"Workspace\">\n      <SidebarItem active href=\"/overview\" icon={<LayoutDashboard />}>\n        Overview\n      </SidebarItem>\n      <SidebarItem href=\"/projects\" icon={<FolderKanban />}>\n        Projects\n      </SidebarItem>\n    </SidebarSection>\n  </SidebarContent>\n  <SidebarFooter>\n    <SidebarCollapseButton />\n  </SidebarFooter>\n</Sidebar>",
+  "anatomy": [
+    {
+      "part": "Header",
+      "description": "SidebarHeader slot for product identity."
+    },
+    {
+      "part": "Content",
+      "description": "SidebarContent holding SidebarSection groups of items."
+    },
+    {
+      "part": "Items",
+      "description": "SidebarItem links; the active one sets aria-current=\"page\"."
+    },
+    {
+      "part": "Footer",
+      "description": "SidebarFooter slot, usually holding the SidebarCollapseButton."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Persist the collapsed state so it survives navigation.",
+      "Keep icons on every item so the collapsed rail stays usable."
+    ],
+    "donts": [
+      "Don't hide critical destinations only in the expanded state.",
+      "Don't use it as a floating overlay rail; that is Side Rail."
+    ]
+  },
+  "related": [
+    "vertical-nav",
+    "side-rail",
+    "drawer"
+  ],
+  "examples": [
+    {
+      "title": "Expanded sidebar",
+      "description": "Full labels with header, sectioned items, and a collapse button pinned in the footer."
+    },
+    {
+      "title": "Collapsed icon rail",
+      "description": "defaultCollapsed starts the sidebar as an icon-only rail; item labels hide and icons stay centered."
+    }
+  ],
+  "guidance": {
+    "useWhen": "The app has a persistent primary navigation that benefits from header and footer slots, such as a dashboard or admin console.",
+    "avoidWhen": "The nav is a floating edge rail that expands on hover; use SideRail or VerticalNav with mode=\"rail\" instead.",
+    "behavior": "Collapsed state is controlled or uncontrolled via collapsed/defaultCollapsed/onCollapsedChange; the active item always exposes aria-current=\"page\".",
+    "responsive": "Collapsing frees horizontal space on narrow screens; pair with a Drawer for an off-canvas pattern on phones."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus between the item links and the collapse button."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Follows the focused item link."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Toggles the sidebar between expanded and collapsed from the collapse button."
+      }
+    ],
+    "notes": [
+      "Renders a navigation landmark with a configurable aria-label.",
+      "The active item is announced as the current page through aria-current=\"page\".",
+      "The collapse button exposes aria-expanded and a label that switches between \"Collapse sidebar\" and \"Expand sidebar\"."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Sidebar",
+      "props": [
+        {
+          "defaultValue": "Sidebar",
+          "description": "Accessible name for the sidebar landmark.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled collapsed state; true renders the sidebar as an icon rail.",
+          "name": "collapsed",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Initial collapsed state when uncontrolled.",
+          "name": "defaultCollapsed",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the new collapsed state when the sidebar is toggled.",
+          "name": "onCollapsedChange",
+          "required": false,
+          "type": "(collapsed: boolean) => void"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "SidebarHeader",
+      "props": []
+    },
+    {
+      "description": "",
+      "displayName": "SidebarContent",
+      "props": []
+    },
+    {
+      "description": "",
+      "displayName": "SidebarFooter",
+      "props": []
+    },
+    {
+      "description": "",
+      "displayName": "SidebarSection",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Uppercase heading shown above the items. Hidden while the sidebar is collapsed.",
+          "name": "label",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "SidebarItem",
+      "props": [
+        {
+          "defaultValue": "false",
+          "description": "Marks the item as the current page; sets `aria-current=\"page\"`.",
+          "name": "active",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Icon shown before the label. Always visible, even when the sidebar is collapsed.",
+          "name": "icon",
+          "required": false,
+          "type": "ReactNode"
+        }
+      ]
+    },
+    {
+      "description": "",
+      "displayName": "SidebarCollapseButton",
+      "props": []
+    }
+  ]
+}

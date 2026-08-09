@@ -1,0 +1,94 @@
+{
+  "id": "form-error-summary",
+  "name": "Form Error Summary",
+  "apiNames": [
+    "FormErrorSummary"
+  ],
+  "description": "A top-of-form alert that lists validation errors as anchor links which focus the offending field.",
+  "usage": "<FormErrorSummary\n  errors={[\n    { fieldId: \"email\", label: \"Email\", message: \"Enter a valid email address.\" },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "Alert container",
+      "description": "A role=alert region, so new validation failures are announced as soon as it renders."
+    },
+    {
+      "part": "Heading",
+      "description": "A customizable title summarizing the failure count or context."
+    },
+    {
+      "part": "Error list",
+      "description": "Anchor links, one per error, whose targets are the offending field ids."
+    },
+    {
+      "part": "Icon",
+      "description": "A decorative alert icon; the message text carries the meaning."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Place it at the top of the form and move focus there after a failed submit.",
+      "Keep each link's message identical to the error shown at its field.",
+      "Pass real field ids so activating a link focuses the control."
+    ],
+    "donts": [
+      "Don't render it for a single inline error; the field message is enough.",
+      "Don't link to fields that are hidden or disabled on the current step."
+    ]
+  },
+  "related": [
+    "form",
+    "field",
+    "alert"
+  ],
+  "examples": [
+    {
+      "title": "Multiple field errors",
+      "description": "Each error becomes a link whose target is the field id, so activating it moves focus straight to the control."
+    },
+    {
+      "title": "Single error with custom title",
+      "description": "The heading can be tailored to the error count or form context while the linking behavior stays the same."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Long or complex forms submit server- or client-side validation failures that users must locate quickly.",
+    "avoidWhen": "A single visible field fails inline; the Field error message alone is enough and a summary would repeat it.",
+    "behavior": "Activating an error link prevents navigation and focuses the element with the matching id, adding tabindex=-1 first when it is not naturally focusable. Renders nothing when the errors list is empty.",
+    "responsive": "The summary stacks its icon, heading, and link list at any width within the form container."
+  },
+  "accessibility": {
+    "notes": [
+      "The summary uses role=\"alert\" so new validation failures are announced as soon as it renders.",
+      "Each entry is a real anchor linking to the field id, so the destination is exposed to assistive technology even before activation."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "FormErrorSummary",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Field errors listed as focus links; the summary renders nothing when empty.",
+          "name": "errors",
+          "required": true,
+          "type": "FormErrorItem[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called after an error link is activated, with its item.",
+          "name": "onErrorClick",
+          "required": false,
+          "type": "(error: FormErrorItem) => void"
+        },
+        {
+          "defaultValue": "There is a problem",
+          "description": "Heading text of the summary.",
+          "name": "title",
+          "required": false,
+          "type": "ReactNode"
+        }
+      ]
+    }
+  ]
+}

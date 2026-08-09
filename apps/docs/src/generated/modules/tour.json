@@ -1,0 +1,121 @@
+{
+  "id": "tour",
+  "name": "Tour",
+  "apiNames": [
+    "Tour"
+  ],
+  "imports": [
+    "Tour",
+    "Button"
+  ],
+  "description": "A guided walkthrough that highlights target elements step by step.",
+  "usage": "const [open, setOpen] = useState(false)\n\n<Tour\n  open={open}\n  onOpenChange={setOpen}\n  steps={[\n    { target: '#search-field', title: 'Search everything', content: 'Find projects and people from one field.' },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "Step target",
+      "description": "A CSS selector the step anchors to; the target scrolls into view and gets highlighted."
+    },
+    {
+      "part": "Step card",
+      "description": "The floating panel with the step's title and content, positioned by the optional placement."
+    },
+    {
+      "part": "Progress controls",
+      "description": "Back, next, and skip actions that walk the steps or end the tour early."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Keep tours to a handful of steps that each name a benefit, not just a control.",
+      "Use onFinish to record completion so the tour doesn't replay on every visit.",
+      "Choose stable selectors for targets; a missing target falls back to a centered dialog."
+    ],
+    "donts": [
+      "Don't tour every feature at once; split introductions by context.",
+      "Don't use a tour for a persistent single-control hint; use Tooltip.",
+      "Don't put required setup inside a tour; users can skip it."
+    ]
+  },
+  "related": [
+    "tooltip",
+    "dialog",
+    "popover"
+  ],
+  "examples": [
+    {
+      "title": "Onboarding steps",
+      "description": "Each step anchors to a selector; missing targets fall back to a centered dialog."
+    },
+    {
+      "title": "Single-step change highlight",
+      "description": "A one-step tour with placement points returning users at a relocated feature."
+    },
+    {
+      "title": "Placement",
+      "description": "Use placement=\"top\" when the step target sits near the bottom of the viewport."
+    }
+  ],
+  "guidance": {
+    "useWhen": "New users need a guided introduction to key areas.",
+    "avoidWhen": "The hint is local to one control; use Tooltip.",
+    "behavior": "Steps anchor to selectors, Escape or Skip closes, and missing targets center the dialog.",
+    "responsive": "Steps scroll targets into view; keep step content short."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Ends the tour, like pressing Skip."
+      },
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus through the step card's back, next, and skip controls."
+      }
+    ],
+    "notes": [
+      "The step card renders role=\"dialog\" labelled by the step title.",
+      "Targets scroll into view before their step shows; a missing target falls back to a centered dialog.",
+      "Ending via Skip, Done, or Escape reports through the same close path."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "Guided onboarding walkthrough that highlights target elements step by step.",
+      "displayName": "Tour",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Ordered walkthrough steps.",
+          "name": "steps",
+          "required": true,
+          "type": "TourStep[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controls whether the tour is visible.",
+          "name": "open",
+          "required": true,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the tour closes via Skip, Done or Escape.",
+          "name": "onOpenChange",
+          "required": true,
+          "type": "(open: boolean) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called after the final step completes.",
+          "name": "onFinish",
+          "required": false,
+          "type": "() => void"
+        }
+      ]
+    }
+  ]
+}

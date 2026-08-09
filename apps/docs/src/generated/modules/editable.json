@@ -1,0 +1,147 @@
+{
+  "id": "editable",
+  "name": "Editable",
+  "apiNames": [
+    "Editable"
+  ],
+  "description": "Click-to-edit text that commits on Enter or blur and cancels with Escape.",
+  "usage": "<Editable label=\"Project name\" defaultValue=\"Orion\" onSubmit={(value) => undefined} />",
+  "anatomy": [
+    {
+      "part": "Preview",
+      "description": "The button that shows the current value and starts editing on activation."
+    },
+    {
+      "part": "Edit input",
+      "description": "The autofocused field with the current draft preselected."
+    },
+    {
+      "part": "Edit affordance",
+      "description": "The labeled edit button with a pencil icon marking the value as changeable."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use Editable for single values renamed in place, like project titles.",
+      "Commit on Enter and blur so keyboard and pointer flows both save.",
+      "Show a placeholder so empty values stay discoverable."
+    ],
+    "donts": [
+      "Don't use it inside multi-field forms; use Field and Input.",
+      "Don't validate on cancel; Escape always restores the committed value.",
+      "Don't hide the edit affordance; the pencil communicates interactivity."
+    ]
+  },
+  "related": [
+    "input",
+    "field",
+    "form"
+  ],
+  "examples": [
+    {
+      "title": "Inline rename",
+      "description": "Preview stays a button; editing autofocuses and selects the draft."
+    },
+    {
+      "title": "Empty value",
+      "description": "A placeholder keeps an empty value discoverable and inviting."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A displayed value is renamed or corrected in place.",
+    "avoidWhen": "The value is edited alongside others in a form; use Field and Input.",
+    "behavior": "Enter and blur commit, Escape cancels, and the draft is preselected.",
+    "responsive": "The preview truncates within its container width."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Starts editing from the preview or edit button."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Commits the draft while editing."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Cancels editing and restores the committed value."
+      },
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Commits the draft on blur and moves focus on."
+      }
+    ],
+    "notes": [
+      "The preview is a real button showing the value or placeholder, so the entry point is keyboard reachable.",
+      "The edit input autofocuses with the current value preselected and is named by the label.",
+      "A separate IconButton labeled Edit plus the label offers an explicit affordance; the pencil icon is decorative."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "Editable",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Initial text when uncontrolled.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Prevents switching to edit mode.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "text",
+          "description": "Accessible name describing the edited text.",
+          "name": "label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the draft text on every keystroke while editing.",
+          "name": "onChange",
+          "required": false,
+          "type": "(value: string) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the final text when a draft is committed (Enter or blur).",
+          "name": "onSubmit",
+          "required": false,
+          "type": "(value: string) => void"
+        },
+        {
+          "defaultValue": "Empty",
+          "description": "Text shown in preview mode when the value is empty.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled text shown in preview mode.",
+          "name": "value",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

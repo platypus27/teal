@@ -1,0 +1,147 @@
+{
+  "id": "fullscreen-dialog",
+  "name": "Fullscreen Dialog",
+  "apiNames": [
+    "FullscreenDialog"
+  ],
+  "description": "A dialog that occupies the entire viewport with a header close button for immersive tasks.",
+  "usage": "<FullscreenDialog\n  open={open}\n  onOpenChange={setOpen}\n  title=\"Edit report\"\n>\n  <p>Editor content</p>\n</FullscreenDialog>",
+  "anatomy": [
+    {
+      "part": "Sticky header",
+      "description": "The always-visible top bar with the title and a close button, naming the dialog."
+    },
+    {
+      "part": "Body",
+      "description": "The scrollable main area that fills the viewport for immersive content."
+    },
+    {
+      "part": "Footer",
+      "description": "Optional action row for the task's primary and secondary actions."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use for dense editors and settings flows that benefit from the whole viewport.",
+      "Prefer it over a sized dialog on small screens where a fixed panel would cramp the task.",
+      "Keep a visible close path; the header close button is built in."
+    ],
+    "donts": [
+      "Don't use it for short confirmations or single-value captures; use Dialog or PromptDialog.",
+      "Don't nest another fullscreen overlay inside it.",
+      "Don't make the body scroll the header away; the header stays sticky for orientation."
+    ]
+  },
+  "related": [
+    "dialog",
+    "drawer",
+    "lightbox"
+  ],
+  "examples": [
+    {
+      "title": "Fullscreen editor",
+      "description": "A sticky header, scrollable body, and footer actions fill the viewport."
+    },
+    {
+      "title": "Settings flow",
+      "description": "Dense settings forms get the whole screen to breathe."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Immersive tasks on small screens or dense editors (settings, rich forms) that need the full viewport.",
+    "avoidWhen": "Short confirmations or single-value captures; use Dialog, AlertDialog, or PromptDialog instead.",
+    "behavior": "Modal dialog semantics: focus is trapped, Escape closes, and the header close button is always visible.",
+    "responsive": "Always full viewport by definition; the header collapses gracefully so the body keeps scrolling on short screens."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the dialog and returns focus to the trigger."
+      },
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Cycles focus through the controls inside the dialog."
+      }
+    ],
+    "notes": [
+      "Renders with role=\"dialog\" named by its title in the sticky header.",
+      "The close button carries an accessible label via the closeLabel prop."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "FullscreenDialog",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Body content of the dialog.",
+          "name": "children",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "Close",
+          "description": "Accessible label for the close button.",
+          "name": "closeLabel",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial open state when uncontrolled.",
+          "name": "defaultOpen",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered under the title.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Action area rendered at the bottom of the dialog.",
+          "name": "footer",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called when the dialog opens or closes.",
+          "name": "onOpenChange",
+          "required": false,
+          "type": "(open: boolean) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled open state.",
+          "name": "open",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Title rendered in the header; also the accessible name of the dialog.",
+          "name": "title",
+          "required": true,
+          "type": "ReactNode"
+        }
+      ]
+    }
+  ]
+}

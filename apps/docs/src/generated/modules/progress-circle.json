@@ -1,0 +1,97 @@
+{
+  "id": "progress-circle",
+  "name": "Progress Circle",
+  "apiNames": [
+    "ProgressCircle"
+  ],
+  "description": "A radial progress indicator with determinate and indeterminate modes.",
+  "usage": "<ProgressCircle value={64} label=\"Import progress\" />",
+  "anatomy": [
+    {
+      "part": "Track",
+      "description": "Muted full circle that anchors the fill."
+    },
+    {
+      "part": "Fill",
+      "description": "Primary arc whose dash offset encodes the value; spins as a dashed arc when indeterminate."
+    },
+    {
+      "part": "Value label",
+      "description": "Centered percentage readout shown in determinate mode; hidden from assistive technology because the progressbar value carries it."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Set an explicit size per context instead of scaling the circle.",
+      "Always pass a label so the progressbar has an accessible name."
+    ],
+    "donts": [
+      "Don't use it for precise values in dense tables; use Progress or plain text.",
+      "Don't shrink it below the size where the percentage label stays legible."
+    ]
+  },
+  "related": [
+    "loading",
+    "loading-bar",
+    "meter"
+  ],
+  "examples": [
+    {
+      "title": "Radial progress",
+      "description": "role=\"progressbar\" carries the value; omit value for a spinning indeterminate arc."
+    },
+    {
+      "title": "Indeterminate work",
+      "description": "Omit value while progress cannot be measured."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Progress needs a compact radial treatment.",
+    "avoidWhen": "A precise value matters in a table; use Progress.",
+    "behavior": "Determinate mode exposes aria-valuenow; omit value for indeterminate.",
+    "responsive": "Set an explicit size per context instead of scaling."
+  },
+  "accessibility": {
+    "notes": [
+      "Rendered as role=\"progressbar\" with an aria-label; determinate mode adds aria-valuemin, aria-valuemax, and aria-valuenow.",
+      "The centered percentage is aria-hidden because the progressbar value already carries it.",
+      "The fill transition is disabled under prefers-reduced-motion."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "ProgressCircle",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Completion percentage between 0 and 100. Omit for an indeterminate spinner.",
+          "name": "value",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "48",
+          "description": "Diameter of the circle in pixels.",
+          "name": "size",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "5",
+          "description": "Width of the track and fill strokes in pixels.",
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name applied as `aria-label`.",
+          "name": "label",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

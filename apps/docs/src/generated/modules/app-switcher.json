@@ -1,0 +1,171 @@
+{
+  "id": "app-switcher",
+  "name": "App Switcher",
+  "apiNames": [
+    "AppSwitcher"
+  ],
+  "imports": [
+    "AppSwitcher",
+    "Button"
+  ],
+  "description": "An entitlement-filtered application switcher with an explicit Home destination and keyboard navigation.",
+  "usage": "<AppSwitcher\n  trigger={<Button variant=\"secondary\">Switch application</Button>}\n  homeHref=\"https://home.example\"\n  homeLabel=\"Home\"\n  apps={[\n    { id: 'yang', label: 'Yang Operations', href: 'https://yang.example' },\n    { id: 'photos', label: 'Photos', href: 'https://photos.example', current: true },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "Trigger",
+      "description": "The caller-supplied element, usually a Button, that opens the switcher menu."
+    },
+    {
+      "part": "Home destination",
+      "description": "The explicit Home link rendered first; homeCurrent marks it with aria-current."
+    },
+    {
+      "part": "Separator",
+      "description": "A divider shown only when at least one entitled application follows Home."
+    },
+    {
+      "part": "Application items",
+      "description": "Entitlement-filtered links with optional icons; the current application sets aria-current=\"page\"."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Filter apps by entitlement before passing them in; the switcher renders only what it receives.",
+      "Always provide homeHref and homeLabel so people can return to the stable Home destination.",
+      "Mark the application in use with current so it is announced as the current page."
+    ],
+    "donts": [
+      "Don't use it for navigation within one application; use Vertical Nav or Tabs instead.",
+      "Don't hide the current application from the list; show it marked current instead.",
+      "Don't put actions in the menu; every item navigates to a product destination."
+    ]
+  },
+  "related": [
+    "ecosystem-rail",
+    "launcher-card",
+    "menu"
+  ],
+  "examples": [
+    {
+      "title": "Household applications",
+      "description": "The caller filters applications by entitlement first; the switcher renders only what it is given plus the explicit Home destination."
+    },
+    {
+      "title": "Single application",
+      "description": "A member with one entitled application still gets the explicit Home destination."
+    }
+  ],
+  "guidance": {
+    "useWhen": "People move between entitled ecosystem applications.",
+    "avoidWhen": "The navigation is inside one application; use vertical nav or tabs instead.",
+    "behavior": "The caller filters applications by entitlement first; the switcher always includes the explicit Home destination.",
+    "responsive": "The dropdown collision-handles to stay on screen; keep labels short on narrow layouts."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Enter",
+          "Space",
+          "Arrow Down"
+        ],
+        "action": "Opens the switcher menu from the trigger."
+      },
+      {
+        "keys": [
+          "Arrow Up",
+          "Arrow Down"
+        ],
+        "action": "Moves the highlight between Home and the application items."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Follows the highlighted destination link."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the menu and returns focus to the trigger."
+      }
+    ],
+    "notes": [
+      "Implements the dropdown menu pattern through the Radix primitive; the menu is named through the label prop.",
+      "Home is always the first item; the current destination sets aria-current=\"page\".",
+      "Items are real anchor links, so open-in-new-tab and status-bar previews work."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "AppSwitcher",
+      "props": [
+        {
+          "defaultValue": "end",
+          "description": "Horizontal alignment of the switcher relative to the trigger.",
+          "name": "align",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Applications to show. The caller filters by entitlement first; the switcher renders only what it is given.",
+          "name": "apps",
+          "required": true,
+          "type": "AppSwitcherItem[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Marks the Home destination as the application the person is currently using.",
+          "name": "homeCurrent",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "URL of the explicit Home destination.",
+          "name": "homeHref",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label of the Home destination.",
+          "name": "homeLabel",
+          "required": true,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name for the switcher menu.",
+          "name": "label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the application id, or 'home', when a destination is selected.",
+          "name": "onNavigate",
+          "required": false,
+          "type": "(id: string) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Element that opens the switcher; receives trigger props automatically.",
+          "name": "trigger",
+          "required": true,
+          "type": "ReactElement<unknown, string | JSXElementConstructor<any>>"
+        }
+      ]
+    }
+  ]
+}

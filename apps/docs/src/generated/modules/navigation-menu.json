@@ -1,0 +1,122 @@
+{
+  "id": "navigation-menu",
+  "name": "Navigation Menu",
+  "apiNames": [
+    "NavigationMenu"
+  ],
+  "description": "A top-level navigation bar mixing links with rich content panels in a shared viewport.",
+  "usage": "<NavigationMenu\n  label=\"Primary\"\n  items={[\n    { type: 'link', label: 'Overview', href: '/', active: true },\n    { type: 'panel', label: 'Products', content: <ProductsPanel /> },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "List",
+      "description": "Top-level row mixing link items and panel triggers."
+    },
+    {
+      "part": "Link items",
+      "description": "Plain navigation links; the active one sets aria-current=\"page\"."
+    },
+    {
+      "part": "Panel triggers",
+      "description": "Buttons that open rich content in the shared viewport."
+    },
+    {
+      "part": "Viewport",
+      "description": "One shared surface that animates between open panels."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Keep panels to scannable groups of links, not forms.",
+      "Mark the current page's link item active."
+    ],
+    "donts": [
+      "Don't use it when everything is a flat link; simpler link styling suffices.",
+      "Don't put commands or forms inside panels; they are for navigation content."
+    ]
+  },
+  "related": [
+    "mega-menu",
+    "menubar",
+    "top-bar"
+  ],
+  "examples": [
+    {
+      "title": "Links and panels",
+      "description": "Link items navigate with aria-current; panel items reveal content in one viewport."
+    },
+    {
+      "title": "Panel content",
+      "description": "Panel items accept arbitrary content such as feature grids or promoted links."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Top-level destinations mix links with rich preview panels.",
+    "avoidWhen": "The navigation is flat links only; use simpler link styling.",
+    "behavior": "Panels open in a shared viewport; the active link sets aria-current.",
+    "responsive": "Fall back to a vertical nav or drawer on narrow screens."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Follows a link item or opens a panel trigger."
+      },
+      {
+        "keys": [
+          "Arrow Right",
+          "Arrow Left"
+        ],
+        "action": "Moves between the top-level items."
+      },
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves into the open panel content and on to the next item."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the open panel."
+      }
+    ],
+    "notes": [
+      "Implements the navigation menu pattern through the Radix primitive, named by the label prop.",
+      "The active link item sets aria-current=\"page\".",
+      "All panels share one viewport, so panel content appears in a consistent location in the focus order."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "NavigationMenu",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Items rendered left to right; links navigate, panels open a content panel.",
+          "name": "items",
+          "required": true,
+          "type": "NavigationMenuItem[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name for the navigation landmark.",
+          "name": "label",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

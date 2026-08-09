@@ -1,0 +1,219 @@
+{
+  "id": "date-time-picker",
+  "name": "Date Time Picker",
+  "apiNames": [
+    "DateTimePicker"
+  ],
+  "description": "A single popover that pairs a calendar grid with time fields and emits one Date.",
+  "usage": "<DateTimePicker\n  label=\"Meeting start\"\n  value={startsAt}\n  onValueChange={setStartsAt}\n/>",
+  "anatomy": [
+    {
+      "part": "Input trigger",
+      "description": "A read-only field showing the locale-formatted date and time, with aria-haspopup dialog."
+    },
+    {
+      "part": "Calendar grid",
+      "description": "The keyboard-navigable day picker with month steppers in the header."
+    },
+    {
+      "part": "Time fields",
+      "description": "The TimePicker hour and minute segments, with an AM/PM toggle in 12-hour cycle."
+    },
+    {
+      "part": "Done action",
+      "description": "Confirms the combined Date and closes the popover."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use it when a deadline or meeting genuinely needs both a day and a time.",
+      "Match hourCycle to the user's locale instead of hardcoding 24-hour time.",
+      "Bound the calendar with min and max when only a window is valid."
+    ],
+    "donts": [
+      "Don't use it when only a date or only a time is needed; pick DatePicker or TimePicker.",
+      "Don't prefill the current moment when an empty value is a valid answer."
+    ]
+  },
+  "related": [
+    "date-picker",
+    "time-picker",
+    "date-range-picker"
+  ],
+  "examples": [
+    {
+      "title": "Date and time in one popover",
+      "description": "Picking a day keeps the current time; the popover stays open so the time can be adjusted before Done."
+    },
+    {
+      "title": "12-hour clock",
+      "description": "hourCycle={12} swaps the 0–23 hour field for a 1–12 field with an AM/PM toggle."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A deadline, meeting, or schedule needs both a calendar day and a clock time from one control.",
+    "avoidWhen": "Only a date or only a time is needed; use DatePicker or TimePicker to keep the interaction smaller.",
+    "behavior": "Selecting a day preserves the chosen time and keeps the popover open; Done confirms and closes. Emits a single Date combining both parts.",
+    "responsive": "The input takes the container width while the popover keeps its fixed calendar and time layout."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Arrow Down"
+        ],
+        "action": "Opens the popover from the input."
+      },
+      {
+        "keys": [
+          "Arrow Left",
+          "Arrow Right"
+        ],
+        "action": "Moves the focused day by one."
+      },
+      {
+        "keys": [
+          "Arrow Up",
+          "Arrow Down"
+        ],
+        "action": "Moves the focused day by one week."
+      },
+      {
+        "keys": [
+          "Enter"
+        ],
+        "action": "Selects the focused day, keeping the current time."
+      },
+      {
+        "keys": [
+          "Escape"
+        ],
+        "action": "Closes the popover."
+      }
+    ],
+    "notes": [
+      "The input has aria-haspopup=\"dialog\" and is read-only so the value is always a valid locale string.",
+      "The time fields reuse the TimePicker group with labeled Hour and Minutes inputs."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "DateTimePicker",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "aria-describedby",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name when there is no visible label.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the input invalid for form validation and screen readers.",
+          "name": "aria-invalid",
+          "required": false,
+          "type": "boolean | \"true\" | \"false\""
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial selected date and time when uncontrolled.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "Date"
+        },
+        {
+          "defaultValue": "",
+          "description": "Supporting text rendered below the input.",
+          "name": "description",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Prevents interaction with the input.",
+          "name": "disabled",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "24",
+          "description": "12 shows a 1–12 hour field with an AM/PM toggle; 24 shows a 0–23 hour field.",
+          "name": "hourCycle",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Explicit id; otherwise Field or an internal id is used.",
+          "name": "id",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Latest selectable date (inclusive); applies to the date portion only.",
+          "name": "maxDate",
+          "required": false,
+          "type": "Date"
+        },
+        {
+          "defaultValue": "",
+          "description": "Earliest selectable date (inclusive); applies to the date portion only.",
+          "name": "minDate",
+          "required": false,
+          "type": "Date"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the combined date and time whenever either part changes.",
+          "name": "onValueChange",
+          "required": false,
+          "type": "(date: Date) => void"
+        },
+        {
+          "defaultValue": "Pick a date and time",
+          "description": "Text shown when no date and time is selected.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Marks the input as required.",
+          "name": "required",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled selected date and time.",
+          "name": "value",
+          "required": false,
+          "type": "Date"
+        }
+      ]
+    }
+  ]
+}

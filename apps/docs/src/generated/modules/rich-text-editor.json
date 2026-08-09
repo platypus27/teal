@@ -1,0 +1,137 @@
+{
+  "id": "rich-text-editor",
+  "name": "Rich Text Editor",
+  "apiNames": [
+    "RichTextEditor"
+  ],
+  "description": "A lightweight markdown editor whose toolbar formats the textarea selection, with an optional live preview pane.",
+  "usage": "<RichTextEditor\n  label=\"Release notes\"\n  preview\n  defaultValue=\"## Highlights\n\n- Faster sync for **large workspaces**\"\n  onChange={(value) => undefined}\n/>",
+  "anatomy": [
+    {
+      "part": "Toolbar",
+      "description": "A labelled toolbar of format actions that wrap the current selection with markdown syntax."
+    },
+    {
+      "part": "Textarea",
+      "description": "The plain-text editing surface; the markdown source is the value."
+    },
+    {
+      "part": "Preview pane",
+      "description": "An optional labelled region rendering headings, lists, links, and inline marks as you type."
+    },
+    {
+      "part": "Label",
+      "description": "The visible label associated with the textarea."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Turn on the preview for long-form writing like release notes or docs.",
+      "Store the markdown output as-is so it stays portable.",
+      "Keep the default toolbar; it covers the marks the preview renders."
+    ],
+    "donts": [
+      "Don't promise WYSIWYG behavior; editing stays in plain markdown.",
+      "Don't use it for short plain answers; a TextArea is lighter."
+    ]
+  },
+  "related": [
+    "markdown-view",
+    "input",
+    "mention-input"
+  ],
+  "examples": [
+    {
+      "title": "Markdown toolbar",
+      "description": "Bold, italic, heading, list, and link actions wrap the current selection with markdown syntax and restore the selection."
+    },
+    {
+      "title": "Live preview",
+      "description": "The preview pane renders headings, lists, links, and inline marks next to the textarea as you type."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Users write formatted long-form text that should stay portable markdown, such as release notes, docs, or issue descriptions.",
+    "avoidWhen": "Users expect WYSIWYG editing of rich content — that requires a contentEditable framework; for short plain answers use TextArea.",
+    "behavior": "Editing stays in a plain textarea; toolbar actions toggle markdown markers around the selection or at the start of the selected lines and keep the selection usable afterwards.",
+    "responsive": "The toolbar wraps within the editor width; the preview pane stacks below the textarea on narrow screens and sits beside it from md up."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves between the toolbar buttons and the textarea."
+      }
+    ],
+    "notes": [
+      "Toolbar actions are grouped in a labelled toolbar and each button has an accessible name.",
+      "The preview is a labelled region so screen reader users can skip or inspect the rendered markdown."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "Lightweight markdown editor: the toolbar wraps the text area selection with\nmarkdown syntax, and an optional pane previews the rendered result. Editing\nstays in a plain textarea — there is no contentEditable surface.",
+      "displayName": "RichTextEditor",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Accessible name for the text area when there is no visible label.",
+          "name": "aria-label",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial markdown when uncontrolled.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Visible label rendered above the editor.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the full markdown whenever it changes.",
+          "name": "onChange",
+          "required": false,
+          "type": "(value: string) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Placeholder text of the text area.",
+          "name": "placeholder",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "false",
+          "description": "Renders a live preview pane next to the text area.",
+          "name": "preview",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "defaultValue": "8",
+          "description": "Visible height of the text area in rows.",
+          "name": "rows",
+          "required": false,
+          "type": "number"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled markdown.",
+          "name": "value",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

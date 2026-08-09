@@ -1,7 +1,6 @@
 import { Search } from 'lucide-react'
-import { Link } from 'react-router'
 import { Button } from '@kryv/teal'
-import { useCommandPalette } from '../components/CommandPalette.jsx'
+import { useCommandPalette } from '../components/CommandPaletteState.jsx'
 import { Page } from '../components/Page.jsx'
 
 export function NotFoundPage() {
@@ -14,7 +13,7 @@ export function NotFoundPage() {
     >
       <div className="flex flex-wrap gap-3">
         <Button asChild>
-          <Link to="/">Back to getting started</Link>
+          <a href="/">Back to getting started</a>
         </Button>
         <Button variant="secondary" onClick={() => setOpen(true)}>
           <Search aria-hidden="true" className="size-4" />

@@ -1,0 +1,139 @@
+{
+  "id": "radio-card",
+  "name": "Radio Card",
+  "apiNames": [
+    "RadioCard"
+  ],
+  "description": "A radio group rendered as selectable cards with a title, description, and optional icon, for choices that need explanation.",
+  "usage": "<RadioCard\n  label=\"Choose a plan\"\n  defaultValue=\"pro\"\n  options={[\n    { value: 'starter', title: 'Starter', description: 'For side projects' },\n    { value: 'pro', title: 'Pro', description: 'For growing teams' },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "Group",
+      "description": "A radiogroup named by the required label prop, with roving focus on the checked card."
+    },
+    {
+      "part": "Card",
+      "description": "A radio-role button per option; arrow keys move and check, skipping disabled cards."
+    },
+    {
+      "part": "Title and description",
+      "description": "The option's name and supporting explanation inside each card."
+    },
+    {
+      "part": "Icon",
+      "description": "An optional decorative icon above the title."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use it for two to five choices that each need a sentence of explanation, like plans.",
+      "Write descriptions that contrast the options, not restate the titles.",
+      "Keep unavailable options visible but disabled."
+    ],
+    "donts": [
+      "Don't use it for more than a handful of options; use Select or Combobox.",
+      "Don't use it when several selections are allowed; use CheckboxCard."
+    ]
+  },
+  "related": [
+    "radio-group",
+    "checkbox-card",
+    "toggle-group"
+  ],
+  "examples": [
+    {
+      "title": "Plan picker",
+      "description": "Vertical cards with descriptions and a disabled unavailable option."
+    },
+    {
+      "title": "Horizontal with icons",
+      "description": "A horizontal layout with an icon above each card title."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A single choice between a few options benefits from a description or icon, such as plans, billing periods, or delivery speeds.",
+    "avoidWhen": "Options are short labels with no supporting text; RadioGroup or ToggleGroup is lighter. Several selections call for CheckboxCard.",
+    "behavior": "Selecting a card checks it and moves focus like a native radio group; the checked card holds the group's only tab stop and arrows wrap around, skipping disabled cards. Supports controlled and uncontrolled value.",
+    "responsive": "Vertical stacks fill their container; horizontal groups wrap cards onto multiple rows on narrow screens."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Tab"
+        ],
+        "action": "Moves focus to the checked card."
+      },
+      {
+        "keys": [
+          "Arrow Up",
+          "Arrow Down",
+          "Arrow Left",
+          "Arrow Right"
+        ],
+        "action": "Moves focus and checks the next card, wrapping at the ends."
+      },
+      {
+        "keys": [
+          "Home",
+          "End"
+        ],
+        "action": "Checks the first or last enabled card."
+      }
+    ],
+    "notes": [
+      "Cards expose radiogroup/radio semantics with aria-checked; the group is named by the required label prop.",
+      "Disabled cards set aria-disabled and are skipped by arrow-key navigation."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "A radio group where each option is a selectable card with a title,\ndescription, and optional icon. Arrow keys move and select like a native\nradio group; the selected card holds the single tab stop.",
+      "displayName": "RadioCard",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Initially selected value when uncontrolled.",
+          "name": "defaultValue",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Accessible name for the card group.",
+          "name": "label",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the value of the newly selected card.",
+          "name": "onChange",
+          "required": false,
+          "type": "(value: string) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Cards rendered as radios inside the group.",
+          "name": "options",
+          "required": true,
+          "type": "RadioCardOption[]"
+        },
+        {
+          "defaultValue": "vertical",
+          "description": "Layout direction of the cards.",
+          "name": "orientation",
+          "required": false,
+          "type": "enum"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled selected value.",
+          "name": "value",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

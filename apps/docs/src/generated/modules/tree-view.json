@@ -1,0 +1,157 @@
+{
+  "id": "tree-view",
+  "name": "Tree View",
+  "apiNames": [
+    "TreeView"
+  ],
+  "description": "A hierarchical disclosure list with keyboard navigation and selection.",
+  "usage": "<TreeView\n  aria-label=\"Project files\"\n  items={[\n    { id: 'src', label: 'src', children: [{ id: 'app', label: 'App.tsx' }] },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "Tree",
+      "description": "The role=\"tree\" list, named by a required aria-label."
+    },
+    {
+      "part": "Tree items",
+      "description": "role=\"treeitem\" rows with aria-expanded on parents and aria-selected on the selection."
+    },
+    {
+      "part": "Toggle",
+      "description": "Chevron that expands or collapses a parent without selecting it."
+    },
+    {
+      "part": "Groups",
+      "description": "role=\"group\" lists holding each parent's children."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Always pass an aria-label naming the tree.",
+      "Use it only for genuinely hierarchical data like files or categories."
+    ],
+    "donts": [
+      "Don't render flat lists as trees; use List instead.",
+      "Don't put interactive controls inside rows; keep the single-focus tree pattern."
+    ]
+  },
+  "related": [
+    "accordion",
+    "list",
+    "tree-grid"
+  ],
+  "examples": [
+    {
+      "title": "Hierarchy",
+      "description": "Arrows expand, collapse, and move; Enter selects with aria-selected."
+    },
+    {
+      "title": "Default expansion",
+      "description": "Open key branches on first render with defaultExpandedIds."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Content is genuinely hierarchical, like files or nested categories.",
+    "avoidWhen": "The list is flat; use a plain list or Tabs.",
+    "behavior": "Arrow keys expand, collapse, and move; Enter selects.",
+    "responsive": "Indent scales with depth; keep labels truncating, not wrapping."
+  },
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": [
+          "Arrow Right"
+        ],
+        "action": "Expands a collapsed parent, or moves to its first child."
+      },
+      {
+        "keys": [
+          "Arrow Left"
+        ],
+        "action": "Collapses an expanded parent, or moves to its parent."
+      },
+      {
+        "keys": [
+          "Arrow Up",
+          "Arrow Down"
+        ],
+        "action": "Moves between the visible items."
+      },
+      {
+        "keys": [
+          "Enter",
+          "Space"
+        ],
+        "action": "Selects the focused item."
+      }
+    ],
+    "notes": [
+      "Renders a role=\"tree\" named by its required aria-label, with role=\"group\" lists for children.",
+      "Parents expose aria-expanded; the selected item sets aria-selected.",
+      "Toggle chevrons and icons are aria-hidden; state comes from the treeitem semantics."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "A navigable tree with roving focus, expansion, and selection.",
+      "displayName": "TreeView",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Accessible name for the tree.",
+          "name": "aria-label",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "className",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "defaultValue": "",
+          "description": "Initial expanded item ids when uncontrolled.",
+          "name": "defaultExpandedIds",
+          "required": false,
+          "type": "string[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Controlled expanded item ids.",
+          "name": "expandedIds",
+          "required": false,
+          "type": "string[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Items rendered at the root of the tree.",
+          "name": "items",
+          "required": true,
+          "type": "TreeViewItem[]"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the full list of expanded ids whenever expansion changes.",
+          "name": "onExpandedChange",
+          "required": false,
+          "type": "(expandedIds: string[]) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Called with the id of the selected item.",
+          "name": "onSelect",
+          "required": false,
+          "type": "(id: string) => void"
+        },
+        {
+          "defaultValue": "",
+          "description": "Currently selected item id.",
+          "name": "selectedId",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

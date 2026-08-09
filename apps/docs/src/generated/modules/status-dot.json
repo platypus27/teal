@@ -1,0 +1,85 @@
+{
+  "id": "status-dot",
+  "name": "Status Dot",
+  "apiNames": [
+    "StatusDot"
+  ],
+  "description": "A small colored dot with an optional text label for compact entity status.",
+  "usage": "<StatusDot\n  variant=\"success\"\n  label=\"Online\"\n/>",
+  "anatomy": [
+    {
+      "part": "Dot",
+      "description": "Small colored marker with variant and size options; aria-hidden."
+    },
+    {
+      "part": "Label",
+      "description": "Optional visible text that carries the status meaning."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Pair the dot with a text label so color is never the only signal.",
+      "Use the success, warning, and danger variants for health-style readouts."
+    ],
+    "donts": [
+      "Don't use a bare dot for a status users must act on; use Alert or Banner.",
+      "Don't animate it for live activity; use PulseDot instead."
+    ]
+  },
+  "related": [
+    "pulse-dot",
+    "health-indicator",
+    "badge"
+  ],
+  "examples": [
+    {
+      "title": "Labeled statuses",
+      "description": "Dots paired with text labels for scanable inline status in lists and headers."
+    },
+    {
+      "title": "Semantic variants",
+      "description": "The success, warning, and danger variants for health-style readouts."
+    }
+  ],
+  "guidance": {
+    "useWhen": "You need a compact, glanceable status marker next to an entity name, for example in tables or list rows.",
+    "avoidWhen": "The status needs more explanation or an action; use Alert or Banner instead.",
+    "behavior": "Purely presentational: the dot is hidden from assistive technology and the visible label carries the meaning.",
+    "responsive": "Stays inline and shrinks to content; the label truncates with the surrounding layout."
+  },
+  "accessibility": {
+    "notes": [
+      "The colored dot is aria-hidden; always pair it with a text label or an aria-label so color is not the only signal.",
+      "Color alone never conveys the status — the label text does."
+    ]
+  },
+  "apiEntries": [
+    {
+      "description": "",
+      "displayName": "StatusDot",
+      "props": [
+        {
+          "defaultValue": "",
+          "description": "Optional text rendered next to the dot.",
+          "name": "label",
+          "required": false,
+          "type": "ReactNode"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "variant",
+          "required": false,
+          "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\" | null"
+        },
+        {
+          "defaultValue": "",
+          "description": "",
+          "name": "size",
+          "required": false,
+          "type": "\"sm\" | \"md\" | \"lg\" | null"
+        }
+      ]
+    }
+  ]
+}
