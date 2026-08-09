@@ -1,12 +1,11 @@
 import { execFile } from 'node:child_process'
 import { createHash, randomBytes } from 'node:crypto'
-import { createReadStream } from 'node:fs'
+import { constants, createReadStream } from 'node:fs'
 import {
   lstat,
   mkdir,
   mkdtemp,
   open,
-  readFile,
   realpath,
   rename,
   rm,
@@ -32,19 +31,64 @@ const SOURCE_FILES = new Map([
   ['scripts/teal_release_candidate.mjs', 'lib/teal_release_candidate.mjs'],
 ])
 
+function sameFileSnapshot(before, after) {
+  return before.dev === after.dev
+    && before.ino === after.ino
+    && before.mode === after.mode
+    && before.nlink === after.nlink
+    && before.size === after.size
+    && before.mtimeNs === after.mtimeNs
+    && before.ctimeNs === after.ctimeNs
+}
+
+async function readStableFile(file, metadata, maximumBytes, label) {
+  const expectedBytes = Number(metadata.size)
+  const bytes = Buffer.allocUnsafe(expectedBytes)
+  let offset = 0
+  while (offset < expectedBytes) {
+    const result = await file.read(bytes, offset, expectedBytes - offset, null)
+    if (result.bytesRead === 0) break
+    offset += result.bytesRead
+  }
+  const overflow = await file.read(Buffer.allocUnsafe(1), 0, 1, null)
+  const finalMetadata = await file.stat({ bigint: true })
+  if (
+    offset !== expectedBytes
+    || overflow.bytesRead !== 0
+    || expectedBytes > maximumBytes
+    || !sameFileSnapshot(metadata, finalMetadata)
+  ) {
+    throw new Error(`${label} changed while it was read`)
+  }
+  return bytes
+}
+
+async function descriptorPath(file, absolute) {
+  if (process.platform === 'linux') return realpath(`/proc/self/fd/${file.fd}`)
+  return realpath(absolute)
+}
+
 async function canonicalSourceFile(path) {
   const absolute = resolve(path)
-  const metadata = await lstat(absolute)
-  if (
-    !metadata.isFile()
-    || metadata.isSymbolicLink()
-    || metadata.size < 1
-    || metadata.size > MAX_SOURCE_BYTES
-    || await realpath(absolute) !== absolute
-  ) {
-    throw new Error(`Controller source must be a bounded canonical regular file: ${path}`)
+  const source = await open(absolute, constants.O_RDONLY | constants.O_NOFOLLOW)
+  try {
+    const metadata = await source.stat({ bigint: true })
+    if (
+      !metadata.isFile()
+      || metadata.isSymbolicLink()
+      || metadata.size < 1n
+      || metadata.size > BigInt(MAX_SOURCE_BYTES)
+      || await descriptorPath(source, absolute) !== absolute
+    ) {
+      throw new Error(`Controller source must be a bounded canonical regular file: ${path}`)
+    }
+    return {
+      absolute,
+      bytes: await readStableFile(source, metadata, MAX_SOURCE_BYTES, 'Controller source'),
+    }
+  } finally {
+    await source.close()
   }
-  return { absolute, bytes: await readFile(absolute) }
 }
 
 function sha256Bytes(bytes) {

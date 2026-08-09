@@ -1,4 +1,5 @@
-import { lstat, readFile, rename, writeFile } from 'node:fs/promises'
+import { constants } from 'node:fs'
+import { open, rename, writeFile } from 'node:fs/promises'
 import { basename, dirname, resolve, sep } from 'node:path'
 
 const maximumHtmlBytes = 2 * 1024 * 1024
@@ -6,16 +7,54 @@ const maximumStylesheetBytes = 512 * 1024
 
 function boundedRegularFile(stat, maximumBytes, label) {
   if (!stat.isFile() || stat.isSymbolicLink()) throw new Error(`${label} must be a regular file`)
-  if (stat.size < 1 || stat.size > maximumBytes) {
+  if (stat.size < 1n || stat.size > BigInt(maximumBytes)) {
     throw new Error(`${label} exceeds its bounded size`)
   }
 }
 
+function sameFileSnapshot(before, after) {
+  return before.dev === after.dev
+    && before.ino === after.ino
+    && before.mode === after.mode
+    && before.nlink === after.nlink
+    && before.size === after.size
+    && before.mtimeNs === after.mtimeNs
+    && before.ctimeNs === after.ctimeNs
+}
+
+async function readStableFile(file, metadata, maximumBytes, label, encoding) {
+  const expectedBytes = Number(metadata.size)
+  const bytes = Buffer.allocUnsafe(expectedBytes)
+  let offset = 0
+  while (offset < expectedBytes) {
+    const result = await file.read(bytes, offset, expectedBytes - offset, null)
+    if (result.bytesRead === 0) break
+    offset += result.bytesRead
+  }
+  const overflow = await file.read(Buffer.allocUnsafe(1), 0, 1, null)
+  const finalMetadata = await file.stat({ bigint: true })
+  if (
+    offset !== expectedBytes
+    || overflow.bytesRead !== 0
+    || expectedBytes > maximumBytes
+    || !sameFileSnapshot(metadata, finalMetadata)
+  ) {
+    throw new Error(`${label} changed while it was read`)
+  }
+  return encoding ? bytes.toString(encoding) : bytes
+}
+
 async function inlineHtmlStyles(dist, htmlName) {
   const htmlPath = resolve(dist, htmlName)
-  const htmlStat = await lstat(htmlPath)
-  boundedRegularFile(htmlStat, maximumHtmlBytes, htmlName)
-  const html = await readFile(htmlPath, 'utf8')
+  const htmlFile = await open(htmlPath, constants.O_RDONLY | constants.O_NOFOLLOW)
+  let html
+  try {
+    const htmlStat = await htmlFile.stat({ bigint: true })
+    boundedRegularFile(htmlStat, maximumHtmlBytes, htmlName)
+    html = await readStableFile(htmlFile, htmlStat, maximumHtmlBytes, htmlName, 'utf8')
+  } finally {
+    await htmlFile.close()
+  }
 
   const stylesheetLinks = [...html.matchAll(/<link\b[^>]*>/gi)]
     .map((match) => match[0])
@@ -33,9 +72,23 @@ async function inlineHtmlStyles(dist, htmlName) {
   const assetsDirectory = `${resolve(dist, 'assets')}${sep}`
   if (!stylesheetPath.startsWith(assetsDirectory)) throw new Error('Initial stylesheet escapes the assets directory')
 
-  const stylesheetStat = await lstat(stylesheetPath)
-  boundedRegularFile(stylesheetStat, maximumStylesheetBytes, 'Initial stylesheet')
-  const stylesheet = await readFile(stylesheetPath, 'utf8')
+  const stylesheetFile = await open(stylesheetPath, constants.O_RDONLY | constants.O_NOFOLLOW)
+  let stylesheet
+  let stylesheetBytes
+  try {
+    const stylesheetStat = await stylesheetFile.stat({ bigint: true })
+    boundedRegularFile(stylesheetStat, maximumStylesheetBytes, 'Initial stylesheet')
+    stylesheetBytes = Number(stylesheetStat.size)
+    stylesheet = await readStableFile(
+      stylesheetFile,
+      stylesheetStat,
+      maximumStylesheetBytes,
+      'Initial stylesheet',
+      'utf8',
+    )
+  } finally {
+    await stylesheetFile.close()
+  }
   if (/<\/style/i.test(stylesheet)) throw new Error('Initial stylesheet contains an unsafe closing style tag')
 
   const inlined = html.replace(link, `<style data-teal-critical>${stylesheet}</style>`)
@@ -43,7 +96,7 @@ async function inlineHtmlStyles(dist, htmlName) {
   const temporaryPath = resolve(dirname(htmlPath), `.${basename(htmlPath)}.${process.pid}.tmp`)
   await writeFile(temporaryPath, inlined, { encoding: 'utf8', flag: 'wx', mode: 0o600 })
   await rename(temporaryPath, htmlPath)
-  console.log(`Inlined ${stylesheetStat.size} stylesheet bytes into ${htmlName}`)
+  console.log(`Inlined ${stylesheetBytes} stylesheet bytes into ${htmlName}`)
 }
 
 export async function inlineStyles(distDirectory) {

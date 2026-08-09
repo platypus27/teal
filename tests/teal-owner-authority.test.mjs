@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import { generateKeyPairSync, sign } from 'node:crypto'
-import { chmod, lstat, mkdir, mkdtemp, readFile, rm } from 'node:fs/promises'
+import { constants } from 'node:fs'
+import { chmod, mkdir, mkdtemp, open, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import test from 'node:test'
@@ -82,8 +83,15 @@ test('verifies and durably consumes one exact docs approval before mutation', as
   })
   const result = await authorize()
   const path = join(ledgerRoot, `${approval.digest.slice('sha256:'.length)}.json`)
-  const metadata = await lstat(path)
-  const record = JSON.parse(await readFile(path, 'utf8'))
+  const recordFile = await open(path, constants.O_RDONLY | constants.O_NOFOLLOW)
+  let metadata
+  let record
+  try {
+    metadata = await recordFile.stat()
+    record = JSON.parse(await recordFile.readFile('utf8'))
+  } finally {
+    await recordFile.close()
+  }
 
   assert.equal(metadata.mode & 0o777, 0o600)
   assert.equal(result.digest, approval.digest)

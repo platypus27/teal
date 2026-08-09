@@ -1,4 +1,5 @@
-import { lstat, readFile, realpath } from 'node:fs/promises'
+import { constants } from 'node:fs'
+import { open, realpath } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
 import {
@@ -7,6 +8,43 @@ import {
 } from './owner-approval.mjs'
 
 const MAX_INPUT_BYTES = 1024 * 1024
+
+function sameFileSnapshot(before, after) {
+  return before.dev === after.dev
+    && before.ino === after.ino
+    && before.mode === after.mode
+    && before.nlink === after.nlink
+    && before.size === after.size
+    && before.mtimeNs === after.mtimeNs
+    && before.ctimeNs === after.ctimeNs
+}
+
+async function readStableFile(file, metadata, maximumBytes, label) {
+  const expectedBytes = Number(metadata.size)
+  const bytes = Buffer.allocUnsafe(expectedBytes)
+  let offset = 0
+  while (offset < expectedBytes) {
+    const result = await file.read(bytes, offset, expectedBytes - offset, null)
+    if (result.bytesRead === 0) break
+    offset += result.bytesRead
+  }
+  const overflow = await file.read(Buffer.allocUnsafe(1), 0, 1, null)
+  const finalMetadata = await file.stat({ bigint: true })
+  if (
+    offset !== expectedBytes
+    || overflow.bytesRead !== 0
+    || expectedBytes > maximumBytes
+    || !sameFileSnapshot(metadata, finalMetadata)
+  ) {
+    throw new Error(`${label} changed while it was read`)
+  }
+  return bytes
+}
+
+async function descriptorPath(file, absolute) {
+  if (process.platform === 'linux') return realpath(`/proc/self/fd/${file.fd}`)
+  return realpath(absolute)
+}
 
 function parseArguments(args) {
   const values = new Map()
@@ -54,17 +92,22 @@ function parseArguments(args) {
 
 async function readBoundedRegularFile(path, label) {
   const absolute = resolve(path)
-  const metadata = await lstat(absolute)
-  if (
-    !metadata.isFile()
-    || metadata.isSymbolicLink()
-    || metadata.size === 0
-    || metadata.size > MAX_INPUT_BYTES
-    || await realpath(absolute) !== absolute
-  ) {
-    throw new Error(`${label} must be a bounded canonical regular file`)
+  const input = await open(absolute, constants.O_RDONLY | constants.O_NOFOLLOW)
+  try {
+    const metadata = await input.stat({ bigint: true })
+    if (
+      !metadata.isFile()
+      || metadata.isSymbolicLink()
+      || metadata.size === 0n
+      || metadata.size > BigInt(MAX_INPUT_BYTES)
+      || await descriptorPath(input, absolute) !== absolute
+    ) {
+      throw new Error(`${label} must be a bounded canonical regular file`)
+    }
+    return await readStableFile(input, metadata, MAX_INPUT_BYTES, label)
+  } finally {
+    await input.close()
   }
-  return readFile(absolute)
 }
 
 try {

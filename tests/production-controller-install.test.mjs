@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import { generateKeyPairSync } from 'node:crypto'
+import { constants } from 'node:fs'
 import {
   access,
   chmod,
@@ -7,10 +8,12 @@ import {
   lstat,
   mkdir,
   mkdtemp,
+  open,
   readFile,
   readlink,
   readdir,
   rm,
+  symlink,
   writeFile,
 } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
@@ -33,6 +36,15 @@ const sourceFiles = [
   'infra/systemd/kryv-teal-production-observation.timer',
   'infra/sudoers.d/kryv-teal-production-controller',
 ]
+
+async function readTestFile(path, encoding) {
+  const file = await open(path, constants.O_RDONLY | constants.O_NOFOLLOW)
+  try {
+    return { contents: await file.readFile(encoding), metadata: await file.stat() }
+  } finally {
+    await file.close()
+  }
+}
 
 async function makeTreeWritable(path) {
   let metadata
@@ -111,6 +123,20 @@ test('builds a byte-reproducible fixed controller archive with an exact file clo
   ])
 })
 
+test('rejects controller sources reached through a symlinked workspace ancestor', async (t) => {
+  const fixture = await workspaceFixture(t)
+  const workspaceAlias = join(fixture.root, 'workspace-alias')
+  await symlink(fixture.workspaceRoot, workspaceAlias, 'dir')
+
+  await assert.rejects(
+    buildProductionController({
+      output: join(fixture.root, 'controller.tar'),
+      workspaceRoot: workspaceAlias,
+    }),
+    /bounded canonical regular file/i,
+  )
+})
+
 test('installs an exact archive into root-owned fixed paths and pins the owner key', async (t) => {
   const fixture = await workspaceFixture(t)
   const archive = join(fixture.root, 'controller.tar')
@@ -141,10 +167,12 @@ test('installs an exact archive into root-owned fixed paths and pins the owner k
   assert.equal((await lstat(paths.key)).mode & 0o777, 0o400)
   assert.equal((await lstat(paths.ledger)).mode & 0o777, 0o700)
   assert.equal((await lstat(paths.state)).mode & 0o777, 0o700)
-  assert.equal((await lstat(paths.sudoers)).mode & 0o777, 0o440)
+  const sudoers = await readTestFile(paths.sudoers, 'utf8')
+  assert.equal(sudoers.metadata.mode & 0o777, 0o440)
   assert.equal((await lstat(paths.timer)).mode & 0o777, 0o444)
-  assert.equal((await lstat(paths.wrapper)).mode & 0o777, 0o555)
-  const wrapper = await readFile(paths.wrapper, 'utf8')
+  const wrapperFile = await readTestFile(paths.wrapper, 'utf8')
+  assert.equal(wrapperFile.metadata.mode & 0o777, 0o555)
+  const wrapper = wrapperFile.contents
   assert.match(wrapper, /\/usr\/bin\/flock/)
   assert.match(wrapper, /--jitless/)
   assert.match(wrapper, /test "\$\(\/usr\/bin\/node --version\)" = v24\.19\.0/)
@@ -153,7 +181,7 @@ test('installs an exact archive into root-owned fixed paths and pins the owner k
     await readlink(paths.current),
     join('generations', built.archiveSha256.slice('sha256:'.length)),
   )
-  assert.match(await readFile(paths.sudoers, 'utf8'), /%teal-production-runner/)
+  assert.match(sudoers.contents, /%teal-production-runner/)
   const versionRoot = join(
     targetRoot,
     'usr/local/share/kryv-teal-production/generations',

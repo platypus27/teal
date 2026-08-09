@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { execFile } from 'node:child_process'
 import { generateKeyPairSync, sign } from 'node:crypto'
-import { mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdtemp, rm, symlink, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import test from 'node:test'
@@ -377,6 +377,20 @@ test('command verifier enforces the checked trust context before accepting an ex
   ]
   const accepted = await execute(process.execPath, args)
   assert.match(accepted.stdout, /Owner approval verified/)
+
+  const directoryAlias = `${directory}-alias`
+  await symlink(directory, directoryAlias, 'dir')
+  t.after(() => rm(directoryAlias, { force: true }))
+  const aliasedArgs = args.map((value) => (
+    typeof value === 'string' && value.startsWith(`${directory}/`)
+      ? join(directoryAlias, value.slice(directory.length + 1))
+      : value
+  ))
+  await assert.rejects(
+    execute(process.execPath, aliasedArgs),
+    /bounded canonical regular file/i,
+  )
+
   await assert.rejects(
     execute(process.execPath, args.map((value) => (
       value === expectedContext.environment ? 'teal-production' : value
