@@ -187,4 +187,11 @@ test('rejects corrupted, duplicate, and extension-based archive identities', asy
     verifyDockerArchiveImageId(unterminated, fixture.imageId),
     /tar terminator/i,
   )
+
+  const concatenated = join(directory, 'concatenated.tar')
+  await writeFile(concatenated, Buffer.concat([completeBytes, completeBytes]))
+  await assert.rejects(
+    verifyDockerArchiveImageId(concatenated, fixture.imageId),
+    /non-zero data after.*terminator/i,
+  )
 })

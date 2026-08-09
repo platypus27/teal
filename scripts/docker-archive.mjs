@@ -7,6 +7,7 @@ const MAX_MANIFEST_BYTES = 1024 * 1024
 const MAX_CONFIG_BYTES = 16 * 1024 * 1024
 const MAX_ARCHIVE_BYTES = 8 * 1024 * 1024 * 1024
 const TAR_BLOCK_BYTES = 512
+const TAR_PADDING_READ_BYTES = 1024 * 1024
 const OCI_INDEX_MEDIA_TYPES = new Set([
   'application/vnd.oci.image.index.v1+json',
   'application/vnd.docker.distribution.manifest.list.v2+json',
@@ -95,6 +96,20 @@ async function readArchiveFile(archivePath, targetPath, maximumBytes, label) {
         )
         if (!terminator.every((byte) => byte === 0)) {
           throw new Error('Docker archive tar terminator is invalid')
+        }
+        let paddingPosition = position + TAR_BLOCK_BYTES * 2
+        while (paddingPosition < metadata.size) {
+          const paddingLength = Math.min(TAR_PADDING_READ_BYTES, metadata.size - paddingPosition)
+          const padding = await readExact(
+            handle,
+            paddingLength,
+            paddingPosition,
+            'Docker archive tar padding',
+          )
+          if (padding.some((byte) => byte !== 0)) {
+            throw new Error('Docker archive contains non-zero data after its tar terminator')
+          }
+          paddingPosition += paddingLength
         }
         terminated = true
         break
