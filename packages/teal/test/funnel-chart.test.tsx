@@ -61,4 +61,26 @@ describe('FunnelChart', () => {
 
     expect(screen.getByRole('img', { name: 'funnel' })).toBeInTheDocument()
   })
+
+  it('truncates labels that overflow and moves labels outside bands that are too narrow', () => {
+    render(
+      <FunnelChart
+        aria-label="funnel"
+        width={200}
+        stages={[
+          { name: 'Visited', value: 1000 },
+          { name: 'Qualified leads', value: 620 },
+          { name: 'Paid', value: 40 },
+        ]}
+      />,
+    )
+
+    // 124px band fits ~16 chars; the 21-char label is truncated with an ellipsis.
+    expect(screen.getByText('Qualified leads…')).toBeInTheDocument()
+
+    // 16px band (min-width floor) is too narrow; the label moves outside the band.
+    const outside = screen.getByText('Paid · 40')
+    expect(outside).toHaveAttribute('fill', 'var(--teal-color-on-surface-variant)')
+    expect(Number(outside.getAttribute('x'))).toBeGreaterThan(100)
+  })
 })
