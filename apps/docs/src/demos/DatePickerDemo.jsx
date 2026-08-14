@@ -20,7 +20,9 @@ export function DatePickerDemo({ exampleIndex = 0 }) {
           label="Sprint start"
           description="Limited to the current planning window"
           value={sprintStart}
-          onValueChange={setSprintStart}
+          onValueChange={(value) => {
+            if (value instanceof Date) setSprintStart(value)
+          }}
           minDate={quarterStart}
           maxDate={quarterEnd}
         />
@@ -36,7 +38,9 @@ export function DatePickerDemo({ exampleIndex = 0 }) {
           mode="month"
           description="Commits the first of the chosen month"
           value={month}
-          onValueChange={setMonth}
+          onValueChange={(value) => {
+            if (value instanceof Date) setMonth(value)
+          }}
         />
       </div>
     )
@@ -50,7 +54,9 @@ export function DatePickerDemo({ exampleIndex = 0 }) {
           mode="year"
           description="Commits January 1 of the chosen year"
           value={year}
-          onValueChange={setYear}
+          onValueChange={(value) => {
+            if (value instanceof Date) setYear(value)
+          }}
         />
       </div>
     )
@@ -64,7 +70,9 @@ export function DatePickerDemo({ exampleIndex = 0 }) {
           mode="datetime"
           description="Day and time in one popover"
           value={startsAt}
-          onValueChange={setStartsAt}
+          onValueChange={(value) => {
+            if (value instanceof Date) setStartsAt(value)
+          }}
         />
       </div>
     )
@@ -78,7 +86,9 @@ export function DatePickerDemo({ exampleIndex = 0 }) {
           selection="range"
           description="Two clicks pick the start and end; presets fill common windows"
           value={range}
-          onValueChange={setRange}
+          onValueChange={(value) => {
+            if (value && !(value instanceof Date)) setRange(value)
+          }}
         />
       </div>
     )
@@ -90,7 +100,10 @@ export function DatePickerDemo({ exampleIndex = 0 }) {
         label="Due date"
         description="Used for the project milestone"
         value={dueDate}
-        onValueChange={setDueDate}
+        onValueChange={(value) => {
+          if (value === undefined) setDueDate(undefined)
+          else if (value instanceof Date) setDueDate(value)
+        }}
       />
     </div>
   )
