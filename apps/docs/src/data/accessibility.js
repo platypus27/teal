@@ -387,6 +387,9 @@ export const accessibility = {
       'Renders role="dialog" with aria-modal, labelled by the title and described by the description.',
       'Focus moves into the dialog on open and is restored to the trigger on close.',
       'Background content is scroll-locked while the dialog is open.',
+      'Every placement (center, fullscreen, left, right, bottom) shares the same focus model and naming.',
+      'When neither title nor description is given, a visually hidden "Dialog" title keeps the surface named.',
+      'The drag handle on the bottom placement is a visual affordance only and is hidden from assistive technology.',
     ],
   },
   tooltip: {
@@ -425,17 +428,6 @@ export const accessibility = {
       'The trigger exposes aria-expanded and aria-controls for the popover content.',
       'Focus is not trapped; popovers suit small control panels, not multi-step flows.',
       'Placement flips automatically to stay inside the viewport.',
-    ],
-  },
-  drawer: {
-    keyboard: [
-      { keys: ['Escape'], action: 'Closes the drawer and returns focus to the element that opened it.' },
-      { keys: ['Tab', 'Shift+Tab'], action: 'Cycles focus through the controls inside the drawer.' },
-    ],
-    notes: [
-      'Shares the dialog focus model: focus is trapped while open and restored on close.',
-      'The panel is labelled by its title and described by its optional description.',
-      'Background content is inert and scroll-locked while the drawer is open.',
     ],
   },
   'hover-card': {
@@ -988,16 +980,6 @@ export const accessibility = {
       'Destructive actions are exposed as regular buttons with a data-destructive hook.',
     ],
   },
-  'bottom-sheet': {
-    keyboard: [
-      { keys: ['Escape'], action: 'Closes the sheet and returns focus to the trigger.' },
-      { keys: ['Tab'], action: 'Cycles focus through the controls inside the sheet.' },
-    ],
-    notes: [
-      'Renders with role="dialog" and is named by its title.',
-      'The drag handle is a visual affordance only and is hidden from assistive technology.',
-    ],
-  },
   'cookie-consent': {
     notes: [
       'Rendered as a labelled region, not a dialog: it never traps focus, blocks the page, or auto-announces over other content.',
@@ -1011,16 +993,6 @@ export const accessibility = {
     notes: [
       'Renders as a non-modal role="dialog" named by its title; aria-modal is not set.',
       'Because focus is not trapped, the panel participates in the natural tab order.',
-    ],
-  },
-  'fullscreen-dialog': {
-    keyboard: [
-      { keys: ['Escape'], action: 'Closes the dialog and returns focus to the trigger.' },
-      { keys: ['Tab'], action: 'Cycles focus through the controls inside the dialog.' },
-    ],
-    notes: [
-      'Renders with role="dialog" named by its title in the sticky header.',
-      'The close button carries an accessible label via the closeLabel prop.',
     ],
   },
   'image-viewer': {

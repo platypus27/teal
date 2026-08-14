@@ -90,6 +90,115 @@ export function DialogDemo({ exampleIndex = 0 }) {
     )
   }
 
+  if (exampleIndex === 4) {
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Open editor</Button>
+        <Dialog
+          placement="fullscreen"
+          open={open}
+          onOpenChange={setOpen}
+          title="Edit report"
+          description="Changes are saved when you leave this screen."
+          footer={
+            <>
+              <Button variant="secondary" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={() => setOpen(false)}>Save changes</Button>
+            </>
+          }
+        >
+          <p className="text-sm text-teal-on-surface-variant">
+            The dialog occupies the full viewport, with a sticky header, scrollable body, and footer actions.
+          </p>
+        </Dialog>
+      </>
+    )
+  }
+
+  if (exampleIndex === 5) {
+    return (
+      <>
+        <Button variant="secondary" onClick={() => setOpen(true)}>Open drawer</Button>
+        <Dialog
+          placement="right"
+          open={open}
+          onOpenChange={setOpen}
+          title="Project details"
+          description="Orion workspace — updated 2 hours ago"
+          footer={
+            <>
+              <Button variant="secondary" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={() => setOpen(false)}>Save changes</Button>
+            </>
+          }
+        >
+          <p className="text-sm text-teal-on-surface-variant">
+            Manage members, integrations, and archive rules for this project without leaving the current page.
+          </p>
+        </Dialog>
+      </>
+    )
+  }
+
+  if (exampleIndex === 6) {
+    return (
+      <>
+        <Button variant="secondary" onClick={() => setOpen(true)}>Open bottom sheet</Button>
+        <Dialog
+          placement="bottom"
+          open={open}
+          onOpenChange={setOpen}
+          title="Share report"
+          description="Choose how the Q3 revenue report is shared."
+          footer={
+            <>
+              <Button variant="secondary" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={() => setOpen(false)}>Share</Button>
+            </>
+          }
+        >
+          <p className="text-sm text-teal-on-surface-variant">
+            The sheet snaps to half the viewport, keeping the page context visible above it.
+          </p>
+        </Dialog>
+      </>
+    )
+  }
+
+  if (exampleIndex === 7) {
+    return (
+      <>
+        <Button variant="secondary" onClick={() => setOpen(true)}>Open full-height sheet</Button>
+        <Dialog
+          placement="bottom"
+          snap="full"
+          open={open}
+          onOpenChange={setOpen}
+          title="Share report"
+          description="Choose how the Q3 revenue report is shared."
+          footer={
+            <>
+              <Button variant="secondary" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={() => setOpen(false)}>Share</Button>
+            </>
+          }
+        >
+          <p className="text-sm text-teal-on-surface-variant">
+            The full snap height suits long content like member pickers and preview panes.
+          </p>
+        </Dialog>
+      </>
+    )
+  }
+
   return (
     <>
       <Button onClick={() => setOpen(true)}>Open dialog</Button>

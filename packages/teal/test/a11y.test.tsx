@@ -29,7 +29,6 @@ import {
   BlockingOverlay,
   BottomNav,
   BottomNavItem,
-  BottomSheet,
   Box,
   Breadcrumb,
   BulkActionBar,
@@ -68,7 +67,6 @@ import {
   DiffViewer,
   Dock,
   DockItem,
-  Drawer,
   Editable,
   EmptyState,
   EcosystemRail,
@@ -84,7 +82,6 @@ import {
   FocusTrap,
   Form,
   FormErrorSummary,
-  FullscreenDialog,
   FunnelChart,
   GanttChart,
   GaugeChart,
@@ -848,9 +845,9 @@ describe('axe: second catalog expansion', () => {
   it('new overlay modules have no violations', async () => {
     const { baseElement } = render(
       <>
-        <Drawer open onOpenChange={() => {}} title="Project settings">
+        <Dialog placement="right" open onOpenChange={() => {}} title="Project settings">
           <p>Drawer body content.</p>
-        </Drawer>
+        </Dialog>
         <HoverCard trigger={<button type="button">@avery</button>} openDelay={0} closeDelay={0}>
           <p>Avery Chen, workspace owner.</p>
         </HoverCard>
@@ -1609,7 +1606,8 @@ describe('axe: fifth catalog expansion', () => {
 
   it('sheet and panel overlays have no violations when open', async () => {
     const bottomSheet = render(
-      <BottomSheet
+      <Dialog
+        placement="bottom"
         open
         onOpenChange={() => {}}
         title="Share report"
@@ -1617,7 +1615,7 @@ describe('axe: fifth catalog expansion', () => {
         footer={<Button variant="secondary">Done</Button>}
       >
         <p>Sheet body</p>
-      </BottomSheet>,
+      </Dialog>,
     )
     await screen.findByRole('dialog', { name: 'Share report' })
     expect(await axe(bottomSheet.baseElement, axeOptions)).toHaveNoViolations()
@@ -1660,9 +1658,9 @@ describe('axe: fifth catalog expansion', () => {
     promptDialog.unmount()
 
     const fullscreenDialog = render(
-      <FullscreenDialog open onOpenChange={() => {}} title="Edit report" footer={<Button variant="secondary">Done</Button>}>
+      <Dialog placement="fullscreen" open onOpenChange={() => {}} title="Edit report" footer={<Button variant="secondary">Done</Button>}>
         <p>Editor body</p>
-      </FullscreenDialog>,
+      </Dialog>,
     )
     await screen.findByRole('dialog', { name: 'Edit report' })
     expect(await axe(fullscreenDialog.baseElement, axeOptions)).toHaveNoViolations()
