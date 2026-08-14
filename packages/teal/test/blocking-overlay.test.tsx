@@ -83,4 +83,17 @@ describe('BlockingOverlay', () => {
     )
     expect(outside).toHaveFocus()
   })
+
+  it('strengthens the scrim so the label stays legible over busy content', () => {
+    render(
+      <BlockingOverlay visible label="Saving changes">
+        <p>Editable content</p>
+      </BlockingOverlay>,
+    )
+
+    const overlay = screen.getByRole('status', { name: 'Saving changes' })
+    expect(overlay.className).toContain('teal-u-bg-surface/80')
+    expect(overlay.className).toContain('teal-u-backdrop-blur-sm')
+    expect(overlay.className).not.toContain('teal-u-bg-surface/60')
+  })
 })
