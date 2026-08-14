@@ -1,5 +1,6 @@
 import { forwardRef, useState, type ChangeEvent, type ReactNode } from 'react'
 import { cn } from './cn'
+import { FieldScaffolding } from './field-scaffolding'
 import { hasFormContent, isAriaTrue, mergeDescriptionIds, useFormSemantics } from './form-semantics'
 import { fieldVariants } from './Input'
 import { InputAddon, InputGroup } from './InputGroup'
@@ -100,8 +101,6 @@ export const CurrencyInput = forwardRef<HTMLInputElement, CurrencyInputProps>(fu
     prefix: 'teal-currency-input',
     required,
   })
-  const showLabel = hasFormContent(label) && !semantics.labeledByField
-  const showDescription = hasFormContent(description)
 
   const [internalAmount, setInternalAmount] = useState<number | undefined>(defaultValue)
   const [draft, setDraft] = useState<string | null>(null)
@@ -131,12 +130,14 @@ export const CurrencyInput = forwardRef<HTMLInputElement, CurrencyInputProps>(fu
   }
 
   return (
-    <div className={cn('teal-u-grid teal-u-gap-1.5', className)}>
-      {showLabel ? (
-        <label htmlFor={semantics.controlId} className="teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface">
-          {label}
-        </label>
-      ) : null}
+    <FieldScaffolding
+      className={className}
+      controlId={semantics.controlId}
+      description={description}
+      descriptionId={semantics.descriptionId}
+      label={label}
+      labeledByField={semantics.labeledByField}
+    >
       <InputGroup>
         <InputAddon position="leading" aria-hidden="true">
           {getCurrencySymbol(currency, locale)}
@@ -149,7 +150,7 @@ export const CurrencyInput = forwardRef<HTMLInputElement, CurrencyInputProps>(fu
           aria-label={ariaLabel}
           aria-describedby={mergeDescriptionIds(
             describedBy,
-            showDescription ? semantics.descriptionId : undefined,
+            hasFormContent(description) ? semantics.descriptionId : undefined,
           )}
           aria-invalid={invalid ?? (semantics.invalid || undefined)}
           required={required ?? semantics.required}
@@ -161,11 +162,6 @@ export const CurrencyInput = forwardRef<HTMLInputElement, CurrencyInputProps>(fu
           className={cn(fieldVariants(), 'teal-u-tabular-nums')}
         />
       </InputGroup>
-      {showDescription ? (
-        <p id={semantics.descriptionId} className="teal-u-text-xs teal-u-leading-relaxed teal-u-text-on-surface-variant">
-          {description}
-        </p>
-      ) : null}
-    </div>
+    </FieldScaffolding>
   )
 })

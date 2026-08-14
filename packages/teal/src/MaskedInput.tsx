@@ -7,6 +7,7 @@ import {
   type ReactNode,
 } from 'react'
 import { cn } from './cn'
+import { FieldScaffolding } from './field-scaffolding'
 import { hasFormContent, isAriaTrue, mergeDescriptionIds, useFormSemantics } from './form-semantics'
 import { fieldVariants } from './Input'
 
@@ -86,8 +87,6 @@ export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(functi
     prefix: 'teal-masked-input',
     required,
   })
-  const showLabel = hasFormContent(label) && !semantics.labeledByField
-  const showDescription = hasFormContent(description)
 
   const capacity = maskCapacity(mask)
   const [internalDigits, setInternalDigits] = useState(() => extractDigits(defaultValue ?? '', capacity))
@@ -120,19 +119,24 @@ export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(functi
   }
 
   return (
-    <div className={cn('teal-u-grid teal-u-gap-1.5', className)}>
-      {showLabel ? (
-        <label htmlFor={semantics.controlId} className="teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface">
-          {label}
-        </label>
-      ) : null}
+    <FieldScaffolding
+      className={className}
+      controlId={semantics.controlId}
+      description={description}
+      descriptionId={semantics.descriptionId}
+      label={label}
+      labeledByField={semantics.labeledByField}
+    >
       <input
         ref={setRefs}
         type="text"
         inputMode="numeric"
         id={semantics.controlId}
         aria-label={ariaLabel}
-        aria-describedby={mergeDescriptionIds(describedBy, showDescription ? semantics.descriptionId : undefined)}
+        aria-describedby={mergeDescriptionIds(
+          describedBy,
+          hasFormContent(description) ? semantics.descriptionId : undefined,
+        )}
         aria-invalid={invalid ?? (semantics.invalid || undefined)}
         required={required ?? semantics.required}
         disabled={disabled}
@@ -141,11 +145,6 @@ export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(functi
         onChange={handleChange}
         className={cn(fieldVariants(), 'teal-u-tabular-nums')}
       />
-      {showDescription ? (
-        <p id={semantics.descriptionId} className="teal-u-text-xs teal-u-leading-relaxed teal-u-text-on-surface-variant">
-          {description}
-        </p>
-      ) : null}
-    </div>
+    </FieldScaffolding>
   )
 })

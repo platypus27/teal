@@ -2,6 +2,7 @@ import { forwardRef, useState, type ChangeEvent, type ReactNode } from 'react'
 import * as SelectPrimitive from '@radix-ui/react-select'
 import { Check, ChevronDown } from 'lucide-react'
 import { cn } from './cn'
+import { FieldScaffolding } from './field-scaffolding'
 import { hasFormContent, isAriaTrue, mergeDescriptionIds, useFormSemantics } from './form-semantics'
 import { fieldVariants } from './Input'
 
@@ -90,8 +91,6 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(function
     prefix: 'teal-phone-input',
     required,
   })
-  const showLabel = hasFormContent(label) && !semantics.labeledByField
-  const showDescription = hasFormContent(description)
 
   const [internal, setInternal] = useState(() => {
     const parsed = parsePhoneValue(defaultValue)
@@ -115,12 +114,14 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(function
   }
 
   return (
-    <div className={cn('teal-u-grid teal-u-gap-1.5', className)}>
-      {showLabel ? (
-        <label htmlFor={semantics.controlId} className="teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface">
-          {label}
-        </label>
-      ) : null}
+    <FieldScaffolding
+      className={className}
+      controlId={semantics.controlId}
+      description={description}
+      descriptionId={semantics.descriptionId}
+      label={label}
+      labeledByField={semantics.labeledByField}
+    >
       <div className="teal-u-flex teal-u-gap-2">
         <SelectPrimitive.Root value={dial} onValueChange={handleCountryChange} {...(disabled !== undefined ? { disabled } : {})}>
           <SelectPrimitive.Trigger
@@ -171,8 +172,11 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(function
           type="tel"
           inputMode="tel"
           id={semantics.controlId}
-          aria-label={showLabel || semantics.labeledByField ? undefined : 'Phone number'}
-          aria-describedby={mergeDescriptionIds(describedBy, showDescription ? semantics.descriptionId : undefined)}
+          aria-label={semantics.labeledByField || hasFormContent(label) ? undefined : 'Phone number'}
+          aria-describedby={mergeDescriptionIds(
+            describedBy,
+            hasFormContent(description) ? semantics.descriptionId : undefined,
+          )}
           aria-invalid={invalid ?? (semantics.invalid || undefined)}
           required={required ?? semantics.required}
           disabled={disabled}
@@ -182,11 +186,6 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(function
           className={cn(fieldVariants(), 'teal-u-tabular-nums')}
         />
       </div>
-      {showDescription ? (
-        <p id={semantics.descriptionId} className="teal-u-text-xs teal-u-leading-relaxed teal-u-text-on-surface-variant">
-          {description}
-        </p>
-      ) : null}
-    </div>
+    </FieldScaffolding>
   )
 })
