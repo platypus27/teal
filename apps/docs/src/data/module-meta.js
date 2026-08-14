@@ -911,7 +911,7 @@ export const moduleGroups = [
 				name: "Date Picker",
 				apiNames: ["DatePicker"],
 				description:
-					"A single-date field with a keyboard-navigable calendar popover.",
+					"A date field with a keyboard-navigable popover: day, month, year, or datetime modes, plus two-click range selection.",
 				usage:
 					'<DatePicker label="Start date" onValueChange={(date) => undefined} />',
 				anatomy: [
@@ -927,12 +927,12 @@ export const moduleGroups = [
 						"Keep the caller-owned value as a Date, not a string.",
 					],
 					donts: [
-						"Don't use it for ranges; use DateRangePicker.",
+						"Don't stack two pickers for a range; set selection=\"range\".",
 						"Don't expect free-typed input; the calendar is the parser.",
 						"Don't disable dates silently; state the valid window in the description.",
 					],
 				},
-				related: ["date-range-picker", "date-time-picker", "calendar", "time-picker"],
+				related: ["calendar", "time-picker"],
 				examples: [
 					{
 						title: "Calendar selection",
@@ -943,6 +943,26 @@ export const moduleGroups = [
 						title: "Bounded planning window",
 						description:
 							"minDate and maxDate limit picking to the current sprint window.",
+					},
+					{
+						title: "Month mode",
+						description:
+							'mode="month" shows twelve months with a year stepper and commits the first of the chosen month.',
+					},
+					{
+						title: "Year mode",
+						description:
+							'mode="year" pages years by decade and commits January 1 of the chosen year.',
+					},
+					{
+						title: "Date and time",
+						description:
+							'mode="datetime" pairs the day grid with time fields; the popover stays open until Done.',
+					},
+					{
+						title: "Range selection",
+						description:
+							'selection="range" turns two clicks into {from, to}, with presets and a connected band between the endpoints.',
 					},
 				],
 			},
@@ -1233,7 +1253,7 @@ export const moduleGroups = [
 					dos: [
 						"Match hourCycle to the audience's locale.",
 						"Bind a string value like 09:30 and let the segments clamp while typing.",
-						"Pair with DatePicker or use DateTimePicker when the user needs a full timestamp.",
+						"Pair with DatePicker; its datetime mode covers full timestamps.",
 					],
 					donts: [
 						"Don't use it for durations; use NumberInput with a unit.",
@@ -1241,7 +1261,7 @@ export const moduleGroups = [
 						"Don't prefill the current time unless now is a sensible default.",
 					],
 				},
-				related: ["date-picker", "date-time-picker", "timezone-select", "number-input"],
+				related: ["date-picker", "timezone-select", "number-input"],
 				examples: [
 					{
 						title: "Segmented time",
@@ -1252,45 +1272,6 @@ export const moduleGroups = [
 						title: "12-hour clock",
 						description:
 							"hourCycle={12} swaps the hour range and adds an AM/PM toggle.",
-					},
-				],
-			},
-			{
-				id: "date-range-picker",
-				name: "Date Range Picker",
-				apiNames: ["DateRangePicker"],
-				description:
-					"A two-click range field with presets and a keyboard-navigable calendar popover.",
-				usage: `<DateRangePicker label="Report period" onChange={(range) => undefined} />`,
-				anatomy: [
-					{ part: "Field", description: "The trigger showing the formatted start and end pair." },
-					{ part: "Presets", description: "Buttons that fill common windows like the last week or month." },
-					{ part: "Calendar popover", description: "The two-click month grid with keyboard navigation." },
-					{ part: "Day cells", description: "Buttons that mark the range start, end, and the span between." },
-				],
-				dosDonts: {
-					dos: [
-						"Offer presets when users repeatedly pick the same windows.",
-						"Disable dates that cannot join the range, like weekends for maintenance windows.",
-						"Let two clicks define the range; don't force a drag gesture.",
-					],
-					donts: [
-						"Don't use it for a single date; use DatePicker.",
-						"Don't allow inverted ranges; the component orders the start before the end.",
-						"Don't hide the selected span; the in-range highlight is the feedback.",
-					],
-				},
-				related: ["date-picker", "calendar", "month-picker", "date-time-picker"],
-				examples: [
-					{
-						title: "Range selection",
-						description:
-							"The first click starts the range and the second completes it; presets fill common windows.",
-					},
-					{
-						title: "Disabled days",
-						description:
-							"isDateDisabled blocks weekends so only weekday windows can be picked.",
 					},
 				],
 			},
@@ -1508,48 +1489,6 @@ export const moduleGroups = [
 					],
 				},
 				{
-					id: "date-time-picker",
-					name: "Date Time Picker",
-					apiNames: ["DateTimePicker"],
-					description:
-						"A single popover that pairs a calendar grid with time fields and emits one Date.",
-					usage: `<DateTimePicker
-  label="Meeting start"
-  value={startsAt}
-  onValueChange={setStartsAt}
-/>`,
-					anatomy: [
-						{ part: "Input trigger", description: "A read-only field showing the locale-formatted date and time, with aria-haspopup dialog." },
-						{ part: "Calendar grid", description: "The keyboard-navigable day picker with month steppers in the header." },
-						{ part: "Time fields", description: "The TimePicker hour and minute segments, with an AM/PM toggle in 12-hour cycle." },
-						{ part: "Done action", description: "Confirms the combined Date and closes the popover." },
-					],
-					dosDonts: {
-						dos: [
-							"Use it when a deadline or meeting genuinely needs both a day and a time.",
-							"Match hourCycle to the user's locale instead of hardcoding 24-hour time.",
-							"Bound the calendar with min and max when only a window is valid.",
-						],
-						donts: [
-							"Don't use it when only a date or only a time is needed; pick DatePicker or TimePicker.",
-							"Don't prefill the current moment when an empty value is a valid answer.",
-						],
-					},
-					related: ["date-picker", "time-picker", "date-range-picker"],
-					examples: [
-						{
-							title: "Date and time in one popover",
-							description:
-								"Picking a day keeps the current time; the popover stays open so the time can be adjusted before Done.",
-						},
-						{
-							title: "12-hour clock",
-							description:
-								"hourCycle={12} swaps the 0–23 hour field for a 1–12 field with an AM/PM toggle.",
-						},
-					],
-				},
-				{
 					id: "fieldset",
 					name: "Fieldset",
 					apiNames: ["Fieldset"],
@@ -1763,48 +1702,6 @@ export const moduleGroups = [
 							title: "Prefilled conversation",
 							description:
 								"Existing mentions are plain text, so drafts round-trip through any storage without a rich text format.",
-						},
-					],
-				},
-				{
-					id: "month-picker",
-					name: "Month Picker",
-					apiNames: ["MonthPicker"],
-					description:
-						"A popover grid of the twelve months with a year stepper for fast month-and-year selection.",
-					usage: `<MonthPicker
-  label="Billing month"
-  value={month}
-  onValueChange={setMonth}
-/>`,
-					anatomy: [
-						{ part: "Input trigger", description: "A read-only field showing the selected month and year, with a calendar affordance." },
-						{ part: "Year header", description: "Stepper buttons that move the visible year; the year is announced through an aria-live region." },
-						{ part: "Month grid", description: "Twelve buttons, one per month; the selected month is aria-pressed and the current month aria-current." },
-						{ part: "Disabled months", description: "Months outside minDate and maxDate stay visible but cannot be chosen." },
-					],
-					dosDonts: {
-						dos: [
-							"Use it for periods like billing months, reports, or expiration dates.",
-							"Bound the selectable window with minDate and maxDate for planning horizons.",
-							"Format the emitted first-of-month Date for display; the raw Date is the contract.",
-						],
-						donts: [
-							"Don't use it when the exact day matters; use DatePicker.",
-							"Don't use it for credit-card expiry text entry; a MaskedInput is faster there.",
-						],
-					},
-					related: ["date-picker", "year-picker", "calendar"],
-					examples: [
-						{
-							title: "Month grid with year stepper",
-							description:
-								"All twelve months stay visible while the header steps the year, emitting the first day of the chosen month.",
-						},
-						{
-							title: "Bounded planning window",
-							description:
-								"minDate and maxDate disable months outside the allowed range, such as the current planning horizon.",
 						},
 					],
 				},
@@ -2048,7 +1945,7 @@ export const moduleGroups = [
 							"Don't sort or label zones by fixed offsets; labels follow the current offset.",
 						],
 					},
-					related: ["combobox", "select", "date-time-picker"],
+					related: ["combobox", "select", "date-picker"],
 					examples: [
 						{
 							title: "Searchable timezone list",
@@ -2191,48 +2088,6 @@ export const moduleGroups = [
 							title: "Controlled with pre-expanded branches",
 							description:
 								"A controlled value is revealed and highlighted on open; disabled nodes stay visible but cannot be chosen.",
-						},
-					],
-				},
-				{
-					id: "year-picker",
-					name: "Year Picker",
-					apiNames: ["YearPicker"],
-					description:
-						"A popover grid of years with decade paging for fast year-only selection.",
-					usage: `<YearPicker
-  label="Graduation year"
-  value={year}
-  onValueChange={setYear}
-/>`,
-					anatomy: [
-						{ part: "Input trigger", description: "A read-only field showing the selected year, with a calendar affordance." },
-						{ part: "Decade header", description: "Stepper buttons that page the grid by decade; the visible range is announced through an aria-live region." },
-						{ part: "Year grid", description: "Twelve year buttons per page; the selected year is aria-pressed and the current year aria-current." },
-						{ part: "Disabled years", description: "Years outside minDate and maxDate stay visible but cannot be chosen." },
-					],
-					dosDonts: {
-						dos: [
-							"Use it when only the year matters, like graduation, fiscal, or model years.",
-							"Bound the range with minDate and maxDate for windows like recent fiscal years.",
-							"Format the emitted January 1 Date down to the year for display.",
-						],
-						donts: [
-							"Don't use it when the month or day is also needed; use MonthPicker or DatePicker.",
-							"Don't use it for free numeric year entry at scale; a NumberInput types faster.",
-						],
-					},
-					related: ["month-picker", "date-picker", "calendar"],
-					examples: [
-						{
-							title: "Year grid with decade paging",
-							description:
-								"Twelve years render per page while the header steps by decade, emitting January 1 of the chosen year.",
-						},
-						{
-							title: "Bounded year range",
-							description:
-								"minDate and maxDate disable years outside the range, such as recent fiscal years only.",
 						},
 					],
 				},
@@ -5775,11 +5630,11 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						"Explain the disabling rule nearby when disabledDates rejects days.",
 					],
 					donts: [
-						"Don't use Calendar for ranges; use DateRangePicker.",
+						"Don't use Calendar for ranges; use DatePicker with selection=\"range\".",
 						"Don't run expensive work in disabledDates; it runs once per rendered day.",
 					],
 				},
-				related: ["date-picker", "date-range-picker", "month-picker"],
+				related: ["date-picker"],
 				examples: [
 					{
 						title: "Date grid",
@@ -8340,13 +8195,6 @@ const additionalExamples = {
 				'Use politeness="assertive" only for urgent changes that should interrupt.',
 		},
 	],
-	"date-range-picker": [
-		{
-			title: "Bounded ranges",
-			description:
-				"Use isDateDisabled to exclude days such as weekends or past dates.",
-		},
-	],
 	"color-picker": [
 		{
 			title: "Controlled color",
@@ -8894,11 +8742,11 @@ const guidanceById = {
 		responsive: "Pills wrap inside the control as values accumulate.",
 	},
 	"date-picker": {
-		useWhen: "Users pick a single calendar date.",
-		avoidWhen:
-			"The value is free-form or a range; use Input or a dedicated range flow.",
+		useWhen:
+			"Users pick a calendar date, month, year, timestamp, or date range.",
+		avoidWhen: "The value is free-form text; use Input.",
 		behavior:
-			"The calendar supports full keyboard navigation and min/max bounds.",
+			"mode switches the popover between day, month, year, and datetime panels; selection=\"range\" turns two clicks into {from, to} with presets and a connected band.",
 		responsive:
 			"The popover collision-handles; the field keeps its layout width.",
 	},
@@ -8999,7 +8847,7 @@ const guidanceById = {
 		useWhen:
 			"Users pick a single date from a month grid, optionally bounded by min, max, or a disabledDates predicate.",
 		avoidWhen:
-			"The user needs a range or a field with a popover; use DateRangePicker or DatePicker.",
+			"The user needs a range or a field with a popover; use DatePicker.",
 		behavior:
 			"Days are buttons with aria-pressed for the selection and aria-current=\"date\" for today; the aria-live month label announces navigation, and the visible month can be controlled.",
 		responsive:
@@ -9107,18 +8955,10 @@ const guidanceById = {
 	"time-picker": {
 		useWhen: "The user enters a time of day.",
 		avoidWhen:
-			"A date or a date range is needed; use DatePicker or DateRangePicker.",
+			"A date or a date range is needed; use DatePicker.",
 		behavior:
 			"Hour and minute fields clamp while typing; the 12-hour cycle adds a period toggle.",
 		responsive: "The segmented group stays inline and fits compact forms.",
-	},
-	"date-range-picker": {
-		useWhen: "The user picks a start and end date.",
-		avoidWhen: "Only one date is needed; use DatePicker.",
-		behavior:
-			"Two clicks define the range; presets fill common windows and arrows move by day or week.",
-		responsive:
-			"The popover collision-handles; the field keeps its layout width.",
 	},
 	"color-picker": {
 		useWhen: "The user picks a color from presets or a hex value.",
@@ -9336,13 +9176,6 @@ const guidanceById = {
 		responsive:
 			"The field stretches to fill its container; the leading symbol addon stays a fixed width.",
 	},
-	"date-time-picker": {
-		useWhen: "A deadline, meeting, or schedule needs both a calendar day and a clock time from one control.",
-		avoidWhen: "Only a date or only a time is needed; use DatePicker or TimePicker to keep the interaction smaller.",
-		behavior:
-			"Selecting a day preserves the chosen time and keeps the popover open; Done confirms and closes. Emits a single Date combining both parts.",
-		responsive: "The input takes the container width while the popover keeps its fixed calendar and time layout.",
-	},
 	fieldset: {
 		useWhen:
 			"Several controls together answer one question, such as an address block or a set of related checkboxes.",
@@ -9389,13 +9222,6 @@ const guidanceById = {
 			"Choosing an option inserts `@Label ` at the caret as plain text; the popup only opens for an @ that starts a new token and closes after insertion.",
 		responsive:
 			"The textarea fills its container and the popup anchors below it with a fixed, scrollable width.",
-	},
-	"month-picker": {
-		useWhen: "Only the month and year matter, such as billing periods, reports, or expiration dates.",
-		avoidWhen: "A specific day is required; use DatePicker so the user can pick the exact date.",
-		behavior:
-			"Clicking or pressing Enter on a month commits the first of that month and closes the popover; arrow keys move within the visible year and clamp at January and December.",
-		responsive: "The input fills its container; the three-column month grid keeps a fixed compact width.",
 	},
 	"password-strength-meter": {
 		useWhen:
@@ -9483,13 +9309,6 @@ const guidanceById = {
 			"Branch nodes only expand or collapse; leaf nodes commit a single value, close the popover, and render their label in the trigger.",
 		responsive:
 			"The popover matches the trigger width and the tree scrolls vertically; deep levels indent rather than widen the control.",
-	},
-	"year-picker": {
-		useWhen: "Only the year matters, such as graduation, fiscal, or model years, and scrolling a full calendar would be noise.",
-		avoidWhen: "The month or day is also needed; use MonthPicker or DatePicker instead.",
-		behavior:
-			"Clicking or pressing Enter on a year commits January 1 and closes the popover; arrow keys move focus and page the grid automatically at the edges.",
-		responsive: "The input fills its container; the three-column year grid keeps a fixed compact width.",
 	},
 	callout: {
 		useWhen:

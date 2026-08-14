@@ -137,15 +137,18 @@ export const accessibility = {
   },
   'date-picker': {
     keyboard: [
-      { keys: ['Arrow Down'], action: 'Opens the calendar from the field.' },
-      { keys: ['Arrow Left', 'Arrow Right'], action: 'Moves the focused day by one day.' },
-      { keys: ['Arrow Up', 'Arrow Down'], action: 'Moves the focused day by one week.' },
-      { keys: ['Enter', 'Space'], action: 'Selects the focused day and closes the calendar.' },
+      { keys: ['Arrow Down'], action: 'Opens the popover from the field.' },
+      { keys: ['Arrow Left', 'Arrow Right'], action: 'Moves the focused day by one day; in month or year mode, moves by one month or year.' },
+      { keys: ['Arrow Up', 'Arrow Down'], action: 'Moves the focused day by one week; in month or year mode, moves by one row.' },
+      { keys: ['Home', 'End'], action: 'Jumps to the first or last month of the year, or year of the decade page.' },
+      { keys: ['Enter', 'Space'], action: 'Selects the focused day, month, or year; in range mode, picks the start then the end.' },
     ],
     notes: [
-      'Day buttons use a roving tab index, so the calendar grid is a single Tab stop.',
-      'The month label is announced with aria-live as the view changes.',
+      'Day, month, and year buttons use a roving tab index, so each panel is a single Tab stop.',
+      'The month label, visible year, and decade range are announced with aria-live as the view changes.',
       'Dates outside minDate and maxDate are disabled and cannot be selected.',
+      'Range start and end days expose their state through aria-pressed, and today keeps aria-current date.',
+      'In datetime mode the time fields reuse the TimePicker group with labeled Hour and Minutes inputs, and Done closes the popover.',
     ],
   },
   'number-input': {
@@ -238,20 +241,6 @@ export const accessibility = {
       'The segments sit in a group named by the field label; the hour and minute inputs are labeled Hour and Minutes.',
       'The AM/PM toggle reports its state through aria-pressed.',
       'The 24-hour cycle omits the period control entirely.',
-    ],
-  },
-  'date-range-picker': {
-    keyboard: [
-      { keys: ['Arrow Down'], action: 'Opens the calendar from the field.' },
-      { keys: ['Arrow Left', 'Arrow Right'], action: 'Moves the focused day by one day.' },
-      { keys: ['Arrow Up', 'Arrow Down'], action: 'Moves the focused day by one week.' },
-      { keys: ['Enter', 'Space'], action: 'Picks the range start, then the range end.' },
-    ],
-    notes: [
-      'Day buttons use a roving tab index, so the calendar grid is a single Tab stop.',
-      'Range start and end days expose their state through aria-pressed, and today keeps aria-current date.',
-      'Preset buttons fill the whole range in one action and are plain buttons in the tab order.',
-      'The month label is announced with aria-live as the view changes.',
     ],
   },
   'color-picker': {
@@ -856,19 +845,6 @@ export const accessibility = {
       'inputMode="decimal" summons a numeric keypad on touch devices.',
     ],
   },
-  'date-time-picker': {
-    keyboard: [
-      { keys: ['Arrow Down'], action: 'Opens the popover from the input.' },
-      { keys: ['Arrow Left', 'Arrow Right'], action: 'Moves the focused day by one.' },
-      { keys: ['Arrow Up', 'Arrow Down'], action: 'Moves the focused day by one week.' },
-      { keys: ['Enter'], action: 'Selects the focused day, keeping the current time.' },
-      { keys: ['Escape'], action: 'Closes the popover.' },
-    ],
-    notes: [
-      'The input has aria-haspopup="dialog" and is read-only so the value is always a valid locale string.',
-      'The time fields reuse the TimePicker group with labeled Hour and Minutes inputs.',
-    ],
-  },
   fieldset: {
     notes: [
       'Renders a real fieldset/legend pair, so screen readers announce the legend when entering the group.',
@@ -903,20 +879,6 @@ export const accessibility = {
     notes: [
       'The textarea keeps focus while the popup is open and points to the highlighted option with aria-activedescendant.',
       'aria-expanded and aria-controls mirror the popup state; options render in a listbox named "Mentions".',
-    ],
-  },
-  'month-picker': {
-    keyboard: [
-      { keys: ['Arrow Down'], action: 'Opens the popover from the input.' },
-      { keys: ['Arrow Left', 'Arrow Right'], action: 'Moves the focused month by one.' },
-      { keys: ['Arrow Up', 'Arrow Down'], action: 'Moves the focused month by three.' },
-      { keys: ['Home', 'End'], action: 'Jumps to January or December.' },
-      { keys: ['Enter'], action: 'Selects the focused month.' },
-      { keys: ['Escape'], action: 'Closes the popover.' },
-    ],
-    notes: [
-      'The selected month is exposed with aria-pressed and the current month with aria-current.',
-      'The visible year is announced through an aria-live region as it changes.',
     ],
   },
   'password-strength-meter': {
@@ -1012,20 +974,6 @@ export const accessibility = {
     notes: [
       'The trigger is a combobox with aria-haspopup="tree"; options follow the tree/treeitem roles with aria-expanded and aria-selected.',
       'The selected value\'s ancestors are expanded automatically so the selection is visible on open.',
-    ],
-  },
-  'year-picker': {
-    keyboard: [
-      { keys: ['Arrow Down'], action: 'Opens the popover from the input.' },
-      { keys: ['Arrow Left', 'Arrow Right'], action: 'Moves the focused year by one, paging at the edges.' },
-      { keys: ['Arrow Up', 'Arrow Down'], action: 'Moves the focused year by three.' },
-      { keys: ['Home', 'End'], action: 'Jumps to the first or last year of the page.' },
-      { keys: ['Enter'], action: 'Selects the focused year.' },
-      { keys: ['Escape'], action: 'Closes the popover.' },
-    ],
-    notes: [
-      'The selected year is exposed with aria-pressed and the current year with aria-current.',
-      'The visible year range is announced through an aria-live region as pages change.',
     ],
   },
   callout: {
