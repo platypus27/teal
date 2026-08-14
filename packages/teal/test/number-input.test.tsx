@@ -35,12 +35,6 @@ describe("NumberInput", () => {
 			/>,
 		);
 		const input = screen.getByRole("spinbutton", { name: "Team size" });
-		expect(screen.getByRole("button", { name: "Increment" })).toHaveClass(
-			"teal-u-size-6",
-		);
-		expect(screen.getByRole("button", { name: "Decrement" })).toHaveClass(
-			"teal-u-size-6",
-		);
 
 		await user.click(screen.getByRole("button", { name: "Increment" }));
 		expect(onValueChange).toHaveBeenLastCalledWith(4);
@@ -115,5 +109,20 @@ describe("NumberInput", () => {
 
 		await user.click(screen.getByRole("button", { name: "Increment" }));
 		expect(onValueChange).toHaveBeenLastCalledWith(3);
+	});
+
+	it("renders a compact joined stepper that fits the field height", () => {
+		render(<NumberInput label="Team size" defaultValue={3} />);
+
+		const increment = screen.getByRole("button", { name: "Increment" });
+		const decrement = screen.getByRole("button", { name: "Decrement" });
+		expect(increment).toHaveClass("teal-u-h-1/2", "teal-u-w-7");
+		expect(decrement).toHaveClass("teal-u-h-1/2", "teal-u-w-7");
+		expect(increment.className).toContain("teal-u-border-b");
+
+		const stepper = increment.parentElement;
+		expect(stepper?.className).toContain("teal-u-absolute");
+		expect(stepper?.className).toContain("teal-u-inset-y-0");
+		expect(stepper?.className).toContain("teal-u-flex-col");
 	});
 });

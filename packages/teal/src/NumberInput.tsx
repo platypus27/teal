@@ -121,7 +121,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
 		const atMin = number !== undefined && min !== undefined && number <= min;
 
 		const stepperClasses =
-			"teal-focus-ring teal-u-inline-flex teal-u-size-6 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-text-on-surface-variant hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface disabled:teal-u-pointer-events-none disabled:teal-u-opacity-40 [&_svg]:teal-u-size-3";
+			"teal-focus-ring teal-u-flex teal-u-h-1/2 teal-u-w-7 teal-u-items-center teal-u-justify-center teal-u-text-on-surface-variant hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface disabled:teal-u-pointer-events-none disabled:teal-u-opacity-40 [&_svg]:teal-u-size-3";
 
 		return (
 			<div className={cn("teal-u-grid teal-u-gap-1.5", className)}>
@@ -158,13 +158,16 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
 							"teal-u-pr-9 [appearance:textfield] [&::-webkit-inner-spin-button]:teal-u-appearance-none [&::-webkit-outer-spin-button]:teal-u-appearance-none",
 						)}
 					/>
-					<div className="teal-u-absolute teal-u-right-2.5 teal-u-top-1/2 teal-u-flex teal-u--translate-y-1/2 teal-u-flex-col">
+					<div className="teal-u-absolute teal-u-inset-y-0 teal-u-right-0 teal-u-flex teal-u-flex-col teal-u-overflow-hidden teal-u-rounded-r-xl teal-u-border-l teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)]">
 						<button
 							type="button"
 							aria-label="Increment"
 							disabled={disabled || atMax}
 							onClick={() => stepBy(1)}
-							className={stepperClasses}
+							className={cn(
+								stepperClasses,
+								"teal-u-border-b teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)]",
+							)}
 						>
 							<ChevronUp aria-hidden="true" />
 						</button>
