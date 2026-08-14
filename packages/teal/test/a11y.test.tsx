@@ -24,7 +24,6 @@ import {
   AvatarGroup,
   BackTop,
   Badge,
-  Banner,
   BarChart,
   BlockingOverlay,
   BottomNav,
@@ -36,7 +35,6 @@ import {
   ButtonGroup,
   Calendar,
   CalendarHeatmap,
-  Callout,
   Card,
   CardContent,
   CardHeader,
@@ -831,12 +829,12 @@ describe('axe: second catalog expansion', () => {
           ]}
         />
         <Steps current={1} steps={[{ label: 'Workspace' }, { label: 'Members' }, { label: 'Review' }]} />
-        <Banner variant="warning" title="Scheduled maintenance">
+        <Alert appearance="banner" variant="warning" title="Scheduled maintenance">
           The workspace is read-only on Saturday.
-        </Banner>
-        <Banner variant="danger" title="Sign-in blocked" onDismiss={() => {}}>
+        </Alert>
+        <Alert appearance="banner" variant="danger" title="Sign-in blocked" onDismiss={() => {}}>
           We stopped a sign-in attempt.
-        </Banner>
+        </Alert>
       </>,
     )
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
@@ -1564,9 +1562,9 @@ describe('axe: fifth catalog expansion', () => {
           Full changelog
         </ExpandableCard>
         <GlassPanel>Frosted content</GlassPanel>
-        <Callout variant="warning" title="Heads up">
+        <Alert appearance="callout" variant="warning" title="Heads up">
           New pricing starts next month.
-        </Callout>
+        </Alert>
         <StatusDot variant="success" label="Active" />
         <StatusDot variant="info" aria-label="Syncing" />
         <PulseDot />

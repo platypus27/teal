@@ -529,6 +529,7 @@ export const accessibility = {
   alert: {
     notes: [
       'Danger renders role="alert" so the message is announced immediately; other variants render role="status".',
+      'appearance="banner" keeps the same role semantics; appearance="callout" renders no live region, so screen readers meet it in reading order rather than as an announcement.',
       'The variant icon is decorative and hidden from assistive technology; meaning is carried by the text.',
       'The dismiss control is a labeled button in the normal tab order.',
     ],
@@ -559,16 +560,6 @@ export const accessibility = {
     notes: [
       'Built on Alert with the warning variant, so it renders role="status" and is announced politely.',
       'Supply a labeled control as the action, such as a Button; it keeps its own accessible name.',
-    ],
-  },
-  banner: {
-    keyboard: [
-      { keys: ['Tab'], action: 'Moves focus to the action and dismiss controls.' },
-      { keys: ['Enter', 'Space'], action: 'Activates the focused action or dismiss control.' },
-    ],
-    notes: [
-      'Danger renders role="alert" for immediate announcement; other variants render role="status".',
-      'The dismiss button has an explicit "Dismiss" label.',
     ],
   },
   'progress-circle': {
@@ -941,12 +932,6 @@ export const accessibility = {
       'The trigger is a combobox with aria-haspopup="tree"; options follow the tree/treeitem roles with aria-expanded and aria-selected.',
       'With display="columns" the trigger uses aria-haspopup="listbox" and each level is a labelled listbox that commits the full path of values.',
       'The selected value\'s ancestors are expanded automatically so the selection is visible on open.',
-    ],
-  },
-  callout: {
-    notes: [
-      'No role=alert or role=status is set by default; the callout is part of the normal reading flow. Add role=\'note\' or a live region yourself if the context requires it.',
-      'Variant icons are decorative and hidden from assistive technology; the variant is conveyed by the title and body text.',
     ],
   },
   'expandable-card': {

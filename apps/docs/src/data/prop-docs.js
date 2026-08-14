@@ -101,7 +101,10 @@ export const propDocs = {
     titleAs: { defaultValue: '"h3"' },
   },
   Alert: {
-    variant: { description: 'Semantic treatment of the banner.', defaultValue: '"info"' },
+    variant: { description: 'Semantic treatment of the alert.', defaultValue: '"info"' },
+    appearance: { type: '"surface" | "banner" | "callout"', defaultValue: '"surface"', description: 'Surface style: raised card, full-width banner strip, or quiet callout.' },
+    accent: { type: 'boolean', description: 'Shows the variant-colored left accent bar; defaults to true for the callout appearance.' },
+    action: { description: 'Caller-supplied trailing control rendered before the dismiss button.' },
   },
   Dialog: {
     className: { description: 'Additional classes merged onto the dialog panel.' },

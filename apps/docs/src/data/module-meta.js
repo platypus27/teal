@@ -464,7 +464,7 @@ export const moduleGroups = [
 					dos: [
 						"Wrap every free-standing control in a Field so labels and errors stay wired automatically.",
 						"Write errors that say how to fix the value, not just that it is invalid.",
-						"Keep descriptions to one sentence; move longer explanations to a Callout or help page.",
+						"Keep descriptions to one sentence; move longer explanations to an Alert with appearance=\"callout\" or a help page.",
 					],
 					donts: [
 						"Don't nest more than one control in a Field; use Fieldset for groups.",
@@ -2236,7 +2236,7 @@ export const moduleGroups = [
 						"Don't style non-keyboard text as a keycap.",
 					],
 				},
-				related: ["code-block", "tooltip", "callout"],
+				related: ["code-block", "tooltip", "alert"],
 				examples: [
 					{
 						title: "Shortcut hints",
@@ -2312,44 +2312,6 @@ export const moduleGroups = [
 					},
 				],
 			},
-				{
-					id: "callout",
-					name: "Callout",
-					apiNames: ["Callout"],
-					description:
-						"A quiet admonition surface with a variant icon and accent border, for guidance that informs without interrupting.",
-					usage: `<Callout variant="warning" title="Trial ending soon">\n  Your trial ends in 5 days. Add a payment method to keep your workspace active.\n</Callout>`,
-					anatomy: [
-						{ part: "Icon", description: "The variant glyph in a fixed column at the start of the callout." },
-						{ part: "Title", description: "The optional bold lead-in naming the message." },
-						{ part: "Body", description: "The flexible text block that wraps beside the icon." },
-						{ part: "Accent border", description: "The variant-colored edge distinguishing info, success, warning, and danger." },
-					],
-					dosDonts: {
-						dos: [
-							"Match the variant to the tone of the message.",
-							"Keep one idea per callout and place it near the content it clarifies.",
-							"Give warnings a title so scanners get the gist first.",
-						],
-						donts: [
-							"Don't use a callout for urgent or dismissible feedback; use Alert.",
-							"Don't stack callouts until the page becomes a wall of warnings.",
-						],
-					},
-					related: ["alert", "banner", "card"],
-					examples: [
-						{
-							title: "Info callout",
-							description:
-								"The default informational admonition, for tips and contextual notes inside a page's flow.",
-						},
-						{
-							title: "Semantic variants",
-							description:
-								"Success, warning, and danger callouts pair a status color and icon with the message's tone.",
-						},
-					],
-				},
 				{
 					id: "expandable-card",
 					name: "Expandable Card",
@@ -2999,7 +2961,7 @@ export const moduleGroups = [
 							"Don't show the banner again after a recorded choice unless consent expires.",
 						],
 					},
-					related: ["banner", "alert", "dialog"],
+					related: ["alert", "dialog"],
 					examples: [
 						{ title: "Consent banner", description: "Pins to the bottom of the viewport with a message, manage link, and accept/decline actions that dismiss it." },
 						{ title: "Custom labels, controlled", description: "Controlled visibility with tailored action labels and no manage link." },
@@ -3264,12 +3226,12 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						"Pass duration: Infinity for messages the user must not miss, and pair them with an action.",
 					],
 					donts: [
-						"Don't toast information the user must act on later; use Alert or Banner so it stays in context.",
+						"Don't toast information the user must act on later; use Alert so it stays in context.",
 						"Don't fire several toasts for one operation; collapse retries into a single final message.",
 						"Don't put long copy in a toast; keep the title to a phrase and move detail into the description.",
 					],
 				},
-				related: ["alert", "banner", "announcer"],
+				related: ["alert", "announcer"],
 				examples: [
 					{
 						title: "Saving feedback",
@@ -3355,28 +3317,31 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 				id: "alert",
 				name: "Alert",
 				apiNames: ["Alert"],
+				imports: ["Alert", "Button"],
 				description:
-					"An inline feedback banner with semantic variants, an optional title, and dismissal.",
+					"An inline feedback surface with semantic variants, an optional title, and dismissal; appearance renders it as a raised surface, a page-level banner strip, or a presentational callout.",
 				usage: `<Alert variant="warning" title="Payment method expiring">
   The workspace card ends in 04/25. Update billing details to avoid interruption.
 </Alert>`,
 				anatomy: [
-					{ part: "Variant icon", description: "Decorative severity glyph, hidden from assistive technology." },
+					{ part: "Variant icon", description: "Decorative severity glyph, hidden from assistive technology; not rendered for the banner appearance." },
 					{ part: "Title", description: "Optional bold lead-in naming the condition." },
 					{ part: "Body", description: "The explanatory message; wraps within the surface." },
+					{ part: "Action", description: "Caller-supplied trailing control, such as a Button." },
 					{ part: "Dismiss", description: "Optional labeled IconButton rendered when onDismiss is passed." },
 				],
 				dosDonts: {
 					dos: [
 						"Keep the alert mounted until the condition resolves or the user dismisses it.",
 						"Use the danger variant for failures that need immediate attention; it announces assertively.",
+						"Use appearance=\"banner\" for workspace-wide conditions and appearance=\"callout\" for quiet guidance that should not announce itself.",
 					],
 					donts: [
 						"Don't use Alert for brief confirmations; use Toast instead.",
 						"Don't rely on the icon or color alone; the text must carry the meaning.",
 					],
 				},
-				related: ["banner", "toast", "step-up-notice"],
+				related: ["offline-banner", "toast", "step-up-notice"],
 				examples: [
 					{
 						title: "Variants",
@@ -3510,42 +3475,6 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						title: "Dismissible",
 						description:
 							"Pass onDismiss when the notice is informational rather than blocking.",
-					},
-				],
-			},
-			{
-				id: "banner",
-				name: "Banner",
-				apiNames: ["Banner"],
-				imports: ["Banner", "Button"],
-				description:
-					"A page-level notice strip for workspace-wide feedback that owns the top of a view.",
-				usage: `<Banner variant="warning" title="Scheduled maintenance">
-  The workspace is read-only on Saturday, 02:00–03:00 UTC.
-</Banner>`,
-				anatomy: [
-					{ part: "Surface", description: "Full-width strip with a variant-tinted border and background; danger renders role=\"alert\", the other variants role=\"status\"." },
-					{ part: "Title", description: "Optional bold lead-in for the notice." },
-					{ part: "Message", description: "Children text that wraps beneath the title." },
-					{ part: "Action", description: "Caller-supplied trailing control, such as a Button." },
-					{ part: "Dismiss", description: "Optional labeled IconButton rendered when onDismiss is passed." },
-				],
-				dosDonts: {
-					dos: [
-						"Reserve Banner for workspace-wide conditions such as maintenance windows or degraded service.",
-						"Offer the action that resolves the notice, such as \"Update billing\".",
-					],
-					donts: [
-						"Don't stack several banners at the top of one view; consolidate them.",
-						"Don't use Banner for field- or task-local feedback; use Field or Alert.",
-					],
-				},
-				related: ["alert", "offline-banner", "toast"],
-				examples: [
-					{
-						title: "Page-level feedback",
-						description:
-							"A stronger accent than Alert, for notices that apply to the whole view.",
 					},
 				],
 			},
@@ -3837,7 +3766,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Don't auto-hide it on a timer; it clears itself when the connection returns.",
 						],
 					},
-					related: ["network-status", "banner", "alert"],
+					related: ["network-status", "alert"],
 					examples: [
 						{ title: "Default banner", description: "Appears automatically on the offline event and disappears when the connection returns." },
 						{ title: "Custom message", description: "Tailored copy and dismiss label for product-specific offline behavior." },
@@ -3913,7 +3842,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Use the success, warning, and danger variants for health-style readouts.",
 						],
 						donts: [
-							"Don't use a bare dot for a status users must act on; use Alert or Banner.",
+							"Don't use a bare dot for a status users must act on; use Alert.",
 							"Don't animate it for live activity; use PulseDot instead.",
 						],
 					},
@@ -7305,12 +7234,12 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Label the region when the looped content carries meaning.",
 						],
 						donts: [
-							"Don't put critical or actionable messages in a Marquee; use Banner or Alert.",
+							"Don't put critical or actionable messages in a Marquee; use Alert.",
 							"Don't expect users to read long text; it is off-screen part of the time.",
 							"Don't stack multiple fast marquees; the compounded motion overwhelms.",
 						],
 					},
-					related: ["banner", "status-dot", "badge"],
+					related: ["alert", "status-dot", "badge"],
 					examples: [
 						{
 							title: "Status ticker",
@@ -7773,6 +7702,16 @@ const additionalExamples = {
 			description:
 				"Pass onDismiss to render a close button for feedback the user can clear.",
 		},
+		{
+			title: "Banner appearance",
+			description:
+				"appearance=\"banner\" renders a full-width page-level strip with an optional trailing action.",
+		},
+		{
+			title: "Callout appearance",
+			description:
+				"appearance=\"callout\" stays in the reading flow with a left accent bar; pass accent={false} to hide it.",
+		},
 	],
 	tabs: [
 		{
@@ -7897,13 +7836,6 @@ const additionalExamples = {
 		{
 			title: "Identity preview",
 			description: "Show a person or project summary without leaving the list.",
-		},
-	],
-	banner: [
-		{
-			title: "Dismissible notices",
-			description:
-				"Pass onDismiss for notices the user can clear for the session.",
 		},
 	],
 	steps: [
@@ -8315,7 +8247,7 @@ const guidanceById = {
 		avoidWhen:
 			"A brief confirmation is enough; use a toast for transient feedback.",
 		behavior:
-			'Danger renders role="alert" for immediate announcement; other variants render role="status".',
+			'Danger renders role="alert" for immediate announcement; other variants render role="status". appearance="callout" renders no live region and stays in the reading flow.',
 		responsive: "Let the body text wrap and keep the title to a short phrase.",
 	},
 	tabs: {
@@ -8469,14 +8401,6 @@ const guidanceById = {
 		behavior: "Hover and keyboard focus open the card after a tunable delay.",
 		responsive:
 			"Provide the same content through another path on touch layouts.",
-	},
-	banner: {
-		useWhen: "Feedback applies to the entire view, not one field or task.",
-		avoidWhen:
-			"The message is local to a control or a transient confirmation; use Field, Alert, or Toast.",
-		behavior:
-			'Danger renders role="alert" for immediate announcement; other variants render role="status".',
-		responsive: "The action wraps beneath the message on narrow screens.",
 	},
 	steps: {
 		useWhen:
@@ -8640,7 +8564,7 @@ const guidanceById = {
 		useWhen:
 			"A page or panel needs a full-area outcome: success, error, warning, info, or an HTTP status like 404.",
 		avoidWhen:
-			"The feedback is inline or transient; use Alert, Banner, or Toast. \"No data yet\" fits EmptyState better.",
+			"The feedback is inline or transient; use Alert or Toast. \"No data yet\" fits EmptyState better.",
 		behavior:
 			"The status picks a standard icon and tint; the icon is always aria-hidden so the title carries the meaning, and actions render caller-supplied buttons.",
 		responsive:
@@ -9083,16 +9007,6 @@ const guidanceById = {
 		responsive:
 			"The popover matches the trigger width and the tree scrolls vertically; deep levels indent rather than widen the control.",
 	},
-	callout: {
-		useWhen:
-			"You want to highlight guidance, tips, or consequences inline with content, for example notes in settings pages or documentation-style warnings.",
-		avoidWhen:
-			"The message must be announced immediately or can be dismissed; use Alert instead, which carries live-region semantics and a dismiss action.",
-		behavior:
-			"Callout is static and non-assertive: it renders no live region and no role by default, so screen readers meet it in reading order rather than as an announcement.",
-		responsive:
-			"The icon column stays fixed while the text block flexes and wraps, so long messages remain readable at narrow widths.",
-	},
 	"expandable-card": {
 		useWhen:
 			"A card carries secondary detail that most readers skip, for example changelogs, advanced settings, or long descriptions under a summary.",
@@ -9163,7 +9077,7 @@ const guidanceById = {
 	},
 	"notification-center": {
 		useWhen: "A product aggregates events from several sources behind a single bell-style entry point, such as deploys, comments, and billing alerts.",
-		avoidWhen: "A single transient update; use Toast or Banner instead of an inbox.",
+		avoidWhen: "A single transient update; use Toast or Alert instead of an inbox.",
 		behavior: "Rows reuse NotificationItem; the panel never mutates the items — read state changes are reported through onMarkAllRead for the caller to apply.",
 		responsive: "The panel caps at 24rem and narrows to the viewport on small screens, with the list scrolling internally.",
 	},
@@ -9227,7 +9141,7 @@ const guidanceById = {
 	},
 	"status-dot": {
 		useWhen: "You need a compact, glanceable status marker next to an entity name, for example in tables or list rows.",
-		avoidWhen: "The status needs more explanation or an action; use Alert or Banner instead.",
+		avoidWhen: "The status needs more explanation or an action; use Alert instead.",
 		behavior: "Purely presentational: the dot is hidden from assistive technology and the visible label carries the meaning.",
 		responsive: "Stays inline and shrinks to content; the label truncates with the surrounding layout.",
 	},
@@ -9687,7 +9601,7 @@ const guidanceById = {
 		useWhen:
 			"Ambient, glanceable content like logo strips, status tickers, or announcement loops that users can ignore safely.",
 		avoidWhen:
-			"Critical messages users must read or act on; motion hides content part of the time, so use a Banner or Alert instead.",
+			"Critical messages users must read or act on; motion hides content part of the time, so use an Alert instead.",
 		behavior:
 			"Duplicates the children for a gapless wrap, pauses on hover when pauseOnHover is set, and renders statically under prefers-reduced-motion.",
 		responsive:
