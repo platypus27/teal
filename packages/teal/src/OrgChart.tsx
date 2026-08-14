@@ -70,13 +70,16 @@ function OrgNodeView({ collapsedSet, node, onToggle }: OrgNodeViewProps) {
             {node.children?.map((child, index) => (
               <li key={child.id} className="teal-u-relative teal-u-flex teal-u-flex-col teal-u-items-center">
                 {childCount > 1 ? (
+                  // Segments reach half the sibling gap (gap-4 / 2 = 0.5rem) past each
+                  // edge so they join into one unbroken run; each li centers its node,
+                  // so left/right-1/2 stay on the node center at any width.
                   <div
                     aria-hidden="true"
                     className={cn(
                       'teal-u-absolute teal-u-top-0 teal-u-h-px teal-u-bg-outline-variant',
-                      index === 0 && 'teal-u-left-1/2 teal-u-right-0',
-                      index > 0 && index < childCount - 1 && 'teal-u-left-0 teal-u-right-0',
-                      index === childCount - 1 && 'teal-u-left-0 teal-u-right-1/2',
+                      index === 0 && 'teal-u-left-1/2 -teal-u-right-2',
+                      index > 0 && index < childCount - 1 && '-teal-u-left-2 -teal-u-right-2',
+                      index === childCount - 1 && '-teal-u-left-2 teal-u-right-1/2',
                     )}
                   />
                 ) : null}
