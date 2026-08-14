@@ -2472,7 +2472,7 @@ export const moduleGroups = [
 				name: "Dialog",
 				apiNames: ["Dialog"],
 				description:
-					"A modal surface that owns focus management, naming, dismissal, and scroll locking.",
+					"A modal surface that owns focus management, naming, dismissal, and scroll locking; placement renders it centered, fullscreen, as a left/right drawer, or as a bottom sheet.",
 				usage: `const [open, setOpen] = useState(false)
 
 <Button onClick={() => setOpen(true)}>Open dialog</Button>
@@ -2493,7 +2493,7 @@ export const moduleGroups = [
 				dosDonts: {
 					dos: [
 						"Use a verb-led title that states the outcome, like \"Archive project?\".",
-						"Keep the content short; move long forms into a dedicated page or a Drawer.",
+						"Keep the content short; move long forms into a dedicated page or placement=\"fullscreen\".",
 						"Restore focus to the trigger when the dialog closes (built in).",
 					],
 					donts: [
@@ -2502,7 +2502,7 @@ export const moduleGroups = [
 						"Don't hide required information behind the scrim dismissal.",
 					],
 				},
-				related: ["alert-dialog", "drawer", "popover"],
+				related: ["alert-dialog", "action-sheet", "popover"],
 				examples: [
 					{
 						title: "Confirmation",
@@ -2651,53 +2651,6 @@ export const moduleGroups = [
 						title: "Share panel",
 						description:
 							"side=\"top\" opens the panel above the trigger; a read-only Input holds the share link.",
-					},
-				],
-			},
-			{
-				id: "drawer",
-				name: "Drawer",
-				apiNames: ["Drawer"],
-				imports: ["Drawer", "Button"],
-				description:
-					"A slide-over panel for focused side tasks, built on the dialog focus model.",
-				usage: `<Drawer
-  open={open}
-  onOpenChange={setOpen}
-  title="Project settings"
-  side="right"
->
-  <SettingsForm />
-</Drawer>`,
-				anatomy: [
-					{ part: "Scrim", description: "The dimmed backdrop that blocks the page and dismisses on click." },
-					{ part: "Panel", description: "The surface sliding in from the chosen side that traps focus like a dialog." },
-					{ part: "Header", description: "Title and optional description wired to the panel's accessible name and description." },
-					{ part: "Footer", description: "Optional action row pinned below the scrollable body, usually Cancel plus a primary action." },
-				],
-				dosDonts: {
-					dos: [
-						"Use a drawer for focused side tasks like settings or detail editing that need more room than a dialog.",
-						"Pick the side that matches the content's origin, for example left for navigation-adjacent panels.",
-						"Let long forms scroll inside the panel and keep footer actions visible.",
-					],
-					donts: [
-						"Don't use a drawer for a simple confirmation; use Dialog or AlertDialog.",
-						"Don't open a second overlay from inside a drawer.",
-						"Don't treat it as page-length scrolling content; keep the task focused.",
-					],
-				},
-				related: ["dialog", "bottom-sheet", "floating-panel"],
-				examples: [
-					{
-						title: "Side panel",
-						description:
-							"The drawer slides from either edge and traps focus like a dialog.",
-					},
-					{
-						title: "Left-anchored",
-						description:
-							"side=\"left\" suits panels that extend navigation or list-level context.",
 					},
 				],
 			},
@@ -2999,12 +2952,12 @@ export const moduleGroups = [
 							"Prefer it on touch layouts where bottom-anchored actions sit in the thumb zone.",
 						],
 						donts: [
-							"Don't put forms or rich content inside; use BottomSheet with custom children.",
+							"Don't put forms or rich content inside; use Dialog with placement=\"bottom\" and custom children.",
 							"Don't use it as a desktop action menu; use Menu instead.",
 							"Don't hide the only safe exit; the cancel button is always visible.",
 						],
 					},
-					related: ["bottom-sheet", "menu", "alert-dialog"],
+					related: ["dialog", "menu", "alert-dialog"],
 					examples: [
 						{
 							title: "Action list",
@@ -3015,52 +2968,6 @@ export const moduleGroups = [
 							title: "Destructive action",
 							description:
 								"Destructive actions render in the error color so irreversible choices stand out.",
-						},
-					],
-				},
-				{
-					id: "bottom-sheet",
-					name: "Bottom Sheet",
-					apiNames: ["BottomSheet"],
-					description:
-						"A sheet that slides up from the bottom edge with snap heights, ideal for mobile-first flows.",
-					usage: `<BottomSheet
-  open={open}
-  onOpenChange={setOpen}
-  snap="half"
-  title="Share report"
->
-  <p>Sheet content</p>
-</BottomSheet>`,
-					anatomy: [
-						{ part: "Backdrop", description: "The dimmed layer behind the sheet that closes it on click." },
-						{ part: "Sheet", description: "The bottom-anchored modal surface that traps focus and is named by its title." },
-						{ part: "Header", description: "The title row at the top of the sheet." },
-						{ part: "Body", description: "The caller's content, sized by the snap prop (half or full viewport height)." },
-					],
-					dosDonts: {
-						dos: [
-							"Use snap=\"half\" for glanceable tasks so page context stays visible above the sheet.",
-							"Reach for it in mobile-first flows like sharing, filtering, or picking a value.",
-							"Give the sheet a title so the dialog has an accessible name.",
-						],
-						donts: [
-							"Don't use it for desktop-centric workflows; use Drawer or Dialog.",
-							"Don't stack it with another modal like a Dialog on top.",
-							"Don't fill it with page-length content; keep the task temporary and focused.",
-						],
-					},
-					related: ["action-sheet", "drawer", "dialog"],
-					examples: [
-						{
-							title: "Half snap",
-							description:
-								"The sheet snaps to half the viewport so page context stays visible above it.",
-						},
-						{
-							title: "Full snap",
-							description:
-								"The full snap height suits long content such as pickers and previews.",
 						},
 					],
 				},
@@ -3129,7 +3036,7 @@ export const moduleGroups = [
 							"Don't put transient feedback in it; use Toast.",
 						],
 					},
-					related: ["drawer", "popover", "bottom-sheet"],
+					related: ["dialog", "popover"],
 					examples: [
 						{
 							title: "Corner panel",
@@ -3140,50 +3047,6 @@ export const moduleGroups = [
 							title: "Alternate anchor",
 							description:
 								"The anchor prop moves the panel to any viewport corner.",
-						},
-					],
-				},
-				{
-					id: "fullscreen-dialog",
-					name: "Fullscreen Dialog",
-					apiNames: ["FullscreenDialog"],
-					description:
-						"A dialog that occupies the entire viewport with a header close button for immersive tasks.",
-					usage: `<FullscreenDialog
-  open={open}
-  onOpenChange={setOpen}
-  title="Edit report"
->
-  <p>Editor content</p>
-</FullscreenDialog>`,
-					anatomy: [
-						{ part: "Sticky header", description: "The always-visible top bar with the title and a close button, naming the dialog." },
-						{ part: "Body", description: "The scrollable main area that fills the viewport for immersive content." },
-						{ part: "Footer", description: "Optional action row for the task's primary and secondary actions." },
-					],
-					dosDonts: {
-						dos: [
-							"Use for dense editors and settings flows that benefit from the whole viewport.",
-							"Prefer it over a sized dialog on small screens where a fixed panel would cramp the task.",
-							"Keep a visible close path; the header close button is built in.",
-						],
-						donts: [
-							"Don't use it for short confirmations or single-value captures; use Dialog or PromptDialog.",
-							"Don't nest another fullscreen overlay inside it.",
-							"Don't make the body scroll the header away; the header stays sticky for orientation.",
-						],
-					},
-					related: ["dialog", "drawer", "lightbox"],
-					examples: [
-						{
-							title: "Fullscreen editor",
-							description:
-								"A sticky header, scrollable body, and footer actions fill the viewport.",
-						},
-						{
-							title: "Settings flow",
-							description:
-								"Dense settings forms get the whole screen to breathe.",
 						},
 					],
 				},
@@ -3214,7 +3077,7 @@ export const moduleGroups = [
 							"Don't rely on drag alone; the toolbar and keyboard zoom cover pointer-free use.",
 						],
 					},
-					related: ["lightbox", "fullscreen-dialog", "dialog"],
+					related: ["lightbox", "dialog"],
 					examples: [
 						{ title: "Default viewer", description: "Zoom in and out with the toolbar buttons or the + and − keys, and drag to pan once past 100%." },
 						{ title: "Custom bounds", description: "Starts pre-zoomed with finer zoom steps and a lower maximum for detail inspection." },
@@ -3248,7 +3111,7 @@ export const moduleGroups = [
 							"Don't hide the close path; Escape and the backdrop always close it.",
 						],
 					},
-					related: ["image-viewer", "fullscreen-dialog", "dialog"],
+					related: ["image-viewer", "dialog"],
 					examples: [
 						{ title: "Gallery overlay", description: "A button opens the lightbox; arrow keys and the chevron buttons page through images while the counter tracks position." },
 						{ title: "Thumbnail entry points", description: "Each thumbnail opens the gallery at its own index via the controlled index prop." },
@@ -4983,7 +4846,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Don't use it as a floating overlay rail; that is Side Rail.",
 						],
 					},
-					related: ["vertical-nav", "side-rail", "drawer"],
+					related: ["vertical-nav", "side-rail", "dialog"],
 					examples: [
 						{
 							title: "Expanded sidebar",
@@ -6598,7 +6461,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						"Don't remove the handle from the tab order; it is the keyboard user's only way to resize.",
 					],
 				},
-				related: ["app-shell", "drawer", "scroll-area"],
+				related: ["app-shell", "scroll-area"],
 				examples: [
 					{
 						title: "Split panes",
@@ -7296,7 +7159,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Don't use it as a substitute for Dialog's full modal semantics.",
 						],
 					},
-					related: ["dialog", "drawer", "portal"],
+					related: ["dialog", "portal"],
 					examples: [
 						{
 							title: "Toggleable trap",
@@ -7819,6 +7682,26 @@ const additionalExamples = {
 			title: "Long-form task",
 			description:
 				"For focused tasks, keep the title visible and let the dialog body own its scroll.",
+		},
+		{
+			title: "Fullscreen task",
+			description:
+				"placement=\"fullscreen\" fills the viewport with a sticky header, scrollable body, and footer actions.",
+		},
+		{
+			title: "Drawer panel",
+			description:
+				"placement=\"right\" (or \"left\") slides a panel in from the edge; width sets its size.",
+		},
+		{
+			title: "Bottom sheet",
+			description:
+				"placement=\"bottom\" rises from the thumb zone; snap=\"half\" keeps page context visible.",
+		},
+		{
+			title: "Full-height sheet",
+			description:
+				"snap=\"full\" gives long content like pickers the full viewport height.",
 		},
 	],
 	tooltip: [
@@ -8378,9 +8261,9 @@ const guidanceById = {
 		useWhen: "A decision or focused task must temporarily block the page.",
 		avoidWhen: "The content can be inline or handled by a popover.",
 		behavior:
-			"Focus is trapped, Escape dismisses, and focus returns to the trigger.",
+			"Focus is trapped, Escape dismisses, and focus returns to the trigger, for every placement.",
 		responsive:
-			"Use the built-in size and allow the body to scroll inside the panel.",
+			"placement=\"bottom\" snaps to half or full viewport height; the left and right placements size with the width prop, and placement=\"fullscreen\" always fills the viewport.",
 	},
 	tooltip: {
 		useWhen: "An unfamiliar icon or abbreviated label needs a brief hint.",
@@ -8578,15 +8461,6 @@ const guidanceById = {
 			"The custom thumb appears over a transparent track only where scrolling is possible; the viewport is keyboard focusable.",
 		responsive:
 			"Set maxHeight in relative units so the region adapts to viewport height.",
-	},
-	drawer: {
-		useWhen:
-			"A focused side task needs more room than a dialog but should not navigate away.",
-		avoidWhen: "The task is a simple confirmation; use Dialog.",
-		behavior:
-			"Focus is trapped and restored, Escape dismisses, and the panel slides from the chosen edge.",
-		responsive:
-			"The default width caps at the viewport; forms inside own their own scroll.",
 	},
 	"hover-card": {
 		useWhen: "Rich preview context helps before committing to navigation.",
@@ -9253,21 +9127,11 @@ const guidanceById = {
 		useWhen:
 			"A small set of page-level actions on touch layouts, especially when one of them is destructive.",
 		avoidWhen:
-			"Rich forms or navigation menus; use BottomSheet with custom content or Menu instead.",
+			"Rich forms or navigation menus; use Dialog with placement=\"bottom\" and custom content or Menu instead.",
 		behavior:
 			"Choosing an action fires its onSelect and closes the sheet; cancel closes without selecting anything.",
 		responsive:
 			"Stays full width with comfortable touch targets, capped and centered on wide screens.",
-	},
-	"bottom-sheet": {
-		useWhen:
-			"Mobile-first flows where a temporary task (sharing, filtering, picking) should rise from the thumb zone without leaving the page.",
-		avoidWhen:
-			"Desktop-centric workflows or persistent side content; use Drawer or Dialog instead.",
-		behavior:
-			"Modal dialog semantics: focus is trapped inside, Escape and the backdrop close it, and the snap prop fixes the height.",
-		responsive:
-			"Spans the full width up to a max width centered on larger screens; the half snap keeps the sheet glanceable on small screens.",
 	},
 	"cookie-consent": {
 		useWhen: "You must collect consent without interrupting the task at hand, as required for cookie and tracking disclosures.",
@@ -9279,21 +9143,11 @@ const guidanceById = {
 		useWhen:
 			"Companion tooling (history, shortcuts, inspectors) the user keeps open while working in the page.",
 		avoidWhen:
-			"Tasks that demand full attention or decisions; use Dialog or BottomSheet instead.",
+			"Tasks that demand full attention or decisions; use Dialog instead.",
 		behavior:
 			"Non-modal: the page stays interactive, focus is not trapped, and the panel closes via its close button or Escape.",
 		responsive:
 			"Fixed width capped to the viewport with margins on every side, so it never covers edge-to-edge on phones.",
-	},
-	"fullscreen-dialog": {
-		useWhen:
-			"Immersive tasks on small screens or dense editors (settings, rich forms) that need the full viewport.",
-		avoidWhen:
-			"Short confirmations or single-value captures; use Dialog, AlertDialog, or PromptDialog instead.",
-		behavior:
-			"Modal dialog semantics: focus is trapped, Escape closes, and the header close button is always visible.",
-		responsive:
-			"Always full viewport by definition; the header collapses gracefully so the body keeps scrolling on short screens.",
 	},
 	"image-viewer": {
 		useWhen: "A single diagram, map, or photo needs in-place inspection with zoom and pan, such as a blueprint or chart export.",
@@ -9397,7 +9251,7 @@ const guidanceById = {
 		useWhen:
 			"A mobile app has three to five top-level destinations the user switches between constantly.",
 		avoidWhen:
-			"Destinations are numerous or hierarchical; use a Sidebar or Drawer pattern instead, and hide BottomNav on desktop widths.",
+			"Destinations are numerous or hierarchical; use a Sidebar or an off-canvas Dialog instead, and hide BottomNav on desktop widths.",
 		behavior:
 			"Items are links with equal flex width; the active item exposes aria-current=\"page\", and the bar pads for the device safe area with env(safe-area-inset-bottom).",
 		responsive:
@@ -9431,7 +9285,7 @@ const guidanceById = {
 		behavior:
 			"Only one panel is open at a time; arrow keys move between triggers and across column boundaries, and Escape closes the panel and refocuses its trigger.",
 		responsive:
-			"Panels open below their trigger and grow with the column count; on narrow screens switch to a Drawer or Accordion of the same links.",
+			"Panels open below their trigger and grow with the column count; on narrow screens switch to an off-canvas Dialog or Accordion of the same links.",
 	},
 	sidebar: {
 		useWhen:
@@ -9441,7 +9295,7 @@ const guidanceById = {
 		behavior:
 			"Collapsed state is controlled or uncontrolled via collapsed/defaultCollapsed/onCollapsedChange; the active item always exposes aria-current=\"page\".",
 		responsive:
-			"Collapsing frees horizontal space on narrow screens; pair with a Drawer for an off-canvas pattern on phones.",
+			"Collapsing frees horizontal space on narrow screens; pair with Dialog placement=\"left\" for an off-canvas pattern on phones.",
 	},
 	"skip-link": {
 		useWhen:
