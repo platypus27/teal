@@ -27,19 +27,27 @@ export interface TooltipProps {
   content: ReactNode
   /** Per-instance open delay in milliseconds; overrides the nearest TooltipProvider. */
   delayDuration?: number
-  /** Preferred side of the trigger for the tooltip. */
+  /** Preferred side of the trigger for the tooltip (canonical prop). */
   side?: 'top' | 'right' | 'bottom' | 'left'
+  /** Alias for `side`; wins when both are given. */
+  placement?: 'top' | 'right' | 'bottom' | 'left'
+  /** Distance in pixels between the tooltip and the trigger. */
+  sideOffset?: number
+  /** Alignment of the tooltip along the trigger edge. */
+  align?: 'center' | 'start' | 'end'
 }
 
-export function Tooltip({ children, className, content, delayDuration, side = 'top' }: TooltipProps) {
+export function Tooltip({ align = 'center', children, className, content, delayDuration, placement, side, sideOffset = 6 }: TooltipProps) {
   const hasProvider = useContext(TooltipProviderContext)
+  const resolvedSide = placement ?? side ?? 'top'
   const root = (
     <TooltipPrimitive.Root>
       <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
       <TooltipPrimitive.Portal>
         <TooltipPrimitive.Content
-          side={side}
-          sideOffset={6}
+          side={resolvedSide}
+          sideOffset={sideOffset}
+          align={align}
           className={cn(
             'teal-popper-content teal-u-box-border teal-u-z-[var(--teal-z-tooltip)] teal-u-max-w-xs teal-u-rounded-full teal-u-border teal-u-border-solid teal-u-border-inverse-on-surface/15 teal-u-px-2.5 teal-u-py-1.5 teal-u-text-xs teal-u-font-medium teal-u-shadow-overlay motion-reduce:teal-u-transition-none',
             'teal-u-bg-inverse-surface teal-u-text-inverse-on-surface',
