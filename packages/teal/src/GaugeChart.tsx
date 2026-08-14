@@ -89,6 +89,9 @@ export const GaugeChart = forwardRef<SVGSVGElement, GaugeChartProps>(function Ga
   const zoneSummary = thresholds.length > 0 ? `; zones: ${zones.map((z) => z.label ?? `${z.from}–${z.to}`).join(', ')}` : ''
   const summary = `Value ${value} between ${min} and ${max}${zoneSummary}`
 
+  const minLabelX = Math.max(2, centerX - radius - STROKE_WIDTH / 2)
+  const maxLabelX = Math.min(width - 2, centerX + radius + STROKE_WIDTH / 2)
+
   return (
     <>
       <svg
@@ -101,25 +104,23 @@ export const GaugeChart = forwardRef<SVGSVGElement, GaugeChartProps>(function Ga
         className={cn('teal-u-block', className)}
         {...props}
       >
-        {thresholds.length === 0 ? (
-          <path d={arcPath(0, 1)} fill="none" stroke={TRACK_COLOR} strokeWidth={STROKE_WIDTH} strokeLinecap="round" />
-        ) : (
-          zones.map((zone, index) => {
-            const from = Math.max(0, (zone.from - min) / range)
-            const to = Math.min(1, (zone.to - min) / range)
-            if (to <= from) return null
-            return (
-              <path
-                key={index}
-                d={arcPath(from, to)}
-                fill="none"
-                stroke={zone.color}
-                strokeOpacity={0.3}
-                strokeWidth={STROKE_WIDTH}
-              />
-            )
-          })
-        )}
+        <path d={arcPath(0, 1)} fill="none" stroke={TRACK_COLOR} strokeWidth={STROKE_WIDTH} strokeLinecap="round" />
+        {zones.map((zone, index) => {
+          if (thresholds.length === 0) return null
+          const from = Math.max(0, (zone.from - min) / range)
+          const to = Math.min(1, (zone.to - min) / range)
+          if (to <= from) return null
+          return (
+            <path
+              key={index}
+              d={arcPath(from, to)}
+              fill="none"
+              stroke={zone.color}
+              strokeWidth={STROKE_WIDTH}
+              strokeLinecap="round"
+            />
+          )
+        })}
         {fraction > 0 ? (
           <path
             d={arcPath(0, fraction)}
@@ -129,10 +130,10 @@ export const GaugeChart = forwardRef<SVGSVGElement, GaugeChartProps>(function Ga
             strokeLinecap="round"
           />
         ) : null}
-        <text x={centerX - radius - STROKE_WIDTH / 2} y={centerY + 16} textAnchor="start" fontSize={10} fill={TEXT_COLOR}>
+        <text x={minLabelX} y={centerY + 16} textAnchor="start" fontSize={10} fill={TEXT_COLOR}>
           {min}
         </text>
-        <text x={centerX + radius + STROKE_WIDTH / 2} y={centerY + 16} textAnchor="end" fontSize={10} fill={TEXT_COLOR}>
+        <text x={maxLabelX} y={centerY + 16} textAnchor="end" fontSize={10} fill={TEXT_COLOR}>
           {max}
         </text>
         <text x={centerX} y={centerY - 6} textAnchor="middle" fontSize={22} fontWeight={600} fill={VALUE_COLOR}>
