@@ -4,7 +4,7 @@ import { Slider } from '../src/Slider'
 
 describe('Slider', () => {
   it('renders a labeled slider with min, max, and current value', () => {
-    render(<Slider label="Storage quota" defaultValue={[40]} />)
+    render(<Slider label="Storage quota" defaultValue={40} />)
 
     const slider = screen.getByRole('slider', { name: 'Storage quota' })
     expect(slider).toHaveAttribute('aria-valuemin', '0')
@@ -13,7 +13,7 @@ describe('Slider', () => {
   })
 
   it('connects its description to the thumb', () => {
-    render(<Slider label="Storage quota" description="Applies to the whole workspace" defaultValue={[40]} />)
+    render(<Slider label="Storage quota" description="Applies to the whole workspace" defaultValue={40} />)
 
     expect(screen.getByRole('slider', { name: 'Storage quota' })).toHaveAccessibleDescription(
       'Applies to the whole workspace',
@@ -21,7 +21,7 @@ describe('Slider', () => {
   })
 
   it('renders the current value when showValue is set', () => {
-    render(<Slider label="Storage quota" defaultValue={[40]} showValue />)
+    render(<Slider label="Storage quota" defaultValue={40} showValue />)
 
     expect(screen.getByText('40')).toBeInTheDocument()
   })
@@ -29,18 +29,18 @@ describe('Slider', () => {
   it('changes the value with arrow keys', async () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()
-    render(<Slider label="Storage quota" defaultValue={[40]} onValueChange={onValueChange} />)
+    render(<Slider label="Storage quota" defaultValue={40} onValueChange={onValueChange} />)
 
     screen.getByRole('slider', { name: 'Storage quota' }).focus()
     await user.keyboard('{ArrowRight}')
-    expect(onValueChange).toHaveBeenCalledWith([41])
+    expect(onValueChange).toHaveBeenCalledWith(41)
   })
 
   it('respects custom min, max, and step', async () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()
     render(
-      <Slider label="Reviewers" min={1} max={10} step={2} defaultValue={[3]} onValueChange={onValueChange} />,
+      <Slider label="Reviewers" min={1} max={10} step={2} defaultValue={3} onValueChange={onValueChange} />,
     )
 
     const slider = screen.getByRole('slider', { name: 'Reviewers' })
@@ -48,12 +48,59 @@ describe('Slider', () => {
     expect(slider).toHaveAttribute('aria-valuemax', '10')
     slider.focus()
     await user.keyboard('{ArrowRight}')
-    expect(onValueChange).toHaveBeenCalledWith([5])
+    expect(onValueChange).toHaveBeenCalledWith(5)
   })
 
   it('cannot be interacted with when disabled', () => {
-    render(<Slider label="Storage quota" defaultValue={[40]} disabled />)
+    render(<Slider label="Storage quota" defaultValue={40} disabled />)
 
     expect(screen.getByRole('slider', { name: 'Storage quota' })).toHaveAttribute('data-disabled', '')
+  })
+})
+
+describe('Slider range mode', () => {
+  it('renders two thumbs with per-thumb accessible names', () => {
+    render(<Slider label="Price" range defaultValue={[20, 80]} />)
+
+    expect(screen.getByRole('slider', { name: 'Minimum value' })).toHaveAttribute('aria-valuenow', '20')
+    expect(screen.getByRole('slider', { name: 'Maximum value' })).toHaveAttribute('aria-valuenow', '80')
+  })
+
+  it('moves a thumb with arrow keys and emits the tuple', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    render(<Slider label="Price" range defaultValue={[20, 80]} onValueChange={onValueChange} />)
+
+    screen.getByRole('slider', { name: 'Minimum value' }).focus()
+    await user.keyboard('{ArrowRight}')
+
+    expect(onValueChange).toHaveBeenCalledWith([21, 80])
+  })
+
+  it('moves the high thumb without disturbing the low thumb', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    render(<Slider label="Price" range defaultValue={[20, 80]} onValueChange={onValueChange} />)
+
+    screen.getByRole('slider', { name: 'Maximum value' }).focus()
+    await user.keyboard('{ArrowLeft}')
+
+    expect(onValueChange).toHaveBeenCalledWith([20, 79])
+  })
+
+  it('supports custom thumb labels and shows the range readout', () => {
+    render(
+      <Slider label="Price" range defaultValue={[20, 80]} showValue thumbLabels={['From price', 'To price']} />,
+    )
+
+    expect(screen.getByRole('slider', { name: 'From price' })).toBeInTheDocument()
+    expect(screen.getByText('20 – 80')).toBeInTheDocument()
+  })
+
+  it('reflects the controlled tuple', () => {
+    render(<Slider label="Price" range value={[30, 60]} />)
+
+    expect(screen.getByRole('slider', { name: 'Minimum value' })).toHaveAttribute('aria-valuenow', '30')
+    expect(screen.getByRole('slider', { name: 'Maximum value' })).toHaveAttribute('aria-valuenow', '60')
   })
 })

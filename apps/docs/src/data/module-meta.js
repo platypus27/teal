@@ -700,9 +700,9 @@ export const moduleGroups = [
 				name: "Slider",
 				apiNames: ["Slider"],
 				description:
-					"A numeric value scrubber with an optional live value readout.",
+					"A numeric value scrubber with an optional live value readout; range mode adds a second thumb for low/high pairs.",
 				usage:
-					'<Slider label="Notification volume" defaultValue={[60]} showValue />',
+					'<Slider label="Notification volume" defaultValue={60} showValue />',
 				anatomy: [
 					{ part: "Track", description: "The rail that spans the full range." },
 					{ part: "Range", description: "The filled portion from the minimum up to the thumb." },
@@ -721,7 +721,7 @@ export const moduleGroups = [
 						"Don't rely on track color alone to carry meaning.",
 					],
 				},
-				related: ["range-slider", "number-input", "rating", "meter"],
+				related: ["number-input", "rating", "meter"],
 				examples: [
 					{
 						title: "Value selection",
@@ -732,6 +732,11 @@ export const moduleGroups = [
 						title: "Description and disabled",
 						description:
 							"A described quota slider beside a disabled one that keeps its layout.",
+					},
+					{
+						title: "Range selection",
+						description:
+							"range adds a second thumb for a low/high pair; thumbLabels give each end an accessible name.",
 					},
 				],
 			},
@@ -1743,49 +1748,6 @@ export const moduleGroups = [
 							title: "Horizontal with icons",
 							description:
 								"A horizontal layout with an icon above each card title.",
-						},
-					],
-				},
-				{
-					id: "range-slider",
-					name: "Range Slider",
-					apiNames: ["RangeSlider"],
-					description:
-						"A dual-thumb slider for choosing a low/high pair, with per-thumb labels and an optional value readout.",
-					usage: `<RangeSlider
-  label="Price range"
-  defaultValue={[20, 80]}
-  onChange={([low, high]) => console.log(low, high)}
-  showValue
-/>`,
-					anatomy: [
-						{ part: "Label and readout", description: "The group label plus an optional text mirror of the current low/high pair." },
-						{ part: "Track", description: "The full-scale rail both thumbs travel on." },
-						{ part: "Thumbs", description: "Two keyboard-operable thumbs, each with its own accessible name from thumbLabels." },
-						{ part: "Range fill", description: "The highlighted segment between the thumbs, which never cross by at least one step." },
-					],
-					dosDonts: {
-						dos: [
-							"Label both ends with thumbLabels, such as Minimum price and Maximum price.",
-							"Show the current pair as text with showValue, since thumb position alone is imprecise.",
-							"Choose min, max, and step so the useful values land on stops.",
-						],
-						donts: [
-							"Don't use it for a single value; use Slider.",
-							"Don't use it when exact numbers matter; pair two NumberInputs instead.",
-						],
-					},
-					related: ["slider", "number-input", "currency-input"],
-					examples: [
-						{
-							title: "Basic range",
-							description:
-								"Two thumbs share one track and stay at least one step apart; showValue mirrors the current pair above the track.",
-						},
-						{
-							title: "Custom domain and thumb labels",
-							description:
-								"min, max, and step adapt the scale, and thumbLabels give each end a meaningful accessible name.",
 						},
 					],
 				},
@@ -8949,16 +8911,6 @@ const guidanceById = {
 			"Selecting a card checks it and moves focus like a native radio group; the checked card holds the group's only tab stop and arrows wrap around, skipping disabled cards. Supports controlled and uncontrolled value.",
 		responsive:
 			"Vertical stacks fill their container; horizontal groups wrap cards onto multiple rows on narrow screens.",
-	},
-	"range-slider": {
-		useWhen:
-			"The user filters or configures a bounded interval, such as price, date offsets, or team size.",
-		avoidWhen:
-			"Only one value is needed; use Slider. For precise numeric entry, pair two NumberInputs instead.",
-		behavior:
-			"Emits the [low, high] tuple on every thumb move and guarantees the thumbs never cross, keeping minStepsBetweenThumbs steps between them.",
-		responsive:
-			"The track stretches to fill its container; thumbs remain keyboard-operable at any width.",
 	},
 	"rich-text-editor": {
 		useWhen:

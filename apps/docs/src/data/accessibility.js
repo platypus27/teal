@@ -95,6 +95,7 @@ export const accessibility = {
     notes: [
       'Built on the Radix slider primitive, so the thumb exposes slider semantics with minimum, maximum, and current value.',
       'The label is wired through aria-labelledby and showValue mirrors the value as text.',
+      'In range mode each thumb is a separate slider with its own accessible name from thumbLabels.',
       'Inside a Field, descriptions and errors link through aria-describedby and aria-invalid.',
     ],
   },
@@ -859,18 +860,6 @@ export const accessibility = {
     notes: [
       'Cards expose radiogroup/radio semantics with aria-checked; the group is named by the required label prop.',
       'Disabled cards set aria-disabled and are skipped by arrow-key navigation.',
-    ],
-  },
-  'range-slider': {
-    keyboard: [
-      { keys: ['Arrow Left', 'Arrow Down'], action: 'Decrements the focused thumb by one step.' },
-      { keys: ['Arrow Right', 'Arrow Up'], action: 'Increments the focused thumb by one step.' },
-      { keys: ['Home'], action: 'Moves the focused thumb to the minimum.' },
-      { keys: ['End'], action: 'Moves the focused thumb to the maximum.' },
-    ],
-    notes: [
-      'Each thumb is a separate slider with its own accessible name from thumbLabels.',
-      'Thumbs expose aria-valuemin, aria-valuemax, and aria-valuenow reflecting the current pair.',
     ],
   },
   'rich-text-editor': {
