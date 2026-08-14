@@ -27,6 +27,11 @@ const TEXT_COLOR = 'var(--teal-color-on-surface-variant)'
 
 const STAGE_GAP = 6
 const MIN_WIDTH_RATIO = 0.08
+const LABEL_FONT_SIZE = 12
+/** Approximate character advance at the label font size; decides whether a label fits its band. */
+const LABEL_CHAR_WIDTH = 6.6
+const LABEL_PADDING = 16
+const OUTSIDE_LABEL_OFFSET = 8
 
 export const FunnelChart = forwardRef<SVGSVGElement, FunnelChartProps>(function FunnelChart(
   { 'aria-label': ariaLabel, className, stages, width = 320, height = 240, showPercentages = true, ...props },
@@ -80,22 +85,39 @@ export const FunnelChart = forwardRef<SVGSVGElement, FunnelChartProps>(function 
           ].join(' ')
           const conversion =
             next && stage.value > 0 ? Math.round((next.value / stage.value) * 100) : undefined
+          const fullLabel = `${stage.name} · ${stage.value}`
+          const maxChars = Math.floor((topWidth - LABEL_PADDING) / LABEL_CHAR_WIDTH)
+          const labelOutside = maxChars < 4
+          const labelText = labelOutside || maxChars >= fullLabel.length ? fullLabel : `${fullLabel.slice(0, maxChars - 1)}…`
 
           return (
             <g key={index}>
               <polygon points={points} fill={FILL} fillOpacity={1 - index * (0.6 / Math.max(stages.length, 1))}>
                 <title>{`${stage.name}: ${stage.value}`}</title>
               </polygon>
-              <text
-                x={centerX}
-                y={top + bandHeight / 2}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fontSize={12}
-                fill={LABEL_COLOR}
-              >
-                {`${stage.name} · ${stage.value}`}
-              </text>
+              {labelOutside ? (
+                <text
+                  x={centerX + topWidth / 2 + OUTSIDE_LABEL_OFFSET}
+                  y={top + bandHeight / 2}
+                  textAnchor="start"
+                  dominantBaseline="middle"
+                  fontSize={LABEL_FONT_SIZE}
+                  fill={TEXT_COLOR}
+                >
+                  {fullLabel}
+                </text>
+              ) : (
+                <text
+                  x={centerX}
+                  y={top + bandHeight / 2}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fontSize={LABEL_FONT_SIZE}
+                  fill={LABEL_COLOR}
+                >
+                  {labelText}
+                </text>
+              )}
               {showPercentages && conversion !== undefined ? (
                 <text
                   x={width - 4}
