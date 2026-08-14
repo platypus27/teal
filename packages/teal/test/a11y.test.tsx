@@ -152,7 +152,6 @@ import {
   RadarChart,
   RadioCard,
   RadioGroup,
-  RangeSlider,
   Rating,
   ResizableHandle,
   ResizablePanel,
@@ -783,7 +782,7 @@ describe('axe: second catalog expansion', () => {
             { value: 'us', label: 'United States (Virginia)' },
           ]}
         />
-        <Slider label="Notification volume" defaultValue={[60]} showValue />
+        <Slider label="Notification volume" defaultValue={60} showValue />
         <SearchInput label="Search projects" defaultValue="orion" />
         <Combobox
           label="Assignee"
@@ -1222,7 +1221,7 @@ describe('axe: fifth catalog expansion', () => {
         <PhoneInput label="Phone" defaultValue="+14155552671" />
         <AutosizeTextarea label="Bio" description="Markdown is supported" />
         <PasswordStrengthMeter password="Abcdefgh1!23" />
-        <RangeSlider label="Price range" defaultValue={[20, 80]} />
+        <Slider range label="Price range" defaultValue={[20, 80]} />
       </>,
     )
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
