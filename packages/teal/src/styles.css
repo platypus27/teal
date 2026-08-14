@@ -45,10 +45,13 @@
 /* The group owns the flush focus ring for its borderless inner input. */
 .teal-input-group:focus-within {
   box-shadow: var(--teal-focus-ring);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 
 @media (forced-colors: active) {
-  .teal-focus-ring:focus-visible {
+  .teal-focus-ring:focus-visible,
+  .teal-input-group:focus-within {
     box-shadow: none;
     outline-color: Highlight;
   }
