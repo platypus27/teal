@@ -1,5 +1,5 @@
 import { ToggleGroup, ToggleGroupItem } from '@kryv/teal'
-import { AlignCenter, AlignLeft, AlignRight, Bold, Italic, Underline } from 'lucide-react'
+import { AlignCenter, AlignLeft, AlignRight, Bold, CalendarDays, Italic, KanbanSquare, List, Underline } from 'lucide-react'
 
 export function ToggleGroupDemo({ exampleIndex = 0 }) {
   if (exampleIndex === 1) {
@@ -28,6 +28,22 @@ export function ToggleGroupDemo({ exampleIndex = 0 }) {
           </ToggleGroupItem>
         </ToggleGroup>
       </div>
+    )
+  }
+
+  if (exampleIndex === 2) {
+    return (
+      <ToggleGroup
+        type="single"
+        variant="segmented"
+        aria-label="Project view"
+        defaultValue="board"
+        options={[
+          { value: 'list', label: 'List', icon: <List /> },
+          { value: 'board', label: 'Board', icon: <KanbanSquare /> },
+          { value: 'calendar', label: 'Calendar', icon: <CalendarDays />, disabled: true },
+        ]}
+      />
     )
   }
 

@@ -35,7 +35,7 @@ export function ButtonGroupDemo({ exampleIndex = 0 }) {
       </ButtonGroup>
       <p className="text-sm text-teal-on-surface-variant">
         The selected option pops with an accent fill. For single-select toolbars with a sliding
-        indicator, see SegmentedControl.
+        indicator, see the ToggleGroup segmented variant.
       </p>
     </div>
   )
