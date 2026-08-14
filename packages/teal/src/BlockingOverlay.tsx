@@ -58,7 +58,7 @@ export const BlockingOverlay = forwardRef<HTMLDivElement, BlockingOverlayProps>(
           aria-label={label}
           tabIndex={-1}
           onKeyDown={handleKeyDown}
-          className="teal-u-absolute teal-u-inset-0 teal-u-z-10 teal-u-flex teal-u-flex-col teal-u-items-center teal-u-justify-center teal-u-gap-3 teal-u-bg-surface/60"
+          className="teal-u-absolute teal-u-inset-0 teal-u-z-10 teal-u-flex teal-u-flex-col teal-u-items-center teal-u-justify-center teal-u-gap-3 teal-u-bg-surface/80 teal-u-backdrop-blur-sm"
         >
           <LoaderCircle
             aria-hidden="true"
