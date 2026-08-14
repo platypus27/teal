@@ -22,8 +22,30 @@ const locations = [
   { value: 'singapore', label: 'Singapore' },
 ]
 
+const teams = [
+  {
+    value: 'engineering',
+    label: 'Engineering',
+    children: [
+      { value: 'frontend', label: 'Frontend' },
+      { value: 'backend', label: 'Backend' },
+      { value: 'platform', label: 'Platform' },
+    ],
+  },
+  {
+    value: 'design',
+    label: 'Design',
+    children: [
+      { value: 'product', label: 'Product Design' },
+      { value: 'research', label: 'Research' },
+    ],
+  },
+  { value: 'operations', label: 'Operations' },
+]
+
 export function TreeSelectDemo({ exampleIndex = 0 }) {
   const [office, setOffice] = useState('lisbon')
+  const [path, setPath] = useState(['engineering', 'backend'])
 
   if (exampleIndex === 1) {
     return (
@@ -33,8 +55,27 @@ export function TreeSelectDemo({ exampleIndex = 0 }) {
           description="Regional offices only; hubs are not assignable"
           defaultExpandedValues={['americas']}
           value={office}
-          onValueChange={setOffice}
+          onValueChange={(value) => {
+            if (typeof value === 'string') setOffice(value)
+          }}
           options={locations}
+        />
+      </div>
+    )
+  }
+
+  if (exampleIndex === 2) {
+    return (
+      <div className="w-full max-w-xs">
+        <TreeSelect
+          label="Owning team"
+          display="columns"
+          description="The full path from department to team"
+          value={path}
+          onValueChange={(value) => {
+            if (Array.isArray(value)) setPath(value)
+          }}
+          options={teams}
         />
       </div>
     )

@@ -814,20 +814,6 @@ export const accessibility = {
       'Resize is suppressed visually because the field sizes itself; keyboard and screen-reader behavior match a standard textarea.',
     ],
   },
-  cascader: {
-    keyboard: [
-      { keys: ['Arrow Down'], action: 'Opens the popover or moves the highlight to the next option in the column.' },
-      { keys: ['Arrow Up'], action: 'Moves the highlight to the previous option in the column.' },
-      { keys: ['Arrow Right'], action: 'Expands the highlighted branch and focuses its first child.' },
-      { keys: ['Arrow Left'], action: 'Moves focus back to the parent column.' },
-      { keys: ['Enter'], action: 'Selects a leaf and closes, or expands a branch.' },
-      { keys: ['Escape'], action: 'Closes the popover and returns focus to the trigger.' },
-    ],
-    notes: [
-      'The trigger is a combobox with aria-haspopup="listbox"; each column is a labelled listbox.',
-      'Disabled options are exposed with aria-disabled and skipped by keyboard navigation.',
-    ],
-  },
   'checkbox-card': {
     keyboard: [
       { keys: ['Tab'], action: 'Moves focus to and from each card.' },
@@ -964,8 +950,8 @@ export const accessibility = {
   'tree-select': {
     keyboard: [
       { keys: ['Arrow Down', 'Arrow Up'], action: 'Moves focus between visible tree items.' },
-      { keys: ['Arrow Right'], action: 'Expands a branch or moves into its first child.' },
-      { keys: ['Arrow Left'], action: 'Collapses a branch or moves to its parent.' },
+      { keys: ['Arrow Right'], action: 'Expands a branch or moves into its first child; in columns display, expands the highlighted branch.' },
+      { keys: ['Arrow Left'], action: 'Collapses a branch or moves to its parent; in columns display, moves focus back to the parent column.' },
       { keys: ['Home', 'End'], action: 'Moves focus to the first or last visible item.' },
       { keys: ['Enter'], action: 'Selects a leaf or toggles a branch.' },
       { keys: ['Character keys'], action: 'Typeahead moves focus to the next matching visible item.' },
@@ -973,6 +959,7 @@ export const accessibility = {
     ],
     notes: [
       'The trigger is a combobox with aria-haspopup="tree"; options follow the tree/treeitem roles with aria-expanded and aria-selected.',
+      'With display="columns" the trigger uses aria-haspopup="listbox" and each level is a labelled listbox that commits the full path of values.',
       'The selected value\'s ancestors are expanded automatically so the selection is visible on open.',
     ],
   },

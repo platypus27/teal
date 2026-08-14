@@ -1356,52 +1356,6 @@ export const moduleGroups = [
 					],
 				},
 				{
-					id: "cascader",
-					name: "Cascader",
-					apiNames: ["Cascader"],
-					description:
-						"A multi-level option picker that walks a hierarchy column by column and commits the full path of values.",
-					usage: `<Cascader
-  label="Owning team"
-  placeholder="Pick a team…"
-  options={[
-    { value: 'engineering', label: 'Engineering', children: [{ value: 'frontend', label: 'Frontend' }] },
-    { value: 'operations', label: 'Operations' },
-  ]}
-  onValueChange={(path) => undefined}
-/>`,
-					anatomy: [
-						{ part: "Trigger", description: "A combobox-styled button that shows the joined labels of the committed path." },
-						{ part: "Column", description: "One labelled listbox per hierarchy level; a new column opens for the highlighted branch." },
-						{ part: "Branch option", description: "An option with children, marked with a chevron; it only expands, never commits." },
-						{ part: "Leaf option", description: "A terminal option that commits the full path of values and closes the popover." },
-					],
-					dosDonts: {
-						dos: [
-							"Keep hierarchies to three or four levels so columns stay scannable.",
-							"Show the full committed path in the trigger so the choice stays unambiguous.",
-							"Use it for strict taxonomies such as departments, categories, or locations.",
-						],
-						donts: [
-							"Don't use it for flat option lists; Select or Combobox is simpler.",
-							"Don't use it when parents should be selectable; use TreeSelect instead.",
-						],
-					},
-					related: ["tree-select", "select", "combobox"],
-					examples: [
-						{
-							title: "Basic cascader",
-							description:
-								"The popover opens one column per level; choosing a leaf commits the path and shows the joined labels.",
-						},
-						{
-							title: "Controlled path",
-							description:
-								"A controlled value preselects a path and reports every new selection as an array of values.",
-						},
-					],
-				},
-				{
 					id: "checkbox-card",
 					name: "Checkbox Card",
 					apiNames: ["CheckboxCard"],
@@ -2051,7 +2005,7 @@ export const moduleGroups = [
 					name: "Tree Select",
 					apiNames: ["TreeSelect"],
 					description:
-						"A single-select control whose popover shows an expandable, typeahead-enabled tree of options.",
+						"A single-select control whose popover shows an expandable, typeahead-enabled tree of options; display=\"columns\" walks the hierarchy one column per level.",
 					usage: `<TreeSelect
   label="Office"
   options={[
@@ -2074,10 +2028,10 @@ export const moduleGroups = [
 						],
 						donts: [
 							"Don't use it for flat or small option sets; use Select.",
-							"Don't make branch nodes selectable; use Cascader's columns if drilling should scan faster.",
+							"Don't make branch nodes selectable; set display=\"columns\" if drilling should scan faster.",
 						],
 					},
-					related: ["cascader", "select", "tree-view"],
+					related: ["select", "tree-view"],
 					examples: [
 						{
 							title: "Basic tree select",
@@ -2088,6 +2042,11 @@ export const moduleGroups = [
 							title: "Controlled with pre-expanded branches",
 							description:
 								"A controlled value is revealed and highlighted on open; disabled nodes stay visible but cannot be chosen.",
+						},
+						{
+							title: "Columns display",
+							description:
+								"display=\"columns\" renders one labelled column per level; choosing a leaf commits the full path of values.",
 						},
 					],
 				},
@@ -9146,16 +9105,6 @@ const guidanceById = {
 		responsive:
 			"The field stretches to fill its container and re-measures on every change, so wrapping text still fits.",
 	},
-	cascader: {
-		useWhen:
-			"The user must pick one leaf from a deep, strictly hierarchical taxonomy such as departments, categories, or locations.",
-		avoidWhen:
-			"Options are flat — use Select or Combobox instead; if parents should be selectable, use TreeSelect.",
-		behavior:
-			"Only leaf options commit; onValueChange receives the full path of values from root to leaf, and the trigger shows the joined labels.",
-		responsive:
-			"Columns keep a fixed width and the popover scrolls horizontally when the hierarchy outgrows narrow screens.",
-	},
 	"checkbox-card": {
 		useWhen:
 			"An on/off choice needs a description or icon to be understood, such as notification channels or feature opt-ins.",
@@ -9304,7 +9253,7 @@ const guidanceById = {
 		useWhen:
 			"Users pick one value from a hierarchy where intermediate grouping helps orientation, such as regions, folders, or org units.",
 		avoidWhen:
-			"The option set is flat or small — use Select; if the user needs to drill through many levels, Cascader's columns scan faster.",
+			"The option set is flat or small — use Select; if the user needs to drill through many levels, display=\"columns\" scans faster.",
 		behavior:
 			"Branch nodes only expand or collapse; leaf nodes commit a single value, close the popover, and render their label in the trigger.",
 		responsive:

@@ -208,8 +208,6 @@ export type { SpeedDialProps, SpeedDialActionProps } from './SpeedDial'
 
 export { AutosizeTextarea } from './AutosizeTextarea'
 export type { AutosizeTextareaProps } from './AutosizeTextarea'
-export { Cascader } from './Cascader'
-export type { CascaderOption, CascaderProps } from './Cascader'
 export { CheckboxCard } from './CheckboxCard'
 export type { CheckboxCardProps } from './CheckboxCard'
 export { CurrencyInput } from './CurrencyInput'

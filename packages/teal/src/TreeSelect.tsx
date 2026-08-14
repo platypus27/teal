@@ -27,24 +27,26 @@ export interface TreeSelectProps {
   className?: string
   /** Initially expanded branch values when uncontrolled. */
   defaultExpandedValues?: string[]
-  /** Initial selected value when uncontrolled. */
-  defaultValue?: string
+  /** Initial selection when uncontrolled: a leaf value in tree display, a path of values in columns display. */
+  defaultValue?: string | string[]
   /** Supporting text rendered below the control. */
   description?: ReactNode
   /** Prevents interaction with the control. */
   disabled?: boolean
+  /** Popover layout: an expandable tree, or one column per level. */
+  display?: 'tree' | 'columns'
   /** Visible label rendered above the control. Required outside a Field; inside a Field the Field's label is used. */
   label?: ReactNode
-  /** Called with the value of the chosen leaf node. */
-  onValueChange?: (value: string) => void
+  /** Called with the chosen leaf value (tree display) or the full path from root to leaf (columns display). */
+  onValueChange?: (value: string | string[]) => void
   /** Tree of options rendered in the popover; only leaf nodes are selectable. */
   options: TreeSelectNode[]
   /** Text shown when nothing is selected. */
   placeholder?: string
   /** Marks the control as required. */
   required?: boolean
-  /** Controlled selected value. */
-  value?: string
+  /** Controlled selection: a leaf value in tree display, a path of values in columns display. */
+  value?: string | string[]
 }
 
 interface FlatNode {
@@ -58,6 +60,14 @@ interface FlatNode {
 
 function isBranch(node: TreeSelectNode) {
   return (node.children?.length ?? 0) > 0
+}
+
+function optionKey(depth: number, value: string) {
+  return `${depth}:${value}`
+}
+
+function firstEnabled(nodes: TreeSelectNode[]) {
+  return nodes.find((node) => !node.disabled)
 }
 
 function findNode(nodes: TreeSelectNode[], value: string): TreeSelectNode | undefined {
@@ -80,8 +90,9 @@ function ancestorValues(nodes: TreeSelectNode[], value: string, trail: string[] 
 }
 
 /**
- * Single-select control whose popover shows an expandable tree of options.
- * Branch nodes expand and collapse; leaf nodes commit the selection.
+ * Single-select control whose popover shows an expandable tree of options, or —
+ * with display="columns" — one column per level. Branch nodes expand; leaf nodes
+ * commit a single value in tree display, the full path in columns display.
  */
 export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function TreeSelect(
   {
@@ -93,6 +104,7 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
     defaultValue,
     description,
     disabled = false,
+    display = 'tree',
     id,
     label,
     onValueChange,
@@ -108,15 +120,20 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
   const showDescription = hasFormContent(description)
   const labelId = `${semantics.controlId}-label`
   const treeId = `${semantics.controlId}-tree`
+  const listboxId = `${semantics.controlId}-listbox`
 
-  const [internalValue, setInternalValue] = useState<string | undefined>(defaultValue)
+  const [internalValue, setInternalValue] = useState<string | string[] | undefined>(defaultValue)
   const selectedValue = value !== undefined ? value : internalValue
+  const selectedTreeValue = typeof selectedValue === 'string' ? selectedValue : undefined
+  const selectedPath = Array.isArray(selectedValue) ? selectedValue : []
   const [open, setOpen] = useState(false)
   const [expandedValues, setExpandedValues] = useState<string[]>(defaultExpandedValues ?? [])
   const [activeValue, setActiveValue] = useState<string | undefined>(undefined)
+  const [activePath, setActivePath] = useState<string[]>([])
 
   const triggerRef = useRef<HTMLDivElement | null>(null)
   const nodeRefs = useRef(new Map<string, HTMLButtonElement>())
+  const optionRefs = useRef(new Map<string, HTMLDivElement>())
   const pendingFocus = useRef<string | null>(null)
   const typeahead = useRef('')
   const typeaheadTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
@@ -128,7 +145,8 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
     // Radix moves focus into the popover content on keyboard open; defer so the
     // roving focus lands after that effect has run.
     setTimeout(() => {
-      nodeRefs.current.get(pending)?.focus()
+      const target = nodeRefs.current.get(pending) ?? optionRefs.current.get(pending)
+      target?.focus()
     }, 0)
   })
 
@@ -145,9 +163,28 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
   }
   walk(options, 0, undefined)
 
-  const selectedNode = selectedValue !== undefined ? findNode(options, selectedValue) : undefined
+  const selectedNode = selectedTreeValue !== undefined ? findNode(options, selectedTreeValue) : undefined
 
-  function commit(next: string) {
+  // Columns display: each active branch contributes its children as the next column.
+  const columns: TreeSelectNode[][] = [options]
+  let columnOptions = options
+  for (const segment of activePath) {
+    const branch = columnOptions.find((node) => node.value === segment)
+    if (!branch || !isBranch(branch)) break
+    columns.push(branch.children ?? [])
+    columnOptions = branch.children ?? []
+  }
+
+  const selectedLabels: string[] = []
+  let labelOptions = options
+  for (const segment of selectedPath) {
+    const node = labelOptions.find((candidate) => candidate.value === segment)
+    if (!node) break
+    selectedLabels.push(node.label)
+    labelOptions = node.children ?? []
+  }
+
+  function commit(next: string | string[]) {
     if (value === undefined) setInternalValue(next)
     onValueChange?.(next)
   }
@@ -170,11 +207,23 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
 
   function openPopover() {
     if (disabled) return
-    if (selectedValue !== undefined) {
-      const ancestors = ancestorValues(options, selectedValue)
+    if (display === 'columns') {
+      setActivePath(selectedPath)
+      if (selectedPath.length > 0) {
+        const last = selectedPath[selectedPath.length - 1]
+        if (last !== undefined) focusOption(selectedPath.length - 1, last)
+      } else {
+        const first = firstEnabled(options)
+        if (first) focusOption(0, first.value)
+      }
+      setOpen(true)
+      return
+    }
+    if (selectedTreeValue !== undefined) {
+      const ancestors = ancestorValues(options, selectedTreeValue)
       if (ancestors) setExpandedValues((current) => Array.from(new Set([...current, ...ancestors])))
     }
-    const initial = selectedValue ?? visible[0]?.value
+    const initial = selectedTreeValue ?? visible[0]?.value
     if (initial !== undefined) focusNode(initial)
     setOpen(true)
   }
@@ -187,6 +236,28 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
     commit(nodeValue)
     setOpen(false)
     triggerRef.current?.focus()
+  }
+
+  function selectPath(depth: number, node: TreeSelectNode) {
+    commit([...activePath.slice(0, depth), node.value])
+    setOpen(false)
+    triggerRef.current?.focus()
+  }
+
+  function expandBranch(depth: number, node: TreeSelectNode) {
+    const first = firstEnabled(node.children ?? [])
+    setActivePath(first ? [...activePath.slice(0, depth), node.value, first.value] : [...activePath.slice(0, depth), node.value])
+    if (first) focusOption(depth + 1, first.value)
+  }
+
+  // Focuses an already-rendered column option synchronously; targets that only
+  // appear after the next commit (popover open, expanded branch) are deferred
+  // through pendingFocus so they land after Radix has moved focus.
+  function focusOption(depth: number, value: string) {
+    const key = optionKey(depth, value)
+    const element = optionRefs.current.get(key)
+    if (element) element.focus()
+    else pendingFocus.current = key
   }
 
   function choose(entry: FlatNode) {
@@ -258,6 +329,39 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
     }
   }
 
+  function handleOptionKeyDown(event: KeyboardEvent<HTMLDivElement>, depth: number, node: TreeSelectNode) {
+    const column = columns[depth] ?? []
+    const index = column.findIndex((candidate) => candidate.value === node.value)
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault()
+      const delta = event.key === 'ArrowDown' ? 1 : -1
+      let nextIndex = index + delta
+      while (nextIndex >= 0 && nextIndex < column.length && column[nextIndex]?.disabled) nextIndex += delta
+      const next = column[nextIndex]
+      if (!next) return
+      setActivePath([...activePath.slice(0, depth), next.value])
+      focusOption(depth, next.value)
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault()
+      if (isBranch(node) && !node.disabled) expandBranch(depth, node)
+    } else if (event.key === 'ArrowLeft') {
+      event.preventDefault()
+      if (depth === 0) return
+      const parentValue = activePath[depth - 1]
+      if (parentValue === undefined) return
+      setActivePath(activePath.slice(0, depth))
+      focusOption(depth - 1, parentValue)
+    } else if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      if (node.disabled) return
+      if (isBranch(node)) expandBranch(depth, node)
+      else selectPath(depth, node)
+    } else if (event.key === 'Escape') {
+      event.preventDefault()
+      closePopover()
+    }
+  }
+
   return (
     <div className={cn('teal-u-grid teal-u-gap-1.5', className)}>
       {showLabel ? (
@@ -280,8 +384,8 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
               id={semantics.controlId}
               tabIndex={disabled ? -1 : 0}
               aria-expanded={open}
-              aria-controls={treeId}
-              aria-haspopup="tree"
+              aria-controls={display === 'columns' ? listboxId : treeId}
+              aria-haspopup={display === 'columns' ? 'listbox' : 'tree'}
               aria-labelledby={showLabel ? labelId : undefined}
               aria-label={ariaLabel}
               aria-describedby={mergeDescriptionIds(describedBy, showDescription ? semantics.descriptionId : undefined)}
@@ -297,7 +401,13 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
               }}
               onKeyDown={handleControlKeyDown}
             >
-              {selectedNode ? (
+              {display === 'columns' ? (
+                selectedLabels.length === 0 ? (
+                  <span className="teal-u-text-on-surface-variant">{placeholder}</span>
+                ) : (
+                  <span className="teal-u-truncate">{selectedLabels.join(' / ')}</span>
+                )
+              ) : selectedNode ? (
                 <span className="teal-u-truncate">{selectedNode.label}</span>
               ) : (
                 <span className="teal-u-text-on-surface-variant">{placeholder}</span>
@@ -314,11 +424,71 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
             align="start"
             side="bottom"
             sideOffset={6}
-            className="teal-popper-content teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-w-[var(--radix-popover-trigger-width)] teal-u-border teal-u-bg-surface teal-u-p-1 teal-u-text-on-surface teal-u-outline-none"
+            className={cn(
+              'teal-popper-content teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-border teal-u-bg-surface teal-u-p-1 teal-u-text-on-surface teal-u-outline-none',
+              display === 'tree' && 'teal-u-w-[var(--radix-popover-trigger-width)]',
+            )}
           >
-            <ul role="tree" id={treeId} aria-label={ariaLabel} aria-labelledby={showLabel ? labelId : undefined} className="teal-u-max-h-60 teal-u-overflow-y-auto">
-              {options.map((node) => renderNode(node, 0, undefined))}
-            </ul>
+            {display === 'columns' ? (
+              <div className="teal-u-flex">
+                {columns.map((column, depth) => (
+                  <div
+                    key={depth}
+                    role="listbox"
+                    id={depth === 0 ? listboxId : undefined}
+                    aria-label={`Level ${depth + 1}`}
+                    className={cn(
+                      'teal-u-flex teal-u-max-h-60 teal-u-w-44 teal-u-flex-col teal-u-overflow-y-auto teal-u-p-0.5',
+                      depth > 0 && 'teal-u-border-0 teal-u-border-l teal-u-border-solid teal-u-border-outline-variant/30',
+                    )}
+                  >
+                    {column.map((node) => {
+                      const isSelected = selectedPath[depth] === node.value
+                      const isActive = activePath[depth] === node.value
+                      return (
+                        <div
+                          key={node.value}
+                          ref={(element) => {
+                            if (element) optionRefs.current.set(optionKey(depth, node.value), element)
+                            else optionRefs.current.delete(optionKey(depth, node.value))
+                          }}
+                          role="option"
+                          aria-selected={isSelected}
+                          aria-disabled={node.disabled || undefined}
+                          tabIndex={-1}
+                          className={cn(
+                            'teal-focus-ring teal-u-relative teal-u-flex teal-u-min-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-rounded-lg teal-u-py-2 teal-u-pl-3 teal-u-pr-8 teal-u-text-sm teal-u-text-on-surface hover:teal-u-bg-surface-container-high aria-[disabled=true]:teal-u-pointer-events-none aria-[disabled=true]:teal-u-opacity-45',
+                            isActive && 'teal-u-bg-surface-container-high',
+                            isSelected && 'teal-u-font-semibold teal-u-text-primary',
+                          )}
+                          onClick={() => {
+                            if (node.disabled) return
+                            if (isBranch(node)) expandBranch(depth, node)
+                            else selectPath(depth, node)
+                          }}
+                          onKeyDown={(event) => handleOptionKeyDown(event, depth, node)}
+                        >
+                          <span className="teal-u-truncate">{node.label}</span>
+                          {isBranch(node) ? (
+                            <ChevronRight
+                              aria-hidden="true"
+                              className="teal-u-absolute teal-u-right-2 teal-u-size-[var(--teal-icon-sm)] teal-u-text-on-surface-variant"
+                            />
+                          ) : null}
+                          {!isBranch(node) && isSelected ? (
+                            <Check aria-hidden="true" className="teal-u-absolute teal-u-right-2 teal-u-size-[var(--teal-icon-sm)]" />
+                          ) : null}
+                        </div>
+                      )
+                    })}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <ul role="tree" id={treeId} aria-label={ariaLabel} aria-labelledby={showLabel ? labelId : undefined} className="teal-u-max-h-60 teal-u-overflow-y-auto">
+                {options.map((node) => renderNode(node, 0, undefined))}
+              </ul>
+            )}
           </PopoverPrimitive.Content>
         </PopoverPrimitive.Portal>
       </PopoverPrimitive.Root>
@@ -333,7 +503,7 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
   function renderNode(node: TreeSelectNode, depth: number, parentValue: string | undefined): ReactNode {
     const hasChildren = isBranch(node)
     const isExpanded = hasChildren && expandedSet.has(node.value)
-    const isSelected = node.value === selectedValue
+    const isSelected = node.value === selectedTreeValue
     const entry: FlatNode = {
       depth,
       disabled: node.disabled ?? false,
