@@ -44,6 +44,15 @@ describe('ActionBar', () => {
     expect(region.className).toContain('teal-u-bottom-0')
   })
 
+  it('rounds the bottom corners when position="bottom"', () => {
+    const { rerender } = render(<ActionBar position="bottom">content</ActionBar>)
+
+    expect(screen.getByRole('region').className).toContain('teal-u-rounded-b-2xl')
+
+    rerender(<ActionBar position="top">content</ActionBar>)
+    expect(screen.getByRole('region').className).not.toContain('teal-u-rounded-b-2xl')
+  })
+
   it('forwards clicks on child actions', async () => {
     const user = userEvent.setup()
     const onSave = vi.fn()
