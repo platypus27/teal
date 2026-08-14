@@ -1,5 +1,6 @@
 import { forwardRef, useState, type ChangeEvent, type ReactNode } from 'react'
-import { ChevronDown } from 'lucide-react'
+import * as SelectPrimitive from '@radix-ui/react-select'
+import { Check, ChevronDown } from 'lucide-react'
 import { cn } from './cn'
 import { hasFormContent, isAriaTrue, mergeDescriptionIds, useFormSemantics } from './form-semantics'
 import { fieldVariants } from './Input'
@@ -105,8 +106,8 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(function
     onChange?.(nextNational === '' ? undefined : `+${nextDial}${nextNational}`)
   }
 
-  function handleCountryChange(event: ChangeEvent<HTMLSelectElement>) {
-    commit(event.target.value, national)
+  function handleCountryChange(nextDial: string) {
+    commit(nextDial, national)
   }
 
   function handleNumberChange(event: ChangeEvent<HTMLInputElement>) {
@@ -121,28 +122,50 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(function
         </label>
       ) : null}
       <div className="teal-u-flex teal-u-gap-2">
-        <div className="teal-u-relative teal-u-shrink-0">
-          <select
+        <SelectPrimitive.Root value={dial} onValueChange={handleCountryChange} {...(disabled !== undefined ? { disabled } : {})}>
+          <SelectPrimitive.Trigger
             aria-label="Country calling code"
-            disabled={disabled}
-            value={dial}
-            onChange={handleCountryChange}
             className={cn(
               fieldVariants(),
-              'teal-u-w-auto teal-u-appearance-none teal-u-pr-8',
+              'teal-u-w-auto teal-u-shrink-0 teal-u-flex teal-u-items-center teal-u-justify-between teal-u-gap-2',
             )}
           >
-            {phoneCountries.map((country) => (
-              <option key={country.code} value={country.dial}>
-                {country.label} (+{country.dial})
-              </option>
-            ))}
-          </select>
-          <ChevronDown
-            aria-hidden="true"
-            className="teal-u-pointer-events-none teal-u-absolute teal-u-right-2.5 teal-u-top-1/2 teal-u-size-4 teal-u--translate-y-1/2 teal-u-text-on-surface-variant"
-          />
-        </div>
+            <span className="teal-u-tabular-nums">+{dial}</span>
+            <SelectPrimitive.Icon asChild>
+              <ChevronDown
+                aria-hidden="true"
+                className="teal-u-size-[var(--teal-icon-sm)] teal-u-shrink-0 teal-u-text-on-surface-variant"
+              />
+            </SelectPrimitive.Icon>
+          </SelectPrimitive.Trigger>
+          <SelectPrimitive.Portal>
+            <SelectPrimitive.Content
+              position="popper"
+              sideOffset={6}
+              className="teal-popper-content teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-max-h-[var(--radix-select-content-available-height)] teal-u-min-w-[var(--radix-select-trigger-width)] teal-u-overflow-hidden teal-u-border teal-u-bg-surface teal-u-text-on-surface"
+            >
+              <SelectPrimitive.Viewport className="teal-u-p-1">
+                {phoneCountries.map((country) => (
+                  <SelectPrimitive.Item
+                    key={country.code}
+                    value={country.dial}
+                    textValue={`${country.label} (+${country.dial})`}
+                    className="teal-focus-ring teal-u-relative teal-u-flex teal-u-min-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-rounded-lg teal-u-py-2 teal-u-pl-8 teal-u-pr-3 teal-u-text-sm data-[disabled]:teal-u-pointer-events-none data-[disabled]:teal-u-opacity-45 data-[highlighted]:teal-u-bg-primary/10 data-[highlighted]:teal-u-text-primary"
+                  >
+                    <span className="teal-u-absolute teal-u-left-2 teal-u-flex teal-u-size-[var(--teal-icon-sm)] teal-u-items-center teal-u-justify-center">
+                      <SelectPrimitive.ItemIndicator>
+                        <Check aria-hidden="true" className="teal-u-size-[var(--teal-icon-sm)]" />
+                      </SelectPrimitive.ItemIndicator>
+                    </span>
+                    <SelectPrimitive.ItemText>
+                      {country.label} (+{country.dial})
+                    </SelectPrimitive.ItemText>
+                  </SelectPrimitive.Item>
+                ))}
+              </SelectPrimitive.Viewport>
+            </SelectPrimitive.Content>
+          </SelectPrimitive.Portal>
+        </SelectPrimitive.Root>
         <input
           ref={ref}
           type="tel"

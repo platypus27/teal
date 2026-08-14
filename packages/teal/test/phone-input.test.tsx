@@ -25,7 +25,8 @@ describe('PhoneInput', () => {
     const onChange = vi.fn()
     render(<PhoneInput label="Phone" defaultValue="+14155552671" onChange={onChange} />)
 
-    await user.selectOptions(screen.getByRole('combobox', { name: 'Country calling code' }), '44')
+    await user.click(screen.getByRole('combobox', { name: 'Country calling code' }))
+    await user.click(await screen.findByRole('option', { name: 'United Kingdom (+44)' }))
 
     expect(onChange).toHaveBeenLastCalledWith('+444155552671')
   })
@@ -54,7 +55,18 @@ describe('PhoneInput', () => {
   it('parses the controlled value into country and national number', () => {
     render(<PhoneInput label="Phone" value="+442071234567" onChange={() => {}} />)
 
-    expect(screen.getByRole('combobox', { name: 'Country calling code' })).toHaveValue('44')
+    expect(screen.getByRole('combobox', { name: 'Country calling code' })).toHaveTextContent('+44')
     expect(screen.getByRole('textbox', { name: 'Phone' })).toHaveValue('2071234567')
+  })
+
+  it('renders the country list on the shared popover surface', async () => {
+    const user = userEvent.setup()
+    render(<PhoneInput label="Phone" />)
+
+    await user.click(screen.getByRole('combobox', { name: 'Country calling code' }))
+
+    await screen.findByRole('listbox')
+    expect(document.querySelector('.teal-popper-content.teal-overlay-surface')).not.toBeNull()
+    expect(screen.getByRole('option', { name: 'Germany (+49)' })).toBeInTheDocument()
   })
 })
