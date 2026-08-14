@@ -289,19 +289,6 @@ export const accessibility = {
       'Disabled buttons keep their native semantics and are skipped in the tab order.',
     ],
   },
-  'segmented-control': {
-    keyboard: [
-      { keys: ['Tab'], action: 'Moves focus into and out of the control.' },
-      { keys: ['Arrow Left', 'Arrow Right'], action: 'Moves focus between options with roving tabindex.' },
-      { keys: ['Enter', 'Space'], action: 'Selects the focused option.' },
-    ],
-    notes: [
-      'Built on a single-select toggle group, so the selected option is announced as pressed.',
-      'The required aria-label names the control; there is no visible label, so choose a descriptive one.',
-      'The sliding selection pill is decorative and hidden from assistive technology.',
-      'Disabled options are skipped during keyboard navigation.',
-    ],
-  },
   link: {
     keyboard: [
       { keys: ['Tab'], action: 'Moves focus to and from the link.' },
@@ -933,6 +920,7 @@ export const accessibility = {
     notes: [
       'Single mode exposes radio semantics (aria-checked); multiple mode exposes toggle buttons (aria-pressed).',
       'The group needs an accessible name, usually through aria-label.',
+      'With variant="segmented" the sliding selection pill is decorative and hidden from assistive technology.',
     ],
   },
   'transfer-list': {

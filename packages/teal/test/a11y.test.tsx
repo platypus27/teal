@@ -172,7 +172,6 @@ import {
   SearchInput,
   SearchOverlay,
   Section,
-  SegmentedControl,
   Select,
   Separator,
   ShareButton,
@@ -811,7 +810,9 @@ describe('axe: second catalog expansion', () => {
           <Button variant="secondary">Day</Button>
           <Button variant="secondary">Week</Button>
         </ButtonGroup>
-        <SegmentedControl
+        <ToggleGroup
+          type="single"
+          variant="segmented"
           aria-label="Billing period"
           defaultValue="monthly"
           options={[

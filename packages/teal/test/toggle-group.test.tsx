@@ -100,3 +100,50 @@ describe('ToggleGroup', () => {
     expect(screen.getByRole('radio', { name: 'Right' })).toHaveAttribute('aria-checked', 'false')
   })
 })
+
+describe('ToggleGroup segmented variant', () => {
+  const options = [
+    { value: 'list', label: 'List' },
+    { value: 'board', label: 'Board' },
+    { value: 'timeline', label: 'Timeline', disabled: true },
+  ]
+
+  it('renders the options as a labelled radiogroup', () => {
+    render(<ToggleGroup type="single" variant="segmented" aria-label="Project view" options={options} />)
+
+    expect(screen.getByRole('radiogroup', { name: 'Project view' })).toBeInTheDocument()
+    expect(screen.getAllByRole('radio')).toHaveLength(3)
+    expect(screen.getByRole('radio', { name: 'Timeline' })).toBeDisabled()
+  })
+
+  it('selects the first enabled option by default and renders the sliding pill', () => {
+    const { container } = render(
+      <ToggleGroup type="single" variant="segmented" aria-label="Project view" options={options} />,
+    )
+
+    expect(screen.getByRole('radio', { name: 'List' })).toHaveAttribute('data-state', 'on')
+    expect(container.querySelector('span[aria-hidden="true"]')).toBeInTheDocument()
+  })
+
+  it('moves the selection on click', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    render(
+      <ToggleGroup type="single" variant="segmented" aria-label="Project view" options={options} onValueChange={onValueChange} />,
+    )
+
+    await user.click(screen.getByRole('radio', { name: 'Board' }))
+
+    expect(onValueChange).toHaveBeenCalledWith('board')
+    expect(screen.getByRole('radio', { name: 'Board' })).toHaveAttribute('data-state', 'on')
+  })
+
+  it('honors a controlled value', () => {
+    render(
+      <ToggleGroup type="single" variant="segmented" aria-label="Project view" options={options} value="board" />,
+    )
+
+    expect(screen.getByRole('radio', { name: 'Board' })).toHaveAttribute('data-state', 'on')
+    expect(screen.getByRole('radio', { name: 'List' })).toHaveAttribute('data-state', 'off')
+  })
+})

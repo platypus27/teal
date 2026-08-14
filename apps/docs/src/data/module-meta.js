@@ -84,52 +84,12 @@ export const moduleGroups = [
 						"Don't exceed four buttons; use a Menu for larger sets.",
 					],
 				},
-				related: ["button", "segmented-control", "toolbar"],
+				related: ["button", "toggle-group", "toolbar"],
 				examples: [
 					{
 						title: "Attached actions",
 						description:
 							"Buttons butt together with shared seams; vertical stacks work too.",
-					},
-				],
-			},
-			{
-				id: "segmented-control",
-				name: "Segmented Control",
-				apiNames: ["SegmentedControl"],
-				description:
-					"A mutually exclusive option switcher with a sliding selection pill.",
-				usage: `<SegmentedControl
-  aria-label="Billing period"
-  defaultValue="monthly"
-  options={[
-    { value: 'monthly', label: 'Monthly' },
-    { value: 'yearly', label: 'Yearly' },
-  ]}
-/>`,
-				anatomy: [
-					{ part: "Track", description: "The rounded container holding the options, named by the required aria-label." },
-					{ part: "Option", description: "A toggle item with a label and an optional leading icon." },
-					{ part: "Selection pill", description: "The measured indicator that slides behind the active option and honors reduced motion." },
-				],
-				dosDonts: {
-					dos: [
-						"Use for two to five mutually exclusive options with equal weight.",
-						"Always pass aria-label naming the choice the control makes.",
-						"Keep labels to one or two words so options never wrap.",
-					],
-					donts: [
-						"Don't use for navigation between views; use Tabs.",
-						"Don't use for independent on/off flags; use Toggle or Checkbox.",
-						"Don't crowd in long option lists; use a Select instead.",
-					],
-				},
-				related: ["tabs", "toggle-group", "radio-group"],
-				examples: [
-					{
-						title: "View switcher",
-						description:
-							"A measured pill slides behind the active option, honoring reduced motion.",
 					},
 				],
 			},
@@ -591,7 +551,7 @@ export const moduleGroups = [
 						"Keep option labels short so the trigger stays on one line.",
 					],
 					donts: [
-						"Don't use Select for two or three options; use RadioGroup or SegmentedControl.",
+						"Don't use Select for two or three options; use RadioGroup or ToggleGroup.",
 						"Don't use it when typing should filter a long list; use Combobox.",
 						"Don't hide critical context in the placeholder; it disappears once a value is chosen.",
 					],
@@ -721,7 +681,7 @@ export const moduleGroups = [
 						"Don't switch to horizontal orientation when labels would wrap.",
 					],
 				},
-				related: ["radio-card", "select", "checkbox", "segmented-control"],
+				related: ["radio-card", "select", "checkbox", "toggle-group"],
 				examples: [
 					{
 						title: "Single choice",
@@ -1918,7 +1878,7 @@ export const moduleGroups = [
 					name: "Toggle Group",
 					apiNames: ["ToggleGroup", "ToggleGroupItem"],
 					description:
-						"A cluster of Toggle-styled options with roving focus, in mutually exclusive single mode or independent multiple mode.",
+						"A cluster of Toggle-styled options with roving focus, in mutually exclusive single mode or independent multiple mode; variant=\"segmented\" renders an options array with a sliding selection pill.",
 					usage: `<ToggleGroup type="single" defaultValue="left" aria-label="Text alignment">
   <ToggleGroupItem value="left">Left</ToggleGroupItem>
   <ToggleGroupItem value="center">Center</ToggleGroupItem>
@@ -1940,7 +1900,7 @@ export const moduleGroups = [
 							"Don't use it to submit form choices; it is a control cluster, not a fieldset.",
 						],
 					},
-					related: ["toggle", "segmented-control", "radio-group"],
+					related: ["toggle", "radio-group"],
 					examples: [
 						{
 							title: "Single selection",
@@ -1951,6 +1911,11 @@ export const moduleGroups = [
 							title: "Multiple selection",
 							description:
 								"type=\"multiple\" lets any combination of items stay pressed, plus a compact sm size.",
+						},
+						{
+							title: "Segmented options",
+							description:
+								"variant=\"segmented\" renders an options array on a pill track; a measured pill slides behind the active option.",
 						},
 					],
 				},
@@ -4252,7 +4217,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						"Don't use tabs for a sequential flow; use Steps.",
 					],
 				},
-				related: ["sub-nav", "segmented-control", "accordion"],
+				related: ["sub-nav", "toggle-group", "accordion"],
 				examples: [
 					{
 						title: "Sections",
@@ -8004,12 +7969,6 @@ const additionalExamples = {
 				"Use vertical orientation when the actions stack in a narrow panel.",
 		},
 	],
-	"segmented-control": [
-		{
-			title: "Compact periods",
-			description: "The small size keeps dense toolbars scannable.",
-		},
-	],
 	link: [
 		{
 			title: "Standalone navigation",
@@ -8553,15 +8512,6 @@ const guidanceById = {
 			"Seams collapse to hairlines and only the outer corners keep their radius.",
 		responsive:
 			"Let the cluster wrap or switch to vertical orientation on narrow screens.",
-	},
-	"segmented-control": {
-		useWhen:
-			"Users switch one setting between a few mutually exclusive options.",
-		avoidWhen:
-			"Options navigate to different views; use Tabs, or toggle independent flags with Checkbox.",
-		behavior:
-			"A measured pill slides behind the active option and the group behaves as radiogroup semantics.",
-		responsive: "Keep option labels short so the control never wraps.",
 	},
 	link: {
 		useWhen:
