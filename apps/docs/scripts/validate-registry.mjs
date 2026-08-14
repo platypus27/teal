@@ -48,8 +48,6 @@ const intentionallyUndocumented = new Set([
   'topBarVariants',
   'verticalNavVariants',
   'notificationItemVariants',
-  'bannerVariants',
-  'calloutVariants',
   'containerVariants',
   'sectionVariants',
   'statusDotVariants',
