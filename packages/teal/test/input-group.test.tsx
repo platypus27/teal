@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { render, screen } from '@testing-library/react'
 import { Input } from '../src/Input'
 import { InputAddon, InputGroup } from '../src/InputGroup'
@@ -75,5 +77,18 @@ describe('InputGroup', () => {
     const group = container.firstElementChild
     expect(group?.className).toContain('[&:has(input[aria-invalid=true])]:teal-u-border-error')
     expect(group?.className).toContain('[&:has(input[aria-invalid=true])]:teal-u-shadow-')
+  })
+
+  it('gives the group the same ring, outline and forced-colors treatment as a standalone input', () => {
+    const css = readFileSync(resolve(import.meta.dirname, '../src/styles.css'), 'utf8')
+
+    const rule = /\.teal-input-group:focus-within\s*\{([^}]*)\}/.exec(css)?.[1] ?? ''
+    expect(rule).toContain('box-shadow: var(--teal-focus-ring)')
+    expect(rule).toContain('outline: 2px solid transparent')
+    expect(rule).toContain('outline-offset: 2px')
+
+    const forced = /@media \(forced-colors: active\)\s*\{([\s\S]*?)\n\}/.exec(css)?.[1] ?? ''
+    expect(forced).toContain('.teal-input-group:focus-within')
+    expect(forced).toContain('outline-color: Highlight')
   })
 })
