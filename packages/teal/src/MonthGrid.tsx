@@ -21,8 +21,8 @@ export interface MonthGridProps {
   onKeyDown?: (event: KeyboardEvent<HTMLDivElement>) => void
   onMonthChange: (month: Date) => void
   onSelect: (day: Date) => void
-  /** Range-band state; when set, start/end/in-range days get band classes instead of single-selection styling. */
-  range?: MonthGridRange
+  /** Range-band state; when set, start/end/in-range days render inside a full-width band cell. */
+  range?: MonthGridRange | undefined
   /** Single selected day (ignored when `range` is set). */
   selected?: Date | null
 }
@@ -54,7 +54,10 @@ export function MonthGrid({
           <ChevronRight aria-hidden="true" />
         </IconButton>
       </div>
-      <div className="teal-u-grid teal-u-grid-cols-7 teal-u-justify-items-center" onKeyDown={onKeyDown}>
+      <div
+        className={cn('teal-u-grid teal-u-grid-cols-7', range === undefined && 'teal-u-justify-items-center')}
+        onKeyDown={onKeyDown}
+      >
         {weekdayNames.map((name, index) => (
           <span
             key={index}
@@ -76,6 +79,46 @@ export function MonthGrid({
           const isToday = isSameDay(day, today)
           const isOutsideMonth = day.getMonth() !== month.getMonth()
           const isDisabled = isDayDisabled(day)
+          if (range !== undefined) {
+            const hasBand = isInRange || (isStart && range.to != null) || (isEnd && range.from != null)
+            return (
+              <div
+                key={dateKey(day)}
+                data-date-cell={dateKey(day)}
+                className={cn(
+                  'teal-u-flex teal-u-h-9 teal-u-w-full teal-u-items-center teal-u-justify-center',
+                  hasBand && 'teal-u-bg-primary/10',
+                  isStart && range.to != null && 'teal-u-rounded-l-full',
+                  isEnd && 'teal-u-rounded-r-full',
+                )}
+              >
+                <button
+                  type="button"
+                  {...(keyboard
+                    ? {
+                        'data-date': dateKey(day),
+                        tabIndex: focusedDate != null && isSameDay(day, focusedDate) ? 0 : -1,
+                        onFocus: () => onFocusDay?.(day),
+                      }
+                    : {})}
+                  disabled={isDisabled}
+                  aria-pressed={isStart || isEnd || undefined}
+                  aria-current={isToday ? 'date' : undefined}
+                  onClick={() => onSelect(day)}
+                  className={cn(
+                    'teal-focus-ring teal-u-box-border teal-u-inline-flex teal-u-size-9 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-text-sm hover:teal-u-bg-surface-container-high disabled:teal-u-pointer-events-none disabled:teal-u-opacity-40',
+                    !isStart && !isEnd && 'teal-u-text-on-surface',
+                    isOutsideMonth && 'teal-u-text-on-surface-variant/50',
+                    isToday && 'teal-u-border teal-u-border-solid teal-u-border-primary',
+                    (isStart || isEnd) &&
+                      'teal-u-bg-primary teal-u-font-semibold teal-u-text-on-primary hover:teal-u-bg-primary/90',
+                  )}
+                >
+                  {day.getDate()}
+                </button>
+              </div>
+            )
+          }
           return (
             <button
               key={dateKey(day)}
@@ -96,7 +139,6 @@ export function MonthGrid({
                 !isSelected && !isStart && !isEnd && 'teal-u-text-on-surface',
                 isOutsideMonth && 'teal-u-text-on-surface-variant/50',
                 isToday && 'teal-u-border teal-u-border-solid teal-u-border-primary',
-                isInRange && 'teal-u-rounded-none teal-u-bg-primary/10',
                 (isSelected || isStart || isEnd) &&
                   'teal-u-bg-primary teal-u-font-semibold teal-u-text-on-primary hover:teal-u-bg-primary/90',
               )}

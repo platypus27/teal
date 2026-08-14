@@ -31,7 +31,7 @@ import {
   Checkbox,
   ColorPicker,
   CopyButton,
-  DateRangePicker,
+  DatePicker,
   Dialog,
   Editable,
   EmptyState,
@@ -198,7 +198,7 @@ function FormsSection() {
             <Input aria-label="Workspace domain" placeholder="kryv.example" />
           </InputGroup>
         </Field>
-        <DateRangePicker label="Report period" onChange={() => undefined} />
+        <DatePicker label="Report period" selection="range" onValueChange={() => undefined} />
       </div>
       <div className="grid content-start gap-6">
         <div className="grid gap-4">

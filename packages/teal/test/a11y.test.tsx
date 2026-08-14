@@ -64,8 +64,6 @@ import {
   CurrencyInput,
   DataTable,
   DatePicker,
-  DateRangePicker,
-  DateTimePicker,
   DescriptionList,
   Dialog,
   DiffViewer,
@@ -128,7 +126,6 @@ import {
   Menu,
   MentionInput,
   Meter,
-  MonthPicker,
   MultiSelect,
   NavigationMenu,
   NavRail,
@@ -241,7 +238,6 @@ import {
   VerticalNavSection,
   VirtualList,
   VisuallyHidden,
-  YearPicker,
   type SearchOverlayRenderState,
   dismissToast,
   toast,
@@ -979,7 +975,7 @@ describe('axe: fourth catalog expansion', () => {
         <Editable label="Project name" defaultValue="Orion" />
         <TimePicker label="Start time" defaultValue="09:30" />
         <TimePicker label="Reminder time" hourCycle={12} defaultValue="18:45" />
-        <DateRangePicker label="Report period" />
+        <DatePicker label="Report period" selection="range" />
         <ColorPicker label="Brand color" defaultValue="#006a6c" />
       </>,
     )
@@ -1291,9 +1287,9 @@ describe('axe: fifth catalog expansion', () => {
     const { baseElement } = render(
       <>
         <RichTextEditor label="Body" defaultValue={'## Draft\n\nhello world'} />
-        <DateTimePicker label="Starts at" defaultValue={new Date(2024, 0, 15, 9, 30)} />
-        <MonthPicker label="Billing month" defaultValue={new Date(2024, 5, 1)} />
-        <YearPicker label="Graduation year" defaultValue={new Date(2024, 0, 1)} />
+        <DatePicker label="Starts at" mode="datetime" defaultValue={new Date(2024, 0, 15, 9, 30)} />
+        <DatePicker label="Billing month" mode="month" defaultValue={new Date(2024, 5, 1)} />
+        <DatePicker label="Graduation year" mode="year" defaultValue={new Date(2024, 0, 1)} />
       </>,
     )
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()

@@ -4,6 +4,10 @@ import { DatePicker } from '@kryv/teal'
 export function DatePickerDemo({ exampleIndex = 0 }) {
   const [dueDate, setDueDate] = useState(/** @type {Date | undefined} */ (undefined))
   const [sprintStart, setSprintStart] = useState(new Date())
+  const [month, setMonth] = useState(new Date())
+  const [year, setYear] = useState(new Date())
+  const [startsAt, setStartsAt] = useState(new Date())
+  const [range, setRange] = useState(/** @type {{ from: Date | null, to: Date | null } | undefined} */ (undefined))
 
   if (exampleIndex === 1) {
     const quarterStart = new Date()
@@ -19,6 +23,62 @@ export function DatePickerDemo({ exampleIndex = 0 }) {
           onValueChange={setSprintStart}
           minDate={quarterStart}
           maxDate={quarterEnd}
+        />
+      </div>
+    )
+  }
+
+  if (exampleIndex === 2) {
+    return (
+      <div className="w-full max-w-xs">
+        <DatePicker
+          label="Billing month"
+          mode="month"
+          description="Commits the first of the chosen month"
+          value={month}
+          onValueChange={setMonth}
+        />
+      </div>
+    )
+  }
+
+  if (exampleIndex === 3) {
+    return (
+      <div className="w-full max-w-xs">
+        <DatePicker
+          label="Graduation year"
+          mode="year"
+          description="Commits January 1 of the chosen year"
+          value={year}
+          onValueChange={setYear}
+        />
+      </div>
+    )
+  }
+
+  if (exampleIndex === 4) {
+    return (
+      <div className="w-full max-w-xs">
+        <DatePicker
+          label="Starts at"
+          mode="datetime"
+          description="Day and time in one popover"
+          value={startsAt}
+          onValueChange={setStartsAt}
+        />
+      </div>
+    )
+  }
+
+  if (exampleIndex === 5) {
+    return (
+      <div className="w-full max-w-xs">
+        <DatePicker
+          label="Report period"
+          selection="range"
+          description="Two clicks pick the start and end; presets fill common windows"
+          value={range}
+          onValueChange={setRange}
         />
       </div>
     )
