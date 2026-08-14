@@ -1,6 +1,15 @@
-import { Button, ButtonGroup } from '@kryv/teal'
+import { useState } from 'react'
+import { Button, ButtonGroup, Toggle } from '@kryv/teal'
+
+const rangeOptions = [
+  { id: 'day', label: 'Day' },
+  { id: 'week', label: 'Week' },
+  { id: 'month', label: 'Month' },
+]
 
 export function ButtonGroupDemo({ exampleIndex = 0 }) {
+  const [range, setRange] = useState('week')
+
   if (exampleIndex === 1) {
     return (
       <ButtonGroup orientation="vertical">
@@ -12,10 +21,22 @@ export function ButtonGroupDemo({ exampleIndex = 0 }) {
   }
 
   return (
-    <ButtonGroup>
-      <Button variant="secondary">Day</Button>
-      <Button variant="secondary">Week</Button>
-      <Button variant="secondary">Month</Button>
-    </ButtonGroup>
+    <div className="flex flex-col items-start gap-2">
+      <ButtonGroup aria-label="Date range">
+        {rangeOptions.map((option) => (
+          <Toggle
+            key={option.id}
+            pressed={range === option.id}
+            onPressedChange={() => setRange(option.id)}
+          >
+            {option.label}
+          </Toggle>
+        ))}
+      </ButtonGroup>
+      <p className="text-sm text-teal-on-surface-variant">
+        The selected option pops with an accent fill. For single-select toolbars with a sliding
+        indicator, see SegmentedControl.
+      </p>
+    </div>
   )
 }

@@ -56,4 +56,23 @@ describe('ButtonGroup', () => {
     )
     expect(screen.getByRole('group').className).toContain('custom-class')
   })
+
+  it('gives pressed or toggled-on buttons an elevated accent treatment', () => {
+    render(
+      <ButtonGroup>
+        <Button variant="secondary" aria-pressed="true">
+          Day
+        </Button>
+        <Button variant="secondary">Week</Button>
+      </ButtonGroup>,
+    )
+
+    const group = screen.getByRole('group')
+    expect(group.className).toContain('[&_button[aria-pressed=true]]:teal-u-relative')
+    expect(group.className).toContain('[&_button[aria-pressed=true]]:teal-u-z-10')
+    expect(group.className).toContain('[&_button[aria-pressed=true]]:teal-u-border-primary/30')
+    expect(group.className).toContain('[&_button[aria-pressed=true]]:teal-u-bg-primary/10')
+    expect(group.className).toContain('[&_button[aria-pressed=true]]:teal-u-text-primary')
+    expect(group.className).toContain('[&_button[data-state=on]]:teal-u-bg-primary/10')
+  })
 })
