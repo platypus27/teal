@@ -117,3 +117,69 @@ describe('TreeSelect', () => {
     expect(backend).toHaveAttribute('aria-selected', 'true')
   })
 })
+
+describe('TreeSelect columns display', () => {
+  const options = [
+    {
+      value: 'engineering',
+      label: 'Engineering',
+      children: [
+        { value: 'frontend', label: 'Frontend' },
+        { value: 'backend', label: 'Backend' },
+      ],
+    },
+    { value: 'ops', label: 'Operations' },
+  ]
+
+  it('opens columns on click and commits the full path when a leaf is chosen', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    render(<TreeSelect label="Team" display="columns" options={options} onValueChange={onValueChange} />)
+
+    await user.click(screen.getByRole('combobox', { name: 'Team' }))
+
+    expect(await screen.findAllByRole('listbox')).toHaveLength(1)
+    await user.click(screen.getByRole('option', { name: /Engineering/ }))
+    expect(await screen.findAllByRole('listbox')).toHaveLength(2)
+
+    await user.click(screen.getByRole('option', { name: 'Backend' }))
+    expect(onValueChange).toHaveBeenCalledWith(['engineering', 'backend'])
+    expect(screen.getByRole('combobox', { name: 'Team' })).toHaveTextContent('Engineering / Backend')
+  })
+
+  it('selects a root-level leaf in one step', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    render(<TreeSelect label="Team" display="columns" options={options} onValueChange={onValueChange} />)
+    await user.click(screen.getByRole('combobox', { name: 'Team' }))
+
+    await user.click(await screen.findByRole('option', { name: 'Operations' }))
+
+    expect(onValueChange).toHaveBeenCalledWith(['ops'])
+  })
+
+  it('moves back to the parent column with ArrowLeft and shows the controlled path', async () => {
+    const user = userEvent.setup()
+    render(<TreeSelect label="Team" display="columns" options={options} value={['engineering', 'backend']} />)
+    const control = screen.getByRole('combobox', { name: 'Team' })
+    await user.click(control)
+
+    const backend = await screen.findByRole('option', { name: 'Backend' })
+    expect(backend).toHaveAttribute('aria-selected', 'true')
+    fireEvent.keyDown(backend, { key: 'ArrowLeft' })
+    expect(screen.getByRole('option', { name: /Engineering/ })).toHaveFocus()
+  })
+
+  it('closes on Escape and returns focus to the trigger', async () => {
+    const user = userEvent.setup()
+    render(<TreeSelect label="Team" display="columns" options={options} />)
+    const control = screen.getByRole('combobox', { name: 'Team' })
+    await user.click(control)
+    await screen.findAllByRole('listbox')
+
+    fireEvent.keyDown(document.activeElement!, { key: 'Escape' })
+
+    expect(control).toHaveAttribute('aria-expanded', 'false')
+    expect(control).toHaveFocus()
+  })
+})

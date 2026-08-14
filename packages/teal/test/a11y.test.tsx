@@ -43,7 +43,6 @@ import {
   CardHeader,
   CardTitle,
   Carousel,
-  Cascader,
   Center,
   ChartContainer,
   Checkbox,
@@ -1236,7 +1235,8 @@ describe('axe: fifth catalog expansion', () => {
   it('new selection controls have no violations', async () => {
     const { baseElement } = render(
       <>
-        <Cascader
+        <TreeSelect
+          display="columns"
           label="Team"
           placeholder="Pick a team"
           options={[
