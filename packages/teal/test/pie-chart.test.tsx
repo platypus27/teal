@@ -78,4 +78,15 @@ describe('PieChart', () => {
     expect(screen.getByRole('columnheader', { name: 'Share' })).toBeInTheDocument()
     expect(screen.getByRole('cell', { name: '30%' })).toBeInTheDocument()
   })
+
+  it('renders percentage labels without a halo stroke', () => {
+    const { container } = render(<PieChart label="Traffic by device" data={data} />)
+
+    const label = Array.from(container.querySelectorAll('svg text')).find((node) => node.textContent === '50%')
+    expect(label).toBeDefined()
+    expect(label).not.toHaveAttribute('stroke')
+    expect(label).not.toHaveAttribute('stroke-width')
+    expect(label).not.toHaveAttribute('paint-order')
+    expect(label).toHaveAttribute('fill', 'var(--teal-color-on-surface)')
+  })
 })

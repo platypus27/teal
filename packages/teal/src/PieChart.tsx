@@ -143,9 +143,6 @@ export const PieChart = forwardRef<HTMLDivElement, PieChartProps>(function PieCh
                 dominantBaseline="central"
                 fontSize={11}
                 fill="var(--teal-color-on-surface)"
-                stroke="var(--teal-color-surface)"
-                strokeWidth={3}
-                paintOrder="stroke"
                 aria-hidden="true"
               >
                 {percent}%
