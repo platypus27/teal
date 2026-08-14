@@ -1,9 +1,9 @@
 import { type ReactElement } from 'react'
 import * as ContextMenuPrimitive from '@radix-ui/react-context-menu'
 import { cn } from './cn'
-import { type MenuItem } from './Menu'
+import { MenuItems, type MenuItem } from './menu-items'
 
-export type { MenuItem as ContextMenuItem }
+export type { MenuItem as ContextMenuItem } from './menu-items'
 
 export interface ContextMenuProps {
   /** Element the menu is attached to; opens on right-click and receives trigger props automatically. */
@@ -27,22 +27,7 @@ export function ContextMenu({ children, className, items, label }: ContextMenuPr
             className,
           )}
         >
-          {items.map((item) => (
-            <div key={item.id}>
-              {item.separatorBefore ? <ContextMenuPrimitive.Separator className="teal-u-my-1 teal-u-h-px teal-u-bg-outline-variant/30" /> : null}
-              <ContextMenuPrimitive.Item
-                onSelect={item.onSelect}
-                {...(item.disabled !== undefined ? { disabled: item.disabled } : {})}
-                className={cn(
-                  'teal-focus-ring teal-u-flex teal-u-min-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-gap-2 teal-u-rounded-lg teal-u-px-3 teal-u-py-2 teal-u-text-sm data-[disabled]:teal-u-pointer-events-none data-[disabled]:teal-u-opacity-45 data-[highlighted]:teal-u-bg-surface-container-high',
-                  item.variant === 'danger' ? 'teal-u-text-error data-[highlighted]:teal-u-bg-error/10' : 'teal-u-text-on-surface',
-                )}
-              >
-                {item.icon ? <span className="teal-u-shrink-0 [&_svg]:teal-u-size-[var(--teal-icon-sm)]">{item.icon}</span> : null}
-                {item.label}
-              </ContextMenuPrimitive.Item>
-            </div>
-          ))}
+          <MenuItems items={items} Item={ContextMenuPrimitive.Item} Separator={ContextMenuPrimitive.Separator} />
         </ContextMenuPrimitive.Content>
       </ContextMenuPrimitive.Portal>
     </ContextMenuPrimitive.Root>
