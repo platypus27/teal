@@ -24,7 +24,7 @@ describe('GaugeChart', () => {
     expect(screen.getByText('10')).toBeInTheDocument()
   })
 
-  it('draws one zone arc per threshold plus the value arc', () => {
+  it('draws a track, one zone arc per threshold, and the value arc', () => {
     const { container } = render(
       <GaugeChart
         aria-label="gauge"
@@ -33,7 +33,7 @@ describe('GaugeChart', () => {
       />,
     )
 
-    expect(container.querySelectorAll('path')).toHaveLength(4)
+    expect(container.querySelectorAll('path')).toHaveLength(5)
   })
 
   it('draws a track and a value arc without thresholds', () => {
@@ -54,5 +54,29 @@ describe('GaugeChart', () => {
     const { container } = render(<GaugeChart aria-label="gauge" value={0} />)
 
     expect(container.querySelectorAll('path')).toHaveLength(1)
+  })
+
+  it('draws full-opacity zones with rounded caps over a track', () => {
+    const { container } = render(
+      <GaugeChart
+        aria-label="gauge"
+        value={70}
+        thresholds={[{ upTo: 50 }, { upTo: 80 }, { upTo: 100 }]}
+      />,
+    )
+
+    const paths = Array.from(container.querySelectorAll('path'))
+    expect(paths[0]).toHaveAttribute('stroke', 'var(--teal-color-surface-container-high)')
+    for (const zone of paths.slice(1, 4)) {
+      expect(zone).not.toHaveAttribute('stroke-opacity')
+      expect(zone).toHaveAttribute('stroke-linecap', 'round')
+    }
+  })
+
+  it('keeps the min and max labels inside a narrow layout', () => {
+    render(<GaugeChart aria-label="gauge" value={5} min={0} max={100} width={120} height={90} />)
+
+    expect(Number(screen.getByText('0').getAttribute('x'))).toBeGreaterThanOrEqual(2)
+    expect(Number(screen.getByText('100').getAttribute('x'))).toBeLessThanOrEqual(118)
   })
 })
