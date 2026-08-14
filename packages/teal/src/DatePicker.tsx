@@ -7,9 +7,15 @@ import {
 	type ReactNode,
 } from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
-import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
-import { IconButton } from "./Button";
+import { Calendar } from "lucide-react";
 import { cn } from "./cn";
+import {
+	addDays,
+	addMonths,
+	arrowDeltas,
+	dateKey,
+	startOfDay,
+} from "./date-utils";
 import {
 	hasFormContent,
 	isAriaTrue,
@@ -17,6 +23,7 @@ import {
 	useFormSemantics,
 } from "./form-semantics";
 import { Input } from "./Input";
+import { MonthGrid } from "./MonthGrid";
 
 export interface DatePickerProps {
 	"aria-describedby"?: string;
@@ -48,58 +55,6 @@ export interface DatePickerProps {
 	/** Controlled selected date. */
 	value?: Date;
 }
-
-function startOfDay(date: Date) {
-	return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-}
-
-function isSameDay(a: Date, b: Date) {
-	return (
-		a.getFullYear() === b.getFullYear() &&
-		a.getMonth() === b.getMonth() &&
-		a.getDate() === b.getDate()
-	);
-}
-
-function addDays(date: Date, amount: number) {
-	const next = new Date(date);
-	next.setDate(next.getDate() + amount);
-	return next;
-}
-
-function addMonths(date: Date, amount: number) {
-	return new Date(date.getFullYear(), date.getMonth() + amount, 1);
-}
-
-function dateKey(date: Date) {
-	return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-}
-
-/** Six weeks covering the visible month, starting on Sunday. */
-function getMonthGrid(month: Date) {
-	const first = new Date(month.getFullYear(), month.getMonth(), 1);
-	const start = addDays(first, -first.getDay());
-	return Array.from({ length: 42 }, (_, index) => addDays(start, index));
-}
-
-const weekdayFormatter = new Intl.DateTimeFormat(undefined, {
-	weekday: "narrow",
-});
-const monthFormatter = new Intl.DateTimeFormat(undefined, {
-	month: "long",
-	year: "numeric",
-});
-// 2024-01-07 is a Sunday, so this yields locale weekday names starting Sunday.
-const weekdayNames = Array.from({ length: 7 }, (_, index) =>
-	weekdayFormatter.format(addDays(new Date(2024, 0, 7), index)),
-);
-
-const arrowDeltas: Record<string, number> = {
-	ArrowLeft: -1,
-	ArrowRight: 1,
-	ArrowUp: -7,
-	ArrowDown: 7,
-};
 
 export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
 	function DatePicker(
@@ -213,9 +168,6 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
 			shouldFocusDay.current = true;
 		}
 
-		const days = getMonthGrid(viewMonth);
-		const today = new Date();
-
 		return (
 			<div className={cn("teal-u-grid teal-u-gap-1.5", className)}>
 				{showLabel ? (
@@ -285,72 +237,18 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
 							onOpenAutoFocus={(event) => event.preventDefault()}
 							className="teal-popper-content teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-border teal-u-bg-surface teal-u-p-3 teal-u-text-on-surface teal-u-outline-none"
 						>
-							<div ref={gridRef} onKeyDown={handleGridKeyDown}>
-								<div className="teal-u-flex teal-u-items-center teal-u-justify-between teal-u-pb-2">
-									<IconButton
-										label="Previous month"
-										size="sm"
-										onClick={() => setViewMonth(addMonths(viewMonth, -1))}
-									>
-										<ChevronLeft aria-hidden="true" />
-									</IconButton>
-									<span
-										aria-live="polite"
-										className="teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface"
-									>
-										{monthFormatter.format(viewMonth)}
-									</span>
-									<IconButton
-										label="Next month"
-										size="sm"
-										onClick={() => setViewMonth(addMonths(viewMonth, 1))}
-									>
-										<ChevronRight aria-hidden="true" />
-									</IconButton>
-								</div>
-								<div className="teal-u-grid teal-u-grid-cols-7 teal-u-justify-items-center">
-									{weekdayNames.map((name, index) => (
-										<span
-											key={index}
-											aria-hidden="true"
-											className="teal-u-flex teal-u-size-9 teal-u-items-center teal-u-justify-center teal-u-text-xs teal-u-font-semibold teal-u-text-on-surface-variant"
-										>
-											{name}
-										</span>
-									))}
-									{days.map((day) => {
-										const isSelected =
-											selected !== undefined && isSameDay(day, selected);
-										const isToday = isSameDay(day, today);
-										const isOutsideMonth =
-											day.getMonth() !== viewMonth.getMonth();
-										const isDisabled = isDayDisabled(day);
-										return (
-											<button
-												key={dateKey(day)}
-												type="button"
-												data-date={dateKey(day)}
-												tabIndex={isSameDay(day, focusedDate) ? 0 : -1}
-												disabled={isDisabled}
-												aria-pressed={isSelected || undefined}
-												aria-current={isToday ? "date" : undefined}
-												onFocus={() => setFocusedDate(day)}
-												onClick={() => selectDay(day)}
-												className={cn(
-													"teal-focus-ring teal-u-box-border teal-u-inline-flex teal-u-size-9 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-text-sm hover:teal-u-bg-surface-container-high disabled:teal-u-pointer-events-none disabled:teal-u-opacity-40",
-													!isSelected && "teal-u-text-on-surface",
-													isOutsideMonth && "teal-u-text-on-surface-variant/50",
-													isToday &&
-														"teal-u-border teal-u-border-solid teal-u-border-primary",
-													isSelected &&
-														"teal-u-bg-primary teal-u-font-semibold teal-u-text-on-primary hover:teal-u-bg-primary/90",
-												)}
-											>
-												{day.getDate()}
-											</button>
-										);
-									})}
-								</div>
+							<div ref={gridRef}>
+								<MonthGrid
+									keyboard
+									month={viewMonth}
+									onMonthChange={setViewMonth}
+									onSelect={selectDay}
+									selected={selected ?? null}
+									focusedDate={focusedDate}
+									onFocusDay={setFocusedDate}
+									onKeyDown={handleGridKeyDown}
+									isDayDisabled={isDayDisabled}
+								/>
 							</div>
 						</PopoverPrimitive.Content>
 					</PopoverPrimitive.Portal>
