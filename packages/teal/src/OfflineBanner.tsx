@@ -51,7 +51,7 @@ export const OfflineBanner = forwardRef<HTMLDivElement, OfflineBannerProps>(func
       role="status"
       aria-live="polite"
       className={cn(
-        'teal-u-fixed teal-u-inset-x-0 teal-u-top-0 teal-u-z-50 teal-u-flex teal-u-items-center teal-u-justify-center teal-u-gap-2 teal-u-border-b teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-bg-surface-container-high teal-u-px-4 teal-u-py-2 teal-u-text-sm teal-u-text-on-surface',
+        'teal-u-fixed teal-u-inset-x-0 teal-u-top-0 teal-u-z-50 teal-u-flex teal-u-items-center teal-u-justify-center teal-u-gap-2 teal-u-border-b teal-u-border-solid teal-u-border-[color:color-mix(in_srgb,var(--teal-color-warning)_45%,var(--teal-color-surface))] teal-u-bg-[color:color-mix(in_srgb,var(--teal-color-warning)_14%,var(--teal-color-surface))] teal-u-px-4 teal-u-py-2 teal-u-text-sm teal-u-text-on-surface',
         className,
       )}
       {...props}
@@ -62,7 +62,7 @@ export const OfflineBanner = forwardRef<HTMLDivElement, OfflineBannerProps>(func
         type="button"
         aria-label={dismissLabel}
         onClick={dismiss}
-        className="teal-focus-ring teal-u-ml-2 teal-u-inline-flex teal-u-shrink-0 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-p-1 teal-u-text-on-surface-variant hover:teal-u-bg-surface-container-highest"
+        className="teal-focus-ring teal-u-ml-2 teal-u-inline-flex teal-u-shrink-0 teal-u-items-center teal-u-justify-center teal-u-rounded-full teal-u-p-1 teal-u-text-on-surface-variant hover:teal-u-bg-[color:color-mix(in_srgb,var(--teal-color-warning)_25%,var(--teal-color-surface))]"
       >
         <X aria-hidden="true" className="teal-u-size-3.5" strokeWidth={2.5} />
       </button>

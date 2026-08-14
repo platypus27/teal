@@ -61,4 +61,15 @@ describe('OfflineBanner', () => {
 
     expect(screen.getByRole('status')).toHaveTextContent('Connection lost — retrying')
   })
+
+  it('uses warning-emphasis tokens instead of a low-emphasis surface', () => {
+    render(<OfflineBanner />)
+
+    fireEvent(window, new Event('offline'))
+
+    const banner = screen.getByRole('status')
+    expect(banner.className).toContain('color-mix(in_srgb,var(--teal-color-warning)_14%,var(--teal-color-surface))')
+    expect(banner.className).toContain('teal-u-text-on-surface')
+    expect(banner.className).not.toContain('teal-u-bg-surface-container-high')
+  })
 })
