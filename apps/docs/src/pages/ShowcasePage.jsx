@@ -59,7 +59,6 @@ import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-  Result,
   Select,
   Separator,
   Skeleton,
@@ -456,11 +455,11 @@ function SurfacesSection() {
         action={<Button>Create report</Button>}
       />
       <div className="lg:col-span-2">
-        <Result
+        <EmptyState
           status="404"
           title="Page not found"
           description="The report may have been moved or deleted."
-          actions={<Button variant="secondary">Back to projects</Button>}
+          action={<Button variant="secondary">Back to projects</Button>}
           className="rounded-teal-surface border border-teal-outline-variant/50"
         />
       </div>
@@ -555,7 +554,7 @@ const sections = [
   { id: 'feedback', title: 'Feedback', hint: 'Alert · Skeleton · Toast · Meter · Rating', Body: FeedbackSection },
   { id: 'navigation', title: 'Navigation', hint: 'Tabs · Breadcrumb · Menu · Menubar', Body: NavigationSection },
   { id: 'overlays', title: 'Overlays', hint: 'Dialog · AlertDialog · Popconfirm · Tour', Body: OverlaysSection },
-  { id: 'surfaces', title: 'Surfaces', hint: 'Card · EmptyState · Result', Body: SurfacesSection },
+  { id: 'surfaces', title: 'Surfaces', hint: 'Card · EmptyState', Body: SurfacesSection },
   { id: 'layout', title: 'Layout', hint: 'Stack · Grid · Resizable · AspectRatio', Body: LayoutSection },
   { id: 'utilities', title: 'Utilities', hint: 'CopyButton · ThemeToggle · Carousel · VisuallyHidden', Body: UtilitiesSection },
 ]
