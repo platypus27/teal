@@ -301,7 +301,7 @@ export const moduleGroups = [
 							"Don't put row-specific navigation or links in the bar.",
 						],
 					},
-					related: ["action-bar", "table", "checkbox", "context-menu"],
+					related: ["action-bar", "table", "checkbox"],
 					examples: [
 						{
 							title: "Selection actions",
@@ -2521,7 +2521,7 @@ export const moduleGroups = [
 						"Don't open dialogs from a menu item without closing the menu first (onSelect handles this).",
 					],
 				},
-				related: ["context-menu", "menubar", "popover"],
+				related: ["menubar", "popover"],
 				examples: [
 					{
 						title: "Project actions",
@@ -2755,49 +2755,6 @@ export const moduleGroups = [
 						title: "Neutral action",
 						description:
 							"Without tone, the confirm suits routine decisions like publishing a report.",
-					},
-				],
-			},
-			{
-				id: "context-menu",
-				name: "Context Menu",
-				apiNames: ["ContextMenu"],
-				description:
-					"A right-click action menu attached to any element, sharing the Menu item contract.",
-				usage: `<ContextMenu
-  label="Project actions"
-  items={[{ id: 'rename', label: 'Rename', onSelect: () => undefined }]}
->
-  <div>Right-click this project row</div>
-</ContextMenu>`,
-				anatomy: [
-					{ part: "Target", description: "The wrapped children that open the menu on right-click or the keyboard menu key." },
-					{ part: "Content", description: "The floating action list, named by the label prop, sharing Menu's keyboard model." },
-					{ part: "Item", description: "One action with label, optional icon, disabled state, separatorBefore, and danger variant." },
-				],
-				dosDonts: {
-					dos: [
-						"Mirror actions that are also reachable elsewhere, like a row toolbar or Menu.",
-						"Pass a label so the menu is announced with the target's context.",
-						"Isolate destructive items with separatorBefore and the danger variant.",
-					],
-					donts: [
-						"Don't make any action reachable only through right-click; touch and keyboard users need a visible path.",
-						"Don't attach context menus to small inline text where selection is the primary gesture.",
-						"Don't duplicate the page's primary actions; keep it to secondary, target-specific ones.",
-					],
-				},
-				related: ["menu", "popover", "command"],
-				examples: [
-					{
-						title: "Right-click actions",
-						description:
-							"Items support icons, separators, disabled states, and the danger variant like Menu.",
-					},
-					{
-						title: "Disabled and danger items",
-						description:
-							"Unavailable actions stay visible but disabled; destructive ones keep the danger styling.",
 					},
 				],
 			},
@@ -4636,7 +4593,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Don't trap focus; it stays a single tab stop with arrow-key movement.",
 						],
 					},
-					related: ["toolbar", "context-menu", "dock"],
+					related: ["toolbar", "menu", "dock"],
 					examples: [
 						{
 							title: "Selection formatting",
@@ -7583,6 +7540,11 @@ const additionalExamples = {
 			title: "Keyboard action menu",
 			description: "Menus preserve arrow-key navigation and Escape dismissal.",
 		},
+		{
+			title: "Right-click context menu",
+			description:
+				'mode="context" attaches the menu to any element and opens it on right-click.',
+		},
 	],
 	popover: [
 		{
@@ -7859,13 +7821,6 @@ const additionalExamples = {
 			title: "Custom actions",
 			description:
 				"Pass actions to replace the default cancel and confirm buttons entirely.",
-		},
-	],
-	"context-menu": [
-		{
-			title: "Separated danger",
-			description:
-				"Keep destructive context actions at the end behind a separator.",
 		},
 	],
 	tour: [
@@ -8602,13 +8557,6 @@ const guidanceById = {
 			"Anchored to its trigger and dismisses on confirm, cancel, or Escape.",
 		responsive: "The panel stays within the viewport near the trigger.",
 	},
-	"context-menu": {
-		useWhen: "An element has secondary actions discoverable on right-click.",
-		avoidWhen: "The actions are primary; keep them visible instead.",
-		behavior:
-			"Shares the Menu item contract with icons, separators, and danger styling.",
-		responsive: "Provide a visible alternative on touch layouts.",
-	},
 	tour: {
 		useWhen: "New users need a guided introduction to key areas.",
 		avoidWhen: "The hint is local to one control; use Tooltip.",
@@ -8720,7 +8668,7 @@ const guidanceById = {
 		useWhen:
 			"A list or table supports multi-select and the same action must apply to every selected row at once.",
 		avoidWhen:
-			"Only one row is ever acted on; use row-level buttons or a ContextMenu instead.",
+			"Only one row is ever acted on; use row-level buttons or a Menu in context mode instead.",
 		behavior:
 			"Renders nothing while count is 0; the count is announced politely as it changes, and onClear resets the selection.",
 		responsive:
