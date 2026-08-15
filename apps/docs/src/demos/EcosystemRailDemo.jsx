@@ -1,5 +1,5 @@
 import { Camera, Gauge, Home, LayoutDashboard, LineChart, Settings } from 'lucide-react'
-import { EcosystemRail, VerticalNavItem } from '@kryv/teal'
+import { EcosystemRail, SidebarItem } from '@kryv/teal'
 
 export function EcosystemRailDemo({ exampleIndex = 0 }) {
   if (exampleIndex === 1) {
@@ -40,7 +40,7 @@ export function EcosystemRailDemo({ exampleIndex = 0 }) {
           { id: 'photos', label: 'Photos', href: 'https://photos.kryvlabs.example', icon: <Camera className="size-5" /> },
           { id: 'trict', label: 'Trict', href: 'https://trict.kryvlabs.example', icon: <LineChart className="size-5" />, status: 'stale' },
         ]}
-        footer={<VerticalNavItem icon={<Settings className="size-5" />}>Account</VerticalNavItem>}
+        footer={<SidebarItem icon={<Settings className="size-5" />}>Account</SidebarItem>}
       />
     </div>
   )

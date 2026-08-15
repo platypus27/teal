@@ -59,9 +59,6 @@ export type { TableColumn, TableProps, TableSort } from './Table'
 export { Pagination } from './Pagination'
 export type { PaginationProps } from './Pagination'
 
-export { VerticalNav, VerticalNavBrand, VerticalNavList, VerticalNavSection, VerticalNavItem, VerticalNavFooter, verticalNavVariants } from './VerticalNav'
-export type { VerticalNavProps, VerticalNavSectionProps, VerticalNavItemProps } from './VerticalNav'
-
 export { TopBar, TopBarBrand, TopBarSearch, TopBarActions, topBarVariants } from './TopBar'
 export type { TopBarProps } from './TopBar'
 
@@ -180,8 +177,6 @@ export { Tour } from './Tour'
 export type { TourProps, TourStep } from './Tour'
 export { NavRail, NavRailItem } from './NavRail'
 export type { NavRailItemProps, NavRailProps } from './NavRail'
-export { SideRail } from './SideRail'
-export type { SideRailProps } from './SideRail'
 
 export { ActionBar } from './ActionBar'
 export type { ActionBarProps } from './ActionBar'

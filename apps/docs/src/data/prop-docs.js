@@ -144,19 +144,23 @@ export const propDocs = {
       description: 'Open delay in milliseconds shared by the grouped tooltips; moving between triggers skips the delay.',
     },
   },
-  VerticalNav: {
+  Sidebar: {
     mode: {
       type: '"rail" | "full"',
       defaultValue: '"full"',
-      description: 'Rail collapses to an icon strip that expands on hover or keyboard focus. Full shows labels always.',
+      description: 'Rail collapses to an icon strip that expands on hover or keyboard focus. Full shows labels always and honors the collapsed state.',
     },
     side: {
       type: '"left" | "right"',
       defaultValue: '"left"',
-      description: 'Which edge the nav anchors to. A border is drawn on the inner side.',
+      description: 'Which edge the sidebar anchors to. A border is drawn on the inner side.',
+    },
+    floating: {
+      type: 'boolean',
+      description: 'Renders the sidebar as a floating glass pill: rounded, translucent, blurred, and elevated.',
     },
   },
-  VerticalNavItem: {
+  SidebarItem: {
     active: {
       type: 'boolean',
       description:
@@ -165,18 +169,6 @@ export const propDocs = {
     icon: {
       type: 'ReactNode',
       description: 'Icon element shown before the label. Always visible, even in rail mode.',
-    },
-  },
-  SideRail: {
-    'aria-label': { type: 'string', defaultValue: '"Primary"', description: 'Accessible name for the floating rail landmark.' },
-    mode: {
-      type: '"rail" | "full"',
-      defaultValue: '"rail"',
-      description: 'Rail collapses to a glass pill that expands on hover or keyboard focus. Full shows labels always.',
-    },
-    side: {
-      type: '"left" | "right"',
-      description: 'Which edge the nav anchors to when the rail is attached. A floating rail usually leaves this unset.',
     },
   },
   TopBar: {

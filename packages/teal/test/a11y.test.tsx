@@ -218,11 +218,6 @@ import {
   TopBarSearch,
   TruncatedText,
   UploadProgress,
-  VerticalNav,
-  VerticalNavBrand,
-  VerticalNavItem,
-  VerticalNavList,
-  VerticalNavSection,
   VirtualList,
   VisuallyHidden,
   type SearchOverlayRenderState,
@@ -414,7 +409,7 @@ describe('axe: data and navigation', () => {
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()
   })
 
-  it('vertical nav and top bar have no violations', async () => {
+  it('sidebar and top bar have no violations in rail and full modes', async () => {
     const { baseElement } = render(
       <>
         <TopBar>
@@ -428,19 +423,32 @@ describe('axe: data and navigation', () => {
             </IconButton>
           </TopBarActions>
         </TopBar>
-        <VerticalNav aria-label="Primary">
-          <VerticalNavBrand>Teal</VerticalNavBrand>
-          <VerticalNavList>
-            <VerticalNavSection label="Main">
-              <VerticalNavItem href="/" active icon={<svg aria-hidden="true" />}>
+        <Sidebar aria-label="Primary" mode="rail">
+          <SidebarHeader>Teal</SidebarHeader>
+          <SidebarContent>
+            <SidebarSection label="Main">
+              <SidebarItem href="/" active icon={<svg aria-hidden="true" />}>
                 Home
-              </VerticalNavItem>
-              <VerticalNavItem href="/settings" icon={<svg aria-hidden="true" />}>
+              </SidebarItem>
+              <SidebarItem href="/settings" icon={<svg aria-hidden="true" />}>
                 Settings
-              </VerticalNavItem>
-            </VerticalNavSection>
-          </VerticalNavList>
-        </VerticalNav>
+              </SidebarItem>
+            </SidebarSection>
+          </SidebarContent>
+        </Sidebar>
+        <Sidebar aria-label="Secondary" mode="full">
+          <SidebarHeader>Teal</SidebarHeader>
+          <SidebarContent>
+            <SidebarSection label="Main">
+              <SidebarItem href="/" active icon={<svg aria-hidden="true" />}>
+                Home
+              </SidebarItem>
+              <SidebarItem href="/settings" icon={<svg aria-hidden="true" />}>
+                Settings
+              </SidebarItem>
+            </SidebarSection>
+          </SidebarContent>
+        </Sidebar>
       </>,
     )
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()

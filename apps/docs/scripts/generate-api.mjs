@@ -9,7 +9,7 @@ const parser = withCustomConfig(resolve(root, 'packages/teal/tsconfig.json'), {
   savePropValueAsString: true,
   shouldExtractLiteralValuesFromEnum: true,
   shouldRemoveUndefinedFromOptional: true,
-  // Polymorphic components (Card, TopBar, VerticalNav, VerticalNavItem) carry a
+  // Polymorphic components (Card, TopBar, Sidebar, SidebarItem) carry a
   // `ref` in their public call signature; it is a React convention, not a
   // documented prop, so drop the spurious row.
   propFilter: (prop) => prop.name !== 'ref' && !prop.parent?.fileName.includes('node_modules'),

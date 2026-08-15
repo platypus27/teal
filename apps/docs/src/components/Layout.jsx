@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { FlaskConical, Menu as MenuIcon, Moon, Palette, Search, Sun, X } from 'lucide-react'
 import { GitHubIcon } from './GitHubIcon.jsx'
 import { NavLink, Outlet, useLocation } from 'react-router'
-import { IconButton, Toaster, TooltipProvider, TopBar, TopBarActions, TopBarBrand, TopBarSearch, VerticalNav, VerticalNavBrand, VerticalNavItem, VerticalNavList, VerticalNavSection, iconButtonVariants } from '@kryv/teal'
+import { IconButton, Sidebar, SidebarContent, SidebarHeader, SidebarItem, SidebarSection, Toaster, TooltipProvider, TopBar, TopBarActions, TopBarBrand, TopBarSearch, iconButtonVariants } from '@kryv/teal'
 import { catalogGroups } from '../data/docs-module-registry.js'
 import changelog from '../generated/changelog.json'
 import { CommandPalette, CommandPaletteProvider, useCommandPalette } from './CommandPalette.jsx'
@@ -84,7 +84,7 @@ function Header({ navOpen, setNavOpen }) {
   )
 }
 
-function Sidebar({ navOpen, setNavOpen }) {
+function DocsSidebar({ navOpen, setNavOpen }) {
   const { pathname } = useLocation()
   const firstLinkRef = useRef(null)
   const active = (to, end = false) => (end ? pathname === to : pathname.startsWith(to))
@@ -103,13 +103,13 @@ function Sidebar({ navOpen, setNavOpen }) {
           onClick={() => setNavOpen(false)}
         />
       ) : null}
-      <VerticalNav
+      <Sidebar
         mode="full"
         side="left"
         aria-label="Documentation"
         className={`fixed inset-y-0 left-0 z-40 transition-transform lg:translate-x-0 ${navOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
-        <VerticalNavBrand>
+        <SidebarHeader>
           <NavLink to="/" className="flex items-center gap-3" onClick={() => setNavOpen(false)}>
             <span className="flex size-9 items-center justify-center rounded-xl bg-teal-primary text-teal-on-primary">
               <Palette className="size-5" />
@@ -124,24 +124,24 @@ function Sidebar({ navOpen, setNavOpen }) {
               <span className="mt-1 block text-xs text-teal-on-surface-variant">Kryv design system</span>
             </span>
           </NavLink>
-        </VerticalNavBrand>
+        </SidebarHeader>
 
-        <VerticalNavList>
-          <VerticalNavSection label="Start">
-            <VerticalNavItem ref={firstLinkRef} as={NavLink} end to="/" active={active('/', true)} onClick={() => setNavOpen(false)}>
+        <SidebarContent>
+          <SidebarSection label="Start">
+            <SidebarItem ref={firstLinkRef} as={NavLink} end to="/" active={active('/', true)} onClick={() => setNavOpen(false)}>
               Getting started
-            </VerticalNavItem>
-            <VerticalNavItem as={NavLink} to="/foundations" active={active('/foundations')} onClick={() => setNavOpen(false)}>
+            </SidebarItem>
+            <SidebarItem as={NavLink} to="/foundations" active={active('/foundations')} onClick={() => setNavOpen(false)}>
               Foundations
-            </VerticalNavItem>
-            <VerticalNavItem as={NavLink} to="/changelog" active={active('/changelog')} onClick={() => setNavOpen(false)}>
+            </SidebarItem>
+            <SidebarItem as={NavLink} to="/changelog" active={active('/changelog')} onClick={() => setNavOpen(false)}>
               Changelog
-            </VerticalNavItem>
-          </VerticalNavSection>
+            </SidebarItem>
+          </SidebarSection>
           {catalogGroups.map((group) => (
-            <VerticalNavSection key={group.name} label={group.name}>
+            <SidebarSection key={group.name} label={group.name}>
               {group.modules.map((module) => (
-                <VerticalNavItem
+                <SidebarItem
                   key={module.id}
                   as={NavLink}
                   to={`/modules/${module.id}`}
@@ -152,17 +152,17 @@ function Sidebar({ navOpen, setNavOpen }) {
                   {module.hasPlayground ? (
                     <FlaskConical aria-hidden="true" className="ml-auto size-3.5 text-teal-primary/70" />
                   ) : null}
-                </VerticalNavItem>
+                </SidebarItem>
               ))}
-            </VerticalNavSection>
+            </SidebarSection>
           ))}
-          <VerticalNavSection label="Patterns">
-            <VerticalNavItem as={NavLink} to="/recipes" active={active('/recipes')} onClick={() => setNavOpen(false)}>
+          <SidebarSection label="Patterns">
+            <SidebarItem as={NavLink} to="/recipes" active={active('/recipes')} onClick={() => setNavOpen(false)}>
               Recipes
-            </VerticalNavItem>
-          </VerticalNavSection>
-        </VerticalNavList>
-      </VerticalNav>
+            </SidebarItem>
+          </SidebarSection>
+        </SidebarContent>
+      </Sidebar>
     </>
   )
 }
@@ -194,8 +194,8 @@ export function Layout() {
           >
             Skip to content
           </a>
-          <Sidebar navOpen={navOpen} setNavOpen={setNavOpen} />
-          <div className="lg:ml-72">
+          <DocsSidebar navOpen={navOpen} setNavOpen={setNavOpen} />
+          <div className="lg:ml-64">
             <Header navOpen={navOpen} setNavOpen={setNavOpen} />
             <div className="flex min-h-[calc(100vh-4rem)]">
               <main id="main-content" className="min-w-0 flex-1 scroll-mt-16">

@@ -1,13 +1,6 @@
 import type { ReactNode } from 'react'
 import { HealthIndicator, type HealthIndicatorStatus } from './HealthIndicator'
-import {
-  VerticalNav,
-  VerticalNavBrand,
-  VerticalNavFooter,
-  VerticalNavItem,
-  VerticalNavList,
-  VerticalNavSection,
-} from './VerticalNav'
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarItem, SidebarSection } from './Sidebar'
 
 export interface EcosystemRailHome {
   /** Accessible destination name when the visible label is collapsed. */
@@ -75,11 +68,11 @@ export function EcosystemRail({
   }
 
   return (
-    <VerticalNav aria-label={ariaLabel} className={className} mode={mode} side={side}>
-      {brand ? <VerticalNavBrand>{brand}</VerticalNavBrand> : null}
-      <VerticalNavList>
-        <VerticalNavSection label="Ecosystem">
-          <VerticalNavItem
+    <Sidebar aria-label={ariaLabel} className={className} mode={mode} side={side}>
+      {brand ? <SidebarHeader>{brand}</SidebarHeader> : null}
+      <SidebarContent>
+        <SidebarSection label="Ecosystem">
+          <SidebarItem
             active={home.current ?? false}
             aria-label={home.ariaLabel ?? (typeof home.label === 'string' ? home.label : undefined)}
             href={home.href}
@@ -87,9 +80,9 @@ export function EcosystemRail({
             onClick={reportNavigation('home')}
           >
             {home.label}
-          </VerticalNavItem>
+          </SidebarItem>
           {destinations.map((destination) => (
-            <VerticalNavItem
+            <SidebarItem
               key={destination.id}
               active={destination.current ?? false}
               aria-label={
@@ -106,11 +99,11 @@ export function EcosystemRail({
                   <HealthIndicator className="teal-u-shrink-0" status={destination.status} />
                 ) : null}
               </span>
-            </VerticalNavItem>
+            </SidebarItem>
           ))}
-        </VerticalNavSection>
-      </VerticalNavList>
-      {footer ? <VerticalNavFooter>{footer}</VerticalNavFooter> : null}
-    </VerticalNav>
+        </SidebarSection>
+      </SidebarContent>
+      {footer ? <SidebarFooter>{footer}</SidebarFooter> : null}
+    </Sidebar>
   )
 }
