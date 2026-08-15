@@ -86,3 +86,43 @@ describe('LineChart', () => {
     expect(screen.getByRole('img', { name: 'Quarterly finances' })).toBeInTheDocument()
   })
 })
+
+describe('LineChart area type', () => {
+  const series = [
+    { name: 'Upgrades', data: [4, 6, 5] },
+    { name: 'New', data: [8, 8, 9] },
+  ]
+  const labels = ['Jan', 'Feb', 'Mar']
+
+  it('renders filled areas with the default opacity', () => {
+    const { container } = render(<LineChart label="Sales" labels={labels} series={series} type="area" />)
+
+    const areas = container.querySelectorAll('path[fill-opacity]')
+    expect(areas).toHaveLength(2)
+    expect(areas[0]).toHaveAttribute('fill-opacity', '0.25')
+  })
+
+  it('respects the opacity prop', () => {
+    const { container } = render(<LineChart label="Sales" labels={labels} series={series} type="area" opacity={0.5} />)
+
+    expect(container.querySelector('path[fill-opacity]')).toHaveAttribute('fill-opacity', '0.5')
+  })
+
+  it('keeps raw values in tooltips and the data table when stacked', () => {
+    render(<LineChart label="Sales" labels={labels} series={series} type="area" stacked />)
+
+    const point = screen.getByLabelText('Upgrades, Feb: 6')
+    expect(point.querySelector('title')).toHaveTextContent('Upgrades, Feb: 6')
+    // Raw New Mar value; the stacked plotted value would be 14.
+    expect(screen.getByRole('cell', { name: '9' })).toBeInTheDocument()
+    expect(screen.queryByRole('cell', { name: '14' })).not.toBeInTheDocument()
+  })
+
+  it('lifts stacked points above the ones below them', () => {
+    render(<LineChart label="Sales" labels={labels} series={series} type="area" stacked />)
+
+    const bottom = screen.getByLabelText('Upgrades, Feb: 6')
+    const top = screen.getByLabelText('New, Feb: 8')
+    expect(Number(top.getAttribute('cy'))).toBeLessThan(Number(bottom.getAttribute('cy')))
+  })
+})

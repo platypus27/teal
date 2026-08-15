@@ -17,7 +17,6 @@ import {
   AppShellMain,
   AppShellSidebar,
   AppSwitcher,
-  AreaChart,
   AspectRatio,
   AutosizeTextarea,
   Avatar,
@@ -1309,7 +1308,7 @@ describe('axe: fifth catalog expansion', () => {
             { name: 'Costs', data: [6, 8, 7] },
           ]}
         />
-        <AreaChart label="Growth" labels={['Jan', 'Feb', 'Mar']} series={[{ name: 'Signups', data: [10, 14, 12] }]} />
+        <LineChart type="area" label="Growth" labels={['Jan', 'Feb', 'Mar']} series={[{ name: 'Signups', data: [10, 14, 12] }]} />
         <BarChart label="Quarterly costs" labels={['Q1', 'Q2']} series={[{ name: 'Costs', data: [6, 8] }]} />
         <PieChart
           label="Traffic by device"
