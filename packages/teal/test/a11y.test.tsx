@@ -116,7 +116,6 @@ import {
   Menu,
   MentionInput,
   Meter,
-  MultiSelect,
   NavigationMenu,
   NavRail,
   NavRailItem,
@@ -864,7 +863,8 @@ describe('axe: third catalog expansion', () => {
         <DatePicker label="Start date" defaultValue={new Date(2026, 6, 15)} />
         <NumberInput label="Seats" defaultValue={4} min={1} max={12} />
         <PasswordInput label="Password" defaultValue="hunter2" />
-        <MultiSelect
+        <Combobox
+          multiple
           label="Project roles"
           defaultValue={['editor']}
           options={[

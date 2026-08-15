@@ -556,7 +556,7 @@ export const moduleGroups = [
 						"Don't hide critical context in the placeholder; it disappears once a value is chosen.",
 					],
 				},
-				related: ["combobox", "radio-group", "multi-select"],
+				related: ["combobox", "radio-group"],
 				examples: [
 					{
 						title: "Controlled selection",
@@ -795,7 +795,7 @@ export const moduleGroups = [
 				name: "Combobox",
 				apiNames: ["Combobox"],
 				description:
-					"A filterable single-value picker combining free text with a suggestion list.",
+					"A filterable picker combining free text with a suggestion list; pass multiple to select several values shown as removable pills.",
 				usage: `<Combobox
   label="Assignee"
   options={[
@@ -821,7 +821,7 @@ export const moduleGroups = [
 						"Don't clear the current value on Escape; it should restore, not wipe.",
 					],
 				},
-				related: ["select", "multi-select", "mention-input", "input"],
+				related: ["select", "mention-input", "input"],
 				examples: [
 					{
 						title: "Filter and select",
@@ -833,51 +833,10 @@ export const moduleGroups = [
 						description:
 							"A project picker with a disabled option and a custom message when nothing matches.",
 					},
-				],
-			},
-			{
-				id: "multi-select",
-				name: "Multi Select",
-				apiNames: ["MultiSelect"],
-				description:
-					"A filterable picker for several values, shown as removable pills.",
-				usage: `<MultiSelect
-  label="Project roles"
-  options={[
-    { value: 'admin', label: 'Administrator' },
-    { value: 'editor', label: 'Editor' },
-    { value: 'viewer', label: 'Viewer' },
-  ]}
-/>`,
-				anatomy: [
-					{ part: "Control", description: "The combobox-role trigger that hosts the selected pills." },
-					{ part: "Pills", description: "Removable tokens, one per value, each with its own labeled remove button." },
-					{ part: "Filter field", description: "The inline text input inside the open popup." },
-					{ part: "Listbox", description: "The multi-selectable option list with check marks on chosen rows." },
-				],
-				dosDonts: {
-					dos: [
-						"Show every selected value as a pill so removal stays one click away.",
-						"Let the pill row wrap instead of truncating selections.",
-						"Keep the popup open between picks so multi-selection stays fast.",
-					],
-					donts: [
-						"Don't use it when only one value is allowed; use Select or Combobox.",
-						"Don't collapse selections into a +N summary; the pills are the value.",
-						"Don't disable the whole control when only some options are unavailable.",
-					],
-				},
-				related: ["combobox", "tags-input", "select", "transfer-list"],
-				examples: [
 					{
 						title: "Multiple values",
 						description:
-							"Options toggle without closing; pills remove individual values.",
-					},
-					{
-						title: "Filtering a label set",
-						description:
-							"A filterable label picker with a caller-owned value and one unavailable option.",
+							"With multiple, options toggle without closing and selected values render as removable pills.",
 					},
 				],
 			},
@@ -1112,12 +1071,12 @@ export const moduleGroups = [
 						"Keep tokens to one or two words so chips stay scannable.",
 					],
 					donts: [
-						"Don't use it for a fixed option set; use MultiSelect.",
+						"Don't use it for a fixed option set; use Combobox with multiple.",
 						"Don't commit empty or whitespace-only tags.",
 						"Don't expect fuzzy dedupe; exact duplicates are ignored, so normalize case before commit if needed.",
 					],
 				},
-				related: ["multi-select", "chip", "input", "combobox"],
+				related: ["chip", "input", "combobox"],
 				examples: [
 					{
 						title: "Token entry",
@@ -1831,11 +1790,11 @@ export const moduleGroups = [
 							"Keep option values stable so moved items keep their original order.",
 						],
 						donts: [
-							"Don't use it for a handful of options; checkboxes or a MultiSelect are lighter.",
+							"Don't use it for a handful of options; checkboxes or a Combobox with multiple are lighter.",
 							"Don't expect reordering within the target list; order follows the source.",
 						],
 					},
-					related: ["multi-select", "checkbox", "list"],
+					related: ["combobox", "checkbox", "list"],
 					examples: [
 						{
 							title: "Uncontrolled transfer",
@@ -2089,7 +2048,7 @@ export const moduleGroups = [
 						"Don't use chips as primary actions; they are tokens, not buttons.",
 					],
 				},
-				related: ["badge", "tags-input", "multi-select"],
+				related: ["badge", "tags-input", "combobox"],
 				examples: [
 					{
 						title: "Removable filters",
@@ -7894,13 +7853,13 @@ const guidanceById = {
 	},
 	combobox: {
 		useWhen:
-			"Users choose one value from a list long enough to need filtering.",
+			"Users choose one value from a list long enough to need filtering; pass multiple to pick several values.",
 		avoidWhen:
 			"The list is short; use Select, or the value is free text; use Input.",
 		behavior:
-			"Typing filters, arrows highlight, Enter selects, Escape preserves the current value.",
+			"Typing filters, arrows highlight, Enter selects, Escape preserves the current value. With multiple, options toggle without closing and pills remove individual values.",
 		responsive:
-			"The suggestion list matches the field width and collision-handles vertically.",
+			"The suggestion list matches the field width and collision-handles vertically; in multiple mode pills wrap inside the control as values accumulate.",
 	},
 	chip: {
 		useWhen: "Active filters or selections need compact, removable tokens.",
@@ -7971,13 +7930,6 @@ const guidanceById = {
 			"The actions are unrelated; use separate buttons or a plain Menu.",
 		behavior: "The main button fires the default; the chevron owns the menu.",
 		responsive: "Keep the label short so the joined control stays one line.",
-	},
-	"multi-select": {
-		useWhen: "Users pick several values from a filterable list.",
-		avoidWhen: "Only one value is allowed; use Select or Combobox.",
-		behavior:
-			"Options toggle without closing and pills remove through compact 24px touch targets.",
-		responsive: "Pills wrap inside the control as values accumulate.",
 	},
 	"date-picker": {
 		useWhen:
@@ -8152,7 +8104,7 @@ const guidanceById = {
 	},
 	"tags-input": {
 		useWhen: "A field collects an open-ended list of short tokens.",
-		avoidWhen: "Values come from a fixed set; use MultiSelect.",
+		avoidWhen: "Values come from a fixed set; use Combobox with multiple.",
 		behavior:
 			"Enter or comma commits; duplicates are ignored and chips remove individually.",
 		responsive: "Chips wrap inside the field as the list grows.",
@@ -8468,7 +8420,7 @@ const guidanceById = {
 		useWhen:
 			"The user builds a set from a larger pool and benefits from seeing both states side by side, such as permissions or team skills.",
 		avoidWhen:
-			"Only a handful of options exist — checkboxes or a MultiSelect are lighter; ordering within the chosen set is not supported.",
+			"Only a handful of options exist — checkboxes or a Combobox with multiple are lighter; ordering within the chosen set is not supported.",
 		behavior:
 			"value always reflects the target list; moves preserve the original option order, and moved items stay selected so they can be sent back immediately.",
 		responsive:

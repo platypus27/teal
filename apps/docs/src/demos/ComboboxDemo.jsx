@@ -4,6 +4,27 @@ import { Combobox } from '@kryv/teal'
 export function ComboboxDemo({ exampleIndex = 0 }) {
   const [assignee, setAssignee] = useState('mira')
   const [project, setProject] = useState('')
+  const [roles, setRoles] = useState(['editor'])
+
+  if (exampleIndex === 2) {
+    return (
+      <div className="w-full max-w-xs">
+        <Combobox
+          multiple
+          label="Project roles"
+          placeholder="Select roles…"
+          value={roles}
+          onValueChange={setRoles}
+          options={[
+            { value: 'admin', label: 'Administrator' },
+            { value: 'editor', label: 'Editor' },
+            { value: 'reviewer', label: 'Reviewer' },
+            { value: 'viewer', label: 'Viewer' },
+          ]}
+        />
+      </div>
+    )
+  }
 
   if (exampleIndex === 1) {
     return (
