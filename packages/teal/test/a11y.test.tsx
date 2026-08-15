@@ -170,8 +170,6 @@ import {
   SkipLink,
   Slider,
   Sparkline,
-  SpeedDial,
-  SpeedDialAction,
   Spinner,
   SplitButton,
   Stack,
@@ -1161,10 +1159,11 @@ describe('axe: fifth catalog expansion', () => {
         </BulkActionBar>
         <FloatingActionButton label="Create item" />
         <ShareButton url="https://example.com/post/1" />
-        <SpeedDial label="Quick actions" defaultOpen>
-          <SpeedDialAction label="New file" />
-          <SpeedDialAction label="New folder" />
-        </SpeedDial>
+        <FloatingActionButton
+          label="Quick actions"
+          defaultOpen
+          actions={[{ label: 'New file' }, { label: 'New folder' }]}
+        />
       </>,
     )
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()

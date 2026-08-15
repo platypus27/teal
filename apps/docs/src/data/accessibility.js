@@ -721,19 +721,6 @@ export const accessibility = {
       'The popover is labelled by the trigger text and closes on Escape via the underlying Popover.',
     ],
   },
-  'speed-dial': {
-    keyboard: [
-      { keys: ['Enter', 'Space'], action: 'Opens or closes the fan from the trigger.' },
-      { keys: ['Arrow Down', 'Arrow Right'], action: 'Moves focus to the next action.' },
-      { keys: ['Arrow Up', 'Arrow Left'], action: 'Moves focus to the previous action.' },
-      { keys: ['Home', 'End'], action: 'Moves focus to the first or last action.' },
-      { keys: ['Escape'], action: 'Closes the fan and returns focus to the trigger.' },
-    ],
-    notes: [
-      'The trigger exposes aria-haspopup menu and aria-expanded so the state is announced.',
-      'Actions are menuitems in a labelled menu whose orientation matches the fan direction.',
-    ],
-  },
   'currency-input': {
     notes: [
       'The visible label is associated with the input; use aria-label when there is no visible label.',

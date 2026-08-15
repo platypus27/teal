@@ -1,4 +1,4 @@
-import { Pencil } from 'lucide-react'
+import { FilePlus, FolderPlus, Pencil, Upload } from 'lucide-react'
 import { FloatingActionButton } from '@kryv/teal'
 
 export function FloatingActionButtonDemo({ exampleIndex = 0 }) {
@@ -9,6 +9,20 @@ export function FloatingActionButtonDemo({ exampleIndex = 0 }) {
         extendedLabel="Compose"
         icon={<Pencil aria-hidden />}
         position="bottom-left"
+      />
+    )
+  }
+
+  if (exampleIndex === 2) {
+    return (
+      <FloatingActionButton
+        label="Create actions"
+        position="bottom-right"
+        actions={[
+          { label: 'New file', icon: <FilePlus aria-hidden /> },
+          { label: 'New folder', icon: <FolderPlus aria-hidden /> },
+          { label: 'Upload', icon: <Upload aria-hidden /> },
+        ]}
       />
     )
   }
