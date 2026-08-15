@@ -11,6 +11,30 @@ export function EmptyStateDemo({ exampleIndex = 0 }) {
       />
     )
   }
+  if (exampleIndex === 2) {
+    return (
+      <div className="grid w-full max-w-lg gap-10">
+        <EmptyState
+          status="404"
+          title="Route not found"
+          description="The link may be outdated or the page removed."
+          action={<Button variant="secondary">Back to dashboard</Button>}
+        />
+        <EmptyState
+          status="403"
+          title="Access restricted"
+          description="You need the security role to open this area."
+          action={<Button variant="secondary">Request access</Button>}
+        />
+        <EmptyState
+          status="500"
+          title="Something went wrong"
+          description="The server hit an unexpected error while loading the report."
+          action={<Button variant="secondary">Retry request</Button>}
+        />
+      </div>
+    )
+  }
   return (
     <EmptyState
       title="No reports"

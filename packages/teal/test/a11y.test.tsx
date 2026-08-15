@@ -154,7 +154,6 @@ import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-  Result,
   Reveal,
   RichTextEditor,
   SaveStatus,
@@ -1074,8 +1073,8 @@ describe('axe: fourth catalog expansion', () => {
         <Sparkline aria-label="Sign-ups trending up" data={[4, 8, 6, 12, 9, 14]} variant="area" />
         <Sparkline aria-label="Deploys per day" data={[2, 5, 3, 8]} variant="bar" />
         <Calendar value={new Date(2026, 6, 15)} onSelect={() => {}} visibleMonth={new Date(2026, 6, 1)} />
-        <Result status="success" title="Report published" description="Visible to all members." />
-        <Result status="404" title="Page not found" actions={<Button>Back to projects</Button>} />
+        <EmptyState status="success" title="Report published" description="Visible to all members." />
+        <EmptyState status="404" title="Page not found" action={<Button>Back to projects</Button>} />
       </>,
     )
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()

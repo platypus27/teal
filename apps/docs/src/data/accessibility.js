@@ -504,6 +504,7 @@ export const accessibility = {
     notes: [
       'The title renders as an h3 by default; adjust titleAs so the empty state fits the page outline.',
       'The action is a real button or link; keep to a single primary action.',
+      'The status icon is always aria-hidden, including custom icon overrides; the title and description carry the meaning.',
     ],
   },
   loading: {
@@ -1306,12 +1307,6 @@ export const accessibility = {
       'The selected day exposes aria-pressed and today exposes aria-current="date".',
       'Out-of-range or disabledDates days render as native disabled buttons, removed from interaction.',
       'The month label is aria-live="polite", so previous and next navigation announces the new month.',
-    ],
-  },
-  result: {
-    notes: [
-      'The status icon is always aria-hidden, including custom icon overrides; the title and description carry the meaning.',
-      'Actions are caller-rendered buttons, so they keep normal keyboard and focus behavior.',
     ],
   },
   'activity-feed': {

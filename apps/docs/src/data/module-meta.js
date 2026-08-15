@@ -3187,7 +3187,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						"Don't stack several competing actions under one empty state.",
 					],
 				},
-				related: ["loading", "result", "alert"],
+				related: ["loading", "alert"],
 				examples: [
 					{
 						title: "First-run",
@@ -5244,51 +5244,6 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						title: "Bounded range",
 						description:
 							"min and max constrain selection to the next thirty days; out-of-range days render disabled.",
-					},
-				],
-			},
-			{
-				id: "result",
-				name: "Result",
-				apiNames: ["Result"],
-				imports: ["Result", "Button"],
-				description:
-					"A full-area outcome state for success, error, and HTTP results with a standard icon and actions.",
-				usage: `<Result
-  status="404"
-  title="Page not found"
-  description="The report may have been moved or deleted."
-  actions={<Button>Back to projects</Button>}
-/>`,
-				anatomy: [
-					{ part: "Status icon", description: "A standard icon per status with a matching tint; always hidden from assistive technology and overridable via icon." },
-					{ part: "Title", description: "A bold headline stating the outcome." },
-					{ part: "Description", description: "Optional supporting text capped at a readable measure." },
-					{ part: "Actions", description: "Caller-supplied buttons rendered below the description, typically one primary recovery action." },
-				],
-				dosDonts: {
-					dos: [
-						"Lead the title with the outcome, like \"Report published\" or \"Page not found\".",
-						"Offer one primary action that recovers or navigates away.",
-						"Use EmptyState for \"no data yet\" and Result for completed outcomes or error pages.",
-					],
-					donts: [
-						"Don't rely on the icon to convey the status; it is decorative, the title carries the meaning.",
-						"Don't stack more than two actions in the actions area.",
-						"Don't use Result for inline or transient feedback; use Alert or Toast.",
-					],
-				},
-				related: ["empty-state", "alert", "error-boundary"],
-				examples: [
-					{
-						title: "Outcome states",
-						description:
-							"Seven statuses pair a standard icon with a matching tint and optional actions.",
-					},
-					{
-						title: "HTTP status",
-						description:
-							"404, 403, and 500 statuses suit full-page error results with a way back.",
 					},
 				],
 			},
@@ -7576,6 +7531,11 @@ const additionalExamples = {
 			description:
 				"Explain that filters produced no results and offer a way to adjust them.",
 		},
+		{
+			title: "Status outcomes",
+			description:
+				"Pass status to show a standard icon and tint for success, error, warning, info, or HTTP outcomes like 404.",
+		},
 	],
 	loading: [
 		{
@@ -7856,13 +7816,6 @@ const additionalExamples = {
 			title: "Dense lists",
 			description:
 				"Use dense inside popovers and panels where vertical space is tight.",
-		},
-	],
-	result: [
-		{
-			title: "HTTP states",
-			description:
-				"404, 403, and 500 statuses cover routing and server outcomes.",
 		},
 	],
 	stack: [
@@ -8427,16 +8380,6 @@ const guidanceById = {
 			"Days are buttons with aria-pressed for the selection and aria-current=\"date\" for today; the aria-live month label announces navigation, and the visible month can be controlled.",
 		responsive:
 			"The grid keeps a fixed seven-column width; place it in a popover or panel on small screens.",
-	},
-	result: {
-		useWhen:
-			"A page or panel needs a full-area outcome: success, error, warning, info, or an HTTP status like 404.",
-		avoidWhen:
-			"The feedback is inline or transient; use Alert or Toast. \"No data yet\" fits EmptyState better.",
-		behavior:
-			"The status picks a standard icon and tint; the icon is always aria-hidden so the title carries the meaning, and actions render caller-supplied buttons.",
-		responsive:
-			"Content stays centered and wraps; the description caps at a readable measure on wide screens.",
 	},
 	"tree-view": {
 		useWhen:
