@@ -456,9 +456,10 @@ export const moduleGroups = [
 				name: "Input and TextArea",
 				apiNames: ["Input", "TextArea"],
 				description:
-					"Native text controls with Teal sizing, invalid states, and forwarded refs; pass autosize on TextArea to grow with the content.",
+					"Native text controls with Teal sizing, invalid states, and forwarded refs; Input adds a clear action, a loading spinner, and a password reveal toggle, while autosize on TextArea grows with the content.",
 				usage: `<Input placeholder="Project name" />
-<TextArea placeholder="Notes" rows={4} />
+<Input clearable label="Search projects" />
+<Input type="password" label="Password" />
 <TextArea autosize label="Bio" minRows={2} maxRows={6} />`,
 				anatomy: [
 					{ part: "Control", description: "The native input or textarea element with Teal sizing, focus ring, and a forwarded ref." },
@@ -477,7 +478,7 @@ export const moduleGroups = [
 						"Don't use free text for a constrained choice; use Select or RadioGroup.",
 					],
 				},
-				related: ["field", "search-input", "input-group"],
+				related: ["field", "input-group", "combobox"],
 				examples: [
 					{
 						title: "States",
@@ -722,46 +723,6 @@ export const moduleGroups = [
 				],
 			},
 			{
-				id: "search-input",
-				name: "Search Input",
-				apiNames: ["SearchInput"],
-				description:
-					"A text field with a leading search affordance, clear action, and loading state.",
-				usage:
-					'<SearchInput label="Search projects" placeholder="Name or owner…" />',
-				anatomy: [
-					{ part: "Leading icon", description: "The decorative search glyph pinned inside the field." },
-					{ part: "Input", description: "The native text field that owns the query." },
-					{ part: "Clear button", description: "A labeled action that appears once the field has a value and resets it." },
-					{ part: "Loading spinner", description: "Replaces the clear button while results load." },
-				],
-				dosDonts: {
-					dos: [
-						"Handle onClear and reset the caller-owned value when the clear action fires.",
-						"Use the loading state while fetching so typing stays uninterrupted.",
-						"Write placeholders as examples, like Name or owner….",
-					],
-					donts: [
-						"Don't use SearchInput for general text entry; use Input.",
-						"Don't navigate on every keystroke without debouncing the query.",
-						"Don't keep the spinner on after results arrive; it hides the clear action.",
-					],
-				},
-				related: ["input", "combobox", "command"],
-				examples: [
-					{
-						title: "Clearable search",
-						description:
-							"The clear button appears once the field has a value; loading swaps in a spinner.",
-					},
-					{
-						title: "Filled, loading, and disabled",
-						description:
-							"The clear action shows on filled fields, swaps for a spinner while loading, and disappears when disabled.",
-					},
-				],
-			},
-			{
 				id: "combobox",
 				name: "Combobox",
 				apiNames: ["Combobox"],
@@ -910,42 +871,6 @@ export const moduleGroups = [
 				],
 			},
 			{
-				id: "password-input",
-				name: "Password Input",
-				apiNames: ["PasswordInput"],
-				description: "A secret field with an accessible visibility toggle.",
-				usage: '<PasswordInput label="Password" />',
-				anatomy: [
-					{ part: "Input", description: "The secret field rendered with type password." },
-					{ part: "Visibility toggle", description: "The eye button that flips the field type and reports its state through aria-pressed." },
-				],
-				dosDonts: {
-					dos: [
-						"Set autoComplete to new-password or current-password so password managers fill correctly.",
-						"State the requirements in the description, not only after a failed submit.",
-						"Pair new-password fields with PasswordStrengthMeter when strength matters.",
-					],
-					donts: [
-						"Don't reveal the password by default.",
-						"Don't block paste; password managers depend on it.",
-						"Don't use it for non-sensitive masked text; masking here is about secrecy.",
-					],
-				},
-				related: ["password-strength-meter", "input", "pin-input", "form"],
-				examples: [
-					{
-						title: "Visibility toggle",
-						description:
-							"The eye button exposes its state through aria-pressed.",
-					},
-					{
-						title: "Current password",
-						description:
-							"The current-password autocomplete variant used in security settings flows.",
-					},
-				],
-			},
-			{
 				id: "file-upload",
 				name: "File Upload",
 				apiNames: ["FileUpload"],
@@ -1007,7 +932,7 @@ export const moduleGroups = [
 						"Don't rely on per-cell placeholders as labels; each cell is already labeled by position.",
 					],
 				},
-				related: ["password-input", "input", "form"],
+				related: ["input", "form"],
 				examples: [
 					{
 						title: "One-time code",
@@ -1496,7 +1421,7 @@ export const moduleGroups = [
 					],
 					dosDonts: {
 						dos: [
-							"Place it directly under the PasswordInput it scores and pass the live password value.",
+							"Place it directly under the password Input it scores and pass the live password value.",
 							"Supply a real estimator such as zxcvbn through the score prop for sign-up flows.",
 							"Keep the visible band text on; hide it only when space is truly constrained.",
 						],
@@ -1505,7 +1430,7 @@ export const moduleGroups = [
 							"Don't block submission on the meter alone; enforce policy server-side.",
 						],
 					},
-					related: ["password-input", "meter", "form"],
+					related: ["input", "meter", "form"],
 					examples: [
 						{
 							title: "Default heuristic",
@@ -6410,7 +6335,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Don't reimplement per-field split logic; reuse the component wherever matches are shown.",
 						],
 					},
-					related: ["search-input", "combobox", "truncated-text"],
+					related: ["input", "combobox", "truncated-text"],
 					examples: [
 						{
 							title: "Inline highlight",
@@ -6828,6 +6753,16 @@ const additionalExamples = {
 			description:
 				"Use a compact search control alongside an input that reports its invalid state.",
 		},
+		{
+			title: "Clearable and loading",
+			description:
+				"clearable shows a clear action once the field has a value; loading swaps it for a spinner in the same slot, and disabled fields hide both.",
+		},
+		{
+			title: "Password reveal",
+			description:
+				'type="password" adds a visibility toggle that flips the field type and reports its state through aria-pressed.',
+		},
 	],
 	select: [
 		{
@@ -7086,13 +7021,6 @@ const additionalExamples = {
 			title: "Bounded ranges",
 			description:
 				"Set min, max, and step when the meaningful range is narrower than 0–100.",
-		},
-	],
-	"search-input": [
-		{
-			title: "Loading results",
-			description:
-				"The loading state replaces the clear action while results refresh.",
 		},
 	],
 	chip: [
@@ -7388,7 +7316,7 @@ const guidanceById = {
 			"Users enter or search for short text, or multi-line text where TextArea with autosize should track the content height.",
 		avoidWhen: "A constrained set of choices or a long-form editor is clearer.",
 		behavior:
-			"Native input behavior is preserved, including browser validation and refs. With autosize, TextArea height follows the content between minRows and maxRows; beyond maxRows the field scrolls instead of growing.",
+			"Native input behavior is preserved, including browser validation and refs. clearable shows a clear action once the field has a value and loading swaps it for a spinner in the same slot; type=\"password\" adds a visibility toggle that reports state through aria-pressed. With autosize, TextArea height follows the content between minRows and maxRows; beyond maxRows the field scrolls instead of growing.",
 		responsive:
 			"Use full width on small screens and constrain width at larger sizes.",
 	},
@@ -7587,13 +7515,6 @@ const guidanceById = {
 		responsive:
 			"The track fills its container width, so constrain it in the layout.",
 	},
-	"search-input": {
-		useWhen: "A field exists specifically to query a collection.",
-		avoidWhen: "The input is general-purpose text entry; use Input.",
-		behavior:
-			"The clear action appears only with a value, and loading swaps it for a spinner.",
-		responsive: "Icons stay pinned inside the field at any width.",
-	},
 	combobox: {
 		useWhen:
 			"Users choose one value from a list long enough to need filtering; pass multiple to pick several values.",
@@ -7682,12 +7603,6 @@ const guidanceById = {
 			"Steppers use 24px touch targets and blur clamps to min/max; empty means undefined.",
 		responsive:
 			"The field fills its container; constrain it in the form layout.",
-	},
-	"password-input": {
-		useWhen: "The user enters a secret they may want to verify visually.",
-		avoidWhen: "The content is not sensitive; use Input or SearchInput.",
-		behavior: "The visibility toggle reports state through aria-pressed.",
-		responsive: "The toggle stays pinned inside the field at any width.",
 	},
 	"file-upload": {
 		useWhen: "Users attach files to a form.",
@@ -8079,9 +7994,9 @@ const guidanceById = {
 	},
 	"password-strength-meter": {
 		useWhen:
-			"A sign-up or password-change flow should give live feedback on password quality next to a PasswordInput.",
+			"A sign-up or password-change flow should give live feedback on password quality next to a password Input.",
 		avoidWhen:
-			"You only need to state requirements; a description list under PasswordInput is simpler and less noisy.",
+			"You only need to state requirements; a description list under a password Input is simpler and less noisy.",
 		behavior:
 			"Scores are clamped to 0–4 and mapped to Very weak through Very strong; the score prop replaces the default heuristic entirely.",
 		responsive:

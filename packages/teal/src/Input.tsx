@@ -3,13 +3,17 @@ import {
   useCallback,
   useLayoutEffect,
   useRef,
+  useState,
   type ChangeEvent,
   type InputHTMLAttributes,
   type ReactNode,
   type TextareaHTMLAttributes,
 } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { Eye, EyeOff, LoaderCircle, X } from 'lucide-react'
+import { IconButton } from './Button'
 import { cn } from './cn'
+import { FieldScaffolding } from './field-scaffolding'
 import { hasFormContent, isAriaTrue, mergeDescriptionIds, useFormSemantics } from './form-semantics'
 
 const fieldVariants = cva(
@@ -28,23 +32,140 @@ const fieldVariants = cva(
 
 export interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>,
-    VariantProps<typeof fieldVariants> {}
+    VariantProps<typeof fieldVariants> {
+  /** Shows a clear button once the field has a value. Ignored when type="password". */
+  clearable?: boolean
+  /** Accessible label for the clear button. */
+  clearLabel?: string
+  /** Supporting text rendered below the input and linked to it for assistive technology. */
+  description?: ReactNode
+  /** Visible label rendered above the input. Required outside a Field; inside a Field the Field's label is used. */
+  label?: ReactNode
+  /** Replaces the clear button with a spinner in the same trailing slot. Ignored when type="password". */
+  loading?: boolean
+  /** Called when the clear button is pressed, after the value is cleared. */
+  onClear?: () => void
+  /** Called with the new string whenever the value changes, alongside the native onChange. */
+  onValueChange?: (value: string) => void
+}
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { 'aria-describedby': describedBy, 'aria-invalid': invalid, className, id, required, size, ...props },
+  {
+    'aria-describedby': describedBy,
+    'aria-invalid': invalid,
+    className,
+    clearable = false,
+    clearLabel = 'Clear input',
+    defaultValue,
+    description,
+    disabled,
+    id,
+    label,
+    loading = false,
+    onChange,
+    onClear,
+    onValueChange,
+    required,
+    size,
+    type = 'text',
+    value,
+    ...props
+  },
   ref,
 ) {
-  const semantics = useFormSemantics({ id, invalid: isAriaTrue(invalid), prefix: 'teal-input', required })
+  const isPassword = type === 'password'
+  const hasTrailingSlot = isPassword || clearable || loading
+  const wrapped = hasTrailingSlot || hasFormContent(label) || hasFormContent(description)
+  const semantics = useFormSemantics({ description, id, invalid: isAriaTrue(invalid), prefix: 'teal-input', required })
+
+  const [internalValue, setInternalValue] = useState(defaultValue ?? '')
+  const currentValue = value ?? internalValue
+  const [visible, setVisible] = useState(false)
+
+  if (!wrapped) {
+    return (
+      <input
+        ref={ref}
+        id={semantics.controlId}
+        type={type}
+        defaultValue={defaultValue}
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+        required={required ?? semantics.required}
+        aria-invalid={invalid ?? (semantics.invalid || undefined)}
+        aria-describedby={mergeDescriptionIds(describedBy, semantics.descriptionId, semantics.errorId)}
+        className={cn(fieldVariants({ size }), className)}
+        {...props}
+      />
+    )
+  }
+
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    setInternalValue(event.target.value)
+    onChange?.(event)
+    onValueChange?.(event.target.value)
+  }
+
+  function handleClear() {
+    setInternalValue('')
+    onValueChange?.('')
+    onClear?.()
+  }
+
   return (
-    <input
-      ref={ref}
-      id={semantics.controlId}
-      required={required ?? semantics.required}
-      aria-invalid={invalid ?? (semantics.invalid || undefined)}
-      aria-describedby={mergeDescriptionIds(describedBy, semantics.descriptionId, semantics.errorId)}
-      className={cn(fieldVariants({ size }), className)}
-      {...props}
-    />
+    <FieldScaffolding
+      controlId={semantics.controlId}
+      description={description}
+      descriptionId={semantics.descriptionId}
+      label={label}
+      labeledByField={semantics.labeledByField}
+    >
+      <div className="teal-u-relative">
+        <input
+          ref={ref}
+          id={semantics.controlId}
+          type={isPassword ? (visible ? 'text' : 'password') : type}
+          value={currentValue}
+          onChange={handleChange}
+          disabled={disabled}
+          required={required ?? semantics.required}
+          aria-invalid={invalid ?? (semantics.invalid || undefined)}
+          aria-describedby={mergeDescriptionIds(describedBy, semantics.descriptionId, semantics.errorId)}
+          className={cn(fieldVariants({ size }), hasTrailingSlot && 'teal-u-pr-10', className)}
+          {...props}
+        />
+        {isPassword ? (
+          <IconButton
+            label={visible ? 'Hide password' : 'Show password'}
+            aria-pressed={visible}
+            size="sm"
+            disabled={disabled}
+            onClick={() => setVisible((current) => !current)}
+            className="teal-u-absolute teal-u-right-1 teal-u-top-1/2 teal-u--translate-y-1/2"
+          >
+            {visible ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
+          </IconButton>
+        ) : loading ? (
+          <span
+            role="status"
+            aria-label="Loading"
+            className="teal-u-absolute teal-u-right-1 teal-u-top-1/2 teal-u-flex teal-u-size-8 teal-u-items-center teal-u-justify-center teal-u--translate-y-1/2"
+          >
+            <LoaderCircle aria-hidden="true" className="teal-u-size-4 teal-u-animate-spin teal-u-text-on-surface-variant motion-reduce:teal-u-animate-none" />
+          </span>
+        ) : clearable && currentValue !== '' && !disabled ? (
+          <IconButton
+            label={clearLabel}
+            size="sm"
+            onClick={handleClear}
+            className="teal-u-absolute teal-u-right-1 teal-u-top-1/2 teal-u--translate-y-1/2"
+          >
+            <X />
+          </IconButton>
+        ) : null}
+      </div>
+    </FieldScaffolding>
   )
 })
 

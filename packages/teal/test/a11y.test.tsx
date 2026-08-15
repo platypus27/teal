@@ -121,7 +121,6 @@ import {
   OrgChart,
   PageHeader,
   Pagination,
-  PasswordInput,
   PasswordStrengthMeter,
   PermissionMatrix,
   PhoneInput,
@@ -146,7 +145,6 @@ import {
   ScatterChart,
   ScrollArea,
   ScrollShadow,
-  SearchInput,
   Section,
   Select,
   Separator,
@@ -770,7 +768,7 @@ describe('axe: second catalog expansion', () => {
           ]}
         />
         <Slider label="Notification volume" defaultValue={60} showValue />
-        <SearchInput label="Search projects" defaultValue="orion" />
+        <Input clearable label="Search projects" defaultValue="orion" />
         <Combobox
           label="Assignee"
           options={[
@@ -850,7 +848,7 @@ describe('axe: third catalog expansion', () => {
       <>
         <DatePicker label="Start date" defaultValue={new Date(2026, 6, 15)} />
         <NumberInput label="Seats" defaultValue={4} min={1} max={12} />
-        <PasswordInput label="Password" defaultValue="hunter2" />
+        <Input type="password" label="Password" defaultValue="hunter2" />
         <Combobox
           multiple
           label="Project roles"

@@ -28,12 +28,16 @@ export const accessibility = {
   },
   input: {
     keyboard: [
-      { keys: ['Tab'], action: 'Moves focus to and from the control.' },
+      { keys: ['Tab'], action: 'Moves focus to and from the control, and to the clear or visibility toggle when one is visible.' },
+      { keys: ['Enter', 'Space'], action: 'Activates the focused clear button or password visibility toggle.' },
       { keys: ['Typing'], action: 'Edits the value using native text editing keys.' },
     ],
     notes: [
       'Inputs are native elements, so autofill, spellcheck, and input modes work without configuration.',
       'Inside a Field, aria-invalid and aria-describedby are applied automatically when the field has an error or description.',
+      'Input label and description props render a visible label wired with htmlFor and help text linked through aria-describedby; use aria-label when there is no visible label.',
+      'The clear action is an IconButton labeled Clear input that appears once a clearable field has a value; loading swaps it for a spinner announced with role status in the same slot, so nothing shifts between states.',
+      'With type password, the visibility toggle flips the field between password and text and reports its state through aria-pressed; set autoComplete to new-password or current-password so password managers fill correctly.',
       'TextArea label and description props render a visible label wired with htmlFor and help text linked through aria-describedby; use aria-label when there is no visible label.',
       'In autosize mode, TextArea suppresses visual resize because the field sizes itself; keyboard and screen-reader behavior match a standard textarea.',
     ],
@@ -105,18 +109,6 @@ export const accessibility = {
       'Inside a Field, descriptions and errors link through aria-describedby and aria-invalid.',
     ],
   },
-  'search-input': {
-    keyboard: [
-      { keys: ['Tab'], action: 'Moves focus through the field and the clear button when it is visible.' },
-      { keys: ['Enter', 'Space'], action: 'Activates the clear button and resets the value.' },
-      { keys: ['Typing'], action: 'Edits the query using native text editing keys.' },
-    ],
-    notes: [
-      'The leading search icon is decorative and hidden from assistive technology.',
-      'The clear action is an IconButton labeled Clear search.',
-      'The loading state swaps the clear action for a spinner, keeping focus on the field.',
-    ],
-  },
   combobox: {
     keyboard: [
       { keys: ['Typing'], action: 'Filters the option list and opens the listbox.' },
@@ -158,18 +150,6 @@ export const accessibility = {
     notes: [
       'Steppers are labeled Increment and Decrement and disable at the min and max bounds.',
       'An empty field reports undefined rather than zero.',
-      'Inside a Field, descriptions and errors link through aria-describedby and aria-invalid.',
-    ],
-  },
-  'password-input': {
-    keyboard: [
-      { keys: ['Tab'], action: 'Moves focus through the field and the visibility toggle.' },
-      { keys: ['Enter', 'Space'], action: 'Toggles password visibility from the eye button.' },
-      { keys: ['Typing'], action: 'Edits the secret using native text editing keys.' },
-    ],
-    notes: [
-      'The visibility toggle reports its state through aria-pressed and keeps an accessible label.',
-      'Set autoComplete to new-password or current-password so password managers fill the field.',
       'Inside a Field, descriptions and errors link through aria-describedby and aria-invalid.',
     ],
   },
