@@ -187,8 +187,6 @@ export type { ShareButtonProps } from './ShareButton'
 export { SpeedDial, SpeedDialAction } from './SpeedDial'
 export type { SpeedDialProps, SpeedDialActionProps } from './SpeedDial'
 
-export { AutosizeTextarea } from './AutosizeTextarea'
-export type { AutosizeTextareaProps } from './AutosizeTextarea'
 export { CurrencyInput } from './CurrencyInput'
 export type { CurrencyInputProps } from './CurrencyInput'
 export { Fieldset } from './Fieldset'
