@@ -75,3 +75,61 @@ describe('RadioGroup', () => {
     expect(group).toHaveAttribute('aria-invalid', 'true')
   })
 })
+
+describe('RadioGroup card variant', () => {
+  const cardOptions = [
+    { value: 'starter', label: 'Starter', description: 'For side projects' },
+    { value: 'pro', label: 'Pro', description: 'For teams', disabled: true },
+    { value: 'enterprise', label: 'Enterprise', description: 'For orgs' },
+  ]
+
+  it('renders a radiogroup with one radio per card', () => {
+    render(<RadioGroup variant="card" label="Choose a plan" options={cardOptions} />)
+
+    expect(screen.getByRole('radiogroup', { name: 'Choose a plan' })).toBeInTheDocument()
+    expect(screen.getAllByRole('radio')).toHaveLength(3)
+  })
+
+  it('selects a card on click', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    render(<RadioGroup variant="card" label="Choose a plan" options={cardOptions} onValueChange={onValueChange} />)
+
+    await user.click(screen.getByRole('radio', { name: /Starter/ }))
+
+    expect(onValueChange).toHaveBeenCalledWith('starter')
+    expect(screen.getByRole('radio', { name: /Starter/ })).toHaveAttribute('aria-checked', 'true')
+  })
+
+  it('moves selection and focus with arrow keys, wrapping and skipping disabled cards', () => {
+    const onValueChange = vi.fn()
+    render(<RadioGroup variant="card" label="Choose a plan" options={cardOptions} onValueChange={onValueChange} />)
+    const group = screen.getByRole('radiogroup', { name: 'Choose a plan' })
+
+    fireEvent.keyDown(group, { key: 'ArrowDown' })
+    expect(onValueChange).toHaveBeenCalledWith('starter')
+    expect(screen.getByRole('radio', { name: /Starter/ })).toHaveFocus()
+
+    fireEvent.keyDown(group, { key: 'ArrowRight' }) // skips disabled Pro
+    expect(onValueChange).toHaveBeenCalledWith('enterprise')
+    expect(screen.getByRole('radio', { name: /Pro/ })).toHaveAttribute('aria-disabled', 'true')
+  })
+
+  it('jumps to the first and last card with Home and End', () => {
+    const onValueChange = vi.fn()
+    render(<RadioGroup variant="card" label="Choose a plan" options={cardOptions} onValueChange={onValueChange} />)
+    const group = screen.getByRole('radiogroup', { name: 'Choose a plan' })
+
+    fireEvent.keyDown(group, { key: 'End' })
+    expect(screen.getByRole('radio', { name: /Enterprise/ })).toHaveFocus()
+    fireEvent.keyDown(group, { key: 'Home' })
+    expect(onValueChange).toHaveBeenLastCalledWith('starter')
+  })
+
+  it('keeps the selected card as the only tab stop and honors a controlled value', () => {
+    render(<RadioGroup variant="card" label="Choose a plan" options={cardOptions} value="enterprise" />)
+
+    expect(screen.getByRole('radio', { name: /Enterprise/ })).toHaveAttribute('tabindex', '0')
+    expect(screen.getByRole('radio', { name: /Starter/ })).toHaveAttribute('tabindex', '-1')
+  })
+})

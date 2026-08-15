@@ -209,8 +209,6 @@ export { defaultPasswordScore, PasswordStrengthMeter } from './PasswordStrengthM
 export type { PasswordStrengthMeterProps } from './PasswordStrengthMeter'
 export { phoneCountries, PhoneInput } from './PhoneInput'
 export type { PhoneCountry, PhoneInputProps } from './PhoneInput'
-export { RadioCard } from './RadioCard'
-export type { RadioCardOption, RadioCardProps } from './RadioCard'
 export { RichTextEditor } from './RichTextEditor'
 export type { RichTextEditorProps } from './RichTextEditor'
 export { TimezoneSelect } from './TimezoneSelect'

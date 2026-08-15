@@ -654,7 +654,7 @@ export const moduleGroups = [
 				name: "Radio Group",
 				apiNames: ["RadioGroup"],
 				description:
-					"A single-choice option set with an integrated label, description, and subtle borders.",
+					"A single-choice option set with an integrated label, description, and subtle borders; pass variant=\"card\" for selectable cards with a title, description, and optional icon.",
 				usage: `<RadioGroup
   label="Home region"
   defaultValue="eu"
@@ -681,7 +681,7 @@ export const moduleGroups = [
 						"Don't switch to horizontal orientation when labels would wrap.",
 					],
 				},
-				related: ["radio-card", "select", "checkbox", "toggle-group"],
+				related: ["select", "checkbox", "toggle-group"],
 				examples: [
 					{
 						title: "Single choice",
@@ -692,6 +692,11 @@ export const moduleGroups = [
 						title: "Horizontal options",
 						description:
 							"A horizontal orientation suits short labels like digest frequencies.",
+					},
+					{
+						title: "Card variant",
+						description:
+							"variant=\"card\" renders each option as a selectable card with a description and optional icon, for choices that need explanation.",
 					},
 				],
 			},
@@ -1345,11 +1350,11 @@ export const moduleGroups = [
 							"Keep unavailable options visible but disabled.",
 						],
 						donts: [
-							"Don't use cards for mutually exclusive choices; use RadioCard.",
+							"Don't use cards for mutually exclusive choices; use RadioGroup with variant=\"card\".",
 							"Don't use a card when a plain Checkbox with a label says enough.",
 						],
 					},
-					related: ["checkbox", "radio-card", "switch"],
+					related: ["checkbox", "radio-group", "switch"],
 					examples: [
 						{
 							title: "Standalone card",
@@ -1707,51 +1712,6 @@ export const moduleGroups = [
 					],
 				},
 				{
-					id: "radio-card",
-					name: "Radio Card",
-					apiNames: ["RadioCard"],
-					description:
-						"A radio group rendered as selectable cards with a title, description, and optional icon, for choices that need explanation.",
-					usage: `<RadioCard
-  label="Choose a plan"
-  defaultValue="pro"
-  options={[
-    { value: 'starter', title: 'Starter', description: 'For side projects' },
-    { value: 'pro', title: 'Pro', description: 'For growing teams' },
-  ]}
-/>`,
-					anatomy: [
-						{ part: "Group", description: "A radiogroup named by the required label prop, with roving focus on the checked card." },
-						{ part: "Card", description: "A radio-role button per option; arrow keys move and check, skipping disabled cards." },
-						{ part: "Title and description", description: "The option's name and supporting explanation inside each card." },
-						{ part: "Icon", description: "An optional decorative icon above the title." },
-					],
-					dosDonts: {
-						dos: [
-							"Use it for two to five choices that each need a sentence of explanation, like plans.",
-							"Write descriptions that contrast the options, not restate the titles.",
-							"Keep unavailable options visible but disabled.",
-						],
-						donts: [
-							"Don't use it for more than a handful of options; use Select or Combobox.",
-							"Don't use it when several selections are allowed; use CheckboxCard.",
-						],
-					},
-					related: ["radio-group", "checkbox-card", "toggle-group"],
-					examples: [
-						{
-							title: "Plan picker",
-							description:
-								"Vertical cards with descriptions and a disabled unavailable option.",
-						},
-						{
-							title: "Horizontal with icons",
-							description:
-								"A horizontal layout with an icon above each card title.",
-						},
-					],
-				},
-				{
 					id: "rich-text-editor",
 					name: "Rich Text Editor",
 					apiNames: ["RichTextEditor"],
@@ -1858,7 +1818,7 @@ export const moduleGroups = [
 							"Keep groups to two to five items so every option stays visible.",
 						],
 						donts: [
-							"Don't use it for settings that need explanatory text; use RadioCard or CheckboxCard.",
+							"Don't use it for settings that need explanatory text; use RadioGroup with variant=\"card\" or CheckboxCard.",
 							"Don't use it to submit form choices; it is a control cluster, not a fieldset.",
 						],
 					},
@@ -7948,9 +7908,9 @@ const guidanceById = {
 		useWhen: "Users pick exactly one option from a small visible set.",
 		avoidWhen: "The list is long or needs filtering; use Select or Combobox.",
 		behavior:
-			"Arrow keys move and select within the group; the label is wired through aria-labelledby.",
+			"Arrow keys move and select within the group; the label is wired through aria-labelledby. With variant=\"card\", options render as selectable cards whose checked card holds the only tab stop; arrows wrap around and skip disabled cards, and Home/End check the first or last enabled card.",
 		responsive:
-			"Switch to horizontal orientation only when labels stay on one line.",
+			"Switch to horizontal orientation only when labels stay on one line. In the card variant, horizontal groups wrap cards onto multiple rows on narrow screens.",
 	},
 	slider: {
 		useWhen:
@@ -8441,7 +8401,7 @@ const guidanceById = {
 		useWhen:
 			"An on/off choice needs a description or icon to be understood, such as notification channels or feature opt-ins.",
 		avoidWhen:
-			"The choice needs no explanation; a plain Checkbox is more compact. Mutually exclusive options call for RadioCard.",
+			"The choice needs no explanation; a plain Checkbox is more compact. Mutually exclusive options call for RadioGroup with variant=\"card\".",
 		behavior:
 			"Clicking or pressing Space toggles the card and reports the new checked state; each card in a group tracks its own state. Supports controlled and uncontrolled checked.",
 		responsive:
@@ -8524,16 +8484,6 @@ const guidanceById = {
 		responsive:
 			"The country dropdown keeps its natural width while the number field flexes to fill the remaining space.",
 	},
-	"radio-card": {
-		useWhen:
-			"A single choice between a few options benefits from a description or icon, such as plans, billing periods, or delivery speeds.",
-		avoidWhen:
-			"Options are short labels with no supporting text; RadioGroup or ToggleGroup is lighter. Several selections call for CheckboxCard.",
-		behavior:
-			"Selecting a card checks it and moves focus like a native radio group; the checked card holds the group's only tab stop and arrows wrap around, skipping disabled cards. Supports controlled and uncontrolled value.",
-		responsive:
-			"Vertical stacks fill their container; horizontal groups wrap cards onto multiple rows on narrow screens.",
-	},
 	"rich-text-editor": {
 		useWhen:
 			"Users write formatted long-form text that should stay portable markdown, such as release notes, docs, or issue descriptions.",
@@ -8555,7 +8505,7 @@ const guidanceById = {
 		useWhen:
 			"Two to five related options need quick on/off switching, such as alignment or formatting controls.",
 		avoidWhen:
-			"Options need explanatory text or there are many of them; use RadioCard, CheckboxCard, or Select instead.",
+			"Options need explanatory text or there are many of them; use RadioGroup with variant=\"card\", CheckboxCard, or Select instead.",
 		behavior:
 			"Single mode keeps exactly one item checked and reports the new value; multiple mode reports the full array of pressed values. Disabled items leave the focus order and cannot be toggled.",
 		responsive:

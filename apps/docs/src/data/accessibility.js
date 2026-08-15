@@ -77,11 +77,13 @@ export const accessibility = {
       { keys: ['Tab'], action: 'Moves focus to the selected radio, or the first option when none is selected.' },
       { keys: ['Arrow Up', 'Arrow Down', 'Arrow Left', 'Arrow Right'], action: 'Moves focus and selection between options.' },
       { keys: ['Space'], action: 'Selects the focused option when the group has no selection.' },
+      { keys: ['Home', 'End'], action: 'In the card variant, checks the first or last enabled card.' },
     ],
     notes: [
       'Implements the ARIA radiogroup pattern through the Radix primitive with roving tab index.',
       'The group label is wired through aria-labelledby and each option keeps a clickable label.',
       'Disabled options stay visible but are skipped during keyboard navigation.',
+      'In the card variant, cards expose radiogroup/radio semantics with aria-checked; arrow keys wrap around and skip disabled cards, which set aria-disabled.',
     ],
   },
   slider: {
@@ -818,17 +820,6 @@ export const accessibility = {
       'The country dropdown has its own accessible name, "Country calling code".',
       'The visible label points at the number field; the dropdown precedes it in the tab order.',
       'type="tel" summons a telephone keypad on touch devices.',
-    ],
-  },
-  'radio-card': {
-    keyboard: [
-      { keys: ['Tab'], action: 'Moves focus to the checked card.' },
-      { keys: ['Arrow Up', 'Arrow Down', 'Arrow Left', 'Arrow Right'], action: 'Moves focus and checks the next card, wrapping at the ends.' },
-      { keys: ['Home', 'End'], action: 'Checks the first or last enabled card.' },
-    ],
-    notes: [
-      'Cards expose radiogroup/radio semantics with aria-checked; the group is named by the required label prop.',
-      'Disabled cards set aria-disabled and are skipped by arrow-key navigation.',
     ],
   },
   'rich-text-editor': {
