@@ -345,7 +345,7 @@ export const moduleGroups = [
 							"Don't let it cover primary content; pick the corner that stays clear.",
 						],
 					},
-					related: ["speed-dial", "action-bar", "button"],
+					related: ["action-bar", "button", "menu"],
 					examples: [
 						{
 							title: "Round FAB with tooltip",
@@ -356,6 +356,11 @@ export const moduleGroups = [
 							title: "Extended FAB",
 							description:
 								"An extendedLabel turns the round button into a pill with text for extra clarity.",
+						},
+						{
+							title: "Actions fan-out",
+							description:
+								"The actions prop expands the FAB into a fan of related actions with menu keyboard support.",
 						},
 					],
 				},
@@ -396,46 +401,6 @@ export const moduleGroups = [
 							title: "Native share fallback",
 							description:
 								"Where navigator.share exists a Share via action appears; elsewhere the popover quietly offers copy only.",
-						},
-					],
-				},
-				{
-					id: "speed-dial",
-					name: "Speed Dial",
-					apiNames: ["SpeedDial", "SpeedDialAction"],
-					description:
-						"A floating button that expands into a fan of related creation actions with full keyboard support.",
-					usage: `<SpeedDial label="Create actions" position="bottom-right">
-  <SpeedDialAction label="New file" icon={<FilePlus />} />
-  <SpeedDialAction label="New folder" icon={<FolderPlus />} />
-</SpeedDial>`,
-					anatomy: [
-						{ part: "Trigger", description: "The floating button with aria-haspopup=\"menu\" that expands the fan." },
-						{ part: "Menu", description: "The role=\"menu\" container whose orientation matches the fan direction." },
-						{ part: "Actions", description: "SpeedDialAction items rendered as labelled menuitems, each with an icon and label." },
-					],
-					dosDonts: {
-						dos: [
-							"Keep the fan to three to six related creation actions.",
-							"Choose the direction that fans into the page rather than off-screen.",
-							"Give every action a short, distinct label.",
-						],
-						donts: [
-							"Don't use a speed dial for a single action; a FloatingActionButton is faster.",
-							"Don't mix destructive actions into a creation fan.",
-						],
-					},
-					related: ["floating-action-button", "menu", "action-sheet"],
-					examples: [
-						{
-							title: "Vertical fan",
-							description:
-								"The default dial expands upward from the bottom-right corner into a stack of labelled actions.",
-						},
-						{
-							title: "Horizontal fan",
-							description:
-								"Direction left or right fans the actions out sideways, useful near screen edges.",
 						},
 					],
 				},
@@ -8217,16 +8182,6 @@ const guidanceById = {
 			"Copies the given URL (or the current page URL) with visible and announced feedback, and degrades gracefully when clipboard or share APIs are missing.",
 		responsive:
 			"The trigger is a standard button and the popover clamps to the viewport width, so it works at any size.",
-	},
-	"speed-dial": {
-		useWhen:
-			"A screen offers three to six related creation actions that deserve one persistent entry point.",
-		avoidWhen:
-			"There is a single primary action; a plain FloatingActionButton is simpler and faster to use.",
-		behavior:
-			"Opens on click or keyboard, focuses the first action, closes on Escape or after an action runs, and returns focus to the trigger.",
-		responsive:
-			"The fixed corner and fan direction keep actions on-screen at any width; choose the direction that points into the page.",
 	},
 	"currency-input": {
 		useWhen:
