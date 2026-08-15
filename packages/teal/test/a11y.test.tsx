@@ -138,7 +138,6 @@ import {
   Portal,
   Presence,
   Progress,
-  ProgressCircle,
   PromptDialog,
   QrCode,
   RadarChart,
@@ -897,8 +896,8 @@ describe('axe: third catalog expansion', () => {
             { id: '2', title: 'Deploy started', timestamp: '9 min ago', tone: 'primary' },
           ]}
         />
-        <ProgressCircle value={64} label="Import progress" />
-        <ProgressCircle label="Loading" />
+        <Progress shape="circle" value={64} label="Import progress" />
+        <Progress shape="circle" label="Loading" />
         <CodeBlock language="bash" code="npm install @kryv/teal" showLineNumbers />
       </>,
     )

@@ -3008,12 +3008,22 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						"Don't layer Skeleton and Spinner over the same region at once.",
 					],
 				},
-				related: ["progress-circle", "loading-bar", "blocking-overlay"],
+				related: ["loading-bar", "blocking-overlay", "meter"],
 				examples: [
 					{
 						title: "Loading treatments",
 						description:
 							"Spinner and Progress for active work, Skeleton for layout placeholders, LoadingState for regions.",
+					},
+					{
+						title: "Skeleton composition",
+						description:
+							"Skeleton blocks mirror the shape of the incoming content.",
+					},
+					{
+						title: "Radial progress",
+						description:
+							'shape="circle" gives Progress a compact radial treatment; omit value for a spinning indeterminate arc.',
 					},
 				],
 			},
@@ -3183,37 +3193,6 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 				],
 			},
 			{
-				id: "progress-circle",
-				name: "Progress Circle",
-				apiNames: ["ProgressCircle"],
-				description:
-					"A radial progress indicator with determinate and indeterminate modes.",
-				usage: '<ProgressCircle value={64} label="Import progress" />',
-				anatomy: [
-					{ part: "Track", description: "Muted full circle that anchors the fill." },
-					{ part: "Fill", description: "Primary arc whose dash offset encodes the value; spins as a dashed arc when indeterminate." },
-					{ part: "Value label", description: "Centered percentage readout shown in determinate mode; hidden from assistive technology because the progressbar value carries it." },
-				],
-				dosDonts: {
-					dos: [
-						"Set an explicit size per context instead of scaling the circle.",
-						"Always pass a label so the progressbar has an accessible name.",
-					],
-					donts: [
-						"Don't use it for precise values in dense tables; use Progress or plain text.",
-						"Don't shrink it below the size where the percentage label stays legible.",
-					],
-				},
-				related: ["loading", "loading-bar", "meter"],
-				examples: [
-					{
-						title: "Radial progress",
-						description:
-							'role="progressbar" carries the value; omit value for a spinning indeterminate arc.',
-					},
-				],
-			},
-			{
 				id: "timeline",
 				name: "Timeline",
 				apiNames: ["Timeline"],
@@ -3271,7 +3250,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						"Don't pass only one or two thresholds; without all three the fill stays neutral.",
 					],
 				},
-				related: ["progress-circle", "loading", "stat"],
+				related: ["loading", "stat"],
 				examples: [
 					{
 						title: "Zones",
@@ -3416,7 +3395,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Don't fake smooth increments; jump to the real value when it is known.",
 						],
 					},
-					related: ["loading", "progress-circle", "blocking-overlay"],
+					related: ["loading", "blocking-overlay"],
 					examples: [
 						{ title: "Determinate", description: "A known percentage pinned to the top of the page, for example while assets stream in." },
 						{ title: "Indeterminate", description: "A pulsing bar for route transitions where progress cannot be measured." },
@@ -3553,7 +3532,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Don't remove the row the instant it hits 100%; give the completion a beat.",
 						],
 					},
-					related: ["file-upload", "loading", "progress-circle"],
+					related: ["file-upload", "loading"],
 					examples: [
 						{ title: "In-flight uploads", description: "Rows with progress, size, and a cancel action for active uploads." },
 						{ title: "Completed and large files", description: "A finished upload at 100% and a large file with formatted GB size." },
@@ -4754,7 +4733,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						"Don't compare many categories with stats; use a chart or Table.",
 					],
 				},
-				related: ["sparkline", "meter", "progress-circle"],
+				related: ["sparkline", "meter", "loading"],
 				examples: [
 					{
 						title: "Trend delta",
@@ -5222,7 +5201,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Don't rely on zone color alone for status; the caption should carry the meaning.",
 						],
 					},
-					related: ["meter", "progress-circle", "stat"],
+					related: ["meter", "loading", "stat"],
 					examples: [
 						{ title: "Threshold zones", description: "Value arc colored by the active zone, with the zones drawn along the track." },
 						{ title: "Plain and custom scales", description: "A zoneless gauge plus a gauge with a custom min/max range." },
@@ -7314,12 +7293,6 @@ const additionalExamples = {
 				"Bind a global shortcut to open the palette; keep item hints scannable.",
 		},
 	],
-	"progress-circle": [
-		{
-			title: "Indeterminate work",
-			description: "Omit value while progress cannot be measured.",
-		},
-	],
 	timeline: [
 		{
 			title: "Event tones",
@@ -7941,13 +7914,6 @@ const guidanceById = {
 		behavior: "Filtering, highlight, and selection reset on every open.",
 		responsive:
 			"The panel caps at viewport width with its own internal scroll.",
-	},
-	"progress-circle": {
-		useWhen: "Progress needs a compact radial treatment.",
-		avoidWhen: "A precise value matters in a table; use Progress.",
-		behavior:
-			"Determinate mode exposes aria-valuenow; omit value for indeterminate.",
-		responsive: "Set an explicit size per context instead of scaling.",
 	},
 	timeline: {
 		useWhen: "Events form a chronological feed.",
