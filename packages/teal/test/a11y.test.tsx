@@ -146,7 +146,6 @@ import {
   PromptDialog,
   QrCode,
   RadarChart,
-  RadioCard,
   RadioGroup,
   Rating,
   ResizableHandle,
@@ -1209,13 +1208,14 @@ describe('axe: fifth catalog expansion', () => {
           <ToggleGroupItem value="bold">Bold</ToggleGroupItem>
           <ToggleGroupItem value="italic">Italic</ToggleGroupItem>
         </ToggleGroup>
-        <RadioCard
+        <RadioGroup
+          variant="card"
           label="Choose a plan"
           defaultValue="starter"
           options={[
-            { value: 'starter', title: 'Starter', description: 'For side projects' },
-            { value: 'pro', title: 'Pro', description: 'For growing teams' },
-            { value: 'enterprise', title: 'Enterprise', description: 'For large orgs', disabled: true },
+            { value: 'starter', label: 'Starter', description: 'For side projects' },
+            { value: 'pro', label: 'Pro', description: 'For growing teams' },
+            { value: 'enterprise', label: 'Enterprise', description: 'For large orgs', disabled: true },
           ]}
         />
         <CheckboxCard title="Email digest" description="A weekly summary" />
