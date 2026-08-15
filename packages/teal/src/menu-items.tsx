@@ -28,7 +28,7 @@ interface MenuItemPrimitives {
   Separator: ComponentType<{ className?: string }>
 }
 
-/** Shared item list for Menu, ContextMenu (as Menu mode="context"), and Menubar. */
+/** Shared item list for Menu (dropdown and context modes) and Menubar. */
 export function MenuItems({ items, Item, Separator }: { items: MenuItem[] } & MenuItemPrimitives) {
   return items.map((item) => (
     <div key={item.id}>

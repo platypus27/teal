@@ -53,7 +53,6 @@ import {
   Command,
   CommentThread,
   Container,
-  ContextMenu,
   CookieConsent,
   CopyButton,
   CountdownTimer,
@@ -1017,7 +1016,8 @@ describe('axe: fourth catalog expansion', () => {
   it('context menu has no violations when open', async () => {
     const user = userEvent.setup()
     const { baseElement } = render(
-      <ContextMenu
+      <Menu
+        mode="context"
         label="Project actions"
         items={[
           { id: 'rename', label: 'Rename', onSelect: () => {} },
@@ -1025,7 +1025,7 @@ describe('axe: fourth catalog expansion', () => {
         ]}
       >
         <div>Right-click area</div>
-      </ContextMenu>,
+      </Menu>,
     )
     await user.pointer({ keys: '[MouseRight]', target: screen.getByText('Right-click area') })
     await screen.findByRole('menu')

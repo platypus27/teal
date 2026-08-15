@@ -477,19 +477,6 @@ export const accessibility = {
       'Confirm and cancel are real buttons; the choice is never implicit.',
     ],
   },
-  'context-menu': {
-    keyboard: [
-      { keys: ['Menu key'], action: 'Opens the menu from the keyboard on the focused target.' },
-      { keys: ['Arrow Up', 'Arrow Down'], action: 'Moves the highlight between items, skipping disabled ones.' },
-      { keys: ['Enter', 'Space'], action: 'Activates the highlighted item and closes the menu.' },
-      { keys: ['Escape'], action: 'Closes the menu and returns focus to the target.' },
-    ],
-    notes: [
-      'Shares Menu\'s ARIA menu pattern with menuitem roles and roving highlight.',
-      'The menu is named by the required label prop so the target context is announced.',
-      'Right-click is pointer-only; every action must also be reachable through a visible control.',
-    ],
-  },
   tour: {
     keyboard: [
       { keys: ['Escape'], action: 'Ends the tour, like pressing Skip.' },
