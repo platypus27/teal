@@ -12,7 +12,6 @@
 
 - [Button](/modules/button) (Actions): Actions with consistent hierarchy, sizing, loading, and accessible icon treatment.
 - [Button Group](/modules/button-group) (Actions): An attached cluster of related actions with hairline seams and shared corner radius.
-- [Segmented Control](/modules/segmented-control) (Actions): A mutually exclusive option switcher with a sliding selection pill.
 - [Link](/modules/link) (Actions): Themed inline and standalone links with an external indicator.
 - [Toggle](/modules/toggle) (Actions): A pressed-state button for binary preferences in toolbars and filter rows.
 - [Toolbar](/modules/toolbar) (Actions): A horizontal action bar with grouped controls and hairline separators.
@@ -21,49 +20,36 @@
 - [Bulk Action Bar](/modules/bulk-action-bar) (Actions): A bar that appears when list or table rows are selected, announcing the selection count and offering bulk actions.
 - [Floating Action Button](/modules/floating-action-button) (Actions): A fixed-position primary action button for the single most important creation task on a screen.
 - [Share Button](/modules/share-button) (Actions): A button that opens a small popover with a copy-link action and, where supported, the native share sheet.
-- [Speed Dial](/modules/speed-dial) (Actions): A floating button that expands into a fan of related creation actions with full keyboard support.
 - [Field](/modules/field) (Forms): A deep form seam that connects labels, descriptions, errors, and required state.
-- [Input and TextArea](/modules/input) (Forms): Native text controls with Teal sizing, invalid states, and forwarded refs.
+- [Input and TextArea](/modules/input) (Forms): Native text controls with Teal sizing, invalid states, and forwarded refs; Input adds a clear action, a loading spinner, and a password reveal toggle, while autosize on TextArea grows with the content.
 - [Select](/modules/select) (Forms): An accessible single-value picker with keyboard navigation, typeahead, and collision-aware positioning.
-- [Checkbox](/modules/checkbox) (Forms): Boolean and indeterminate selection with an integrated label and description.
+- [Checkbox](/modules/checkbox) (Forms): Boolean and indeterminate selection with an integrated label and description; pass variant="card" for a selectable card with a title, description, and optional icon.
 - [Switch](/modules/switch) (Forms): An immediate boolean setting with explicit labeling and controlled or uncontrolled state.
-- [Radio Group](/modules/radio-group) (Forms): A single-choice option set with an integrated label, description, and subtle borders.
-- [Slider](/modules/slider) (Forms): A numeric value scrubber with an optional live value readout.
-- [Search Input](/modules/search-input) (Forms): A text field with a leading search affordance, clear action, and loading state.
-- [Combobox](/modules/combobox) (Forms): A filterable single-value picker combining free text with a suggestion list.
-- [Multi Select](/modules/multi-select) (Forms): A filterable picker for several values, shown as removable pills.
-- [Date Picker](/modules/date-picker) (Forms): A single-date field with a keyboard-navigable calendar popover.
+- [Radio Group](/modules/radio-group) (Forms): A single-choice option set with an integrated label, description, and subtle borders; pass variant="card" for selectable cards with a title, description, and optional icon.
+- [Slider](/modules/slider) (Forms): A numeric value scrubber with an optional live value readout; range mode adds a second thumb for low/high pairs.
+- [Combobox](/modules/combobox) (Forms): A filterable picker combining free text with a suggestion list; pass multiple to select several values shown as removable pills.
+- [Date Picker](/modules/date-picker) (Forms): A date field with a keyboard-navigable popover: day, month, year, or datetime modes, plus two-click range selection.
 - [Number Input](/modules/number-input) (Forms): A numeric field with stepper buttons and min/max clamping.
-- [Password Input](/modules/password-input) (Forms): A secret field with an accessible visibility toggle.
 - [File Upload](/modules/file-upload) (Forms): A drag-and-drop zone with a browse action and a removable file list.
 - [PIN Input](/modules/pin-input) (Forms): A segmented one-time code field with per-cell navigation, paste support, and masking.
 - [Tags Input](/modules/tags-input) (Forms): A token entry field that turns typed text into removable chips.
 - [Input Group](/modules/input-group) (Forms): An input joined with leading or trailing addons such as protocols and units.
 - [Editable](/modules/editable) (Forms): Click-to-edit text that commits on Enter or blur and cancels with Escape.
 - [Time Picker](/modules/time-picker) (Forms): A segmented hour and minute field with 12- and 24-hour cycles.
-- [Date Range Picker](/modules/date-range-picker) (Forms): A two-click range field with presets and a keyboard-navigable calendar popover.
 - [Color Picker](/modules/color-picker) (Forms): A swatch trigger with preset colors and a validated hex field.
-- [Autosize Textarea](/modules/autosize-textarea) (Forms): A textarea that grows and shrinks with its content, capped by a maximum row count.
-- [Cascader](/modules/cascader) (Forms): A multi-level option picker that walks a hierarchy column by column and commits the full path of values.
-- [Checkbox Card](/modules/checkbox-card) (Forms): A checkbox rendered as a selectable card with a title, description, and optional icon; works standalone or stacked in groups.
 - [Currency Input](/modules/currency-input) (Forms): A numeric amount field with a leading currency symbol that formats the value with Intl.NumberFormat on blur.
-- [Date Time Picker](/modules/date-time-picker) (Forms): A single popover that pairs a calendar grid with time fields and emits one Date.
 - [Fieldset](/modules/fieldset) (Forms): A semantic fieldset/legend group for related fields, with optional help text linked to the whole group.
 - [Form](/modules/form) (Forms): A lightweight form wrapper that collects field values on submit and shares an error map through context, with no form library.
 - [Form Error Summary](/modules/form-error-summary) (Forms): A top-of-form alert that lists validation errors as anchor links which focus the offending field.
 - [Masked Input](/modules/masked-input) (Forms): A text field that enforces a simple digit mask, inserting separators automatically as the user types.
 - [Mention Input](/modules/mention-input) (Forms): A textarea with @-mention autocomplete that inserts chosen people as plain text tokens.
-- [Month Picker](/modules/month-picker) (Forms): A popover grid of the twelve months with a year stepper for fast month-and-year selection.
 - [Password Strength Meter](/modules/password-strength-meter) (Forms): A progressbar-style meter that visualizes password strength from a caller-supplied or built-in score.
 - [Phone Input](/modules/phone-input) (Forms): A country calling-code dropdown paired with a national number field that emits an E.164-ish string.
-- [Radio Card](/modules/radio-card) (Forms): A radio group rendered as selectable cards with a title, description, and optional icon, for choices that need explanation.
-- [Range Slider](/modules/range-slider) (Forms): A dual-thumb slider for choosing a low/high pair, with per-thumb labels and an optional value readout.
 - [Rich Text Editor](/modules/rich-text-editor) (Forms): A lightweight markdown editor whose toolbar formats the textarea selection, with an optional live preview pane.
 - [Timezone Select](/modules/timezone-select) (Forms): A searchable select over a curated set of IANA timezones with UTC offset labels.
-- [Toggle Group](/modules/toggle-group) (Forms): A cluster of Toggle-styled options with roving focus, in mutually exclusive single mode or independent multiple mode.
+- [Toggle Group](/modules/toggle-group) (Forms): A cluster of Toggle-styled options with roving focus, in mutually exclusive single mode or independent multiple mode; variant="segmented" renders an options array with a sliding selection pill.
 - [Transfer List](/modules/transfer-list) (Forms): A dual listbox that moves options between an available list and a chosen list with buttons or the keyboard.
-- [Tree Select](/modules/tree-select) (Forms): A single-select control whose popover shows an expandable, typeahead-enabled tree of options.
-- [Year Picker](/modules/year-picker) (Forms): A popover grid of years with decade paging for fast year-only selection.
+- [Tree Select](/modules/tree-select) (Forms): A single-select control whose popover shows an expandable, typeahead-enabled tree of options; display="columns" walks the hierarchy one column per level.
 - [Card](/modules/card) (Surfaces): A structural surface for related content without ambiguous interactive behavior.
 - [Launcher Card](/modules/launcher-card) (Surfaces): An interactive application destination card with an icon, description, optional status, and an honest unavailable state.
 - [Badge](/modules/badge) (Surfaces): A compact semantic status indicator using canonical information variants.
@@ -72,40 +58,29 @@
 - [Kbd](/modules/kbd) (Surfaces): An inline keyboard shortcut hint with a raised keycap treatment.
 - [Scroll Area](/modules/scroll-area) (Surfaces): A scrollable region with styled, theme-consistent scrollbars.
 - [Code Block](/modules/code-block) (Surfaces): A code panel with a language label, optional line numbers, and copy-to-clipboard.
-- [Callout](/modules/callout) (Surfaces): A quiet admonition surface with a variant icon and accent border, for guidance that informs without interrupting.
 - [Expandable Card](/modules/expandable-card) (Surfaces): A card that expands and collapses its extra content with a built-in trigger, chevron affordance, and smooth height animation.
-- [Glass Panel](/modules/glass-panel) (Surfaces): A frosted-glass surface with backdrop blur and a translucent background, for content floating over imagery or color.
-- [Panel](/modules/panel) (Surfaces): A lightweight bordered surface with optional header and actions, for grouping content without Card's elevation.
-- [Dialog](/modules/dialog) (Overlays): A modal surface that owns focus management, naming, dismissal, and scroll locking.
+- [Dialog](/modules/dialog) (Overlays): A modal surface that owns focus management, naming, dismissal, and scroll locking; placement renders it centered, fullscreen, as a left/right drawer, or as a bottom sheet.
 - [Tooltip](/modules/tooltip) (Overlays): A short contextual hint with accessible trigger association and collision handling.
 - [Menu](/modules/menu) (Overlays): A structured action menu with keyboard navigation, disabled items, icons, and danger styling.
 - [Popover](/modules/popover) (Overlays): An anchored surface for arbitrary controls and supplemental content.
-- [Drawer](/modules/drawer) (Overlays): A slide-over panel for focused side tasks, built on the dialog focus model.
-- [Hover Card](/modules/hover-card) (Overlays): A rich preview surface revealed on hover or focus, for context without navigation.
-- [Command](/modules/command) (Overlays): A command palette dialog with grouped, filterable actions and keyboard navigation.
+- [Command](/modules/command) (Overlays): A command palette dialog with grouped, filterable actions and keyboard navigation; pass a render function as children for full-screen search with caller-owned results.
 - [Alert Dialog](/modules/alert-dialog) (Overlays): A blocking confirmation that holds focus until an explicit choice is made.
 - [Popconfirm](/modules/popconfirm) (Overlays): A lightweight anchored confirmation for small destructive or irreversible actions.
-- [Context Menu](/modules/context-menu) (Overlays): A right-click action menu attached to any element, sharing the Menu item contract.
 - [Tour](/modules/tour) (Overlays): A guided walkthrough that highlights target elements step by step.
 - [Action Sheet](/modules/action-sheet) (Overlays): An iOS-style bottom sheet listing actions with a destructive option and a separated cancel button.
-- [Bottom Sheet](/modules/bottom-sheet) (Overlays): A sheet that slides up from the bottom edge with snap heights, ideal for mobile-first flows.
 - [Cookie Consent](/modules/cookie-consent) (Overlays): Polite, non-modal bottom banner for cookie consent with accept and decline actions and an optional preferences link.
 - [Floating Panel](/modules/floating-panel) (Overlays): A non-modal panel anchored to a viewport corner for tools that coexist with the page.
-- [Fullscreen Dialog](/modules/fullscreen-dialog) (Overlays): A dialog that occupies the entire viewport with a header close button for immersive tasks.
 - [Image Viewer](/modules/image-viewer) (Overlays): Inline viewer for a single image with toolbar and keyboard zoom plus pointer-drag panning while zoomed.
 - [Lightbox](/modules/lightbox) (Overlays): Full-screen gallery overlay for paging through images with arrow keys, on-screen controls, and a live counter.
 - [Notification Center](/modules/notification-center) (Overlays): Popover panel that lists recent notifications with read states and a mark-all-read action.
 - [Prompt Dialog](/modules/prompt-dialog) (Overlays): A modal dialog with a single labeled input that returns the entered value on confirm.
-- [Search Overlay](/modules/search-overlay) (Overlays): Full-screen search overlay with a large input and caller-rendered results navigated entirely from the keyboard.
 - [Toast](/modules/toast) (Feedback): Imperative, announced feedback with semantic variants, optional actions, and dismissal.
 - [Empty State](/modules/empty-state) (Feedback): An explanatory empty result with an optional action and SVG icon.
 - [Loading](/modules/loading) (Feedback): Named progress and loading treatments for local, skeleton, and full-surface states.
-- [Alert](/modules/alert) (Feedback): An inline feedback banner with semantic variants, an optional title, and dismissal.
+- [Alert](/modules/alert) (Feedback): An inline feedback surface with semantic variants, an optional title, and dismissal; appearance renders it as a raised surface, a page-level banner strip, or a presentational callout.
 - [Notification Item](/modules/notification-item) (Feedback): A sanitized ecosystem inbox row with severity, source application, read state, deep link, and delivery-state controls.
 - [Health Indicator](/modules/health-indicator) (Feedback): An explicit ecosystem health status that reports unknown and stale evidence instead of implying health.
 - [Step-Up Notice](/modules/step-up-notice) (Feedback): An inline warning that explains a required fresh verification and hosts the caller’s verification action.
-- [Banner](/modules/banner) (Feedback): A page-level notice strip for workspace-wide feedback that owns the top of a view.
-- [Progress Circle](/modules/progress-circle) (Feedback): A radial progress indicator with determinate and indeterminate modes.
 - [Timeline](/modules/timeline) (Feedback): A vertical activity feed with tone dots, connectors, and timestamps.
 - [Meter](/modules/meter) (Feedback): A scalar gauge for a known range with optimum-zone coloring.
 - [Rating](/modules/rating) (Feedback): A star rating input with radio semantics, arrow keys, and a read-only display mode.
@@ -115,18 +90,15 @@
 - [Loading Bar](/modules/loading-bar) (Feedback): A thin top-of-page progress bar with determinate and indeterminate modes.
 - [Network Status](/modules/network-status) (Feedback): An inline indicator of the browser's online/offline state with a render prop for custom display.
 - [Offline Banner](/modules/offline-banner) (Feedback): A dismissible banner that appears at the top of the page when the browser loses connectivity.
-- [Pulse Dot](/modules/pulse-dot) (Feedback): An animated pulsing dot that signals live presence or ongoing activity.
 - [Save Status](/modules/save-status) (Feedback): An inline saved/saving/error indicator with an optional relative timestamp.
-- [Status Dot](/modules/status-dot) (Feedback): A small colored dot with an optional text label for compact entity status.
+- [Status Dot](/modules/status-dot) (Feedback): A small colored dot with an optional text label for compact entity status; pass pulse for live presence or ongoing activity.
 - [Upload Progress](/modules/upload-progress) (Feedback): A file upload progress row with file name, determinate bar, formatted size, and a cancel button.
 - [App Switcher](/modules/app-switcher) (Navigation): An entitlement-filtered application switcher with an explicit Home destination and keyboard navigation.
 - [Account Menu](/modules/account-menu) (Navigation): A household account menu with an identity header, product items, and distinct app and SSO sign-out actions.
 - [Tabs](/modules/tabs) (Navigation): Keyboard-navigable content switching through a compact item interface.
 - [Pagination](/modules/pagination) (Navigation): A controlled page navigator with compact ranges and unavailable directions.
 - [Page Header](/modules/page-header) (Navigation): A responsive page title, supporting text, and action area.
-- [Vertical Nav](/modules/vertical-nav) (Navigation): A compound vertical navigation with icon-rail and full-text modes.
 - [Nav Rail](/modules/nav-rail) (Navigation): A fully rounded floating icon rail for dense product navigation.
-- [Side Rail](/modules/side-rail) (Navigation): A floating glass rail that expands from an icon strip to a full label list on hover or focus.
 - [Ecosystem Rail](/modules/ecosystem-rail) (Navigation): A persistent cross-product rail with a stable Home destination, caller-filtered applications, and honest health status.
 - [Top Bar](/modules/top-bar) (Navigation): A sticky top bar with brand, search, and action slots.
 - [Breadcrumb](/modules/breadcrumb) (Navigation): A hierarchical trail with router-ready items and automatic middle-item collapse.
@@ -139,25 +111,20 @@
 - [Bottom Nav](/modules/bottom-nav) (Navigation): A mobile bottom navigation bar of three to five icon-and-label items with aria-current and safe-area padding.
 - [Dock](/modules/dock) (Navigation): A macOS-style dock of icon buttons with hover tooltips, accessible names, and an active-app indicator dot.
 - [Floating Toolbar](/modules/floating-toolbar) (Navigation): A floating contextual toolbar that appears near a selection or anchored element, with roving tabindex and arrow-key navigation.
-- [Mega Menu](/modules/mega-menu) (Navigation): A top-level navigation item that opens a multi-column link panel on hover, focus, or click, with full keyboard support.
-- [Sidebar](/modules/sidebar) (Navigation): A full app sidebar with header, content, and footer slots that collapses to an icon rail, with aria-current on the active item.
+- [Sidebar](/modules/sidebar) (Navigation): A full app sidebar with header, content, and footer slots. It collapses to an icon rail through the collapsed state, switches to a hover-expanding rail with mode="rail", floats as a glass pill with floating, and sets aria-current on the active item.
 - [Skip Link](/modules/skip-link) (Navigation): A visually-hidden-until-focused "Skip to content" link that becomes the first tab stop of the page.
 - [Sub Nav](/modules/sub-nav) (Navigation): A secondary horizontal nav row with an underline indicator for the active item that scrolls when items overflow.
-- [Table of Contents](/modules/table-of-contents) (Navigation): A nested list of heading links that indents by heading level and highlights the section in view with an IntersectionObserver.
 - [Permission Matrix](/modules/permission-matrix) (Data): A people-by-applications access matrix with caller-supplied cell content and explicit no-access cells.
-- [Table](/modules/table) (Data): Accessible data presentation driven by column definitions, density, loading, and empty state.
+- [Table](/modules/table) (Data): Accessible data presentation driven by column definitions, with caller-owned sorting and row selection, density, loading, and empty state.
 - [Separator](/modules/separator) (Data): A semantic or decorative divider for related content.
 - [Avatar](/modules/avatar) (Data): A compact identity image with initials and icon fallbacks.
 - [Description List](/modules/description-list) (Data): A label/value definition list for detail pages, stacked or two-column.
-- [Data Table](/modules/data-table) (Data): A data grid with sortable columns and row selection, built on the Table contract.
 - [Avatar Group](/modules/avatar-group) (Data): An overlapping identity stack with an overflow count.
 - [Stat](/modules/stat) (Data): A labeled metric with a trend delta and optional supporting content.
 - [List](/modules/list) (Data): A vertical item list with leading and trailing slots, secondary text, and a dense mode.
 - [Sparkline](/modules/sparkline) (Data): A tiny inline trend chart in line, area, or bar form with an accessible summary.
 - [Calendar](/modules/calendar) (Data): A month grid for picking a single date with bounds and disabled days.
-- [Result](/modules/result) (Data): A full-area outcome state for success, error, and HTTP results with a standard icon and actions.
 - [Activity Feed](/modules/activity-feed) (Data): Chronological list of actor-plus-action events with avatars or icons and timestamps, optionally grouped under day headings.
-- [Area Chart](/modules/area-chart) (Data): Line chart with a filled area under each series, an adjustable fill opacity, and a stacked mode for part-to-whole trends.
 - [Bar Chart](/modules/bar-chart) (Data): Grouped SVG bar chart with vertical or horizontal bars, optional value labels, a legend, and a built-in accessible data table.
 - [Calendar Heatmap](/modules/calendar-heatmap) (Data): GitHub-style year calendar heatmap with weeks-by-weekday cells, a 0–4 level color scale, and month labels.
 - [Chart Container](/modules/chart-container) (Data): Accessible SVG frame for hand-rolled charts with an aria-label summary, a toggleable screen-reader data table, and reusable axis, grid, and legend primitives.
@@ -169,7 +136,7 @@
 - [Heatmap](/modules/heatmap) (Data): Matrix heatmap that maps values to a color scale with row/column labels and cell tooltips.
 - [JSON Viewer](/modules/json-viewer) (Data): Collapsible JSON tree with type-colored values, key-count summaries, and optional hover copy-path buttons.
 - [Kanban Board](/modules/kanban-board) (Data): A column-based board where cards move between workflow stages with full keyboard support.
-- [Line Chart](/modules/line-chart) (Data): Multi-series SVG line chart with axis ticks, focusable points, simple or custom tooltips, a legend, and a built-in accessible data table.
+- [Line Chart](/modules/line-chart) (Data): Multi-series SVG line chart with axis ticks, focusable points, simple or custom tooltips, a legend, and a built-in accessible data table. type="area" fills under each series, with adjustable fill opacity and a stacked mode for part-to-whole trends.
 - [Log Viewer](/modules/log-viewer) (Data): Scrollable monospace log pane with severity coloring, a follow/auto-scroll toggle, and optional search highlighting.
 - [Markdown View](/modules/markdown-view) (Data): Renders a safe markdown subset — headings, emphasis, links, lists, code, and quotes — as teal-styled elements with no raw HTML.
 - [Org Chart](/modules/org-chart) (Data): A hierarchy of person nodes rendered as connected boxes, with collapsible subtrees.
