@@ -5256,53 +5256,6 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 					],
 				},
 				{
-					id: "area-chart",
-					name: "Area Chart",
-					apiNames: ["AreaChart"],
-					description:
-						"Line chart with a filled area under each series, an adjustable fill opacity, and a stacked mode for part-to-whole trends.",
-					usage: `<AreaChart
-  label="Stacked sessions by channel"
-  labels={['Jan', 'Feb', 'Mar', 'Apr']}
-  series={[
-    { name: 'Organic', data: [80, 95, 90, 110] },
-    { name: 'Paid', data: [20, 25, 22, 30] },
-  ]}
-  stacked
-  opacity={0.5}
-/>`,
-					anatomy: [
-						{ part: "Chart frame", description: "The shared container exposing the SVG as a labelled image with the summary from label." },
-						{ part: "Series lines", description: "One path per series in palette colors; focusable points carry tooltips." },
-						{ part: "Filled areas", description: "A translucent fill under each line; stacked mode accumulates series so the top edge reads as the total." },
-						{ part: "Legend and data table", description: "An optional legend plus the hidden per-series data table behind the container's toggle." },
-					],
-					dosDonts: {
-						dos: [
-							"Use stacked only when the series sum to a meaningful total.",
-							"Lower opacity when overlapping series start to obscure each other.",
-							"Keep the series count small; two or three fills stay readable.",
-						],
-						donts: [
-							"Don't stack series with unrelated units.",
-							"Don't use an area chart when precise per-point comparison matters; choose LineChart.",
-						],
-					},
-					related: ["line-chart", "bar-chart", "chart-container"],
-					examples: [
-						{
-							title: "Single series area",
-							description:
-								"A translucent fill under the line emphasizes volume over time; opacity controls how much of the grid shows through.",
-						},
-						{
-							title: "Stacked series",
-							description:
-								"stacked accumulates series on top of each other so the top edge reads as the total; tooltips and the data table keep the raw per-series values.",
-						},
-					],
-				},
-				{
 					id: "bar-chart",
 					name: "Bar Chart",
 					apiNames: ["BarChart"],
@@ -5334,7 +5287,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Don't rely on bar color alone to identify series; the legend and tooltips carry the names.",
 						],
 					},
-					related: ["line-chart", "area-chart", "chart-container"],
+					related: ["line-chart", "chart-container"],
 					examples: [
 						{
 							title: "Grouped vertical bars",
@@ -5407,11 +5360,11 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Reuse ChartAxis, ChartGrid, and ChartLegend so bespoke charts match the built-in ones.",
 						],
 						donts: [
-							"Don't hand-roll a chart type the library already ships; use LineChart, AreaChart, BarChart, or PieChart.",
+							"Don't hand-roll a chart type the library already ships; use LineChart, BarChart, or PieChart.",
 							"Don't put unlabeled interactive elements inside the SVG.",
 						],
 					},
-					related: ["line-chart", "area-chart", "bar-chart"],
+					related: ["line-chart", "bar-chart"],
 					examples: [
 						{
 							title: "Custom chart content",
@@ -5724,7 +5677,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 					name: "Line Chart",
 					apiNames: ["LineChart"],
 					description:
-						"Multi-series SVG line chart with axis ticks, focusable points, simple or custom tooltips, a legend, and a built-in accessible data table.",
+						"Multi-series SVG line chart with axis ticks, focusable points, simple or custom tooltips, a legend, and a built-in accessible data table. type=\"area\" fills under each series, with adjustable fill opacity and a stacked mode for part-to-whole trends.",
 					usage: `<LineChart
   label="Revenue and costs per month"
   labels={['Jan', 'Feb', 'Mar', 'Apr']}
@@ -5751,7 +5704,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Don't exceed a dozen x labels; they collide at small widths.",
 						],
 					},
-					related: ["area-chart", "sparkline", "chart-container"],
+					related: ["sparkline", "chart-container"],
 					examples: [
 						{
 							title: "Multi-series with legend",
@@ -5762,6 +5715,16 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							title: "Custom tooltip",
 							description:
 								"renderTooltip replaces the simple title with a floating tooltip fed the hovered or focused point, its series, and its coordinates.",
+						},
+						{
+							title: "Single series area",
+							description:
+								"type=\"area\" adds a translucent fill under the line to emphasize volume over time; opacity controls how much of the grid shows through.",
+						},
+						{
+							title: "Stacked area series",
+							description:
+								"stacked accumulates area series on top of each other so the top edge reads as the total; tooltips and the data table keep the raw per-series values.",
 						},
 					],
 				},
@@ -9005,21 +8968,11 @@ const guidanceById = {
 		responsive:
 			"Stacks avatar, text, and timestamp vertically in a single column that wraps at narrow widths.",
 	},
-	"area-chart": {
-		useWhen:
-			"A trend should emphasize magnitude or cumulative volume, or several series should read as parts of a changing total when stacked.",
-		avoidWhen:
-			"Precise comparison between overlapping series matters more than volume; overlapping fills obscure each other, so prefer a LineChart instead.",
-		behavior:
-			"Shares the LineChart contract: focusable points with simple or custom tooltips, a legend, and a hidden data table. When stacked, points sit at their cumulative position while tooltips and the table report raw values.",
-		responsive:
-			"Scales down proportionally with its container; legends wrap and the data table stays available below on narrow screens.",
-	},
 	"bar-chart": {
 		useWhen:
 			"Comparing discrete categories against each other, especially with a few series per category or when exact values deserve labels.",
 		avoidWhen:
-			"Showing a continuous trend over many ordered points; a LineChart or AreaChart reads better as categories multiply.",
+			"Showing a continuous trend over many ordered points; a LineChart reads better as categories multiply.",
 		behavior:
 			"Bars start from a zero baseline, carry a simple title tooltip with series, category, and value, and group evenly within each category band; horizontal mode mirrors the same data.",
 		responsive:
@@ -9035,7 +8988,7 @@ const guidanceById = {
 		useWhen:
 			"You are building a chart type the library does not ship, or you want full control over the SVG while keeping an accessible summary and data table.",
 		avoidWhen:
-			"A standard line, area, bar, or pie chart fits the data; use LineChart, AreaChart, BarChart, or PieChart, which wrap this container already.",
+			"A standard line, area, bar, or pie chart fits the data; use LineChart, BarChart, or PieChart, which wrap this container already.",
 		behavior:
 			"Renders the SVG with role=\"img\" and the label as its accessible name; the data table stays visually hidden for screen readers until the toggle reveals it, and its visibility can be controlled.",
 		responsive:
@@ -9111,11 +9064,11 @@ const guidanceById = {
 	},
 	"line-chart": {
 		useWhen:
-			"Showing trends over ordered categories or time for one or more series, where the shape of change matters more than individual values.",
+			"Showing trends over ordered categories or time for one or more series, where the shape of change matters more than individual values. Use type=\"area\" when magnitude or cumulative volume should be emphasized, with stacked for parts of a changing total.",
 		avoidWhen:
 			"Comparing discrete categories where lengths read better than slopes; use a BarChart, or a Sparkline for an inline glanceable trend.",
 		behavior:
-			"Points are hoverable and keyboard-focusable; hovering or focusing a point enlarges it and shows either a simple SVG title or the renderTooltip content. The y axis always includes zero unless every value is negative.",
+			"Points are hoverable and keyboard-focusable; hovering or focusing a point enlarges it and shows either a simple SVG title or the renderTooltip content. The y axis always includes zero unless every value is negative. When type=\"area\" is stacked, points sit at their cumulative position while tooltips and the data table report raw values.",
 		responsive:
 			"The SVG scales down proportionally with its container while the legend and data table wrap below; keep label counts small on narrow screens.",
 	},

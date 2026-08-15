@@ -289,8 +289,6 @@ export type { SubNavProps, SubNavItemProps } from './SubNav'
 
 export { ActivityFeed } from './ActivityFeed'
 export type { ActivityFeedItem, ActivityFeedProps } from './ActivityFeed'
-export { AreaChart } from './AreaChart'
-export type { AreaChartSeries, AreaChartPoint, AreaChartProps } from './AreaChart'
 export { BarChart } from './BarChart'
 export type { BarChartSeries, BarChartProps } from './BarChart'
 export { CalendarHeatmap } from './CalendarHeatmap'

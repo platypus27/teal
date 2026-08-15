@@ -21,11 +21,11 @@ export interface LineChartPoint {
   series: LineChartSeries
   /** Series index. */
   seriesIndex: number
-  /** Point value. */
+  /** Raw point value (not the stacked cumulative value). */
   value: number
   /** X coordinate within the SVG. */
   x: number
-  /** Y coordinate within the SVG. */
+  /** Y coordinate of the plotted (possibly stacked) point within the SVG. */
   y: number
 }
 
@@ -40,6 +40,8 @@ export interface LineChartProps extends Omit<HTMLAttributes<HTMLDivElement>, 'ch
   series: LineChartSeries[]
   /** SVG height in pixels. */
   height?: number
+  /** Fill opacity of the area between 0 and 1; only used with `type="area"`. */
+  opacity?: number
   /** Shows axes with tick labels. */
   showAxis?: boolean
   /** Shows horizontal grid lines. */
@@ -48,6 +50,10 @@ export interface LineChartProps extends Omit<HTMLAttributes<HTMLDivElement>, 'ch
   showLegend?: boolean
   /** Draws focusable point markers at each value. */
   showPoints?: boolean
+  /** Stacks series on top of each other instead of overlaying them; only used with `type="area"`. */
+  stacked?: boolean
+  /** Renders bare lines or fills the area under each series. */
+  type?: 'line' | 'area'
   /** SVG width in pixels. */
   width?: number
 }
@@ -60,12 +66,15 @@ export const LineChart = forwardRef<HTMLDivElement, LineChartProps>(function Lin
     height = 300,
     label,
     labels,
+    opacity = 0.25,
     renderTooltip,
     series,
     showAxis = true,
     showGrid = true,
     showLegend = true,
     showPoints = true,
+    stacked = false,
+    type = 'line',
     width = 560,
     ...props
   },
@@ -77,8 +86,11 @@ export const LineChart = forwardRef<HTMLDivElement, LineChartProps>(function Lin
   const plotHeight = height - padding.top - padding.bottom
   const baseline = padding.top + plotHeight
 
-  const allValues = series.flatMap((entry) => entry.data)
-  const rawMin = Math.min(0, ...allValues)
+  const isArea = type === 'area'
+  // Cumulative totals per category, used for stacked plots and the y domain.
+  const totals = labels.map((_, index) => series.reduce((sum, entry) => sum + Math.max(0, entry.data[index] ?? 0), 0))
+  const allValues = isArea && stacked ? totals : series.flatMap((entry) => entry.data)
+  const rawMin = isArea && stacked ? 0 : Math.min(0, ...allValues)
   const rawMax = Math.max(0, ...allValues)
   const yTicks = niceTicks(rawMin, rawMax === rawMin ? rawMax + 1 : rawMax)
   const yMin = yTicks[0] ?? 0
@@ -97,6 +109,14 @@ export const LineChart = forwardRef<HTMLDivElement, LineChartProps>(function Lin
     return series[seriesIndex]?.color ?? chartColorAt(seriesIndex)
   }
 
+  // Plotted value of a point: raw for overlays and lines, cumulative when stacked.
+  function plottedValue(seriesIndex: number, pointIndex: number) {
+    if (!isArea || !stacked) return series[seriesIndex]?.data[pointIndex] ?? 0
+    let sum = 0
+    for (let index = 0; index <= seriesIndex; index += 1) sum += Math.max(0, series[index]?.data[pointIndex] ?? 0)
+    return sum
+  }
+
   function pointAt(seriesIndex: number, pointIndex: number): LineChartPoint {
     const entry: LineChartSeries = series[seriesIndex] ?? { name: '', data: [] }
     const value = entry.data[pointIndex] ?? 0
@@ -108,8 +128,17 @@ export const LineChart = forwardRef<HTMLDivElement, LineChartProps>(function Lin
       seriesIndex,
       value,
       x: xAt(pointIndex),
-      y: yAt(value),
+      y: yAt(plottedValue(seriesIndex, pointIndex)),
     }
+  }
+
+  function areaPath(seriesIndex: number) {
+    const topPoints = labels.map((_, index) => [xAt(index), yAt(plottedValue(seriesIndex, index))] as const)
+    const bottomY = (index: number) =>
+      stacked && seriesIndex > 0 ? yAt(plottedValue(seriesIndex - 1, index)) : yAt(Math.max(0, yMin))
+    const bottomPoints = labels.map((_, index) => [xAt(index), bottomY(index)] as const).reverse()
+    const all = [...topPoints, ...bottomPoints]
+    return `M${all.map(([x, y]) => `${x},${y}`).join(' L')} Z`
   }
 
   const activePoint = active ? pointAt(active.seriesIndex, active.pointIndex) : null
@@ -158,8 +187,8 @@ export const LineChart = forwardRef<HTMLDivElement, LineChartProps>(function Lin
         </>
       ) : null}
       {series.map((entry, seriesIndex) => {
-        const points = entry.data.map((value, index) => `${xAt(index)},${yAt(value)}`).join(' ')
-        return (
+        const points = labels.map((_, index) => `${xAt(index)},${yAt(plottedValue(seriesIndex, index))}`).join(' ')
+        const line = (
           <polyline
             key={entry.name}
             points={points}
@@ -169,6 +198,14 @@ export const LineChart = forwardRef<HTMLDivElement, LineChartProps>(function Lin
             strokeLinecap="round"
             strokeLinejoin="round"
           />
+        )
+        return isArea ? (
+          <g key={entry.name}>
+            <path d={areaPath(seriesIndex)} fill={colorAt(seriesIndex)} fillOpacity={opacity} stroke="none" />
+            {line}
+          </g>
+        ) : (
+          line
         )
       })}
       {showPoints

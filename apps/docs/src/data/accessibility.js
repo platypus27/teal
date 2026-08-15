@@ -1309,15 +1309,6 @@ export const accessibility = {
       'Each article exposes aria-posinset and aria-setsize so screen readers announce its position in the feed.',
     ],
   },
-  'area-chart': {
-    keyboard: [
-      { keys: ['Tab'], action: 'Moves focus through the data points; focusing a point shows its tooltip.' },
-    ],
-    notes: [
-      'The label prop provides the chart summary; points expose series, category, and raw value via aria-label even in stacked mode.',
-      'A visually hidden data table with per-series raw values is always available behind the built-in toggle.',
-    ],
-  },
   'bar-chart': {
     notes: [
       'The chart is a labelled image; each bar has an aria-label and title with its series, category, and value.',
@@ -1409,6 +1400,7 @@ export const accessibility = {
     notes: [
       'The chart is a labelled image whose summary comes from the label prop; every point also carries an aria-label with series, category, and value.',
       'A visually hidden data table with all series values is always present and can be revealed with the built-in toggle.',
+      'With type="area" and stacked, points expose the raw per-series value via aria-label and the data table even though they plot at their cumulative position.',
     ],
   },
   'log-viewer': {
