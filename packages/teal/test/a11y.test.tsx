@@ -105,10 +105,6 @@ import {
   Marquee,
   MaskedInput,
   Masonry,
-  MegaMenu,
-  MegaMenuColumn,
-  MegaMenuItem,
-  MegaMenuLink,
   Menubar,
   Menu,
   MentionInput,
@@ -1453,14 +1449,21 @@ describe('axe: fifth catalog expansion', () => {
           <DockItem active icon={<svg aria-hidden="true" />} label="Mail" />
           <DockItem icon={<svg aria-hidden="true" />} label="Files" />
         </Dock>
-        <MegaMenu>
-          <MegaMenuItem label="Products">
-            <MegaMenuColumn heading="Build">
-              <MegaMenuLink href="#editor">Editor</MegaMenuLink>
-              <MegaMenuLink href="#preview">Preview</MegaMenuLink>
-            </MegaMenuColumn>
-          </MegaMenuItem>
-        </MegaMenu>
+        <NavigationMenu
+          label="Sections"
+          items={[
+            {
+              type: 'panel',
+              label: 'Products',
+              content: (
+                <div>
+                  <a href="#editor">Editor</a>
+                  <a href="#preview">Preview</a>
+                </div>
+              ),
+            },
+          ]}
+        />
         <SubNav aria-label="Settings">
           <SubNavItem active href="#general">
             General

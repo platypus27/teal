@@ -7,6 +7,12 @@ const panelLinks = [
   { icon: Users, title: 'Members', description: 'Roles and invitations' },
 ]
 
+const megaColumns = [
+  { heading: 'Build', links: ['Editor', 'Preview'] },
+  { heading: 'Ship', links: ['Hosting', 'Analytics'] },
+  { heading: 'Learn', links: ['Guides', 'API reference'] },
+]
+
 export function NavigationMenuDemo({ exampleIndex = 0 }) {
   if (exampleIndex === 1) {
     return (
@@ -19,6 +25,43 @@ export function NavigationMenuDemo({ exampleIndex = 0 }) {
           { type: 'link', label: 'Changelog', href: '#' },
         ]}
       />
+    )
+  }
+
+  if (exampleIndex === 2) {
+    return (
+      <div className="w-full rounded-xl border border-teal-outline-variant/30 px-4 py-2">
+        <NavigationMenu
+          label="Products"
+          items={[
+            {
+              type: 'panel',
+              label: 'Products',
+              content: (
+                <div className="flex gap-8">
+                  {megaColumns.map(({ heading, links }) => (
+                    <div key={heading} className="flex min-w-40 flex-col gap-0.5">
+                      <div className="px-3 pb-1 text-xs font-bold uppercase tracking-wider text-teal-on-surface-variant">
+                        {heading}
+                      </div>
+                      {links.map((link) => (
+                        <a
+                          key={link}
+                          href="#"
+                          className="rounded-lg px-3 py-2 text-sm text-teal-on-surface no-underline hover:bg-teal-surface-container-high hover:text-teal-primary"
+                        >
+                          {link}
+                        </a>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              ),
+            },
+            { type: 'link', label: 'Pricing', href: '#' },
+          ]}
+        />
+      </div>
     )
   }
 

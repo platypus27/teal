@@ -51,3 +51,56 @@ describe('NavigationMenu', () => {
     await waitFor(() => expect(screen.queryByRole('link', { name: 'Analytics suite' })).not.toBeInTheDocument())
   })
 })
+
+describe('NavigationMenu mega panels', () => {
+  const items = [
+    { type: 'link' as const, label: 'Home', href: '/' },
+    {
+      type: 'panel' as const,
+      label: 'Products',
+      content: (
+        <div>
+          <a href="/analytics">Analytics suite</a>
+          <a href="/hosting">Hosting</a>
+        </div>
+      ),
+    },
+    {
+      type: 'panel' as const,
+      label: 'Docs',
+      content: <a href="/guides">Guides</a>,
+    },
+  ]
+
+  it('opens a multi-link panel from its trigger and closes on Escape', async () => {
+    const user = userEvent.setup({ pointerEventsCheck: 0 })
+    render(<NavigationMenu label="Main" items={items} />)
+
+    await user.click(screen.getByRole('button', { name: 'Products' }))
+    expect(await screen.findByRole('link', { name: 'Analytics suite' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Hosting' })).toBeInTheDocument()
+
+    await user.keyboard('{Escape}')
+    await waitFor(() => expect(screen.queryByRole('link', { name: 'Analytics suite' })).toBeNull())
+  })
+
+  it('moves between top-level triggers with arrow keys', async () => {
+    const user = userEvent.setup({ pointerEventsCheck: 0 })
+    render(<NavigationMenu label="Main" items={items} />)
+    const products = screen.getByRole('button', { name: 'Products' })
+    products.focus()
+
+    await user.keyboard('{ArrowRight}')
+
+    expect(screen.getByRole('button', { name: 'Docs' })).toHaveFocus()
+  })
+
+  it('reveals the panel on hover', async () => {
+    const user = userEvent.setup({ pointerEventsCheck: 0 })
+    render(<NavigationMenu label="Main" items={items} />)
+
+    await user.hover(screen.getByRole('button', { name: 'Products' }))
+
+    expect(await screen.findByRole('link', { name: 'Analytics suite' })).toBeInTheDocument()
+  })
+})

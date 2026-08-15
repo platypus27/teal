@@ -3948,12 +3948,22 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						"Don't put commands or forms inside panels; they are for navigation content.",
 					],
 				},
-				related: ["mega-menu", "menubar", "top-bar"],
+				related: ["menubar", "top-bar"],
 				examples: [
 					{
 						title: "Links and panels",
 						description:
 							"Link items navigate with aria-current; panel items reveal content in one viewport.",
+					},
+					{
+						title: "Flat links",
+						description:
+							"A link-only bar still gets the shared landmark and active-link styling without any panels.",
+					},
+					{
+						title: "Multi-column panel",
+						description:
+							"Panel content accepts grouped columns of links with headings, replacing the old MegaMenu pattern.",
 					},
 				],
 			},
@@ -4157,53 +4167,6 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							title: "Custom action set",
 							description:
 								"Any buttons work inside; the toolbar manages focus movement across whatever controls it contains.",
-						},
-					],
-				},
-				{
-					id: "mega-menu",
-					name: "Mega Menu",
-					apiNames: ["MegaMenu", "MegaMenuItem", "MegaMenuColumn", "MegaMenuLink"],
-					description:
-						"A top-level navigation item that opens a multi-column link panel on hover, focus, or click, with full keyboard support.",
-					usage: `<MegaMenu>
-  <MegaMenuItem label="Products">
-    <MegaMenuColumn heading="Build">
-      <MegaMenuLink href="/editor">Editor</MegaMenuLink>
-      <MegaMenuLink href="/preview">Preview</MegaMenuLink>
-    </MegaMenuColumn>
-    <MegaMenuColumn heading="Ship">
-      <MegaMenuLink href="/hosting">Hosting</MegaMenuLink>
-    </MegaMenuColumn>
-  </MegaMenuItem>
-</MegaMenu>`,
-					anatomy: [
-						{ part: "Trigger", description: "Top-level item button exposing aria-expanded and aria-haspopup." },
-						{ part: "Panel", description: "Multi-column surface opened on hover, focus, or click." },
-						{ part: "Columns", description: "MegaMenuColumn groups with headings that organize the links." },
-						{ part: "Links", description: "MegaMenuLink destinations inside each column." },
-					],
-					dosDonts: {
-						dos: [
-							"Group links under a heading per column so wide panels stay scannable.",
-							"Keep panels to links; move actions into a Menu.",
-						],
-						donts: [
-							"Don't use it for a single short list; use Menu.",
-							"Don't try to pin several panels open; only one is open at a time by design.",
-						],
-					},
-					related: ["navigation-menu", "menu", "accordion"],
-					examples: [
-						{
-							title: "Two-column panel",
-							description:
-								"Grouped columns of links under a single trigger; opens on hover, focus, or click.",
-						},
-						{
-							title: "Three-column panel",
-							description:
-								"Wider panels stay scannable with headings per column, useful for solution or industry menus.",
 						},
 					],
 				},
@@ -8332,16 +8295,6 @@ const guidanceById = {
 			"Renders nothing while open is false; when shown it is a single tab stop whose controls are reached with arrow keys, Home, and End, skipping disabled controls.",
 		responsive:
 			"Positioning comes from className or style, so the anchor logic decides placement; keep it inside the viewport near the selection.",
-	},
-	"mega-menu": {
-		useWhen:
-			"A marketing or docs site has a handful of top-level sections that each fan out into many categorized links.",
-		avoidWhen:
-			"The panel would hold actions rather than links, or the structure is a single short list; use Menu or NavigationMenu instead.",
-		behavior:
-			"Only one panel is open at a time; arrow keys move between triggers and across column boundaries, and Escape closes the panel and refocuses its trigger.",
-		responsive:
-			"Panels open below their trigger and grow with the column count; on narrow screens switch to an off-canvas Dialog or Accordion of the same links.",
 	},
 	sidebar: {
 		useWhen:
