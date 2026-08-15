@@ -1,106 +1,100 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { DataTable, type DataTableColumn } from '../src/DataTable'
+import { Table, type TableColumn, type TableSort } from '../src/Table'
 
 interface Project {
   id: string
   name: string
-  owner: string
   status: string
 }
 
 const rows: Project[] = [
-  { id: 'atlas', name: 'Atlas redesign', owner: 'Mira Chen', status: 'Active' },
-  { id: 'billing', name: 'Billing migration', owner: 'Jonas Weber', status: 'Paused' },
-  { id: 'docs', name: 'Docs overhaul', owner: 'Priya Nair', status: 'Active' },
+  { id: 'atlas', name: 'Atlas', status: 'Active' },
+  { id: 'billing', name: 'Billing', status: 'Paused' },
+  { id: 'docs', name: 'Docs', status: 'Active' },
 ]
 
-const columns: Array<DataTableColumn<Project>> = [
-  { key: 'name', header: 'Name', sortable: true, cell: (row) => row.name },
-  { key: 'owner', header: 'Owner', sortable: true, cell: (row) => row.owner },
+const columns: Array<TableColumn<Project>> = [
+  { key: 'name', header: 'Name', cell: (row) => row.name, sortable: true },
   { key: 'status', header: 'Status', cell: (row) => row.status },
 ]
 
-function getRowKey(row: Project) {
-  return row.id
-}
+describe('Table sorting', () => {
+  it('renders caption, headers, and rows, with no button on non-sortable columns', () => {
+    render(<Table caption="Projects" columns={columns} rows={rows} getRowKey={(row) => row.id} />)
 
-describe('DataTable', () => {
-  it('renders caption, headers, and rows', () => {
-    render(<DataTable caption="Projects" columns={columns} rows={rows} getRowKey={getRowKey} />)
     expect(screen.getByRole('region', { name: 'Projects table' })).toBeInTheDocument()
     expect(screen.getByRole('columnheader', { name: 'Name' })).toBeInTheDocument()
-    expect(screen.getByRole('cell', { name: 'Billing migration' })).toBeInTheDocument()
-    // Non-sortable columns render plain header content without a button
-    expect(screen.queryByRole('button', { name: /Status/ })).not.toBeInTheDocument()
+    expect(screen.getByRole('cell', { name: 'Atlas' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Status/ })).toBeNull()
   })
 
   it('reports the next sort direction when a sortable header is clicked', async () => {
     const user = userEvent.setup()
     const onSortChange = vi.fn()
     const { rerender } = render(
-      <DataTable caption="Projects" columns={columns} rows={rows} getRowKey={getRowKey} onSortChange={onSortChange} />,
+      <Table caption="Projects" columns={columns} rows={rows} getRowKey={(row) => row.id} onSortChange={onSortChange} />,
     )
 
     await user.click(screen.getByRole('button', { name: /Name/ }))
-    expect(onSortChange).toHaveBeenLastCalledWith({ key: 'name', direction: 'asc' })
+    expect(onSortChange).toHaveBeenCalledWith({ key: 'name', direction: 'asc' })
 
+    const sort: TableSort = { key: 'name', direction: 'asc' }
     rerender(
-      <DataTable
-        caption="Projects"
-        columns={columns}
-        rows={rows}
-        getRowKey={getRowKey}
-        onSortChange={onSortChange}
-        sort={{ key: 'name', direction: 'asc' }}
-      />,
+      <Table caption="Projects" columns={columns} rows={rows} getRowKey={(row) => row.id} sort={sort} onSortChange={onSortChange} />,
     )
     await user.click(screen.getByRole('button', { name: /Name/ }))
-    expect(onSortChange).toHaveBeenLastCalledWith({ key: 'name', direction: 'desc' })
+    expect(onSortChange).toHaveBeenCalledWith({ key: 'name', direction: 'desc' })
   })
 
   it('exposes the current sort through aria-sort and uses sortKey when provided', () => {
-    const keyedColumns: Array<DataTableColumn<Project>> = [
+    const keyedColumns: Array<TableColumn<Project>> = [
       { key: 'name', header: 'Name', sortable: true, sortKey: 'projectName', cell: (row) => row.name },
     ]
     render(
-      <DataTable
+      <Table
         caption="Projects"
         columns={keyedColumns}
         rows={rows}
-        getRowKey={getRowKey}
+        getRowKey={(row) => row.id}
         sort={{ key: 'projectName', direction: 'desc' }}
       />,
     )
     expect(screen.getByRole('columnheader', { name: /Name/ })).toHaveAttribute('aria-sort', 'descending')
   })
+})
 
+describe('Table selection', () => {
   it('selects all rows from the header checkbox', async () => {
     const user = userEvent.setup()
     const onSelectionChange = vi.fn()
     render(
-      <DataTable
-        caption="Projects"
-        columns={columns}
-        rows={rows}
-        getRowKey={getRowKey}
-        selectable
-        selectedKeys={[]}
-        onSelectionChange={onSelectionChange}
-      />,
+      <Table caption="Projects" columns={columns} rows={rows} getRowKey={(row) => row.id} selectable onSelectionChange={onSelectionChange} />,
     )
 
     await user.click(screen.getByRole('checkbox', { name: 'Select all rows' }))
+
     expect(onSelectionChange).toHaveBeenCalledWith(['atlas', 'billing', 'docs'])
+  })
+
+  it('renders the header select-all with the same centered shell as row checkboxes', () => {
+    render(
+      <Table caption="Projects" columns={columns} rows={rows} getRowKey={(row) => row.id} selectable selectedKeys={[]} />,
+    )
+
+    const headerCell = screen.getByRole('checkbox', { name: 'Select all rows' }).closest('th')
+    const rowCell = screen.getAllByRole('checkbox', { name: /Select row/ })[0]!.closest('td')
+    expect(headerCell?.querySelector(':scope > div')).toHaveClass('teal-u-flex', 'teal-u-items-center')
+    expect(rowCell?.querySelector(':scope > div')).toHaveClass('teal-u-flex', 'teal-u-items-center')
   })
 
   it('marks the header checkbox indeterminate when selection is partial', () => {
     render(
-      <DataTable
+      <Table
         caption="Projects"
         columns={columns}
         rows={rows}
-        getRowKey={getRowKey}
+        getRowKey={(row) => row.id}
         selectable
         selectedKeys={['atlas']}
       />,
@@ -114,11 +108,11 @@ describe('DataTable', () => {
     const user = userEvent.setup()
     const onSelectionChange = vi.fn()
     render(
-      <DataTable
+      <Table
         caption="Projects"
         columns={columns}
         rows={rows}
-        getRowKey={getRowKey}
+        getRowKey={(row) => row.id}
         selectable
         selectedKeys={new Set(['atlas'])}
         onSelectionChange={onSelectionChange}
@@ -134,11 +128,11 @@ describe('DataTable', () => {
     const user = userEvent.setup()
     const onSelectionChange = vi.fn()
     render(
-      <DataTable
+      <Table
         caption="Projects"
         columns={columns}
         rows={rows}
-        getRowKey={getRowKey}
+        getRowKey={(row) => row.id}
         selectable
         selectedKeys={['atlas', 'billing', 'docs']}
         onSelectionChange={onSelectionChange}

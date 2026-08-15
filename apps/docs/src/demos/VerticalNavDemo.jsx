@@ -60,7 +60,7 @@ function RouterNav() {
   const links = [
     { to: '/modules/vertical-nav', label: 'Vertical nav', icon: <PanelLeft className="size-5" /> },
     { to: '/modules/top-bar', label: 'Top bar', icon: <PanelTop className="size-5" /> },
-    { to: '/modules/data-table', label: 'Data table', icon: <Table2 className="size-5" /> },
+    { to: '/modules/table', label: 'Table', icon: <Table2 className="size-5" /> },
   ]
 
   return (

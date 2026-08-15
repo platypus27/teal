@@ -633,12 +633,15 @@ export const accessibility = {
   },
   table: {
     keyboard: [
-      { keys: ['Tab'], action: 'Moves focus to the scroll region when the table overflows horizontally.' },
+      { keys: ['Tab'], action: 'Moves focus to the scroll region when the table overflows horizontally, and through any sort header buttons and row checkboxes.' },
       { keys: ['Arrow keys'], action: 'Scrolls the region horizontally when the table overflows.' },
+      { keys: ['Enter', 'Space'], action: 'Activates the focused sort toggle or checkbox.' },
     ],
     notes: [
       'The caption is announced to screen readers and kept visually hidden.',
       'Header cells use scope="col", and the table keeps real table semantics for screen reader navigation.',
+      'Sorted columns expose aria-sort="ascending" or "descending" on the column header.',
+      'The select-all checkbox reports an indeterminate state when only some rows are selected; selected rows expose aria-selected.',
       'Skeleton rows are announced through loadingLabel while data loads.',
       'The scroll region is a tab stop only while the table overflows; tables that fit their container are skipped.',
     ],
@@ -1277,17 +1280,6 @@ export const accessibility = {
     notes: [
       'Renders real dl, dt, and dd markup, so the label-value relationship is announced by screen readers.',
       'Each row pairs exactly one term with one definition inside a wrapper div, which is valid description-list HTML.',
-    ],
-  },
-  'data-table': {
-    keyboard: [
-      { keys: ['Tab'], action: 'Moves focus through the sort header buttons and the row checkboxes.' },
-      { keys: ['Enter', 'Space'], action: 'Activates the focused sort toggle or checkbox.' },
-    ],
-    notes: [
-      'Sorted columns expose aria-sort="ascending" or "descending" on the column header.',
-      'The select-all checkbox reports an indeterminate state when only some rows are selected; selected rows expose aria-selected.',
-      'While loading, the region is marked aria-busy and a status element announces the loadingLabel.',
     ],
   },
   'avatar-group': {
