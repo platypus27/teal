@@ -1,0 +1,7 @@
+{
+  "apiVersion": "kryv.io/workload/v1", "kind": "service", "id": "teal", "displayName": "Teal Docs",
+  "criticality": "medium", "controlMode": "managed", "automaticActions": ["start_container", "restart_container"],
+  "environments": [{"id": "production", "classification": "production", "routes": ["teal.kryvlabs.com"], "components": [
+    {"id": "docs", "displayName": "Documentation", "role": "web", "production": true, "rebuildable": true, "selector": {"composeProject": "teal", "composeService": "docs"}}
+  ]}]
+}
