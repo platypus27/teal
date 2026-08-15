@@ -910,18 +910,6 @@ export const accessibility = {
       'The input receives focus automatically when the dialog opens.',
     ],
   },
-  'search-overlay': {
-    keyboard: [
-      { keys: ['Arrow Down'], action: 'Moves the highlight to the next result, wrapping at the end.' },
-      { keys: ['Arrow Up'], action: 'Moves the highlight to the previous result, wrapping at the start.' },
-      { keys: ['Enter'], action: 'Selects the highlighted result and reports its index.' },
-      { keys: ['Escape'], action: 'Closes the overlay.' },
-    ],
-    notes: [
-      'The input is a combobox whose aria-activedescendant tracks the highlighted option; callers must spread the provided optionId onto each result.',
-      'Rendered as a labelled dialog that traps focus while open.',
-    ],
-  },
   'blocking-overlay': {
     keyboard: [
       { keys: ['Tab'], action: 'Cycles focus within the overlay; the blocked content is unreachable.' },

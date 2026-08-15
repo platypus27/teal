@@ -151,7 +151,6 @@ import {
   ScrollArea,
   ScrollShadow,
   SearchInput,
-  SearchOverlay,
   Section,
   Select,
   Separator,
@@ -209,7 +208,7 @@ import {
   UploadProgress,
   VirtualList,
   VisuallyHidden,
-  type SearchOverlayRenderState,
+  type CommandRenderState,
   dismissToast,
   toast,
 } from '../src/index'
@@ -1128,10 +1127,10 @@ describe('axe: fourth catalog expansion', () => {
   })
 })
 
-const searchOverlayPages = ['Getting started', 'Components', 'Foundations']
+const commandSearchPages = ['Getting started', 'Components', 'Foundations']
 
-function renderSearchOverlayResults({ activeIndex, listId, optionId, query }: SearchOverlayRenderState) {
-  const visible = searchOverlayPages.filter((page) => page.toLowerCase().includes(query.toLowerCase()))
+function renderCommandSearchResults({ activeIndex, listId, optionId, query }: CommandRenderState) {
+  const visible = commandSearchPages.filter((page) => page.toLowerCase().includes(query.toLowerCase()))
   return (
     <ul id={listId} role="listbox" aria-label="Results">
       {visible.map((page, index) => (
@@ -1679,9 +1678,9 @@ describe('axe: fifth catalog expansion', () => {
           ]}
         />
         <ImageViewer src="/photo.jpg" alt="Studio photo" label="Studio viewer" />
-        <SearchOverlay open onOpenChange={() => {}} resultCount={3} label="Site search">
-          {renderSearchOverlayResults}
-        </SearchOverlay>
+        <Command open onOpenChange={() => {}} resultCount={3} label="Site search">
+          {renderCommandSearchResults}
+        </Command>
         <CookieConsent message="We use cookies to improve your experience." manageHref="/settings/cookies" />
       </>,
     )
