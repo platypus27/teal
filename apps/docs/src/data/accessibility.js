@@ -54,11 +54,13 @@ export const accessibility = {
     keyboard: [
       { keys: ['Tab'], action: 'Moves focus to and from the checkbox.' },
       { keys: ['Space'], action: 'Toggles the checkbox; indeterminate moves to checked.' },
+      { keys: ['Space', 'Enter'], action: 'In the card variant, toggles the focused card.' },
     ],
     notes: [
       'Supports a tri-state checked value for select-all patterns, announced as "mixed" by screen readers.',
       'The label is clickable and the description is linked through aria-describedby.',
       'Inside a Field, the Field label is the only rendered label; pass label only for standalone use.',
+      'In the card variant, the card is a button with checkbox semantics (aria-checked); the label doubles as its accessible name and the check indicator is decorative.',
     ],
   },
   switch: {
@@ -754,16 +756,6 @@ export const accessibility = {
     notes: [
       'The visible label is associated with the textarea; use aria-label when there is no visible label.',
       'Resize is suppressed visually because the field sizes itself; keyboard and screen-reader behavior match a standard textarea.',
-    ],
-  },
-  'checkbox-card': {
-    keyboard: [
-      { keys: ['Tab'], action: 'Moves focus to and from each card.' },
-      { keys: ['Space', 'Enter'], action: 'Toggles the focused card.' },
-    ],
-    notes: [
-      'The card is a button with checkbox semantics (aria-checked); the title doubles as its accessible name.',
-      'The check indicator is decorative; state is conveyed through aria-checked, not the icon.',
     ],
   },
   'currency-input': {

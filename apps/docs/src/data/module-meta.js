@@ -575,7 +575,7 @@ export const moduleGroups = [
 				name: "Checkbox",
 				apiNames: ["Checkbox"],
 				description:
-					"Boolean and indeterminate selection with an integrated label and description.",
+					"Boolean and indeterminate selection with an integrated label and description; pass variant=\"card\" for a selectable card with a title, description, and optional icon.",
 				usage: '<Checkbox label="Include archived projects" defaultChecked />',
 				anatomy: [
 					{ part: "Control", description: "The checkbox button holding checked, unchecked, or indeterminate state." },
@@ -595,7 +595,7 @@ export const moduleGroups = [
 						"Don't put interactive content inside the label or description.",
 					],
 				},
-				related: ["checkbox-card", "switch", "radio-group", "field"],
+				related: ["switch", "radio-group", "field"],
 				examples: [
 					{
 						title: "Checked, indeterminate, and disabled",
@@ -606,6 +606,11 @@ export const moduleGroups = [
 						title: "Select-all parent",
 						description:
 							"A parent checkbox mirrors its children as checked, unchecked, or indeterminate and toggles them all.",
+					},
+					{
+						title: "Card variant",
+						description:
+							"variant=\"card\" renders the checkbox as a selectable card with a description and optional icon, for choices that need explanation.",
 					},
 				],
 			},
@@ -1326,49 +1331,6 @@ export const moduleGroups = [
 					],
 				},
 				{
-					id: "checkbox-card",
-					name: "Checkbox Card",
-					apiNames: ["CheckboxCard"],
-					description:
-						"A checkbox rendered as a selectable card with a title, description, and optional icon; works standalone or stacked in groups.",
-					usage: `<CheckboxCard
-  title="Email digest"
-  description="A weekly summary of activity"
-  defaultChecked
-  onCheckedChange={(checked) => console.log(checked)}
-/>`,
-					anatomy: [
-						{ part: "Card", description: "A button with checkbox semantics (role and aria-checked) that owns the whole click target." },
-						{ part: "Check indicator", description: "A decorative corner check that mirrors the state; assistive technology reads aria-checked instead." },
-						{ part: "Title", description: "The card's accessible name and primary label." },
-						{ part: "Description and icon", description: "Supporting text and an optional icon that explain what the toggle does." },
-					],
-					dosDonts: {
-						dos: [
-							"Give every card a specific title that states what turns on or off.",
-							"Stack related opt-ins, such as notification channels, as a group of cards.",
-							"Keep unavailable options visible but disabled.",
-						],
-						donts: [
-							"Don't use cards for mutually exclusive choices; use RadioGroup with variant=\"card\".",
-							"Don't use a card when a plain Checkbox with a label says enough.",
-						],
-					},
-					related: ["checkbox", "radio-group", "switch"],
-					examples: [
-						{
-							title: "Standalone card",
-							description:
-								"One self-contained toggle with a visible check indicator in the corner.",
-						},
-						{
-							title: "Stacked group",
-							description:
-								"Several independent cards, including icons and a disabled unavailable option.",
-						},
-					],
-				},
-				{
 					id: "currency-input",
 					name: "Currency Input",
 					apiNames: ["CurrencyInput"],
@@ -1818,7 +1780,7 @@ export const moduleGroups = [
 							"Keep groups to two to five items so every option stays visible.",
 						],
 						donts: [
-							"Don't use it for settings that need explanatory text; use RadioGroup with variant=\"card\" or CheckboxCard.",
+							"Don't use it for settings that need explanatory text; use RadioGroup or Checkbox with variant=\"card\".",
 							"Don't use it to submit form choices; it is a control cluster, not a fieldset.",
 						],
 					},
@@ -7742,8 +7704,9 @@ const guidanceById = {
 		avoidWhen:
 			"Changing the value should take effect immediately as a setting.",
 		behavior:
-			"Checked, unchecked, and indeterminate states remain native and form-friendly.",
-		responsive: "Allow supporting text to wrap beside the control.",
+			"Checked, unchecked, and indeterminate states remain native and form-friendly. With variant=\"card\", the checkbox renders as a single card button: clicking or pressing Space toggles it and reports the new checked state, and each card in a group tracks its own state, controlled or uncontrolled.",
+		responsive:
+			"Allow supporting text to wrap beside the control. Cards fill their container width; stack them single-column on narrow screens.",
 	},
 	switch: {
 		useWhen: "A boolean setting takes effect immediately.",
@@ -8397,16 +8360,6 @@ const guidanceById = {
 		responsive:
 			"The field stretches to fill its container and re-measures on every change, so wrapping text still fits.",
 	},
-	"checkbox-card": {
-		useWhen:
-			"An on/off choice needs a description or icon to be understood, such as notification channels or feature opt-ins.",
-		avoidWhen:
-			"The choice needs no explanation; a plain Checkbox is more compact. Mutually exclusive options call for RadioGroup with variant=\"card\".",
-		behavior:
-			"Clicking or pressing Space toggles the card and reports the new checked state; each card in a group tracks its own state. Supports controlled and uncontrolled checked.",
-		responsive:
-			"Cards fill their container width; stack them single-column on narrow screens.",
-	},
 	"currency-input": {
 		useWhen:
 			"The user enters a monetary amount in a known currency, such as prices, budgets, or invoice totals.",
@@ -8505,7 +8458,7 @@ const guidanceById = {
 		useWhen:
 			"Two to five related options need quick on/off switching, such as alignment or formatting controls.",
 		avoidWhen:
-			"Options need explanatory text or there are many of them; use RadioGroup with variant=\"card\", CheckboxCard, or Select instead.",
+			"Options need explanatory text or there are many of them; use RadioGroup or Checkbox with variant=\"card\", or Select instead.",
 		behavior:
 			"Single mode keeps exactly one item checked and reports the new value; multiple mode reports the full array of pressed values. Disabled items leave the focus order and cannot be toggled.",
 		responsive:

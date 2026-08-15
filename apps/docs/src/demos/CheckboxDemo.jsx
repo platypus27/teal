@@ -1,8 +1,36 @@
 import { useState } from 'react'
 import { Checkbox, Fieldset } from '@kryv/teal'
+import { Bell, Mail, MessageSquare } from 'lucide-react'
 
 export function CheckboxDemo({ exampleIndex = 0 }) {
   const [reports, setReports] = useState(['usage'])
+
+  if (exampleIndex === 2) {
+    return (
+      <div className="grid w-full max-w-md gap-3">
+        <Checkbox
+          variant="card"
+          label="Email digest"
+          description="A weekly summary of workspace activity"
+          icon={<Mail />}
+          defaultChecked
+        />
+        <Checkbox
+          variant="card"
+          label="Push mentions"
+          description="Only when someone tags you"
+          icon={<Bell />}
+        />
+        <Checkbox
+          variant="card"
+          label="SMS alerts"
+          description="Unavailable on your plan"
+          icon={<MessageSquare />}
+          disabled
+        />
+      </div>
+    )
+  }
 
   if (exampleIndex === 3) {
     return (
