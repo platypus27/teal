@@ -747,7 +747,7 @@ export const moduleGroups = [
 						"Don't keep the spinner on after results arrive; it hides the clear action.",
 					],
 				},
-				related: ["input", "combobox", "search-overlay", "command"],
+				related: ["input", "combobox", "command"],
 				examples: [
 					{
 						title: "Clearable search",
@@ -2349,7 +2349,7 @@ export const moduleGroups = [
 				apiNames: ["Command"],
 				imports: ["Command", "Button"],
 				description:
-					"A command palette dialog with grouped, filterable actions and keyboard navigation.",
+					"A command palette dialog with grouped, filterable actions and keyboard navigation; pass a render function as children for full-screen search with caller-owned results.",
 				usage: `<Command
   open={open}
   onOpenChange={setOpen}
@@ -2370,12 +2370,12 @@ export const moduleGroups = [
 						"Set placeholder and emptyMessage to match the palette's scope.",
 					],
 					donts: [
-						"Don't use the palette as site search over content; use SearchOverlay.",
+						"Don't use the grouped palette as site search over content; use render-prop mode with resultCount instead.",
 						"Don't run destructive commands without a follow-up AlertDialog confirmation.",
 						"Don't overload it with every possible action; keep it to high-frequency commands.",
 					],
 				},
-				related: ["search-overlay", "menu", "dialog"],
+				related: ["combobox", "menu", "dialog"],
 				examples: [
 					{
 						title: "Palette",
@@ -2800,43 +2800,6 @@ export const moduleGroups = [
 							description:
 								"An empty input with a placeholder collects a brand-new name.",
 						},
-					],
-				},
-				{
-					id: "search-overlay",
-					name: "Search Overlay",
-					apiNames: ["SearchOverlay"],
-					description: "Full-screen search overlay with a large input and caller-rendered results navigated entirely from the keyboard.",
-					usage: `<SearchOverlay
-  open={open}
-  onOpenChange={setOpen}
-  resultCount={results.length}
-  onSelect={(index) => openResult(results[index])}
->
-  {({ query, activeIndex, optionId }) => <ResultList results={results} query={query} activeIndex={activeIndex} optionId={optionId} />}
-</SearchOverlay>`,
-					anatomy: [
-						{ part: "Overlay", description: "The full-screen labelled dialog that traps focus and owns the search session." },
-						{ part: "Input", description: "The large query field, focused on open; query and highlight reset on every open." },
-						{ part: "Results", description: "Caller-rendered rows driven by the render prop's query, activeIndex, and optionId." },
-						{ part: "Highlight", description: "The keyboard-driven active result, cycled with arrows and submitted with Enter via onSelect." },
-					],
-					dosDonts: {
-						dos: [
-							"Trigger it from a global shortcut like ⌘K when search is a primary task.",
-							"Use the render prop's optionId for the active-descendant wiring on result rows.",
-							"Render an explicit no-results state; the caller owns what empty means.",
-						],
-						donts: [
-							"Don't use it as a command picker; use Command.",
-							"Don't use it for inline form autocomplete; use Combobox.",
-							"Don't make results mouse-only; Enter must activate the highlighted row.",
-						],
-					},
-					related: ["command", "combobox", "input"],
-					examples: [
-						{ title: "Docs search", description: "A render prop receives the query and highlight state so the caller renders and filters its own result rows." },
-						{ title: "Empty state", description: "The caller owns what shows when nothing matches, such as a 'no results' message." },
 					],
 				},
 		],
@@ -7232,6 +7195,11 @@ const additionalExamples = {
 			description:
 				"Bind a global shortcut to open the palette; keep item hints scannable.",
 		},
+		{
+			title: "Full-screen search",
+			description:
+				"A render function as children switches to full-screen search; the render prop receives query and highlight state while resultCount drives arrow-key cycling.",
+		},
 	],
 	timeline: [
 		{
@@ -8276,12 +8244,6 @@ const guidanceById = {
 			"Confirm (or Enter) calls onSubmit with the entered value and closes; cancel and Escape close without submitting.",
 		responsive:
 			"A compact centered dialog capped to the viewport width with comfortable margins on small screens.",
-	},
-	"search-overlay": {
-		useWhen: "Search is the primary task and deserves the whole screen, such as documentation or knowledge-base search triggered from a shortcut.",
-		avoidWhen: "Choosing from a fixed set of commands; use Command, or Combobox for inline autocomplete inside a form.",
-		behavior: "Arrow keys cycle the highlight through resultCount results and Enter reports the highlighted index via onSelect; query and highlight reset on every open.",
-		responsive: "The input and results column cap at a readable width and the results area scrolls on short viewports.",
 	},
 	"blocking-overlay": {
 		useWhen: "An in-flight operation must not be interrupted by further edits, such as a form save or a bulk action.",

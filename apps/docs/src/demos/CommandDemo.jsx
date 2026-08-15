@@ -22,6 +22,10 @@ export function CommandDemo({ exampleIndex = 0 }) {
     setLastAction(label)
   }
 
+  if (exampleIndex === 3) {
+    return <CommandSearchExample />
+  }
+
   if (exampleIndex === 2) {
     return (
       <div className="flex flex-col items-start gap-3">
@@ -111,6 +115,66 @@ export function CommandDemo({ exampleIndex = 0 }) {
           },
         ]}
       />
+    </div>
+  )
+}
+
+const searchPages = [
+  { title: 'Getting started', section: 'Docs' },
+  { title: 'Components', section: 'Docs' },
+  { title: 'Foundations', section: 'Docs' },
+  { title: 'Accessibility checklist', section: 'Guides' },
+  { title: 'Release notes', section: 'Guides' },
+]
+
+function CommandSearchExample() {
+  const [open, setOpen] = useState(false)
+  const [query, setQuery] = useState('')
+
+  const results = searchPages.filter((page) => page.title.toLowerCase().includes(query.toLowerCase()))
+
+  return (
+    <div className="flex items-center gap-3">
+      <Button variant="secondary" onClick={() => setOpen(true)}>
+        Search the docs
+      </Button>
+      <span className="text-sm text-teal-on-surface-variant">
+        Type to filter, arrow keys move, Enter picks a result.
+      </span>
+      <Command
+        open={open}
+        onOpenChange={setOpen}
+        resultCount={results.length}
+        onQueryChange={setQuery}
+        onSelect={() => setOpen(false)}
+        label="Search the docs"
+        placeholder="Search pages…"
+      >
+        {({ activeIndex, listId, optionId, setActiveIndex }) =>
+          results.length === 0 ? (
+            <p className="py-16 text-center text-sm text-teal-on-surface-variant">No pages match “{query}”.</p>
+          ) : (
+            <ul id={listId} role="listbox" aria-label="Pages" className="m-0 flex list-none flex-col gap-1 p-0">
+              {results.map((page, index) => (
+                <li
+                  key={page.title}
+                  id={optionId(index)}
+                  role="option"
+                  aria-selected={index === activeIndex}
+                  onMouseEnter={() => setActiveIndex(index)}
+                  onClick={() => setOpen(false)}
+                  className={`flex cursor-default items-center justify-between rounded-lg px-4 py-3 text-sm ${
+                    index === activeIndex ? 'bg-teal-primary/10 text-teal-primary' : 'text-teal-on-surface'
+                  }`}
+                >
+                  <span>{page.title}</span>
+                  <span className="text-xs text-teal-on-surface-variant">{page.section}</span>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </Command>
     </div>
   )
 }
