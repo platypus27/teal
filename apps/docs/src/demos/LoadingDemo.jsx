@@ -17,6 +17,15 @@ export function LoadingDemo({ exampleIndex = 0 }) {
       </div>
     )
   }
+  if (exampleIndex === 2) {
+    return (
+      <div className="flex items-center gap-6">
+        <Progress shape="circle" value={64} label="Import progress" />
+        <Progress shape="circle" size={72} strokeWidth={7} value={82} label="Storage used" />
+        <Progress shape="circle" size={72} strokeWidth={7} label="Syncing files" />
+      </div>
+    )
+  }
   return (
     <div className="grid w-full max-w-lg gap-5">
       <div className="flex items-center gap-5">

@@ -71,19 +71,87 @@ export const Skeleton = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement
 export interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
   /** Accessible label describing what the progress bar measures. */
   label: string
+  /** Visual treatment: a linear bar, or a radial circle that spins when `value` is omitted. */
+  shape?: 'bar' | 'circle'
+  /** Diameter of the circle in pixels. Only applies when `shape="circle"`. */
+  size?: number
+  /** Width of the track and fill strokes in pixels. Only applies when `shape="circle"`. */
+  strokeWidth?: number
 }
 
 export const Progress = forwardRef<React.ElementRef<typeof ProgressPrimitive.Root>, ProgressProps>(function Progress(
-  { className, label, max = 100, value = 0, ...props },
+  { className, label, max = 100, value, shape = 'bar', size = 48, strokeWidth = 5, ...props },
   ref,
 ) {
+  if (shape === 'circle') {
+    const determinate = value !== undefined && value !== null
+    const clamped = determinate ? Math.min(100, Math.max(0, value)) : undefined
+    const radius = (size - strokeWidth) / 2
+    const circumference = 2 * Math.PI * radius
+
+    return (
+      <div
+        ref={ref}
+        role="progressbar"
+        aria-label={label}
+        {...(clamped !== undefined
+          ? { 'aria-valuenow': Math.round(clamped), 'aria-valuemin': 0, 'aria-valuemax': 100 }
+          : {})}
+        className={cn('teal-u-relative teal-u-inline-flex teal-u-items-center teal-u-justify-center', className)}
+        style={{ width: size, height: size }}
+        {...props}
+      >
+        <svg
+          width={size}
+          height={size}
+          viewBox={`0 0 ${size} ${size}`}
+          className={cn('-teal-u-rotate-90', !determinate && 'teal-progress-spin')}
+          aria-hidden="true"
+        >
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            fill="none"
+            strokeWidth={strokeWidth}
+            className="teal-u-stroke-outline-variant/40"
+          />
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            fill="none"
+            strokeWidth={strokeWidth}
+            strokeLinecap="round"
+            {...(clamped !== undefined
+              ? { strokeDasharray: circumference, strokeDashoffset: circumference * (1 - clamped / 100) }
+              : { pathLength: 100 })}
+            className={
+              determinate
+                ? 'teal-u-stroke-primary teal-u-transition-[stroke-dashoffset] teal-u-duration-[var(--teal-motion-standard)] motion-reduce:teal-u-transition-none'
+                : 'teal-u-stroke-primary teal-progress-dash'
+            }
+          />
+        </svg>
+        {clamped !== undefined ? (
+          <span
+            aria-hidden="true"
+            className="teal-u-absolute teal-u-inset-0 teal-u-grid teal-u-place-items-center teal-u-font-headline teal-u-text-xs teal-u-font-bold teal-u-tabular-nums teal-u-text-on-surface"
+          >
+            {Math.round(clamped)}%
+          </span>
+        ) : null}
+      </div>
+    )
+  }
+
   const percentage = Math.max(0, Math.min(100, ((value ?? 0) / max) * 100))
   return (
     <ProgressPrimitive.Root
       ref={ref}
       aria-label={label}
       max={max}
-      value={value}
+      value={value ?? 0}
       className={cn('teal-u-relative teal-u-h-2 teal-u-w-full teal-u-overflow-hidden teal-u-rounded-full teal-u-bg-surface-container-high', className)}
       {...props}
     >

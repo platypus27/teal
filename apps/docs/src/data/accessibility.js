@@ -496,7 +496,7 @@ export const accessibility = {
   loading: {
     notes: [
       'Spinner and LoadingState render role="status" with an accessible label, announced once to screen readers.',
-      'Progress exposes aria-valuenow, aria-valuemin, and aria-valuemax through the Radix progress primitive.',
+      'Progress exposes aria-valuenow, aria-valuemin, and aria-valuemax through the Radix progress primitive; shape="circle" renders the same progressbar semantics as a radial arc, with the centered percentage aria-hidden because the progressbar value already carries it.',
       'Skeleton is aria-hidden because it duplicates content that is about to load.',
       'All motion respects prefers-reduced-motion.',
     ],
@@ -535,13 +535,6 @@ export const accessibility = {
     notes: [
       'Built on Alert with the warning variant, so it renders role="status" and is announced politely.',
       'Supply a labeled control as the action, such as a Button; it keeps its own accessible name.',
-    ],
-  },
-  'progress-circle': {
-    notes: [
-      'Rendered as role="progressbar" with an aria-label; determinate mode adds aria-valuemin, aria-valuemax, and aria-valuenow.',
-      'The centered percentage is aria-hidden because the progressbar value already carries it.',
-      'The fill transition is disabled under prefers-reduced-motion.',
     ],
   },
   timeline: {
