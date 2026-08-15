@@ -840,18 +840,6 @@ export const accessibility = {
       'Collapsed content is marked aria-hidden and inert, keeping hidden controls out of the tab order.',
     ],
   },
-  'glass-panel': {
-    notes: [
-      'Backdrop blur does not change contrast guarantees; keep body text on the panel at normal text sizes and weights.',
-      'The panel is a plain div, so supply your own headings or landmark roles when the content needs structure.',
-    ],
-  },
-  panel: {
-    notes: [
-      'The title renders a real heading (h2 by default, adjustable via titleAs), so screen-reader users can navigate between panels.',
-      'Actions are plain interactive elements and keep their own accessible names and focus rings.',
-    ],
-  },
   'action-sheet': {
     keyboard: [
       { keys: ['Escape'], action: 'Closes the sheet without selecting an action.' },
