@@ -2,7 +2,7 @@
 
 html {
   scroll-behavior: smooth;
-  /* Reserve the scrollbar track so scroll-locking overlays (Dialog, Drawer) do not shift the layout. */
+  /* Reserve the scrollbar track so scroll-locking overlays (e.g. Dialog) do not shift the layout. */
   scrollbar-gutter: stable;
 }
 

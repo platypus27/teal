@@ -58,6 +58,12 @@ describe('Checkbox card variant', () => {
     expect(screen.getByRole('checkbox', { name: /Email digest/ })).toHaveAttribute('aria-checked', 'false')
   })
 
+  it('forwards the id prop onto the card button', () => {
+    render(<Checkbox variant="card" id="digest-card" label="Email digest" />)
+
+    expect(screen.getByRole('checkbox', { name: /Email digest/ })).toHaveAttribute('id', 'digest-card')
+  })
+
   it('does not toggle when disabled and works independently in groups', async () => {
     const user = userEvent.setup()
     const first = vi.fn()

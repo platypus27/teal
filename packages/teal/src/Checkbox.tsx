@@ -44,7 +44,9 @@ export const Checkbox = forwardRef<React.ComponentRef<typeof CheckboxPrimitive.R
     const [internalChecked, setInternalChecked] = useState(() => props.defaultChecked === true)
 
     if (variant === 'card') {
+      // Strip defaultChecked: it only seeds the hoisted uncontrolled state above and is not a valid button attribute.
       const { checked, defaultChecked: _defaultChecked, disabled, onCheckedChange, ...cardProps } = props
+      void _defaultChecked
       // The card is a boolean toggle; a controlled 'indeterminate' reads as unchecked.
       const isChecked = checked === undefined ? internalChecked : checked === true
 
@@ -58,6 +60,7 @@ export const Checkbox = forwardRef<React.ComponentRef<typeof CheckboxPrimitive.R
           ref={ref}
           type="button"
           role="checkbox"
+          id={id}
           aria-checked={isChecked}
           aria-describedby={describedBy}
           aria-invalid={invalid}
