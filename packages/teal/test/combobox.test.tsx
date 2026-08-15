@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Combobox } from '../src/Combobox'
 
@@ -102,5 +102,88 @@ describe('Combobox', () => {
     expect(input).toHaveValue('Editor')
     await user.click(input)
     expect(await screen.findByRole('option', { name: 'Editor' })).toHaveAttribute('aria-selected', 'true')
+  })
+})
+
+describe('Combobox toggle close (fix 1.3)', () => {
+  const options = [
+    { value: 'admin', label: 'Admin' },
+    { value: 'editor', label: 'Editor' },
+  ]
+
+  it('closes the listbox when the input is clicked while open', async () => {
+    const user = userEvent.setup()
+    render(<Combobox label="Role" options={options} />)
+    const input = screen.getByRole('combobox', { name: 'Role' })
+
+    await user.click(input)
+    expect(input).toHaveAttribute('aria-expanded', 'true')
+    await screen.findByRole('listbox')
+
+    await user.click(input)
+    expect(input).toHaveAttribute('aria-expanded', 'false')
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+  })
+
+  it('still opens and filters when typing after a toggle close', async () => {
+    const user = userEvent.setup()
+    render(<Combobox label="Role" options={options} />)
+    const input = screen.getByRole('combobox', { name: 'Role' })
+
+    await user.click(input)
+    await user.click(input) // closed
+    await user.type(input, 'edi')
+
+    expect(input).toHaveAttribute('aria-expanded', 'true')
+    expect(await screen.findAllByRole('option')).toHaveLength(1)
+  })
+})
+
+describe('Combobox multiple', () => {
+  const options = [
+    { value: 'admin', label: 'Admin' },
+    { value: 'editor', label: 'Editor' },
+    { value: 'viewer', label: 'Viewer' },
+  ]
+
+  it('opens a multi-selectable listbox and toggles options without closing', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    render(<Combobox label="Roles" multiple options={options} onValueChange={onValueChange} />)
+    const control = screen.getByRole('combobox', { name: 'Roles' })
+
+    await user.click(control)
+    const listbox = await screen.findByRole('listbox')
+    expect(listbox).toHaveAttribute('aria-multiselectable', 'true')
+
+    await user.click(screen.getByRole('option', { name: 'Editor' }))
+    expect(onValueChange).toHaveBeenCalledWith(['editor'])
+    await user.click(screen.getByRole('option', { name: 'Viewer' }))
+    expect(onValueChange).toHaveBeenCalledWith(['editor', 'viewer'])
+    expect(control).toHaveAttribute('aria-expanded', 'true') // stays open
+  })
+
+  it('removes a selected value via its chip remove button', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    render(<Combobox label="Roles" multiple value={['editor', 'viewer']} options={options} onValueChange={onValueChange} />)
+
+    const remove = screen.getByRole('button', { name: 'Remove Editor' })
+    expect(remove).toHaveClass('teal-u-size-6')
+    await user.click(remove)
+    expect(onValueChange).toHaveBeenCalledWith(['viewer'])
+  })
+
+  it('filters options from the popover input and closes on Escape', async () => {
+    const user = userEvent.setup()
+    render(<Combobox label="Roles" multiple options={options} />)
+    const control = screen.getByRole('combobox', { name: 'Roles' })
+    await user.click(control)
+
+    await user.type(await screen.findByLabelText('Filter options'), 'view')
+    expect(screen.getAllByRole('option')).toHaveLength(1)
+
+    fireEvent.keyDown(screen.getByLabelText('Filter options'), { key: 'Escape' })
+    expect(control).toHaveAttribute('aria-expanded', 'false')
   })
 })

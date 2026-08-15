@@ -121,23 +121,14 @@ export const accessibility = {
       { keys: ['Arrow Down', 'Arrow Up'], action: 'Moves the highlight through the filtered options.' },
       { keys: ['Enter'], action: 'Selects the highlighted option and closes the listbox.' },
       { keys: ['Escape'], action: 'Closes the listbox without changing the committed value.' },
+      { keys: ['Enter', 'Space', 'Arrow Down'], action: 'In multiple mode, opens the listbox from the control.' },
+      { keys: ['Tab'], action: 'In multiple mode, moves focus between the control, pill remove buttons, and the open listbox.' },
     ],
     notes: [
       'The input renders the combobox role with aria-autocomplete list and aria-activedescendant for the highlighted option.',
       'Options render option roles with aria-selected; disabled options cannot be chosen.',
       'The empty message appears inside the listbox when no option matches the filter.',
-    ],
-  },
-  'multi-select': {
-    keyboard: [
-      { keys: ['Enter', 'Space', 'Arrow Down'], action: 'Opens the listbox from the control.' },
-      { keys: ['Typing'], action: 'Filters the option list in the inline filter field.' },
-      { keys: ['Tab'], action: 'Moves focus between the control, pill remove buttons, and the open listbox.' },
-    ],
-    notes: [
-      'The control uses combobox semantics with aria-expanded and a multi-selectable listbox popup.',
-      'Every pill has a remove button labeled Remove plus the option name.',
-      'Selected options keep a check mark and aria-selected in the list.',
+      'In multiple mode the control is a combobox-role trigger hosting selected pills, and the listbox popup is aria-multiselectable; every pill has a remove button labeled Remove plus the option name.',
     ],
   },
   'date-picker': {
