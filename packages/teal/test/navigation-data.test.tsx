@@ -1,7 +1,7 @@
 import { createRef } from 'react'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Accordion, Breadcrumb, Menu, Pagination, Popover, Table, Tabs, VerticalNav, VerticalNavItem, VerticalNavList } from '../src/index'
+import { Accordion, Breadcrumb, Menu, Pagination, Popover, Sidebar, SidebarContent, SidebarItem, Table, Tabs } from '../src/index'
 
 describe('navigation modules', () => {
   it('moves between tabs with the keyboard and exposes the active panel', async () => {
@@ -269,17 +269,17 @@ describe('breadcrumb and accordion', () => {
 })
 
 
-describe('vertical nav items', () => {
+describe('sidebar rail items', () => {
   it('renders the icon column only when an icon is provided', () => {
     render(
-      <VerticalNav aria-label="Primary">
-        <VerticalNavList>
-          <VerticalNavItem href="/plain">Plain</VerticalNavItem>
-          <VerticalNavItem href="/icon" icon={<svg data-testid="nav-icon" />}>
+      <Sidebar aria-label="Primary" mode="rail">
+        <SidebarContent>
+          <SidebarItem href="/plain">Plain</SidebarItem>
+          <SidebarItem href="/icon" icon={<svg data-testid="nav-icon" />}>
             With icon
-          </VerticalNavItem>
-        </VerticalNavList>
-      </VerticalNav>,
+          </SidebarItem>
+        </SidebarContent>
+      </Sidebar>,
     )
     expect(screen.getByRole('link', { name: 'Plain' }).querySelector('.teal-u-w-16')).toBeNull()
     expect(screen.getByRole('link', { name: 'With icon' }).querySelector('.teal-u-w-16')).not.toBeNull()

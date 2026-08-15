@@ -1,6 +1,6 @@
 import { createRef, forwardRef } from 'react'
 import { render, screen } from '@testing-library/react'
-import { Button, Card, TopBar, VerticalNav, VerticalNavItem } from '../src/index'
+import { Button, Card, Sidebar, SidebarItem, TopBar } from '../src/index'
 
 const RouterLink = forwardRef<HTMLAnchorElement, { href: string; children: React.ReactNode }>(
   function RouterLink({ href, children }, ref) {
@@ -13,8 +13,8 @@ const typeFixtures = (
     <Card as="a" href="/reports" />
     <Card as="button" type="button" disabled />
     <TopBar as="a" href="/settings" />
-    <VerticalNav as="aside" />
-    <VerticalNavItem as={RouterLink} href="/settings">Settings</VerticalNavItem>
+    <Sidebar as="aside" />
+    <SidebarItem as={RouterLink} href="/settings">Settings</SidebarItem>
     {/* @ts-expect-error asChild links cannot be disabled by the Button contract. */}
     <Button asChild disabled><a href="/settings">Settings</a></Button>
     {/* @ts-expect-error href is not a valid prop for a button card. */}
@@ -32,8 +32,8 @@ describe('polymorphic surfaces and navigation', () => {
       <>
         <Card as="a" href="/reports" ref={cardRef}>Reports</Card>
         <TopBar as="div" data-testid="top-bar" />
-        <VerticalNav as="aside" aria-label="Workspace" />
-        <VerticalNavItem as={RouterLink} href="/settings" ref={navRef}>Settings</VerticalNavItem>
+        <Sidebar as="aside" aria-label="Workspace" />
+        <SidebarItem as={RouterLink} href="/settings" ref={navRef}>Settings</SidebarItem>
       </>,
     )
 

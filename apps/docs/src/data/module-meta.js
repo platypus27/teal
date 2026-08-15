@@ -3833,7 +3833,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						"Mark the application in use with current so it is announced as the current page.",
 					],
 					donts: [
-						"Don't use it for navigation within one application; use Vertical Nav or Tabs instead.",
+						"Don't use it for navigation within one application; use Sidebar or Tabs instead.",
 						"Don't hide the current application from the list; show it marked current instead.",
 						"Don't put actions in the menu; every item navigates to a product destination.",
 					],
@@ -4009,64 +4009,6 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 				],
 			},
 			{
-				id: "vertical-nav",
-				name: "Vertical Nav",
-				apiNames: [
-					"VerticalNav",
-					"VerticalNavBrand",
-					"VerticalNavList",
-					"VerticalNavSection",
-					"VerticalNavItem",
-					"VerticalNavFooter",
-				],
-				imports: [
-					"VerticalNav",
-					"VerticalNavBrand",
-					"VerticalNavList",
-					"VerticalNavSection",
-					"VerticalNavItem",
-					"VerticalNavFooter",
-				],
-				description:
-					"A compound vertical navigation with icon-rail and full-text modes.",
-				usage: `<VerticalNav mode="rail">
-  <VerticalNavBrand>...</VerticalNavBrand>
-  <VerticalNavList>
-    <VerticalNavSection label="Workspace">
-      <VerticalNavItem active icon={<LayoutDashboard />}>Overview</VerticalNavItem>
-    </VerticalNavSection>
-  </VerticalNavList>
-  <VerticalNavFooter>...</VerticalNavFooter>
-</VerticalNav>`,
-				anatomy: [
-					{ part: "Nav landmark", description: "The labeled nav container; rail mode collapses it to an icon strip that expands on hover or focus." },
-					{ part: "Brand", description: "VerticalNavBrand holds the product mark; in full mode it can pair an icon with a wordmark." },
-					{ part: "Section", description: "VerticalNavSection groups items under a label that fades in when the rail expands." },
-					{ part: "Item", description: "VerticalNavItem pairs an always-visible icon with a label; active sets aria-current and a circular icon background in rail mode." },
-					{ part: "Footer", description: "VerticalNavFooter pins secondary destinations like settings to the bottom." },
-				],
-				dosDonts: {
-					dos: [
-						"Give every item an icon so rail mode stays usable while labels are collapsed.",
-						"Drive active from the router so the current page sets aria-current.",
-						"Use mode=\"full\" inside a mobile drawer where labels should always show.",
-					],
-					donts: [
-						"Don't nest sections more than one level deep; use Tree View for deeper hierarchies.",
-						"Don't mix icons on only some items in a section; rail mode depends on consistent icons.",
-						"Don't keep the rail attached on narrow screens; move it into a dismissible drawer instead.",
-					],
-				},
-				related: ["side-rail", "nav-rail", "ecosystem-rail"],
-				examples: [
-					{
-						title: "Rail and full modes",
-						description:
-							"Rail mode collapses to an icon strip and expands on hover or keyboard focus; the active item shows a circular background around its icon. Full mode shows labels always with a rounded row highlight.",
-					},
-				],
-			},
-			{
 				id: "nav-rail",
 				name: "Nav Rail",
 				apiNames: ["NavRail", "NavRailItem"],
@@ -4089,12 +4031,12 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						"Use badge sparingly to flag a destination that needs attention without carrying a count.",
 					],
 					donts: [
-						"Don't use it when destinations need visible labels or grouped sections; use Vertical Nav.",
+						"Don't use it when destinations need visible labels or grouped sections; use Sidebar.",
 						"Don't crowd in more than a handful of destinations; the rail is for top-level navigation only.",
 						"Don't rely on the badge dot alone to convey meaning; pair it with a notification surface.",
 					],
 				},
-				related: ["vertical-nav", "side-rail", "tooltip"],
+				related: ["sidebar", "ecosystem-rail", "tooltip"],
 				examples: [
 					{
 						title: "Icon destinations",
@@ -4104,53 +4046,10 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 				],
 			},
 			{
-				id: "side-rail",
-				name: "Side Rail",
-				apiNames: ["SideRail"],
-				imports: ["SideRail", "VerticalNavBrand", "VerticalNavList", "VerticalNavSection", "VerticalNavItem", "VerticalNavFooter"],
-				description:
-					"A floating glass rail that expands from an icon strip to a full label list on hover or focus.",
-				usage: `<SideRail>
-  <VerticalNavBrand>...</VerticalNavBrand>
-  <VerticalNavList>
-    <VerticalNavSection label="Workspace">
-      <VerticalNavItem active icon={<LayoutDashboard />}>Overview</VerticalNavItem>
-    </VerticalNavSection>
-  </VerticalNavList>
-  <VerticalNavFooter>...</VerticalNavFooter>
-</SideRail>`,
-				anatomy: [
-					{ part: "Rail surface", description: "The floating translucent container; a nav landmark with backdrop blur that expands from an icon strip to full width." },
-					{ part: "Brand", description: "Optional header slot for the product mark, composed with VerticalNavBrand." },
-					{ part: "Sections and items", description: "VerticalNavSection groups labeled destinations; each VerticalNavItem keeps its icon visible while labels fade in on expansion." },
-					{ part: "Footer", description: "VerticalNavFooter pins account or settings destinations to the bottom of the rail." },
-				],
-				dosDonts: {
-					dos: [
-						"Float the rail over the content with className positioning so it glides above the page.",
-						"Pair every item with an icon; icons stay visible and carry the navigation while labels are collapsed.",
-						"Pass mode=\"full\" when labels should stay visible, such as on wide desktop layouts.",
-					],
-					donts: [
-						"Don't attach it flush to a page edge; use Vertical Nav for edge-anchored navigation.",
-						"Don't use it as a dense icon-only strip with tooltips; use Nav Rail instead.",
-						"Don't rely on expansion alone on touch screens; fold destinations into a drawer where hover is unavailable.",
-					],
-				},
-				related: ["vertical-nav", "nav-rail", "app-shell"],
-				examples: [
-					{
-						title: "Floating glass pill",
-						description:
-							"SideRail floats over content with a translucent blurred surface and expands to reveal labels on hover or keyboard focus.",
-					},
-				],
-			},
-			{
 				id: "ecosystem-rail",
 				name: "Ecosystem Rail",
 				apiNames: ["EcosystemRail"],
-				imports: ["EcosystemRail", "VerticalNavItem"],
+				imports: ["EcosystemRail", "SidebarItem"],
 				description:
 					"A persistent cross-product rail with a stable Home destination, caller-filtered applications, and honest health status.",
 				usage: `<EcosystemRail
@@ -4173,12 +4072,12 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						"Pass status only with real evidence; omit it or use unknown when health is not measured.",
 					],
 					donts: [
-						"Don't use it for navigation inside one application; use Vertical Nav or Side Rail instead.",
+						"Don't use it for navigation inside one application; use Sidebar instead.",
 						"Don't derive or hide entitlements inside the rail; it never filters destinations itself.",
 						"Don't reorder Home into the destination list; it is always rendered first by design.",
 					],
 				},
-				related: ["app-switcher", "vertical-nav", "health-indicator"],
+				related: ["app-switcher", "sidebar", "health-indicator"],
 				examples: [
 					{
 						title: "Rail mode with health status",
@@ -4671,7 +4570,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 					name: "Sidebar",
 					apiNames: ["Sidebar", "SidebarHeader", "SidebarContent", "SidebarFooter", "SidebarSection", "SidebarItem", "SidebarCollapseButton"],
 					description:
-						"A full app sidebar with header, content, and footer slots that collapses to an icon rail, with aria-current on the active item.",
+						"A full app sidebar with header, content, and footer slots. It collapses to an icon rail through the collapsed state, switches to a hover-expanding rail with mode=\"rail\", floats as a glass pill with floating, and sets aria-current on the active item.",
 					usage: `<Sidebar>
   <SidebarHeader>
     <Logo />
@@ -4703,10 +4602,10 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						],
 						donts: [
 							"Don't hide critical destinations only in the expanded state.",
-							"Don't use it as a floating overlay rail; that is Side Rail.",
+							"Don't use it as a dense icon-only strip with tooltips; use Nav Rail instead.",
 						],
 					},
-					related: ["vertical-nav", "side-rail", "dialog"],
+					related: ["nav-rail", "ecosystem-rail", "dialog"],
 					examples: [
 						{
 							title: "Expanded sidebar",
@@ -4717,6 +4616,16 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							title: "Collapsed icon rail",
 							description:
 								"defaultCollapsed starts the sidebar as an icon-only rail; item labels hide and icons stay centered.",
+						},
+						{
+							title: "Rail mode",
+							description:
+								"mode=\"rail\" collapses to an icon strip that expands on hover or keyboard focus; the active item shows a circular background around its icon.",
+						},
+						{
+							title: "Floating glass rail",
+							description:
+								"floating turns the rail into a translucent, blurred pill that glides over content; position it with className.",
 						},
 					],
 				},
@@ -7519,18 +7428,6 @@ const additionalExamples = {
 			description: "Let actions wrap beneath the title on narrow screens.",
 		},
 	],
-	"vertical-nav": [
-		{
-			title: "Application shell",
-			description:
-				"Compose a persistent rail with a full navigation drawer for responsive products.",
-		},
-		{
-			title: "Router integration",
-			description:
-				"Use VerticalNavItem with a router link and pass active state from the route.",
-		},
-	],
 	"nav-rail": [
 		{
 			title: "Badge dots",
@@ -7792,13 +7689,6 @@ const additionalExamples = {
 			description: "Store the theme in onChange and reapply the class on load.",
 		},
 	],
-	"side-rail": [
-		{
-			title: "Full label mode",
-			description:
-				"Pass mode=\"full\" to keep labels visible and pin the rail open at its expanded width.",
-		},
-	],
 };
 
 for (const module of modules) {
@@ -7814,7 +7704,7 @@ const guidanceById = {
 	"app-switcher": {
 		useWhen: "People move between entitled ecosystem applications.",
 		avoidWhen:
-			"The navigation is inside one application; use vertical nav or tabs instead.",
+			"The navigation is inside one application; use a sidebar or tabs instead.",
 		behavior:
 			"The caller filters applications by entitlement first; the switcher always includes the explicit Home destination.",
 		responsive:
@@ -7824,7 +7714,7 @@ const guidanceById = {
 		useWhen:
 			"A product needs persistent navigation across the whole ecosystem, not just its own sections.",
 		avoidWhen:
-			"The navigation is inside one application; use Vertical Nav or Side Rail. For a temporary switcher menu, use App Switcher.",
+			"The navigation is inside one application; use Sidebar. For a temporary switcher menu, use App Switcher.",
 		behavior:
 			"Home always renders first, the caller filters destinations by entitlement, health status appears only when supplied, and onNavigate fires before ordinary anchor navigation.",
 		responsive:
@@ -8035,33 +7925,15 @@ const guidanceById = {
 		responsive:
 			"Let actions wrap naturally below the heading at narrow widths.",
 	},
-	"vertical-nav": {
-		useWhen: "An application needs persistent section navigation.",
-		avoidWhen: "There are only a few inline links or a short wizard.",
-		behavior:
-			"Rail mode expands on hover or focus, the active item shows a circular background around its icon, and item active state sets aria-current.",
-		responsive:
-			"Use full navigation in a drawer on mobile and close it after route changes.",
-	},
 	"nav-rail": {
 		useWhen:
 			"A dense product needs a compact, always-visible strip of top-level destinations.",
 		avoidWhen:
-			"Destinations need visible labels or grouped sections; use Vertical Nav.",
+			"Destinations need visible labels or grouped sections; use Sidebar.",
 		behavior:
 			"The active item sets aria-current and every icon is named through aria-label and a tooltip.",
 		responsive:
 			"Keep the rail floating on desktop and fold destinations into a drawer on narrow screens.",
-	},
-	"side-rail": {
-		useWhen:
-			"An application needs a floating rail that glides over content and expands to labeled sections.",
-		avoidWhen:
-			"The nav is attached to a page edge; use Vertical Nav. For a dense icon strip with tooltips, use Nav Rail.",
-		behavior:
-			"Rail mode collapses to a glass pill that expands on hover or focus; section and item labels fade in together, and the active item shows a circular background around its icon.",
-		responsive:
-			"Position it with className and fold destinations into a drawer on narrow screens.",
 	},
 	"top-bar": {
 		useWhen:
@@ -8902,7 +8774,7 @@ const guidanceById = {
 		useWhen:
 			"A small set of apps or tools should be launchable from a playful, icon-only bar, such as in a desktop-like workspace.",
 		avoidWhen:
-			"Items need visible text labels or there are more than a handful of destinations; use BottomNav or VerticalNav instead.",
+			"Items need visible text labels or there are more than a handful of destinations; use BottomNav or Sidebar instead.",
 		behavior:
 			"Every item is a real button whose label prop is both the accessible name and the tooltip text; active adds a non-interactive indicator dot.",
 		responsive:
@@ -8932,9 +8804,9 @@ const guidanceById = {
 		useWhen:
 			"The app has a persistent primary navigation that benefits from header and footer slots, such as a dashboard or admin console.",
 		avoidWhen:
-			"The nav is a floating edge rail that expands on hover; use SideRail or VerticalNav with mode=\"rail\" instead.",
+			"The nav is a dense icon-only strip with tooltips; use Nav Rail instead.",
 		behavior:
-			"Collapsed state is controlled or uncontrolled via collapsed/defaultCollapsed/onCollapsedChange; the active item always exposes aria-current=\"page\".",
+			"Collapsed state is controlled or uncontrolled via collapsed/defaultCollapsed/onCollapsedChange; mode=\"rail\" collapses labels until hover or focus instead, floating renders a translucent glass pill, and the active item always exposes aria-current=\"page\".",
 		responsive:
 			"Collapsing frees horizontal space on narrow screens; pair with Dialog placement=\"left\" for an off-canvas pattern on phones.",
 	},

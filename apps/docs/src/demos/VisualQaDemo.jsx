@@ -27,6 +27,11 @@ import {
   Progress,
   Select,
   Separator,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarItem,
+  SidebarSection,
   Skeleton,
   Spinner,
   Switch,
@@ -40,11 +45,6 @@ import {
   TopBarActions,
   TopBarBrand,
   TopBarSearch,
-  VerticalNav,
-  VerticalNavFooter,
-  VerticalNavItem,
-  VerticalNavList,
-  VerticalNavSection,
   toast,
 } from '@kryv/teal'
 
@@ -220,15 +220,15 @@ export function VisualQaDemo() {
                   <TopBarActions><IconButton label="Settings"><Settings /></IconButton></TopBarActions>
                 </TopBar>
                 <div className="flex min-h-64 flex-col bg-teal-background sm:flex-row">
-                  <VerticalNav className="w-full shrink-0 border-b border-r-0 sm:w-72 sm:border-b-0 sm:border-r" mode="full">
-                    <VerticalNavList>
-                      <VerticalNavSection label="Workspace">
-                        <VerticalNavItem active icon={<Home />} href="#">Overview</VerticalNavItem>
-                        <VerticalNavItem icon={<Users />} href="#">People</VerticalNavItem>
-                      </VerticalNavSection>
-                    </VerticalNavList>
-                    <VerticalNavFooter className="text-xs text-teal-on-surface-variant">Northstar</VerticalNavFooter>
-                  </VerticalNav>
+                  <Sidebar className="w-full shrink-0 border-b border-r-0 sm:w-72 sm:border-b-0 sm:border-r" mode="full">
+                    <SidebarContent>
+                      <SidebarSection label="Workspace">
+                        <SidebarItem active icon={<Home />} href="#">Overview</SidebarItem>
+                        <SidebarItem icon={<Users />} href="#">People</SidebarItem>
+                      </SidebarSection>
+                    </SidebarContent>
+                    <SidebarFooter className="text-xs text-teal-on-surface-variant">Northstar</SidebarFooter>
+                  </Sidebar>
                   <div className="flex min-h-32 flex-1 items-center justify-center text-sm text-teal-on-surface-variant">Workspace content</div>
                 </div>
               </div>

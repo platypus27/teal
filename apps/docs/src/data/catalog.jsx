@@ -238,8 +238,6 @@ const extras = {
   },
   'page-header': {
   },
-  'vertical-nav': {
-  },
   'top-bar': {
   },
   breadcrumb: {

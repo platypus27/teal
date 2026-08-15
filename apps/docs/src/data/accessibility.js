@@ -646,17 +646,6 @@ export const accessibility = {
       'Initials and icon fallbacks render role="img" with the name as the accessible label.',
     ],
   },
-  'vertical-nav': {
-    keyboard: [
-      { keys: ['Tab'], action: 'Moves focus between nav items. In rail mode, focusing an item expands the nav.' },
-      { keys: ['Enter'], action: 'Activates the focused item link.' },
-    ],
-    notes: [
-      'Rail mode expands on hover and on focus-within, so keyboard users can read labels that are hidden from mouse users until hover.',
-      'The active item sets aria-current="page" to mark the current location for screen readers.',
-      'Use the icon prop for the leading icon so it stays visible in rail mode; only the label fades.',
-    ],
-  },
   'app-switcher': {
     keyboard: [
       { keys: ['Enter', 'Space', 'Arrow Down'], action: 'Opens the switcher menu from the trigger.' },
@@ -693,17 +682,6 @@ export const accessibility = {
       'The active item sets aria-current="page"; the badge dot is aria-hidden, so pair it with a labeled notification surface.',
     ],
   },
-  'side-rail': {
-    keyboard: [
-      { keys: ['Tab'], action: 'Moves focus between nav items. Focusing an item expands the rail to reveal labels.' },
-      { keys: ['Enter'], action: 'Activates the focused item link.' },
-    ],
-    notes: [
-      'Renders a nav landmark named through aria-label, defaulting to "Primary".',
-      'The rail expands on focus-within as well as hover, so keyboard users get the same labels mouse users see.',
-      'The active item sets aria-current="page" and shows a circular icon background in rail mode.',
-    ],
-  },
   'top-bar': {
     keyboard: [
       { keys: ['Tab'], action: 'Moves focus through the brand, search trigger, and action buttons in order.' },
@@ -722,7 +700,7 @@ export const accessibility = {
       'Renders a nav landmark with an ordered list; the landmark label defaults to "Breadcrumb".',
       'The current page is a span with aria-current="page", not a link.',
       'Middle items beyond collapseAfter move into a labeled menu.',
-      'Pass a router link component through an item\'s as prop, mirroring VerticalNavItem.',
+      'Pass a router link component through an item\'s as prop, mirroring SidebarItem.',
     ],
   },
   'action-bar': {
@@ -1216,13 +1194,14 @@ export const accessibility = {
   },
   sidebar: {
     keyboard: [
-      { keys: ['Tab'], action: 'Moves focus between the item links and the collapse button.' },
+      { keys: ['Tab'], action: 'Moves focus between the item links and the collapse button. In rail mode, focusing an item expands the rail to reveal labels.' },
       { keys: ['Enter'], action: 'Follows the focused item link.' },
       { keys: ['Enter', 'Space'], action: 'Toggles the sidebar between expanded and collapsed from the collapse button.' },
     ],
     notes: [
       'Renders a navigation landmark with a configurable aria-label.',
-      'The active item is announced as the current page through aria-current="page".',
+      'The active item is announced as the current page through aria-current="page"; in rail mode the active background is a circle around the icon.',
+      'Rail mode expands on focus-within as well as hover, so keyboard users get the same labels mouse users see.',
       'The collapse button exposes aria-expanded and a label that switches between "Collapse sidebar" and "Expand sidebar".',
     ],
   },

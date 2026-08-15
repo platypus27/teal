@@ -38,7 +38,7 @@ export const recipes = [
   {
     id: 'responsive-shell',
     title: 'Responsive application shell',
-    description: 'Compose TopBar and VerticalNav into a desktop shell that can become a mobile drawer.',
+    description: 'Compose TopBar and Sidebar into a desktop shell that can become a mobile drawer.',
     file: 'recipe-responsive-shell.jsx',
   },
   {
