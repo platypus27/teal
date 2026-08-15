@@ -1165,6 +1165,7 @@ export const accessibility = {
     notes: [
       'Renders a navigation landmark labelled "On this page" by default.',
       'The active item exposes aria-current="location" so the position in the page is announced.',
+      'Nested items render as indented sub-lists inside the same landmark, so the hierarchy is announced.',
       'Without IntersectionObserver the links still navigate; only the scroll tracking is skipped.',
     ],
   },
@@ -1243,17 +1244,6 @@ export const accessibility = {
     notes: [
       'Renders a navigation landmark with a configurable aria-label.',
       'The active item is announced as the current page through aria-current="page".',
-    ],
-  },
-  'table-of-contents': {
-    keyboard: [
-      { keys: ['Tab'], action: 'Moves focus between the heading links.' },
-      { keys: ['Enter'], action: 'Smooth-scrolls the linked heading into view and marks it active.' },
-    ],
-    notes: [
-      'Renders a navigation landmark labelled "Table of contents" with nested lists matching the heading hierarchy.',
-      'The active heading exposes aria-current="location" so the reading position is announced.',
-      'Without IntersectionObserver the links still navigate; only the scroll tracking is skipped.',
     ],
   },
   'permission-matrix': {

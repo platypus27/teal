@@ -286,8 +286,6 @@ export { SkipLink } from './SkipLink'
 export type { SkipLinkProps } from './SkipLink'
 export { SubNav, SubNavItem } from './SubNav'
 export type { SubNavProps, SubNavItemProps } from './SubNav'
-export { TableOfContents } from './TableOfContents'
-export type { TocHeading, TableOfContentsProps } from './TableOfContents'
 
 export { ActivityFeed } from './ActivityFeed'
 export type { ActivityFeedItem, ActivityFeedProps } from './ActivityFeed'
