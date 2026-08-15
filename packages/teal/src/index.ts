@@ -191,8 +191,6 @@ export type { SpeedDialProps, SpeedDialActionProps } from './SpeedDial'
 
 export { AutosizeTextarea } from './AutosizeTextarea'
 export type { AutosizeTextareaProps } from './AutosizeTextarea'
-export { CheckboxCard } from './CheckboxCard'
-export type { CheckboxCardProps } from './CheckboxCard'
 export { CurrencyInput } from './CurrencyInput'
 export type { CurrencyInputProps } from './CurrencyInput'
 export { Fieldset } from './Fieldset'

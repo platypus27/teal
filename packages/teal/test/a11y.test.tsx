@@ -42,7 +42,6 @@ import {
   Center,
   ChartContainer,
   Checkbox,
-  CheckboxCard,
   Chip,
   CodeBlock,
   Collapse,
@@ -1218,7 +1217,7 @@ describe('axe: fifth catalog expansion', () => {
             { value: 'enterprise', label: 'Enterprise', description: 'For large orgs', disabled: true },
           ]}
         />
-        <CheckboxCard title="Email digest" description="A weekly summary" />
+        <Checkbox variant="card" label="Email digest" description="A weekly summary" />
         <CurrencyInput label="Invoice total" defaultValue={10} />
         <MaskedInput label="Expiry date" mask="##/##" />
         <PhoneInput label="Phone" defaultValue="+14155552671" />
