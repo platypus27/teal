@@ -237,3 +237,16 @@ test('sidebar marks only the current module as active', async ({ page }) => {
   await expect(nav.locator('a.teal-u-font-semibold')).toHaveCount(1)
   await expect(nav.getByRole('link', { name: 'Toggle Group', exact: true })).toHaveAttribute('aria-current', 'page')
 })
+
+test('fixed-position demos render inside their preview box', async ({ page }) => {
+  await page.goto('/modules/floating-action-button')
+  await expect(page.getByRole('heading', { level: 1, name: 'Floating Action Button' })).toBeVisible()
+  const fab = page.getByRole('button', { name: 'Create item' })
+  await expect(fab).toBeVisible()
+  const buttonBox = await fab.boundingBox()
+  const previewBox = await page.locator('#examples .docs-grid').first().boundingBox()
+  expect(buttonBox.x).toBeGreaterThanOrEqual(previewBox.x)
+  expect(buttonBox.y).toBeGreaterThanOrEqual(previewBox.y)
+  expect(buttonBox.x + buttonBox.width).toBeLessThanOrEqual(previewBox.x + previewBox.width)
+  expect(buttonBox.y + buttonBox.height).toBeLessThanOrEqual(previewBox.y + previewBox.height)
+})
