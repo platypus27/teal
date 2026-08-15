@@ -18,7 +18,6 @@ import {
   AppShellSidebar,
   AppSwitcher,
   AspectRatio,
-  AutosizeTextarea,
   Avatar,
   AvatarGroup,
   BackTop,
@@ -1221,7 +1220,7 @@ describe('axe: fifth catalog expansion', () => {
         <CurrencyInput label="Invoice total" defaultValue={10} />
         <MaskedInput label="Expiry date" mask="##/##" />
         <PhoneInput label="Phone" defaultValue="+14155552671" />
-        <AutosizeTextarea label="Bio" description="Markdown is supported" />
+        <TextArea autosize label="Bio" description="Markdown is supported" />
         <PasswordStrengthMeter password="Abcdefgh1!23" />
         <Slider range label="Price range" defaultValue={[20, 80]} />
       </>,

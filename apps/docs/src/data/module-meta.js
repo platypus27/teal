@@ -491,9 +491,10 @@ export const moduleGroups = [
 				name: "Input and TextArea",
 				apiNames: ["Input", "TextArea"],
 				description:
-					"Native text controls with Teal sizing, invalid states, and forwarded refs.",
+					"Native text controls with Teal sizing, invalid states, and forwarded refs; pass autosize on TextArea to grow with the content.",
 				usage: `<Input placeholder="Project name" />
-<TextArea placeholder="Notes" rows={4} />`,
+<TextArea placeholder="Notes" rows={4} />
+<TextArea autosize label="Bio" minRows={2} maxRows={6} />`,
 				anatomy: [
 					{ part: "Control", description: "The native input or textarea element with Teal sizing, focus ring, and a forwarded ref." },
 					{ part: "Placeholder", description: "A short hint that disappears on entry; never a substitute for a label." },
@@ -511,7 +512,7 @@ export const moduleGroups = [
 						"Don't use free text for a constrained choice; use Select or RadioGroup.",
 					],
 				},
-				related: ["field", "search-input", "autosize-textarea", "input-group"],
+				related: ["field", "search-input", "input-group"],
 				examples: [
 					{
 						title: "States",
@@ -522,6 +523,11 @@ export const moduleGroups = [
 						title: "Semantic types",
 						description:
 							"type, inputMode, and autoComplete steer the on-screen keyboard and autofill.",
+					},
+					{
+						title: "Autosize",
+						description:
+							"TextArea with autosize grows and shrinks with its content, capped by maxRows before it scrolls.",
 					},
 				],
 			},
@@ -1248,48 +1254,6 @@ export const moduleGroups = [
 				],
 			},
 				{
-					id: "autosize-textarea",
-					name: "Autosize Textarea",
-					apiNames: ["AutosizeTextarea"],
-					description:
-						"A textarea that grows and shrinks with its content, capped by a maximum row count.",
-					usage: `<AutosizeTextarea
-  label="Bio"
-  minRows={2}
-  maxRows={6}
-  placeholder="Tell us about yourself"
-/>`,
-					anatomy: [
-						{ part: "Label", description: "The visible label associated with the textarea, wired to any description or error text." },
-						{ part: "Textarea", description: "The native textarea whose height tracks scrollHeight on every edit, clamped between minRows and maxRows." },
-						{ part: "Help or error text", description: "Optional description or validation message linked to the field with aria-describedby." },
-					],
-					dosDonts: {
-						dos: [
-							"Set minRows so the empty field hints at the expected entry length.",
-							"Set maxRows on fields that can grow long, so the form below is not pushed down.",
-							"Pair with Field when the entry needs validation messages.",
-						],
-						donts: [
-							"Don't use it when the layout needs a fixed, user-resizable field; use TextArea instead.",
-							"Don't leave maxRows unset on comment or log-style inputs with unbounded length.",
-						],
-					},
-					related: ["input", "field", "mention-input"],
-					examples: [
-						{
-							title: "Grow with content",
-							description:
-								"The height tracks scrollHeight on every edit, so the field never clips short notes or wastes space on long ones.",
-						},
-						{
-							title: "Capped growth",
-							description:
-								"maxRows stops the growth and switches to scrolling, keeping long entries from pushing the form down.",
-						},
-					],
-				},
-				{
 					id: "currency-input",
 					name: "Currency Input",
 					apiNames: ["CurrencyInput"],
@@ -1536,7 +1500,7 @@ export const moduleGroups = [
 							"Don't dump hundreds of options in the popup; filter server-side for large directories.",
 						],
 					},
-					related: ["autosize-textarea", "combobox", "input"],
+					related: ["input", "combobox"],
 					examples: [
 						{
 							title: "Mention autocomplete",
@@ -7642,10 +7606,11 @@ const guidanceById = {
 		responsive: "Keep labels readable and let long error messages wrap.",
 	},
 	input: {
-		useWhen: "Users enter or search for short text.",
+		useWhen:
+			"Users enter or search for short text, or multi-line text where TextArea with autosize should track the content height.",
 		avoidWhen: "A constrained set of choices or a long-form editor is clearer.",
 		behavior:
-			"Native input behavior is preserved, including browser validation and refs.",
+			"Native input behavior is preserved, including browser validation and refs. With autosize, TextArea height follows the content between minRows and maxRows; beyond maxRows the field scrolls instead of growing.",
 		responsive:
 			"Use full width on small screens and constrain width at larger sizes.",
 	},
@@ -8301,16 +8266,6 @@ const guidanceById = {
 			"Opens on click or keyboard, focuses the first action, closes on Escape or after an action runs, and returns focus to the trigger.",
 		responsive:
 			"The fixed corner and fan direction keep actions on-screen at any width; choose the direction that points into the page.",
-	},
-	"autosize-textarea": {
-		useWhen:
-			"Entries vary widely in length and seeing the whole text matters, such as comments, bios, or feedback boxes.",
-		avoidWhen:
-			"The layout needs a stable, resizable field; use TextArea, which keeps a fixed minimum height and a resize handle.",
-		behavior:
-			"Height follows the content between minRows and maxRows; beyond maxRows the field scrolls instead of growing.",
-		responsive:
-			"The field stretches to fill its container and re-measures on every change, so wrapping text still fits.",
 	},
 	"currency-input": {
 		useWhen:

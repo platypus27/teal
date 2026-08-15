@@ -34,6 +34,8 @@ export const accessibility = {
     notes: [
       'Inputs are native elements, so autofill, spellcheck, and input modes work without configuration.',
       'Inside a Field, aria-invalid and aria-describedby are applied automatically when the field has an error or description.',
+      'TextArea label and description props render a visible label wired with htmlFor and help text linked through aria-describedby; use aria-label when there is no visible label.',
+      'In autosize mode, TextArea suppresses visual resize because the field sizes itself; keyboard and screen-reader behavior match a standard textarea.',
     ],
   },
   select: {
@@ -741,12 +743,6 @@ export const accessibility = {
     notes: [
       'The trigger exposes aria-haspopup menu and aria-expanded so the state is announced.',
       'Actions are menuitems in a labelled menu whose orientation matches the fan direction.',
-    ],
-  },
-  'autosize-textarea': {
-    notes: [
-      'The visible label is associated with the textarea; use aria-label when there is no visible label.',
-      'Resize is suppressed visually because the field sizes itself; keyboard and screen-reader behavior match a standard textarea.',
     ],
   },
   'currency-input': {
