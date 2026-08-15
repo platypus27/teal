@@ -61,6 +61,27 @@ export function PopoverDemo({ exampleIndex = 0 }) {
     )
   }
 
+  if (exampleIndex === 4) {
+    return (
+      <Popover
+        label="Profile preview"
+        openOn="hover"
+        openDelay={100}
+        closeDelay={200}
+        trigger={
+          <button type="button" className="font-semibold text-teal-primary underline underline-offset-2">
+            @avery
+          </button>
+        }
+      >
+        <div className="space-y-1">
+          <p className="text-sm font-bold text-teal-on-surface">Avery Stone</p>
+          <p className="text-sm text-teal-on-surface-variant">Design lead — Workspace team</p>
+        </div>
+      </Popover>
+    )
+  }
+
   return (
     <Popover
       label="Filter projects"

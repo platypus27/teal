@@ -83,7 +83,6 @@ import {
   HealthIndicator,
   Heatmap,
   HighlightText,
-  HoverCard,
   IconButton,
   ImageViewer,
   InfiniteScroll,
@@ -843,9 +842,9 @@ describe('axe: second catalog expansion', () => {
         <Dialog placement="right" open onOpenChange={() => {}} title="Project settings">
           <p>Drawer body content.</p>
         </Dialog>
-        <HoverCard trigger={<button type="button">@avery</button>} openDelay={0} closeDelay={0}>
+        <Popover openOn="hover" label="Profile preview" trigger={<button type="button">@avery</button>} openDelay={0} closeDelay={0}>
           <p>Avery Chen, workspace owner.</p>
-        </HoverCard>
+        </Popover>
         <ScrollArea maxHeight="8rem">
           <p>Scrollable content region.</p>
         </ScrollArea>
