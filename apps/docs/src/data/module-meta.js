@@ -2320,7 +2320,7 @@ export const moduleGroups = [
 						"Don't repeat text that is already visible next to the trigger.",
 					],
 				},
-				related: ["hover-card", "popover", "tour"],
+				related: ["popover", "tour"],
 				examples: [
 					{
 						title: "Icon button hint",
@@ -2421,45 +2421,20 @@ export const moduleGroups = [
 						description:
 							"side=\"top\" opens the panel above the trigger; a read-only Input holds the share link.",
 					},
-				],
-			},
-			{
-				id: "hover-card",
-				name: "Hover Card",
-				apiNames: ["HoverCard"],
-				imports: ["HoverCard", "Link"],
-				description:
-					"A rich preview surface revealed on hover or focus, for context without navigation.",
-				usage: `<HoverCard trigger={<Link href="/projects/orion">Orion</Link>}>
-  <ProjectSummary />
-</HoverCard>`,
-				anatomy: [
-					{ part: "Trigger", description: "The inline element, often a Link or handle, that opens the card on hover or keyboard focus." },
-					{ part: "Content", description: "The rich preview surface with identity or summary content; read-only by convention." },
-				],
-				dosDonts: {
-					dos: [
-						"Use for entity previews, like a person or project summary, that help before navigating.",
-						"Tune openDelay and closeDelay when cards sit in dense lists so they don't flicker.",
-						"Keep the content a short read-only summary.",
-					],
-					donts: [
-						"Don't put required actions inside; touch users can't hover, so offer another path.",
-						"Don't use it for a one-line hint; use Tooltip.",
-						"Don't rely on a hover card for information that only exists there.",
-					],
-				},
-				related: ["tooltip", "popover", "link"],
-				examples: [
+					{
+						title: "Checkbox filters",
+						description:
+							"align=\"start\" keeps a filter set of checkboxes and an apply action tucked under the trigger.",
+					},
+					{
+						title: "Display options",
+						description:
+							"A compact preferences panel with checkboxes and a secondary reset action.",
+					},
 					{
 						title: "Preview on hover",
 						description:
-							"Delays are tunable; keyboard focus opens the card too.",
-					},
-					{
-						title: "Tuned delays and placement",
-						description:
-							"openDelay, closeDelay, side, and align adapt the card to dense layouts like member lists.",
+							"openOn=\"hover\" reveals rich preview content on hover or keyboard focus; openDelay and closeDelay tune the timing.",
 					},
 				],
 			},
@@ -7330,12 +7305,6 @@ const additionalExamples = {
 				"Pair with a fixed maxHeight so the page itself keeps its own scroll.",
 		},
 	],
-	"hover-card": [
-		{
-			title: "Identity preview",
-			description: "Show a person or project summary without leaving the list.",
-		},
-	],
 	steps: [
 		{
 			title: "Clickable completed steps",
@@ -7848,14 +7817,6 @@ const guidanceById = {
 			"The custom thumb appears over a transparent track only where scrolling is possible; the viewport is keyboard focusable.",
 		responsive:
 			"Set maxHeight in relative units so the region adapts to viewport height.",
-	},
-	"hover-card": {
-		useWhen: "Rich preview context helps before committing to navigation.",
-		avoidWhen:
-			"The content is a short hint; use Tooltip, or must be interacted with on touch; use Popover.",
-		behavior: "Hover and keyboard focus open the card after a tunable delay.",
-		responsive:
-			"Provide the same content through another path on touch layouts.",
 	},
 	steps: {
 		useWhen:

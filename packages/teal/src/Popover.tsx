@@ -1,4 +1,5 @@
 import { type ReactElement, type ReactNode } from 'react'
+import * as HoverCardPrimitive from '@radix-ui/react-hover-card'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { cn } from './cn'
 
@@ -8,6 +9,8 @@ export interface PopoverProps {
   /** Content rendered inside the popover surface. */
   children: ReactNode
   className?: string
+  /** Delay in milliseconds before the surface closes after the pointer leaves (hover mode only). */
+  closeDelay?: number
   /** Initial open state when uncontrolled. */
   defaultOpen?: boolean
   /** Accessible name for the dialog-like popover surface. */
@@ -16,6 +19,10 @@ export interface PopoverProps {
   onOpenChange?: (open: boolean) => void
   /** Controlled open state. */
   open?: boolean
+  /** Delay in milliseconds before the surface opens on hover (hover mode only). */
+  openDelay?: number
+  /** How the popover opens: on trigger click, or on hover and keyboard focus. */
+  openOn?: 'click' | 'hover'
   /** Side of the trigger the content opens on. */
   side?: 'top' | 'right' | 'bottom' | 'left'
   /** Element that toggles the popover; receives trigger props automatically. */
@@ -26,13 +33,44 @@ export function Popover({
   align = 'center',
   children,
   className,
+  closeDelay,
   defaultOpen,
   label,
   onOpenChange,
   open,
+  openDelay,
+  openOn = 'click',
   side = 'bottom',
   trigger,
 }: PopoverProps) {
+  if (openOn === 'hover') {
+    return (
+      <HoverCardPrimitive.Root
+        {...(open !== undefined ? { open } : {})}
+        {...(defaultOpen !== undefined ? { defaultOpen } : {})}
+        {...(onOpenChange ? { onOpenChange } : {})}
+        {...(openDelay !== undefined ? { openDelay } : {})}
+        {...(closeDelay !== undefined ? { closeDelay } : {})}
+      >
+        <HoverCardPrimitive.Trigger asChild>{trigger}</HoverCardPrimitive.Trigger>
+        <HoverCardPrimitive.Portal>
+          <HoverCardPrimitive.Content
+            aria-label={label}
+            align={align}
+            side={side}
+            sideOffset={6}
+            className={cn(
+              'teal-popper-content teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-max-w-xs teal-u-border teal-u-bg-surface teal-u-p-4 teal-u-text-on-surface teal-u-outline-none',
+              className,
+            )}
+          >
+            {children}
+          </HoverCardPrimitive.Content>
+        </HoverCardPrimitive.Portal>
+      </HoverCardPrimitive.Root>
+    )
+  }
+
   return (
     <PopoverPrimitive.Root
       {...(open !== undefined ? { open } : {})}

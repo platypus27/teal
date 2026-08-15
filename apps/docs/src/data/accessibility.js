@@ -428,17 +428,6 @@ export const accessibility = {
       'Placement flips automatically to stay inside the viewport.',
     ],
   },
-  'hover-card': {
-    keyboard: [
-      { keys: ['Focus'], action: 'Opens the card when the trigger receives keyboard focus.' },
-      { keys: ['Escape'], action: 'Dismisses the open card.' },
-    ],
-    notes: [
-      'Keyboard focus opens the card on the same content as hover, so the preview is not pointer-only.',
-      'Keep card content read-only; interactive content belongs in a Popover.',
-      'Touch users cannot hover, so anything important in the card needs another visible path.',
-    ],
-  },
   command: {
     keyboard: [
       { keys: ['Arrow Up', 'Arrow Down'], action: 'Moves the highlight through the filtered commands.' },
