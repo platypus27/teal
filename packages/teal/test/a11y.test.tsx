@@ -191,7 +191,6 @@ import {
   SubNavItem,
   Switch,
   Table,
-  TableOfContents,
   Tabs,
   TagsInput,
   TextArea,
@@ -1485,13 +1484,19 @@ describe('axe: fifth catalog expansion', () => {
           <BottomNavItem badge={3} href="#alerts" icon={<svg aria-hidden="true" />} label="Alerts" />
         </BottomNav>
         <div>
-          <TableOfContents
-            headings={[
-              { id: 'install-guide', level: 2, title: 'Installation' },
-              { id: 'usage-guide', level: 2, title: 'Usage' },
+          <AnchorNav
+            aria-label="Table of contents"
+            items={[
+              {
+                id: 'install-guide',
+                label: 'Installation',
+                children: [{ id: 'npm-guide', label: 'With npm' }],
+              },
+              { id: 'usage-guide', label: 'Usage' },
             ]}
           />
           <section id="install-guide">Installation section</section>
+          <section id="npm-guide">npm section</section>
           <section id="usage-guide">Usage section</section>
         </div>
         <FloatingToolbar>

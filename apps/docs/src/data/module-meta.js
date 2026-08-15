@@ -4453,37 +4453,49 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 					description:
 						"A scroll-spy nav of page section anchors that highlights the section in view and smooth-scrolls on click.",
 					usage: `<AnchorNav
+  containerRef={scrollBoxRef}
   items={[
     { id: 'overview', label: 'Overview' },
-    { id: 'features', label: 'Features' },
+    {
+      id: 'features',
+      label: 'Features',
+      children: [{ id: 'feature-flags', label: 'Feature flags' }],
+    },
     { id: 'pricing', label: 'Pricing' },
   ]}
 />`,
 					anatomy: [
 						{ part: "Nav", description: "Landmark labelled \"On this page\" by default." },
 						{ part: "Items", description: "Anchor links to page sections; the section in view sets aria-current=\"location\"." },
+						{ part: "Children", description: "Optional nested sections rendered as an indented sub-list under their parent item." },
 					],
 					dosDonts: {
 						dos: [
 							"Give each section a stable id that matches its item.",
 							"Seed defaultActiveId when deep links should start highlighted.",
+							"Pass containerRef when the sections live in their own scroll box instead of the window.",
 						],
 						donts: [
-							"Don't use it to display heading hierarchy; use Table of Contents.",
+							"Don't nest deeper than two levels; a deeper outline becomes hard to scan.",
 							"Don't render sections inside the nav; it only points at them.",
 						],
 					},
-					related: ["table-of-contents", "sub-nav", "back-top"],
+					related: ["scroll-area", "sub-nav", "back-top"],
 					examples: [
 						{
 							title: "Scroll-spy sections",
 							description:
-								"An IntersectionObserver tracks the rendered sections and moves the highlight as the page scrolls.",
+								"An IntersectionObserver rooted at the scroll box tracks the rendered sections and moves the highlight as the page scrolls.",
 						},
 						{
 							title: "Seeded active item",
 							description:
 								"defaultActiveId controls the initial highlight before any scrolling happens, useful for deep links.",
+						},
+						{
+							title: "Nested sections",
+							description:
+								"Items accept children to mirror the page outline; nested sections are indented and tracked by the same scroll spy.",
 						},
 					],
 				},
@@ -4780,48 +4792,6 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							title: "Scrollable overflow",
 							description:
 								"Long rows scroll horizontally instead of wrapping, so narrow containers keep one line.",
-						},
-					],
-				},
-				{
-					id: "table-of-contents",
-					name: "Table of Contents",
-					apiNames: ["TableOfContents"],
-					description:
-						"A nested list of heading links that indents by heading level and highlights the section in view with an IntersectionObserver.",
-					usage: `<TableOfContents
-  headings={[
-    { id: 'installation', level: 2, title: 'Installation' },
-    { id: 'npm', level: 3, title: 'With npm' },
-    { id: 'usage', level: 2, title: 'Usage' },
-  ]}
-/>`,
-					anatomy: [
-						{ part: "Nav", description: "Landmark labelled \"Table of contents\" by default." },
-						{ part: "Links", description: "Heading links indented by level into a nested outline." },
-						{ part: "Active highlight", description: "The heading in view sets aria-current=\"location\" via an IntersectionObserver." },
-					],
-					dosDonts: {
-						dos: [
-							"Pass headings in document order with their real levels.",
-							"Keep it in a side column on wide screens.",
-						],
-						donts: [
-							"Don't use it for flat section links; use Anchor Nav.",
-							"Don't fabricate levels; skipped levels still nest under the nearest ancestor.",
-						],
-					},
-					related: ["anchor-nav", "sub-nav", "scroll-area"],
-					examples: [
-						{
-							title: "Nested by heading level",
-							description:
-								"A flat list of headings in document order becomes a nested, indented list; the observer tracks scrolling.",
-						},
-						{
-							title: "Skipped levels",
-							description:
-								"Heading level gaps still nest under the nearest ancestor, so real documents stay correctly indented.",
 						},
 					],
 				},
@@ -8949,9 +8919,9 @@ const guidanceById = {
 		useWhen:
 			"A long page is split into id-addressable sections and readers need a persistent way to jump between them, such as docs or marketing pages.",
 		avoidWhen:
-			"The links are headings with a hierarchy to display; use TableOfContents to show nesting by heading level.",
+			"The outline runs deeper than two levels or the links switch routes instead of scrolling within the page; use a Sidebar or SubNav instead.",
 		behavior:
-			"Clicking an item activates it and smooth-scrolls its section into view; scrolling the page updates the active item through IntersectionObserver, and activeId can be controlled.",
+			"Clicking an item activates it and smooth-scrolls its section into view; scrolling updates the active item through IntersectionObserver, items can nest via children, and activeId can be controlled.",
 		responsive:
 			"The vertical layout suits side rails on wide screens; on narrow screens hide it or move it above the content.",
 	},
@@ -9024,16 +8994,6 @@ const guidanceById = {
 			"Items are real links; the active item exposes aria-current=\"page\" and a persistent underline that aligns with the row's bottom border.",
 		responsive:
 			"The row scrolls horizontally when items exceed the available width; labels never wrap.",
-	},
-	"table-of-contents": {
-		useWhen:
-			"Long-form content such as docs or articles needs an on-page outline that mirrors the heading hierarchy.",
-		avoidWhen:
-			"The page has only flat sections with no hierarchy; use AnchorNav for a lighter flat list.",
-		behavior:
-			"Clicking a link activates it and smooth-scrolls the heading into view; the IntersectionObserver moves aria-current as the reader scrolls, and activeId can be controlled.",
-		responsive:
-			"Designed for a side column on wide screens; on narrow screens collapse it behind a disclosure or hide it entirely.",
 	},
 	"activity-feed": {
 		useWhen:

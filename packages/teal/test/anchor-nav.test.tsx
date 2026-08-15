@@ -1,4 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { useRef } from 'react'
 import { AnchorNav } from '../src/AnchorNav'
 
 type ObserverCallback = (entries: Array<Partial<IntersectionObserverEntry>>) => void
@@ -7,10 +9,12 @@ class IntersectionObserverMock {
   static instances: IntersectionObserverMock[] = []
 
   callback: ObserverCallback
+  options: IntersectionObserverInit | undefined
   observed: Element[] = []
 
-  constructor(callback: ObserverCallback) {
+  constructor(callback: ObserverCallback, options?: IntersectionObserverInit) {
     this.callback = callback
+    this.options = options
     IntersectionObserverMock.instances.push(this)
   }
 
@@ -114,5 +118,112 @@ describe('AnchorNav', () => {
     renderWithSections()
 
     expect(screen.getByRole('link', { name: 'Overview' })).toBeInTheDocument()
+  })
+})
+
+describe('AnchorNav nested items', () => {
+  const originalObserver = globalThis.IntersectionObserver
+
+  afterEach(() => {
+    globalThis.IntersectionObserver = originalObserver
+    IntersectionObserverMock.instances = []
+  })
+
+  function mockObserver() {
+    IntersectionObserverMock.instances = []
+    globalThis.IntersectionObserver = IntersectionObserverMock as unknown as typeof IntersectionObserver
+  }
+
+  const nestedItems = [
+    { id: 'install', label: 'Install' },
+    {
+      id: 'usage',
+      label: 'Usage',
+      children: [
+        { id: 'npm', label: 'npm' },
+        { id: 'pnpm', label: 'pnpm' },
+      ],
+    },
+  ]
+
+  it('renders child items in a nested indented list', () => {
+    render(<AnchorNav items={nestedItems} />)
+
+    const pnpm = screen.getByRole('link', { name: 'pnpm' })
+    expect(pnpm.closest('ul')).toHaveClass('teal-u-pl-4')
+    expect(screen.getByRole('link', { name: 'Install' }).closest('ul')).not.toHaveClass('teal-u-pl-4')
+  })
+
+  it('tracks nested section ids with the scroll spy', () => {
+    mockObserver()
+    const onActiveChange = vi.fn()
+    render(
+      <div>
+        <AnchorNav items={nestedItems} onActiveChange={onActiveChange} />
+        <section id="install" />
+        <section id="usage" />
+        <section id="npm" />
+        <section id="pnpm" />
+      </div>,
+    )
+
+    const observer = IntersectionObserverMock.instances[0]!
+    expect(observer.observed).toHaveLength(4)
+    act(() => {
+      observer.trigger([{ isIntersecting: true, target: document.getElementById('pnpm')! }])
+    })
+    expect(screen.getByRole('link', { name: 'pnpm' })).toHaveAttribute('aria-current', 'location')
+  })
+})
+
+describe('AnchorNav container scoping', () => {
+  const originalObserver = globalThis.IntersectionObserver
+
+  afterEach(() => {
+    globalThis.IntersectionObserver = originalObserver
+    IntersectionObserverMock.instances = []
+  })
+
+  function mockObserver() {
+    IntersectionObserverMock.instances = []
+    globalThis.IntersectionObserver = IntersectionObserverMock as unknown as typeof IntersectionObserver
+  }
+
+  function ContainerHarness() {
+    const containerRef = useRef<HTMLDivElement>(null)
+    return (
+      <div>
+        <section id="shared" /> {/* duplicate id OUTSIDE the container */}
+        <div data-testid="scroll-area" ref={containerRef}>
+          <section id="inside" />
+          <section id="shared" /> {/* the in-container twin */}
+          <AnchorNav
+            containerRef={containerRef}
+            items={[
+              { id: 'inside', label: 'inside' },
+              { id: 'shared', label: 'shared' },
+            ]}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  it('only observes sections inside the container, uses it as the observer root, and scrolls it instead of ancestors', async () => {
+    mockObserver()
+    const user = userEvent.setup()
+    const scrollTo = vi.fn()
+    const { OriginalScrollTo } = { OriginalScrollTo: HTMLElement.prototype.scrollTo }
+    HTMLElement.prototype.scrollTo = scrollTo
+    render(<ContainerHarness />)
+
+    const observer = IntersectionObserverMock.instances[0]!
+    expect(observer.observed).toHaveLength(2) // both sections inside the container
+    expect(observer.options?.root).toBe(screen.getByTestId('scroll-area'))
+
+    await user.click(screen.getByRole('link', { name: 'inside' }))
+    expect(scrollTo).toHaveBeenCalledWith(expect.objectContaining({ behavior: 'smooth' }))
+
+    HTMLElement.prototype.scrollTo = OriginalScrollTo
   })
 })
