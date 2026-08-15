@@ -1829,12 +1829,27 @@ export const moduleGroups = [
 						"Don't bury the page's primary action inside a card footer.",
 					],
 				},
-				related: ["panel", "launcher-card", "expandable-card"],
+				related: ["launcher-card", "expandable-card"],
 				examples: [
 					{
 						title: "Composition",
 						description:
 							"Cards compose header, content, and footer regions with consistent rhythm.",
+					},
+					{
+						title: "Summary with footer action",
+						description:
+							"A weekly summary card pairing a two-line header with a secondary footer action.",
+					},
+					{
+						title: "Header with title and actions",
+						description:
+							"The title and actions props render a compact header row without composing the header subcomponents.",
+					},
+					{
+						title: "Glass variant",
+						description:
+							"variant=\"glass\" applies the frosted-glass treatment with on-surface text, for content floating over imagery or color.",
 					},
 				],
 			},
@@ -2043,7 +2058,7 @@ export const moduleGroups = [
 						"Don't hide critical actions below the fold without a visible affordance.",
 					],
 				},
-				related: ["panel", "card", "table"],
+				related: ["card", "table"],
 				examples: [
 					{
 						title: "Bounded lists",
@@ -2107,7 +2122,7 @@ export const moduleGroups = [
 							"Don't stack several as a pseudo-accordion; use Accordion so sections are grouped.",
 						],
 					},
-					related: ["accordion", "card", "panel"],
+					related: ["accordion", "card"],
 					examples: [
 						{
 							title: "Collapsible extra content",
@@ -2118,81 +2133,6 @@ export const moduleGroups = [
 							title: "Initially expanded with custom labels",
 							description:
 								"Start open and rename the trigger when the action is clearer with domain wording such as 'View shortcuts'.",
-						},
-					],
-				},
-				{
-					id: "glass-panel",
-					name: "Glass Panel",
-					apiNames: ["GlassPanel"],
-					description:
-						"A frosted-glass surface with backdrop blur and a translucent background, for content floating over imagery or color.",
-					usage: `<GlassPanel>\n  <p>Content stays readable over busy backgrounds.</p>\n</GlassPanel>`,
-					anatomy: [
-						{ part: "Surface", description: "The translucent background with backdrop blur that lets imagery show through." },
-						{ part: "Border highlight", description: "The hairline edge keeping the panel visible over busy backgrounds." },
-						{ part: "Overlay shadow", description: "The deeper shadow separating the panel from what sits behind it." },
-					],
-					dosDonts: {
-						dos: [
-							"Use it over imagery, gradients, or video where the backdrop adds depth.",
-							"Constrain the width with a wrapper or className.",
-							"Check text contrast against the busiest part of the backdrop.",
-						],
-						donts: [
-							"Don't use it on plain app backgrounds; use Panel or Card instead.",
-							"Don't stack multiple blurred layers; backdrop blur is expensive to render.",
-						],
-					},
-					related: ["panel", "card", "dialog"],
-					examples: [
-						{
-							title: "Frosted content block",
-							description:
-								"A glass panel over a colorful gradient, showing how the blur and translucency keep text legible.",
-						},
-						{
-							title: "Centered floating panel",
-							description:
-								"A narrower, centered glass panel, the shape typically used for floating cards over hero imagery.",
-						},
-					],
-				},
-				{
-					id: "panel",
-					name: "Panel",
-					apiNames: ["Panel"],
-					description:
-						"A lightweight bordered surface with optional header and actions, for grouping content without Card's elevation.",
-					usage: `<Panel\n  title="Storage usage"\n  actions={<Button size="sm" variant="ghost">Manage</Button>}\n>\n  <p>You have used 6.2 GB of your 10 GB quota.</p>\n</Panel>`,
-					anatomy: [
-						{ part: "Header row", description: "The title-plus-actions row, rendered only when title or actions are provided." },
-						{ part: "Title", description: "The heading naming the grouped content, adjustable to fit the page outline." },
-						{ part: "Actions", description: "The trailing slot for one small related control." },
-						{ part: "Body", description: "The bordered content region without Card's elevation." },
-					],
-					dosDonts: {
-						dos: [
-							"Use it for quiet grouping like settings blocks and summaries.",
-							"Keep header actions to a single small control.",
-							"Choose Panel over Card when elevation would add noise.",
-						],
-						donts: [
-							"Don't make the panel itself clickable; put a real link or button inside.",
-							"Don't nest panels inside panels; flatten the grouping instead.",
-						],
-					},
-					related: ["card", "glass-panel", "accordion"],
-					examples: [
-						{
-							title: "Panel with header and actions",
-							description:
-								"A titled panel with a trailing action, the default way to frame a self-contained block of content.",
-						},
-						{
-							title: "Headerless and action-only panels",
-							description:
-								"Omit the title for a simple bordered group, or pass actions alone when the content speaks for itself.",
 						},
 					],
 				},
@@ -8282,26 +8222,6 @@ const guidanceById = {
 			"The trigger button sets aria-expanded and points at the content region; while collapsed the region is aria-hidden and inert, and the chevron rotates as the height animates. Supports controlled (expanded) and uncontrolled (defaultExpanded) usage.",
 		responsive:
 			"The height animation uses the grid-rows technique, so any content height animates smoothly at any width without JavaScript measurement.",
-	},
-	"glass-panel": {
-		useWhen:
-			"Content floats over imagery, gradients, or video, for example hero overlays, map chrome, or media captions.",
-		avoidWhen:
-			"The surface sits on a plain app background; use Panel or Card instead, since backdrop blur adds rendering cost and buys nothing on solid color.",
-		behavior:
-			"GlassPanel is a static container: it applies the glass treatment (translucent background, backdrop blur, border highlight, overlay shadow) and no interaction of its own.",
-		responsive:
-			"The panel is width-agnostic; constrain it with a wrapper or className and the blur treatment adapts to whatever shows through.",
-	},
-	panel: {
-		useWhen:
-			"You need to group related content on the page with a light boundary, for example settings blocks, summaries, or sidebar sections.",
-		avoidWhen:
-			"The surface is a primary, clickable, or elevated content unit; use Card instead, which carries stronger elevation and an interactive variant.",
-		behavior:
-			"Panel is a static container: it renders a header row only when a title or actions are provided and adds no interaction of its own.",
-		responsive:
-			"The header row keeps its items on one line with a gap and relies on the flexible width of the panel, so it fills narrow columns without extra work.",
 	},
 	"action-sheet": {
 		useWhen:

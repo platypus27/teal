@@ -210,10 +210,6 @@ export type { TreeSelectNode, TreeSelectProps } from './TreeSelect'
 
 export { ExpandableCard } from './ExpandableCard'
 export type { ExpandableCardProps } from './ExpandableCard'
-export { GlassPanel } from './GlassPanel'
-export type { GlassPanelProps } from './GlassPanel'
-export { Panel } from './Panel'
-export type { PanelProps } from './Panel'
 
 export { ActionSheet } from './ActionSheet'
 export type { ActionSheetAction, ActionSheetProps } from './ActionSheet'

@@ -78,7 +78,6 @@ import {
   FunnelChart,
   GanttChart,
   GaugeChart,
-  GlassPanel,
   Grid,
   HealthIndicator,
   Heatmap,
@@ -126,7 +125,6 @@ import {
   OrgChart,
   PageHeader,
   Pagination,
-  Panel,
   PasswordInput,
   PasswordStrengthMeter,
   PermissionMatrix,
@@ -1558,13 +1556,13 @@ describe('axe: fifth catalog expansion', () => {
   it('new surface modules have no violations', async () => {
     const { baseElement } = render(
       <>
-        <Panel title="Usage summary" actions={<button type="button">Invite</button>}>
+        <Card title="Usage summary" actions={<button type="button">Invite</button>}>
           Body copy
-        </Panel>
+        </Card>
         <ExpandableCard title="Release notes" defaultExpanded>
           Full changelog
         </ExpandableCard>
-        <GlassPanel>Frosted content</GlassPanel>
+        <Card variant="glass">Frosted content</Card>
         <Alert appearance="callout" variant="warning" title="Heads up">
           New pricing starts next month.
         </Alert>
