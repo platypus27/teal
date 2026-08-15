@@ -1,20 +1,11 @@
 import { Input, TextArea } from '@kryv/teal'
 
 export function InputDemo({ exampleIndex = 0 }) {
-  if (exampleIndex === 3) {
+  if (exampleIndex === 2) {
     return (
       <div className="grid w-full max-w-md gap-6">
         <TextArea autosize label="Bio" placeholder="Tell us about yourself" />
         <TextArea autosize label="Notes" minRows={3} maxRows={8} placeholder="Starts at three rows" />
-      </div>
-    )
-  }
-
-  if (exampleIndex === 2) {
-    return (
-      <div className="grid w-full max-w-md gap-4">
-        <Input aria-label="Filter projects" type="search" size="sm" placeholder="Filter projects" />
-        <Input aria-label="Team email" type="email" defaultValue="team@" aria-invalid="true" />
       </div>
     )
   }
