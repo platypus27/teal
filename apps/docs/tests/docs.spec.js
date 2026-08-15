@@ -228,10 +228,12 @@ test('sidebar marks only the current module as active', async ({ page }) => {
   await page.goto('/modules/button-group')
   await expect(page.getByRole('heading', { level: 1, name: 'Button Group' })).toBeVisible()
   await expect(nav.locator('[aria-current="page"]')).toHaveCount(1)
+  await expect(nav.locator('a.teal-u-font-semibold')).toHaveCount(1)
   await expect(nav.getByRole('link', { name: 'Button Group', exact: true })).toHaveAttribute('aria-current', 'page')
 
   await page.goto('/modules/toggle-group')
   await expect(page.getByRole('heading', { level: 1, name: 'Toggle Group' })).toBeVisible()
   await expect(nav.locator('[aria-current="page"]')).toHaveCount(1)
+  await expect(nav.locator('a.teal-u-font-semibold')).toHaveCount(1)
   await expect(nav.getByRole('link', { name: 'Toggle Group', exact: true })).toHaveAttribute('aria-current', 'page')
 })
