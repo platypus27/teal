@@ -1090,18 +1090,6 @@ export const accessibility = {
       'Roving tabindex keeps exactly one control in the tab order, following focus as it moves.',
     ],
   },
-  'mega-menu': {
-    keyboard: [
-      { keys: ['Arrow Down'], action: 'Opens the panel and focuses the first link.' },
-      { keys: ['Arrow Right', 'Arrow Left'], action: 'Moves between triggers, or between links across columns inside an open panel.' },
-      { keys: ['Arrow Up'], action: 'Returns focus from a panel link to its trigger.' },
-      { keys: ['Escape'], action: 'Closes the panel and refocuses the trigger.' },
-    ],
-    notes: [
-      'Triggers are buttons with aria-expanded and aria-haspopup pointing at their panel.',
-      'Panels contain real links inside a navigation landmark, so structure is announced without a menubar role.',
-    ],
-  },
   sidebar: {
     keyboard: [
       { keys: ['Tab'], action: 'Moves focus between the item links and the collapse button. In rail mode, focusing an item expands the rail to reveal labels.' },
