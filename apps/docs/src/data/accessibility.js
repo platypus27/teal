@@ -1033,12 +1033,6 @@ export const accessibility = {
       'The dismiss button has an explicit accessible label.',
     ],
   },
-  'pulse-dot': {
-    notes: [
-      'Rendered as role="status" with an aria-label that describes the live state.',
-      'The pulsing ring is aria-hidden and uses motion-reduce to respect prefers-reduced-motion.',
-    ],
-  },
   'save-status': {
     notes: [
       'Rendered as role="status" so state changes are announced politely.',
@@ -1049,6 +1043,7 @@ export const accessibility = {
     notes: [
       'The colored dot is aria-hidden; always pair it with a text label or an aria-label so color is not the only signal.',
       'Color alone never conveys the status — the label text does.',
+      'With pulse, the dot is rendered as role="status" with an aria-label that describes the live state; the pulsing ring is aria-hidden and uses motion-reduce to respect prefers-reduced-motion.',
     ],
   },
   'upload-progress': {
