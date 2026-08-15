@@ -87,7 +87,7 @@ function Header({ navOpen, setNavOpen }) {
 function DocsSidebar({ navOpen, setNavOpen }) {
   const { pathname } = useLocation()
   const firstLinkRef = useRef(null)
-  const active = (to, end = false) => (end ? pathname === to : pathname.startsWith(to))
+  const active = (to, end = false) => (end ? pathname === to : pathname === to || pathname.startsWith(`${to}/`))
 
   useEffect(() => {
     if (navOpen) firstLinkRef.current?.focus()

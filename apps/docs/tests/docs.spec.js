@@ -221,3 +221,17 @@ test('visual states expose focus, disabled, loading, invalid, and selected feedb
   await expect(page.getByRole('textbox', { name: 'Description' })).toHaveAttribute('aria-invalid', 'true')
   await expect(page.getByRole('tab', { name: 'Overview' })).toHaveAttribute('aria-selected', 'true')
 })
+
+test('sidebar marks only the current module as active', async ({ page }) => {
+  const nav = page.getByRole('navigation', { name: 'Documentation' })
+
+  await page.goto('/modules/button-group')
+  await expect(page.getByRole('heading', { level: 1, name: 'Button Group' })).toBeVisible()
+  await expect(nav.locator('[aria-current="page"]')).toHaveCount(1)
+  await expect(nav.getByRole('link', { name: 'Button Group', exact: true })).toHaveAttribute('aria-current', 'page')
+
+  await page.goto('/modules/toggle-group')
+  await expect(page.getByRole('heading', { level: 1, name: 'Toggle Group' })).toBeVisible()
+  await expect(nav.locator('[aria-current="page"]')).toHaveCount(1)
+  await expect(nav.getByRole('link', { name: 'Toggle Group', exact: true })).toHaveAttribute('aria-current', 'page')
+})
