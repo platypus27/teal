@@ -58,7 +58,6 @@ import {
   CopyButton,
   CountdownTimer,
   CurrencyInput,
-  DataTable,
   DatePicker,
   DescriptionList,
   Dialog,
@@ -912,7 +911,7 @@ describe('axe: third catalog expansion', () => {
   it('new data and overlay modules have no violations', async () => {
     const { baseElement } = render(
       <>
-        <DataTable
+        <Table
           caption="Projects"
           columns={[
             { key: 'name', header: 'Name', cell: (row: { id: string; name: string }) => row.name, sortable: true },

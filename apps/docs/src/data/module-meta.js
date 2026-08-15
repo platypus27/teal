@@ -301,7 +301,7 @@ export const moduleGroups = [
 							"Don't put row-specific navigation or links in the bar.",
 						],
 					},
-					related: ["action-bar", "data-table", "checkbox", "context-menu"],
+					related: ["action-bar", "table", "checkbox", "context-menu"],
 					examples: [
 						{
 							title: "Selection actions",
@@ -2233,7 +2233,7 @@ export const moduleGroups = [
 						"Don't hide critical actions below the fold without a visible affordance.",
 					],
 				},
-				related: ["panel", "card", "data-table"],
+				related: ["panel", "card", "table"],
 				examples: [
 					{
 						title: "Bounded lists",
@@ -4005,7 +4005,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						"Don't render it for a single page of results.",
 					],
 				},
-				related: ["data-table", "table", "steps"],
+				related: ["table", "steps"],
 				examples: [
 					{
 						title: "Controlled pages",
@@ -4909,7 +4909,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						"Don't leave cells blank; a blank reads as missing data, not as \"no access\".",
 					],
 				},
-				related: ["table", "data-table", "badge"],
+				related: ["table", "badge"],
 				examples: [
 					{
 						title: "Household access",
@@ -4928,33 +4928,39 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 				name: "Table",
 				apiNames: ["Table"],
 				description:
-					"Accessible data presentation driven by column definitions, density, loading, and empty state.",
+					"Accessible data presentation driven by column definitions, with caller-owned sorting and row selection, density, loading, and empty state.",
 				usage: `<Table
   caption="Team members"
-  columns={[{ key: 'name', header: 'Name', cell: (row) => row.name }]}
+  columns={[{ key: 'name', header: 'Name', cell: (row) => row.name, sortable: true }]}
   rows={rows}
   getRowKey={(row) => row.id}
+  sort={sort}
+  onSortChange={setSort}
+  selectable
 />`,
 				anatomy: [
 					{ part: "Scroll region", description: "The overflow wrapper with role=\"region\" named after the caption; it takes keyboard focus only when it actually scrolls." },
 					{ part: "Caption", description: "Visually hidden caption announcing the table's subject to screen readers." },
 					{ part: "Header row", description: "Uppercase th cells with scope=\"col\", one per column definition, on a raised surface." },
-					{ part: "Body rows", description: "One tr per record keyed by getRowKey; each column's cell renderer produces the td content." },
+					{ part: "Sort headers", description: "Buttons inside sortable th cells that toggle ascending/descending and expose aria-sort on the column." },
+					{ part: "Selection column", description: "A header checkbox with indeterminate state plus one checkbox per row, added by selectable." },
+					{ part: "Body rows", description: "One tr per record keyed by getRowKey; each column's cell renderer produces the td content; selected rows are tinted and expose aria-selected." },
 					{ part: "Loading and empty states", description: "Skeleton rows with a busy region while loading, or the empty content spanning all columns when rows is empty." },
 				],
 				dosDonts: {
 					dos: [
 						"Always pass a caption; it names both the region and the table for assistive technology.",
+						"Keep sort and selectedKeys controlled; the component reports intent, you re-sort the rows.",
 						"Use density=\"compact\" in dashboards and side panels where vertical space is scarce.",
 						"Give empty a helpful message that explains why there are no rows.",
 					],
 					donts: [
-						"Don't add sorting or row selection here; use DataTable, which layers both on this contract.",
+						"Don't expect Table to sort for you; onSortChange only reports the next sort state.",
 						"Don't derive row keys from array indexes; getRowKey should return a stable id.",
 						"Don't put unlabeled icon buttons in cells; every interactive cell needs an accessible name.",
 					],
 				},
-				related: ["data-table", "permission-matrix", "list"],
+				related: ["permission-matrix", "list", "pagination"],
 				examples: [
 					{
 						title: "Column definitions",
@@ -4965,6 +4971,11 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						title: "Loading state",
 						description:
 							"loading swaps in skeleton rows, marks the region busy, and announces the loadingLabel.",
+					},
+					{
+						title: "Sorting and selection",
+						description:
+							"Sortable headers set aria-sort and report through onSortChange; selectable adds a header checkbox with indeterminate bulk state.",
 					},
 				],
 			},
@@ -5083,53 +5094,6 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 				],
 			},
 			{
-				id: "data-table",
-				name: "Data Table",
-				apiNames: ["DataTable"],
-				description:
-					"A data grid with sortable columns and row selection, built on the Table contract.",
-				usage: `<DataTable
-  caption="Projects"
-  columns={[{ key: 'name', header: 'Name', cell: (row) => row.name, sortable: true }]}
-  rows={rows}
-  getRowKey={(row) => row.id}
-  sort={sort}
-  onSortChange={setSort}
-  selectable
-/>`,
-				anatomy: [
-					{ part: "Sort headers", description: "Buttons inside sortable th cells that toggle ascending/descending and expose aria-sort on the column." },
-					{ part: "Selection column", description: "A header checkbox with indeterminate state plus one checkbox per row, added by selectable." },
-					{ part: "Body rows", description: "Rows keyed by getRowKey; selected rows are tinted and expose aria-selected." },
-					{ part: "Loading and empty states", description: "Skeleton rows with a busy region while loading, or the empty content when there are no rows." },
-				],
-				dosDonts: {
-					dos: [
-						"Keep sort and selectedKeys controlled; the component reports intent, you re-sort the rows.",
-						"Mark only genuinely sortable columns as sortable.",
-						"Pair selection with a BulkActionBar so selected rows have something to act on.",
-					],
-					donts: [
-						"Don't expect DataTable to sort for you; onSortChange only reports the next sort state.",
-						"Don't enable selectable without an onSelectionChange handler.",
-						"Don't use DataTable for a handful of read-only rows; Table is enough.",
-					],
-				},
-				related: ["table", "pagination", "bulk-action-bar"],
-				examples: [
-					{
-						title: "Sorting and selection",
-						description:
-							"Sortable headers set aria-sort; the header checkbox handles indeterminate bulk state.",
-					},
-					{
-						title: "Compact selection",
-						description:
-							"density=\"compact\" with selectable rows; selected rows tint and expose aria-selected.",
-					},
-				],
-			},
-			{
 				id: "avatar-group",
 				name: "Avatar Group",
 				apiNames: ["AvatarGroup"],
@@ -5191,7 +5155,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 					],
 					donts: [
 						"Don't rely on delta color alone; the direction prefix is what screen readers announce.",
-						"Don't compare many categories with stats; use a chart or DataTable.",
+						"Don't compare many categories with stats; use a chart or Table.",
 					],
 				},
 				related: ["sparkline", "meter", "progress-circle"],
@@ -5674,7 +5638,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Keep it to three to six stages so the bands stay legible.",
 						],
 						donts: [
-							"Don't plot unordered categories; use BarChart or DataTable instead.",
+							"Don't plot unordered categories; use BarChart or Table instead.",
 							"Don't use it for parts of a whole; use PieChart.",
 							"Don't compare two funnels without aligning stage counts and scales.",
 						],
@@ -5778,12 +5742,12 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Give the aria-label the matrix subject, like 'Tickets by weekday and hour'.",
 						],
 						donts: [
-							"Don't use it for exact per-cell comparisons; use DataTable.",
+							"Don't use it for exact per-cell comparisons; use Table.",
 							"Don't use it for a year of daily activity; CalendarHeatmap is purpose-built for that.",
 							"Don't mix units across cells; the shared opacity scale assumes one unit.",
 						],
 					},
-					related: ["calendar-heatmap", "chart-container", "data-table"],
+					related: ["calendar-heatmap", "chart-container", "table"],
 					examples: [
 						{ title: "Activity matrix", description: "Weekday-by-time-of-day grid showing intensity through fill opacity." },
 						{ title: "Larger cells", description: "Quarterly comparison with an increased cellSize for a roomier readout." },
@@ -5854,12 +5818,12 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Announce the outcome of a move yourself (for example a toast) if it matters beyond the board.",
 						],
 						donts: [
-							"Don't reach for it when rows need sorting or filtering; that is DataTable territory.",
+							"Don't reach for it when rows need sorting or filtering; that is Table territory.",
 							"Don't put interactive controls inside cards; the whole card is the grab button.",
 							"Don't expect pointer drag-and-drop; movement is keyboard-first by design.",
 						],
 					},
-					related: ["data-table", "card", "list"],
+					related: ["table", "card", "list"],
 					examples: [
 						{
 							title: "Sprint board",
@@ -6071,7 +6035,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 						donts: [
 							"Don't compare similar-sized values; angles deceive, so use BarChart.",
 							"Don't pass zero or negative values expecting a slice; they are skipped.",
-							"Don't stack multiple pies for comparison; use a stacked BarChart or DataTable.",
+							"Don't stack multiple pies for comparison; use a stacked BarChart or Table.",
 						],
 					},
 					related: ["bar-chart", "chart-container", "gauge-chart"],
@@ -6145,12 +6109,12 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Limit it to two or three series; overlapping fills get muddy fast.",
 						],
 						donts: [
-							"Don't use it for precise value reading; use DataTable.",
+							"Don't use it for precise value reading; use Table.",
 							"Don't mix unnormalized units like revenue with percentages on one chart.",
 							"Don't use it for time series; use LineChart.",
 						],
 					},
-					related: ["bar-chart", "line-chart", "data-table"],
+					related: ["bar-chart", "line-chart", "table"],
 					examples: [
 						{ title: "Multi-series comparison", description: "Two overlapping polygons make relative strengths across axes easy to compare." },
 						{ title: "Single profile with fixed scale", description: "One series against an explicit max with a ring per scale step." },
@@ -6213,12 +6177,12 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 							"Keep cell content as simple text; interaction belongs on the row.",
 						],
 						donts: [
-							"Don't use it for flat tables; DataTable adds sorting and selection.",
+							"Don't use it for flat tables; Table adds sorting and selection.",
 							"Don't nest deeper than four or five levels; indentation eats the first column.",
 							"Don't put focusable controls inside cells; the keyboard model is row-level.",
 						],
 					},
-					related: ["data-table", "tree-view", "tree-select"],
+					related: ["table", "tree-view", "tree-select"],
 					examples: [
 						{
 							title: "File tree",
@@ -7825,12 +7789,6 @@ const additionalExamples = {
 			description: "The menu can carry a danger item behind the separator.",
 		},
 	],
-	"data-table": [
-		{
-			title: "Bulk selection",
-			description: "Combine selectable rows with a toolbar for bulk actions.",
-		},
-	],
 	"avatar-group": [
 		{
 			title: "Compact stacks",
@@ -8440,13 +8398,6 @@ const guidanceById = {
 			"Drag-over highlights the zone; the list mirrors the caller-owned value.",
 		responsive: "The zone fills its container and the file list wraps below.",
 	},
-	"data-table": {
-		useWhen: "Rows need sorting or bulk selection beyond Table.",
-		avoidWhen: "The data is read-only and simple; use Table.",
-		behavior:
-			"Sorting is caller-owned; the header checkbox tracks indeterminate state.",
-		responsive: "The region scrolls horizontally like Table on narrow screens.",
-	},
 	"avatar-group": {
 		useWhen: "Several identities belong to one row or card.",
 		avoidWhen: "One identity needs emphasis; use Avatar.",
@@ -8455,11 +8406,11 @@ const guidanceById = {
 		responsive: "Lower max in dense contexts like tables.",
 	},
 	table: {
-		useWhen: "Records need readable rows and columns without sorting or selection.",
+		useWhen: "Records need readable rows and columns, optionally with caller-owned sorting and selection.",
 		avoidWhen:
-			"Rows need sorting or bulk selection; use DataTable. Hierarchical data fits TreeView better.",
+			"The data is hierarchical; TreeView or TreeGrid fits better.",
 		behavior:
-			"Columns declare a header and a cell renderer; loading swaps in skeleton rows and marks the region busy; an empty rows array shows the empty content.",
+			"Columns declare a header and a cell renderer; sortable headers report the next sort state through onSortChange, and selectable adds a header checkbox with indeterminate bulk state plus per-row checkboxes reported through onSelectionChange. Loading swaps in skeleton rows and marks the region busy; an empty rows array shows the empty content.",
 		responsive:
 			"The region scrolls horizontally when columns overflow and takes keyboard focus only then.",
 	},
@@ -8486,7 +8437,7 @@ const guidanceById = {
 	stat: {
 		useWhen: "A dashboard surfaces one key metric with its trend at a glance.",
 		avoidWhen:
-			"The data needs comparison across many categories; use a chart or DataTable.",
+			"The data needs comparison across many categories; use a chart or Table.",
 		behavior:
 			"The delta direction picks the icon and default tone — up is success, down is danger, flat is neutral — and tone overrides it when the semantics differ.",
 		responsive:
@@ -9261,7 +9212,7 @@ const guidanceById = {
 	},
 	"funnel-chart": {
 		useWhen: "You need to show drop-off across an ordered pipeline, such as signups, checkouts, or hiring stages.",
-		avoidWhen: "Values are not strictly sequential stages; use a Meter, Stat, or DataTable instead.",
+		avoidWhen: "Values are not strictly sequential stages; use a Meter, Stat, or Table instead.",
 		behavior: "Purely presentational: band widths scale to each stage value, each band carries a native title tooltip, and conversion percentages can be hidden with showPercentages.",
 		responsive: "Renders at the given width and height; reduce width at narrow viewports or wrap it in a scrollable container.",
 	},
@@ -9283,7 +9234,7 @@ const guidanceById = {
 	},
 	heatmap: {
 		useWhen: "You need a compact density view of a two-dimensional matrix, such as activity by weekday and hour.",
-		avoidWhen: "You need exact per-cell comparisons or sorting; use DataTable instead. For a year of daily activity use CalendarHeatmap.",
+		avoidWhen: "You need exact per-cell comparisons or sorting; use Table instead. For a year of daily activity use CalendarHeatmap.",
 		behavior: "Purely presentational: values scale to cell opacity between the data min and max, and every cell carries a native title tooltip with its row, column, and value.",
 		responsive: "Sized from cellSize and the number of rows and columns; wrap it in a horizontally scrollable container at narrow widths.",
 	},
@@ -9301,7 +9252,7 @@ const guidanceById = {
 		useWhen:
 			"Users track work items across a small set of named stages, such as a sprint board or a review pipeline.",
 		avoidWhen:
-			"Rows need sorting, filtering, or many columns — use DataTable; for pure drag-and-drop file or list ordering, a dedicated sortable list fits better.",
+			"Rows need sorting, filtering, or many columns — use Table; for pure drag-and-drop file or list ordering, a dedicated sortable list fits better.",
 		behavior:
 			"Cards move one step per arrow key press. Enter or Space grabs the focused card, arrows move it, Enter or Space drops it, and Escape cancels the grab. Focus always follows the grabbed card.",
 		responsive:
@@ -9369,13 +9320,13 @@ const guidanceById = {
 	},
 	"radar-chart": {
 		useWhen: "You compare multivariate profiles, such as skill matrices or product trade-offs, on a shared scale.",
-		avoidWhen: "Axes are not commensurable or you need precise value reading; use a DataTable or Stat list instead.",
+		avoidWhen: "Axes are not commensurable or you need precise value reading; use a Table or Stat list instead.",
 		behavior: "Purely presentational: values scale to the shared max (or the data max), each series polygon carries a native title tooltip, and an sr-only summary lists every value.",
 		responsive: "Renders as a fixed-size square; shrink the size prop at narrow viewports.",
 	},
 	"scatter-chart": {
 		useWhen: "You need to show correlation or distribution between two numeric variables, optionally weighted by a third.",
-		avoidWhen: "Values are categorical or time-ordered trends; use Sparkline or DataTable instead.",
+		avoidWhen: "Values are categorical or time-ordered trends; use Sparkline or Table instead.",
 		behavior: "Purely presentational: axes scale to the data domain, each dot carries a native title tooltip, and an sr-only summary lists the series.",
 		responsive: "Renders at the given width and height; wrap it in a horizontally scrollable container at narrow widths.",
 	},
@@ -9383,7 +9334,7 @@ const guidanceById = {
 		useWhen:
 			"Tabular data has a parent-child structure, such as file trees, budget rollups, or nested categories with shared columns.",
 		avoidWhen:
-			"Rows are flat — use DataTable, which adds sorting and selection; if there is no per-row data beyond a label, TreeView is simpler.",
+			"Rows are flat — use Table, which supports sorting and selection; if there is no per-row data beyond a label, TreeView is simpler.",
 		behavior:
 			"Collapsed rows hide their whole subtree. Arrow Right expands a collapsed parent, Arrow Left collapses it or moves focus to its parent, and expansion state is controlled or uncontrolled.",
 		responsive:
