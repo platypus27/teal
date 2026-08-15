@@ -144,7 +144,6 @@ import {
   Progress,
   ProgressCircle,
   PromptDialog,
-  PulseDot,
   QrCode,
   RadarChart,
   RadioCard,
@@ -1576,8 +1575,8 @@ describe('axe: fifth catalog expansion', () => {
         </Alert>
         <StatusDot variant="success" label="Active" />
         <StatusDot variant="info" aria-label="Syncing" />
-        <PulseDot />
-        <PulseDot label="3 editors online" variant="info" />
+        <StatusDot pulse />
+        <StatusDot pulse label="3 editors online" variant="info" />
       </>,
     )
     expect(await axe(baseElement, axeOptions)).toHaveNoViolations()

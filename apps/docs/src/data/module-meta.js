@@ -3692,33 +3692,6 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 					],
 				},
 				{
-					id: "pulse-dot",
-					name: "Pulse Dot",
-					apiNames: ["PulseDot"],
-					description: "An animated pulsing dot that signals live presence or ongoing activity.",
-					usage: `<PulseDot\n  label="3 editors online"\n  variant="success"\n/>`,
-					anatomy: [
-						{ part: "Core dot", description: "Small solid marker colored by the semantic variant." },
-						{ part: "Pulse ring", description: "Expanding aria-hidden ring animated with ping; disabled under prefers-reduced-motion." },
-						{ part: "Label", description: "Accessible name describing the live state, applied as aria-label on the role=\"status\" element." },
-					],
-					dosDonts: {
-						dos: [
-							"Use it for things happening right now: live presence, recording, or a streaming connection.",
-							"Always pass a label that says what is live, such as \"3 editors online\".",
-						],
-						donts: [
-							"Don't use it for static states; use StatusDot instead.",
-							"Don't run several pulse dots in one view; keep one live signal per region.",
-						],
-					},
-					related: ["status-dot", "badge", "network-status"],
-					examples: [
-						{ title: "Live presence", description: "A pulsing dot next to a label for collaborators or live streams." },
-						{ title: "Semantic variants", description: "Danger, warning, and neutral pulses for recording, away, or idle states." },
-					],
-				},
-				{
 					id: "save-status",
 					name: "Save Status",
 					apiNames: ["SaveStatus"],
@@ -3749,26 +3722,28 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 					id: "status-dot",
 					name: "Status Dot",
 					apiNames: ["StatusDot"],
-					description: "A small colored dot with an optional text label for compact entity status.",
+					description: "A small colored dot with an optional text label for compact entity status; pass pulse for live presence or ongoing activity.",
 					usage: `<StatusDot\n  variant="success"\n  label="Online"\n/>`,
 					anatomy: [
-						{ part: "Dot", description: "Small colored marker with variant and size options; aria-hidden." },
-						{ part: "Label", description: "Optional visible text that carries the status meaning." },
+						{ part: "Dot", description: "Small colored marker with variant and size options; aria-hidden. In pulse mode it renders as a ping ring over a solid dot, both aria-hidden." },
+						{ part: "Label", description: "Optional visible text that carries the status meaning; in pulse mode it becomes the aria-label on the role=\"status\" element (default \"Live\")." },
 					],
 					dosDonts: {
 						dos: [
 							"Pair the dot with a text label so color is never the only signal.",
 							"Use the success, warning, and danger variants for health-style readouts.",
+							"Pass pulse with a label that says what is live, such as \"3 editors online\".",
 						],
 						donts: [
 							"Don't use a bare dot for a status users must act on; use Alert.",
-							"Don't animate it for live activity; use PulseDot instead.",
+							"Don't animate a static status dot; reserve pulse for live activity.",
 						],
 					},
-					related: ["pulse-dot", "health-indicator", "badge"],
+					related: ["health-indicator", "badge", "network-status"],
 					examples: [
 						{ title: "Labeled statuses", description: "Dots paired with text labels for scanable inline status in lists and headers." },
 						{ title: "Semantic variants", description: "The success, warning, and danger variants for health-style readouts." },
+						{ title: "Live pulse", description: "Pulse mode for live presence or streaming activity, announced via an accessible label." },
 					],
 				},
 				{
@@ -8726,12 +8701,6 @@ const guidanceById = {
 		behavior: "Shows on the offline event, hides on the online event, stays hidden once dismissed until the next offline transition.",
 		responsive: "Spans the full viewport width and wraps its message at narrow widths.",
 	},
-	"pulse-dot": {
-		useWhen: "Something is actively happening right now — live presence, recording, or a streaming connection.",
-		avoidWhen: "The state is static; use StatusDot instead, which has no animation.",
-		behavior: "Pulses continuously while mounted; the animation is disabled under prefers-reduced-motion.",
-		responsive: "Fixed small footprint that fits inline next to text at any width.",
-	},
 	"save-status": {
 		useWhen: "A document or form autosaves and the user needs quiet, continuous confidence about persistence.",
 		avoidWhen: "A save is an explicit user action with a clear result; use a Toast or inline Button feedback instead.",
@@ -8741,7 +8710,7 @@ const guidanceById = {
 	"status-dot": {
 		useWhen: "You need a compact, glanceable status marker next to an entity name, for example in tables or list rows.",
 		avoidWhen: "The status needs more explanation or an action; use Alert instead.",
-		behavior: "Purely presentational: the dot is hidden from assistive technology and the visible label carries the meaning.",
+		behavior: "Purely presentational: the dot is hidden from assistive technology and the visible label carries the meaning. With pulse it renders role=\"status\" with the label as aria-label and animates a ping ring, disabled under prefers-reduced-motion.",
 		responsive: "Stays inline and shrinks to content; the label truncates with the surrounding layout.",
 	},
 	"upload-progress": {
