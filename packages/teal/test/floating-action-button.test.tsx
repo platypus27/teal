@@ -131,4 +131,12 @@ describe('FloatingActionButton actions fan-out', () => {
     expect(onOpenChange).toHaveBeenCalledWith(true)
     expect(screen.queryByRole('menu')).not.toBeInTheDocument()
   })
+
+  it('forwards button props such as id and disabled onto the trigger', () => {
+    render(<FloatingActionButton label="Share" actions={actions} id="share-fab" disabled data-testid="share-trigger" />)
+    const trigger = screen.getByTestId('share-trigger')
+
+    expect(trigger).toHaveAttribute('id', 'share-fab')
+    expect(trigger).toBeDisabled()
+  })
 })

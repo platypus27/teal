@@ -828,7 +828,7 @@ describe('axe: second catalog expansion', () => {
     const { baseElement } = render(
       <>
         <Dialog placement="right" open onOpenChange={() => {}} title="Project settings">
-          <p>Drawer body content.</p>
+          <p>Dialog body content.</p>
         </Dialog>
         <Popover openOn="hover" label="Profile preview" trigger={<button type="button">@avery</button>} openDelay={0} closeDelay={0}>
           <p>Avery Chen, workspace owner.</p>

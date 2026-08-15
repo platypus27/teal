@@ -157,6 +157,7 @@ export const FloatingActionButton = forwardRef<HTMLButtonElement, FloatingAction
         <button
           ref={setTriggerRefs}
           type={type}
+          {...props}
           aria-label={label}
           aria-haspopup="menu"
           aria-expanded={isOpen}
