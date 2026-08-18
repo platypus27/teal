@@ -1,0 +1,73 @@
+export default {
+  "id": "checkbox",
+  "name": "Checkbox",
+  "apiNames": [
+    "Checkbox"
+  ],
+  "description": "Boolean and indeterminate selection with an integrated label and description; pass variant=\"card\" for a selectable card with a title, description, and optional icon.",
+  "usage": "<Checkbox label=\"Include archived projects\" defaultChecked />",
+  "anatomy": [
+    {
+      "part": "Control",
+      "description": "The checkbox button holding checked, unchecked, or indeterminate state."
+    },
+    {
+      "part": "Indicator",
+      "description": "The check or dash mark that mirrors the tri-state value."
+    },
+    {
+      "part": "Label",
+      "description": "Clickable text wired to the control."
+    },
+    {
+      "part": "Description",
+      "description": "Optional supporting text linked through aria-describedby."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use indeterminate for a select-all parent whose children are partially checked.",
+      "Phrase labels as positive statements so checked always means yes.",
+      "Use Checkbox for choices that are saved on submit, not applied instantly."
+    ],
+    "donts": [
+      "Don't use checkboxes for mutually exclusive options; use RadioGroup.",
+      "Don't use one for a setting that applies immediately; use Switch.",
+      "Don't put interactive content inside the label or description."
+    ]
+  },
+  "related": [
+    "switch",
+    "radio-group",
+    "field"
+  ],
+  "examples": [
+    {
+      "title": "Checked, indeterminate, and disabled",
+      "description": "Checkbox supports a tri-state checked prop for select-all patterns."
+    },
+    {
+      "title": "Select-all parent",
+      "description": "A parent checkbox mirrors its children as checked, unchecked, or indeterminate and toggles them all."
+    },
+    {
+      "title": "Card variant",
+      "description": "variant=\"card\" renders the checkbox as a selectable card with a description and optional icon, for choices that need explanation."
+    },
+    {
+      "title": "Bulk selection",
+      "description": "Use indeterminate state when a table selection contains both checked and unchecked rows.",
+      "demo": "checkbox-bulk"
+    },
+    {
+      "title": "Permission groups",
+      "description": "Group independent permissions under one clear label and description."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Users can select independent items or a tri-state group.",
+    "avoidWhen": "Changing the value should take effect immediately as a setting.",
+    "behavior": "Checked, unchecked, and indeterminate states remain native and form-friendly. With variant=\"card\", the checkbox renders as a single card button: clicking or pressing Space toggles it and reports the new checked state, and each card in a group tracks its own state, controlled or uncontrolled.",
+    "responsive": "Allow supporting text to wrap beside the control. Cards fill their container width; stack them single-column on narrow screens."
+  }
+}

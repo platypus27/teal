@@ -1,0 +1,56 @@
+export default {
+  "id": "sticky-header",
+  "name": "StickyHeader",
+  "apiNames": [
+    "StickyHeader"
+  ],
+  "description": "A header that sticks to the top of its scrolling container and gains a shadow once it is stuck.",
+  "usage": "<StickyHeader\n  offset={0}\n>\n  <h2>Recent activity</h2>\n</StickyHeader>",
+  "anatomy": [
+    {
+      "part": "Sticky header",
+      "description": "A position: sticky bar that parks at the top of its scrolling container."
+    },
+    {
+      "part": "Sentinel",
+      "description": "A zero-height element observed by IntersectionObserver to detect the stuck state."
+    },
+    {
+      "part": "Stuck shadow",
+      "description": "A shadow toggled through data-stuck once content scrolls under the header."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use it inside bounded scroll panels for table toolbars and long list headings.",
+      "Set offset to clear any fixed bar above, such as the application top bar.",
+      "Keep the header compact so it does not eat the visible scroll area."
+    ],
+    "donts": [
+      "Don't use it for the application-level header; AppShellHeader owns that role.",
+      "Don't bury it inside nested wrappers; it must be a direct child of the scrolling element.",
+      "Don't make several headers sticky in the same scroller; they stack unpredictably."
+    ]
+  },
+  "related": [
+    "scroll-shadow",
+    "app-shell",
+    "scroll-area"
+  ],
+  "examples": [
+    {
+      "title": "Sticky list header",
+      "description": "Inside a bounded scroll area the header stays visible and lifts with a shadow as content scrolls under it."
+    },
+    {
+      "title": "Custom stick offset",
+      "description": "An offset parks the header below another fixed element such as a top bar."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A long scrolling list or panel needs its heading or toolbar to remain visible, for example table toolbars and activity feeds.",
+    "avoidWhen": "The whole app header should stick; TopBar already handles the application-level sticky bar.",
+    "behavior": "An IntersectionObserver sentinel toggles a stuck state (exposed as data-stuck) that adds the shadow; without an observer the header still sticks but never shows the shadow.",
+    "responsive": "The header spans the width of its scrolling container and the offset is fixed in pixels, so pick it relative to the bars above it."
+  }
+}

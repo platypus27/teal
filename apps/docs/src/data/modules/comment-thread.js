@@ -1,0 +1,60 @@
+export default {
+  "id": "comment-thread",
+  "name": "Comment Thread",
+  "apiNames": [
+    "CommentThread"
+  ],
+  "description": "Nested comment list with author avatars, timestamps, caller-wired reply buttons, and collapsible reply threads.",
+  "usage": "<CommentThread\n  comments={[\n    {\n      id: \"1\",\n      author: \"Ada Lovelace\",\n      body: \"Looks good overall.\",\n      timestamp: new Date(),\n      replies: [{ id: \"1a\", author: \"Alan Turing\", body: \"Needs tests.\" }],\n    },\n  ]}\n  onReply={(comment) => openComposer(comment.id)}\n/>",
+  "anatomy": [
+    {
+      "part": "Comment",
+      "description": "Author avatar, name, timestamp, and body text laid out in a row."
+    },
+    {
+      "part": "Reply action",
+      "description": "Caller-wired button rendered on every comment when onReply is provided."
+    },
+    {
+      "part": "Collapse toggle",
+      "description": "Button that hides a comment's replies and reports the hidden reply count."
+    },
+    {
+      "part": "Reply list",
+      "description": "Nested replies indented under their parent with a left border."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Wire onReply to your own composer; the thread never owns editing UI.",
+      "Pass timestamps and override formatTime to localize them for your audience.",
+      "Keep nesting to two or three levels so indentation stays readable."
+    ],
+    "donts": [
+      "Don't use it for one-directional event history; use ActivityFeed instead.",
+      "Don't truncate comment bodies; let them wrap inside the thread.",
+      "Don't put interactive content inside comment bodies; the thread is read-only apart from reply and collapse."
+    ]
+  },
+  "related": [
+    "activity-feed",
+    "avatar",
+    "markdown-view"
+  ],
+  "examples": [
+    {
+      "title": "Nested thread",
+      "description": "Renders replies indented under their parent with a collapse toggle that shows the hidden reply count."
+    },
+    {
+      "title": "With reply action",
+      "description": "Passes onReply so every comment gets a reply button wired to the host application's composer."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Discussions on documents, pull requests, or tickets need nested replies the user can collapse to scan the top level.",
+    "avoidWhen": "Events are one-directional history without conversation structure; use ActivityFeed instead.",
+    "behavior": "Threads start expanded; the collapse toggle hides a comment's replies and reports the hidden count. Reply actions are fully caller-wired via onReply.",
+    "responsive": "Nested replies indent with a left border and keep a single-column layout that wraps at narrow widths."
+  }
+}

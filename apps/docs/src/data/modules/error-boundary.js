@@ -1,0 +1,54 @@
+export default {
+  "id": "error-boundary",
+  "name": "Error Boundary",
+  "apiNames": [
+    "ErrorBoundary"
+  ],
+  "description": "A class-based error boundary that isolates render failures behind a fallback UI with reset support.",
+  "usage": "<ErrorBoundary\n  fallback={(error, reset) => <Fallback error={error} onRetry={reset} />}\n  onError={(error, info) => log(error)}\n  resetKeys={[pageId]}\n>\n  <Report />\n</ErrorBoundary>",
+  "anatomy": [
+    {
+      "part": "Boundary",
+      "description": "Class component that catches render errors from its subtree and reports them through onError."
+    },
+    {
+      "part": "Fallback",
+      "description": "Node or render prop receiving (error, reset) that is shown while the subtree is failed."
+    },
+    {
+      "part": "Reset",
+      "description": "Re-renders the children when reset() is called or any resetKey changes."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Place boundaries around independently failing subtrees such as widgets or third-party embeds.",
+      "Give the fallback a recovery path through the reset callback."
+    ],
+    "donts": [
+      "Don't catch expected async errors here; handle those in data-loading code with EmptyState or Alert.",
+      "Don't wrap the entire app in one boundary; a single failure then blanks the whole page."
+    ]
+  },
+  "related": [
+    "empty-state",
+    "alert",
+    "blocking-overlay"
+  ],
+  "examples": [
+    {
+      "title": "Recoverable fallback",
+      "description": "A render-prop fallback that shows the error and offers a retry via the reset callback."
+    },
+    {
+      "title": "Static fallback",
+      "description": "A plain React node shown whenever the protected subtree throws."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A subtree can fail independently — dashboards, widgets, or third-party embeds — and the rest of the page must survive.",
+    "avoidWhen": "Handling expected async errors; catch those in data-loading code and show EmptyState or Alert instead.",
+    "behavior": "Catches render errors below it, calls onError, swaps in the fallback, and re-renders children on reset() or when any resetKey changes.",
+    "responsive": "Layout-agnostic; the fallback owns its own sizing."
+  }
+}

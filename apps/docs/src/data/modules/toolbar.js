@@ -1,0 +1,65 @@
+export default {
+  "id": "toolbar",
+  "name": "Toolbar",
+  "apiNames": [
+    "Toolbar",
+    "ToolbarGroup",
+    "ToolbarSeparator"
+  ],
+  "imports": [
+    "Toolbar",
+    "ToolbarGroup",
+    "ToolbarSeparator",
+    "IconButton"
+  ],
+  "description": "A horizontal action bar with grouped controls and hairline separators.",
+  "usage": "<Toolbar>\n  <ToolbarGroup>\n    <IconButton label=\"Undo\"><Undo2 /></IconButton>\n  </ToolbarGroup>\n  <ToolbarSeparator />\n  <ToolbarGroup>\n    <IconButton label=\"Bold\"><Bold /></IconButton>\n  </ToolbarGroup>\n</Toolbar>",
+  "anatomy": [
+    {
+      "part": "Toolbar",
+      "description": "The role=\"toolbar\" container holding all groups."
+    },
+    {
+      "part": "ToolbarGroup",
+      "description": "A role=\"group\" cluster of related controls within the bar."
+    },
+    {
+      "part": "ToolbarSeparator",
+      "description": "A decorative hairline between groups, hidden from assistive technology."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Group related controls with ToolbarGroup and separate clusters with ToolbarSeparator.",
+      "Label every icon-only control with IconButton's label prop.",
+      "Keep the bar to one row of compact controls that act on one view."
+    ],
+    "donts": [
+      "Don't put page-level commit actions here; use an ActionBar.",
+      "Don't use a toolbar as a general layout row.",
+      "Don't nest toolbars inside each other."
+    ]
+  },
+  "related": [
+    "toggle",
+    "button",
+    "floating-toolbar",
+    "menubar"
+  ],
+  "examples": [
+    {
+      "title": "Editor actions",
+      "description": "role=\"toolbar\" with groups keeps related controls navigable."
+    },
+    {
+      "title": "Formatting groups",
+      "description": "Group related controls and separate them with hairlines."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Several small controls act on one editor or view.",
+    "avoidWhen": "The actions are unrelated page actions; use a header action area.",
+    "behavior": "role=\"toolbar\" groups controls; separators are decorative hairlines.",
+    "responsive": "Let groups wrap or scroll horizontally on narrow screens."
+  }
+}

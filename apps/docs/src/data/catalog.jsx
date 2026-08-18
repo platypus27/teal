@@ -4,6 +4,7 @@ import { catalogGroups as metadataGroups } from './docs-module-registry.js'
 
 const demoLoaders = import.meta.glob('../demos/*Demo.jsx')
 const sourceLoaders = import.meta.glob('../demos/*Demo.jsx', { query: '?raw', import: 'default' })
+const metaLoaders = import.meta.glob('../data/modules/*.js')
 
 function pascalCase(id) {
   return id
@@ -12,11 +13,14 @@ function pascalCase(id) {
     .join('')
 }
 
-/** Load a module's demo and source only when its route is opened. */
+/** Load a module's metadata, demos, and sources only when its route is opened. */
 export async function loadModuleRecord(id) {
   const module = catalog.find((entry) => entry.id === id)
   if (!module) return null
-  const files = [...new Set(module.examples.map((example) => `../demos/${pascalCase(example.demo ?? id)}Demo.jsx`))]
+  const metaLoader = metaLoaders[`../data/modules/${id}.js`]
+  if (!metaLoader) throw new Error(`Missing metadata for module ${id}`)
+  const meta = /** @type {any} */ (await metaLoader()).default
+  const files = [...new Set(meta.examples.map((example) => `../demos/${pascalCase(example.demo ?? id)}Demo.jsx`))]
   const loaded = await Promise.all(files.map(async (file) => {
     const demoLoader = demoLoaders[file]
     const sourceLoader = sourceLoaders[file]
@@ -29,7 +33,8 @@ export async function loadModuleRecord(id) {
   )
   return {
     ...module,
-    examples: module.examples.map((example, index) => {
+    ...meta,
+    examples: meta.examples.map((example, index) => {
       const file = `../demos/${pascalCase(example.demo ?? id)}Demo.jsx`
       const record = records.get(file)
       const demoModule = record.demoModule

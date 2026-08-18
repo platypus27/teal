@@ -1,0 +1,55 @@
+export default {
+  "id": "sub-nav",
+  "name": "Sub Nav",
+  "apiNames": [
+    "SubNav",
+    "SubNavItem"
+  ],
+  "description": "A secondary horizontal nav row with an underline indicator for the active item that scrolls when items overflow.",
+  "usage": "<SubNav aria-label=\"Project settings\">\n  <SubNavItem active href=\"#general\">General</SubNavItem>\n  <SubNavItem href=\"#members\">Members</SubNavItem>\n  <SubNavItem href=\"#billing\">Billing</SubNavItem>\n</SubNav>",
+  "anatomy": [
+    {
+      "part": "Nav row",
+      "description": "Secondary landmark row under the header, named by aria-label."
+    },
+    {
+      "part": "Items",
+      "description": "Real links; the active one sets aria-current=\"page\"."
+    },
+    {
+      "part": "Underline",
+      "description": "Primary indicator on the active item, aligned with the row's bottom border."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use it for a second level of navigation below the primary nav.",
+      "Let long rows scroll horizontally rather than wrap."
+    ],
+    "donts": [
+      "Don't use it to switch panels of content; use Tabs for tab semantics.",
+      "Don't stack several sub-navs; one secondary level is enough."
+    ]
+  },
+  "related": [
+    "tabs",
+    "breadcrumb",
+    "page-header"
+  ],
+  "examples": [
+    {
+      "title": "Section navigation",
+      "description": "A row of page-level links under the header; the active item keeps a primary underline."
+    },
+    {
+      "title": "Scrollable overflow",
+      "description": "Long rows scroll horizontally instead of wrapping, so narrow containers keep one line."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A section of the app needs its own second level of navigation below the primary nav, such as settings or project pages.",
+    "avoidWhen": "Items switch panels of content rather than navigate; use Tabs instead so keyboard and aria semantics match.",
+    "behavior": "Items are real links; the active item exposes aria-current=\"page\" and a persistent underline that aligns with the row's bottom border.",
+    "responsive": "The row scrolls horizontally when items exceed the available width; labels never wrap."
+  }
+}

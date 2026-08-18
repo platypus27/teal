@@ -1,0 +1,52 @@
+export default {
+  "id": "collapse",
+  "name": "Collapse",
+  "apiNames": [
+    "Collapse"
+  ],
+  "description": "Animates a region's height to show or hide content, marking it hidden and inert while closed.",
+  "usage": "<Collapse open={showDetails}>\n  <p>Extra details revealed on demand.</p>\n</Collapse>",
+  "anatomy": [
+    {
+      "part": "Animated region",
+      "description": "The wrapper whose grid rows animate from 0fr to 1fr to reveal or hide content."
+    },
+    {
+      "part": "Inner content",
+      "description": "The children shown or hidden; aria-hidden and inert while the region is closed."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Drive it from a trigger button wired with aria-expanded and aria-controls.",
+      "Use it for custom disclosures where Accordion's built-in chrome does not fit.",
+      "Let reduced-motion users get an instant toggle; the component skips the animation."
+    ],
+    "donts": [
+      "Don't put content users always need behind a Collapse.",
+      "Don't treat closed content as live state; the region is inert and out of the tab order.",
+      "Don't wrap entire pages; keep collapsed regions small and focused."
+    ]
+  },
+  "related": [
+    "accordion",
+    "presence",
+    "expandable-card"
+  ],
+  "examples": [
+    {
+      "title": "Toggleable details",
+      "description": "A button drives the open prop; the region smoothly expands and collapses its content."
+    },
+    {
+      "title": "Initially open",
+      "description": "Start expanded to show secondary content such as release notes that readers can fold away."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A self-built disclosure needs a smooth height animation, for example detail sections under a custom row or card.",
+    "avoidWhen": "You need a complete disclosure widget with a built-in trigger and heading semantics; use Accordion instead.",
+    "behavior": "While closed the region is aria-hidden and inert, so its content is removed from the tab order and the accessibility tree; the height animation is skipped under reduced motion.",
+    "responsive": "Animates grid-template-rows between 0fr and 1fr, so it adapts to any content height at any width without measuring JavaScript."
+  }
+}

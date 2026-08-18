@@ -1,0 +1,65 @@
+export default {
+  "id": "form",
+  "name": "Form",
+  "apiNames": [
+    "Form"
+  ],
+  "imports": [
+    "Form",
+    "Field",
+    "Input",
+    "Button"
+  ],
+  "description": "A lightweight form wrapper that collects field values on submit and shares an error map through context, with no form library.",
+  "usage": "<Form\n  errors={{ email: 'Use your work email' }}\n  onSubmit={(values) => console.log(values)}\n>\n  <Field label=\"Work email\" required>\n    <Input name=\"email\" type=\"email\" />\n  </Field>\n  <Button type=\"submit\" variant=\"primary\">Save</Button>\n</Form>",
+  "anatomy": [
+    {
+      "part": "Form element",
+      "description": "A semantic form that prevents the default navigation and collects named values with FormData on submit."
+    },
+    {
+      "part": "Error context",
+      "description": "The errors map shared with descendants, read through useFormFieldError without prop drilling."
+    },
+    {
+      "part": "Fields and controls",
+      "description": "Named inputs whose values arrive in the onSubmit payload; repeated names become arrays."
+    },
+    {
+      "part": "Actions",
+      "description": "Submit and reset buttons supplied by the caller."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Give every collected control a name attribute; unnamed controls are skipped.",
+      "Render server errors next to their fields, and add a FormErrorSummary for long forms.",
+      "Put the submit Button inside the Form so Enter submission works."
+    ],
+    "donts": [
+      "Don't reach for it when you need async per-field validation or dependent fields; adopt a form library.",
+      "Don't duplicate the errors map into local state; pass it straight to the errors prop."
+    ]
+  },
+  "related": [
+    "field",
+    "fieldset",
+    "form-error-summary"
+  ],
+  "examples": [
+    {
+      "title": "Submitting values",
+      "description": "onSubmit receives every named field value collected with FormData; the default page navigation is prevented."
+    },
+    {
+      "title": "Server error map",
+      "description": "The errors prop is exposed through context so descendants can render per-field messages without prop drilling."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A plain HTML form needs value collection and a shared validation error map without adopting a form library.",
+    "avoidWhen": "Complex per-field state, async validation, or dependent fields are required; a dedicated form library fits better.",
+    "behavior": "Submitting collects values with FormData (repeated names become arrays) and calls onSubmit after preventing navigation; the errors map is read through useFormFieldError.",
+    "responsive": "Layout is fully caller-controlled; stack fields single-column on narrow screens."
+  }
+}

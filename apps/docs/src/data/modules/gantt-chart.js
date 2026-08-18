@@ -1,0 +1,60 @@
+export default {
+  "id": "gantt-chart",
+  "name": "Gantt Chart",
+  "apiNames": [
+    "GanttChart"
+  ],
+  "description": "A read-only SVG Gantt chart that plots task bars on a day grid with a today marker.",
+  "usage": "<GanttChart\n  label=\"Release plan\"\n  tasks={[\n    { id: 'design', label: 'Design', start: '2025-03-03', end: '2025-03-07' },\n    { id: 'build', label: 'Build', start: '2025-03-10', end: '2025-03-19' },\n  ]}\n/>",
+  "anatomy": [
+    {
+      "part": "Date axis",
+      "description": "Day grid header with day numbers and month labels derived from the task range."
+    },
+    {
+      "part": "Task label",
+      "description": "Fixed-width left column naming the task beside its row."
+    },
+    {
+      "part": "Task bar",
+      "description": "Rounded bar spanning the task's start to end dates (inclusive) on the day grid."
+    },
+    {
+      "part": "Today marker",
+      "description": "Error-colored vertical line drawn when today falls inside the axis."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Pin startDate and endDate when several charts must share one scale.",
+      "Keep task labels short; the label column is a fixed 160px.",
+      "Pass today explicitly in tests and stories so the marker is deterministic."
+    ],
+    "donts": [
+      "Don't use it for editing or dragging tasks; the chart is read-only by design.",
+      "Don't plot sub-day schedules; the grid resolution is one day.",
+      "Don't render hundreds of tasks; the fixed row height makes long plans unwieldy, so filter first."
+    ]
+  },
+  "related": [
+    "timeline",
+    "calendar-heatmap",
+    "kanban-board"
+  ],
+  "examples": [
+    {
+      "title": "Release plan",
+      "description": "Task bars with an automatic date axis derived from the earliest start and latest end."
+    },
+    {
+      "title": "Fixed axis",
+      "description": "Explicit startDate and endDate pin the axis so several charts can share the same scale."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A schedule or timeline needs a compact visual summary, such as release plans, availability, or project phases.",
+    "avoidWhen": "Users must edit tasks or drag bars — the chart is read-only by design; for a single trend line, Sparkline is lighter.",
+    "behavior": "Each task renders one bar whose position and length map to its start and end dates (inclusive). A today marker line appears when today falls inside the axis.",
+    "responsive": "The chart keeps its day scale and scrolls horizontally inside its container on narrow screens."
+  }
+}

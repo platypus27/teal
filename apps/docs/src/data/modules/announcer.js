@@ -1,0 +1,54 @@
+export default {
+  "id": "announcer",
+  "name": "Announcer",
+  "apiNames": [
+    "Announcer"
+  ],
+  "imports": [
+    "Announcer",
+    "Button"
+  ],
+  "description": "A visually hidden live region that re-announces a message whenever it changes.",
+  "usage": "<Announcer message={statusMessage} politeness=\"polite\" />",
+  "anatomy": [
+    {
+      "part": "Live region",
+      "description": "Visually hidden role=\"status\" element with aria-live set from politeness and aria-atomic."
+    },
+    {
+      "part": "Clear-and-rewrite",
+      "description": "The message is emptied and then re-written so a repeated message is announced again."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Keep one Announcer per message channel and update its message prop as state changes.",
+      "Use assertive only for urgent changes that must interrupt the user."
+    ],
+    "donts": [
+      "Don't announce changes that are already visible and focused; that duplicates the information.",
+      "Don't mount a new Announcer per message; reuse a single region."
+    ]
+  },
+  "related": [
+    "toast",
+    "alert",
+    "save-status"
+  ],
+  "examples": [
+    {
+      "title": "Status updates",
+      "description": "The region clears and rewrites so a repeated message is announced again."
+    },
+    {
+      "title": "Assertive updates",
+      "description": "Use politeness=\"assertive\" only for urgent changes that should interrupt."
+    }
+  ],
+  "guidance": {
+    "useWhen": "State changes off-screen must reach screen-reader users.",
+    "avoidWhen": "The change is already visible and focused; announcement would duplicate it.",
+    "behavior": "The region clears and rewrites so identical messages re-announce.",
+    "responsive": "The region is visually hidden and has no layout impact."
+  }
+}

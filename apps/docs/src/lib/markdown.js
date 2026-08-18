@@ -7,11 +7,11 @@
 import { accessibility } from '../data/accessibility.js'
 import { authentikAdapter, colorTokens, shapeNotes, typeTokens, visualTokens } from '../data/foundations.js'
 import { installSteps, packageManagers, principles } from '../data/getting-started.js'
-import { moduleGroups } from '../data/module-meta.js'
+import { moduleIndexGroups } from '../data/module-index.js'
 import { mergePropDocs } from '../data/prop-docs.js'
 import { promotionRule } from '../data/recipes.js'
 
-const moduleNameById = new Map(moduleGroups.flatMap((group) => group.modules.map((module) => [module.id, module.name])))
+const moduleNameById = new Map(moduleIndexGroups.flatMap((group) => group.modules.map((module) => [module.id, module.name])))
 
 function fence(code, lang = 'jsx') {
   return `\`\`\`${lang}\n${code.replace(/^\n+|\n+$/g, '')}\n\`\`\``

@@ -1,0 +1,56 @@
+export default {
+  "id": "qr-code",
+  "name": "QR Code",
+  "apiNames": [
+    "QrCode"
+  ],
+  "description": "Dependency-free SVG QR code renderer with a hand-rolled byte-mode encoder (error-correction level L).",
+  "usage": "<QrCode\n  value=\"https://example.com/app/invite\"\n  label=\"QR code for the invite link\"\n  size={160}\n/>",
+  "anatomy": [
+    {
+      "part": "Finder patterns",
+      "description": "The three corner squares scanners use to locate and orient the code."
+    },
+    {
+      "part": "Data modules",
+      "description": "The encoded payload grid with error-correction level L and the best-fit mask."
+    },
+    {
+      "part": "Quiet zone",
+      "description": "Empty margin in modules (default 4) that keeps the code scannable; tune with margin."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Always pass a label that says where the code leads, like 'QR code for the invite link'.",
+      "Keep the quiet zone at four modules unless space is truly constrained.",
+      "Place the encoded URL as a text link nearby for people without a camera."
+    ],
+    "donts": [
+      "Don't encode payloads over ~340 UTF-8 bytes; the encoder throws past 343 bytes.",
+      "Don't overlay logos or recolor modules; level L tolerates little damage.",
+      "Don't render it tiny in print contexts; keep roughly 120px or larger for reliable scans."
+    ]
+  },
+  "related": [
+    "link",
+    "copy-button",
+    "share-button"
+  ],
+  "examples": [
+    {
+      "title": "Basic code",
+      "description": "Renders a scannable SVG for a URL with the default 160px size and 4-module quiet zone."
+    },
+    {
+      "title": "Sizes and quiet zone",
+      "description": "Scales via the size prop and trades quiet-zone width for density with the margin prop."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A link, invite, or pairing payload needs to be scannable by a phone camera without adding a QR dependency.",
+    "avoidWhen": "Payloads exceed ~340 UTF-8 bytes or need higher error correction (logo overlays, dense print); use a dedicated QR library instead.",
+    "behavior": "Encodes the value as UTF-8 byte mode at error-correction level L, picks the smallest fitting version (1-10) and best mask, and renders crisp SVG modules at any size. Throws for values over 343 bytes.",
+    "responsive": "SVG scales losslessly; size is fixed in pixels via the size prop and can be driven by container queries or breakpoints from the parent."
+  }
+}

@@ -1,0 +1,56 @@
+export default {
+  "id": "countdown-timer",
+  "name": "Countdown Timer",
+  "apiNames": [
+    "CountdownTimer"
+  ],
+  "description": "Counts down to a target date with a default HH:MM:SS display or a custom render prop, firing onComplete at zero.",
+  "usage": "<CountdownTimer\n  targetDate={launchDate}\n  onComplete={openLaunch}\n  completionMessage=\"The launch window has opened.\"\n/>",
+  "anatomy": [
+    {
+      "part": "Time readout",
+      "description": "The default inline HH:MM:SS display rendered with tabular numerals."
+    },
+    {
+      "part": "Render-prop tiles",
+      "description": "The custom layout receiving days, hours, minutes, and seconds when the render prop is used."
+    },
+    {
+      "part": "Completion announcement",
+      "description": "A visually hidden role=\"status\" message spoken once when the count reaches zero."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Pass completionMessage so reaching zero is announced, not just shown.",
+      "Use the render prop for styled tiles on launch or maintenance pages.",
+      "Re-arm by passing a new targetDate; the timer restarts when the target moves to the future."
+    ],
+    "donts": [
+      "Don't use it for elapsed time; use TimeAgo.",
+      "Don't show seconds precision for targets days away; drop units with the render prop.",
+      "Don't treat it as an authoritative deadline source; it is a display aid, not a scheduler."
+    ]
+  },
+  "related": [
+    "time-ago",
+    "number-ticker",
+    "stat"
+  ],
+  "examples": [
+    {
+      "title": "Inline countdown",
+      "description": "The default format renders a compact tabular HH:MM:SS readout that drops straight into a sentence."
+    },
+    {
+      "title": "Render-prop tiles",
+      "description": "The render prop receives days, hours, minutes, and seconds so you can lay out styled countdown tiles."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Deadlines, launches, and maintenance windows where the remaining time must stay visibly accurate.",
+    "avoidWhen": "Elapsed-time displays or wall-clock times; use TimeAgo for relative times and a formatted Date for absolute ones.",
+    "behavior": "Clamps at zero, calls onComplete exactly once per target, re-arms when the target moves to the future, and announces completion politely.",
+    "responsive": "Renders inline by default; the render prop lets you restack the tiles at narrow widths."
+  }
+}
