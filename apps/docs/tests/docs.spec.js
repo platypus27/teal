@@ -252,7 +252,7 @@ test('fixed-position demos render inside their preview box', async ({ page }) =>
 })
 
 test('rendered demos contain no placeholder external links', async ({ page }) => {
-  for (const route of ['/modules/notification-item', '/modules/link', '/modules/launcher-card']) {
+  for (const route of ['/modules/notification-item', '/modules/link', '/modules/launcher-card', '/modules/app-switcher', '/modules/ecosystem-rail']) {
     await page.goto(route)
     await expect(page.locator('#examples')).toBeVisible()
     const hrefs = await page
