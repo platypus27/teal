@@ -155,7 +155,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
 						onBlur={handleBlur}
 						className={cn(
 							fieldVariants(),
-							"teal-u-pr-9 [appearance:textfield] [&::-webkit-inner-spin-button]:teal-u-appearance-none [&::-webkit-outer-spin-button]:teal-u-appearance-none",
+							"teal-u-min-h-12 teal-u-pr-9 [appearance:textfield] [&::-webkit-inner-spin-button]:teal-u-appearance-none [&::-webkit-outer-spin-button]:teal-u-appearance-none",
 						)}
 					/>
 					<div className="teal-u-absolute teal-u-inset-y-0 teal-u-right-0 teal-u-flex teal-u-flex-col teal-u-overflow-hidden teal-u-rounded-r-xl teal-u-border-l teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)]">

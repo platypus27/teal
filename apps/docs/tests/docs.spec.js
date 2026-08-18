@@ -30,7 +30,7 @@ test.describe('module accessibility', () => {
       if (moduleId === 'dialog') await page.locator('#examples').getByRole('button', { name: 'Open dialog' }).click()
       if (moduleId === 'tooltip') await page.getByRole('button', { name: 'Open search' }).hover()
       if (moduleId === 'menu') await page.getByRole('button', { name: 'Project actions' }).click()
-      if (moduleId === 'popover') await page.getByRole('button', { name: 'Filters' }).click()
+      if (moduleId === 'popover') await page.locator('#examples').getByRole('button', { name: 'Filters' }).first().click()
       if (moduleId === 'toast') await page.getByRole('button', { name: 'Show toast' }).click()
 
       await page.waitForTimeout(250)
