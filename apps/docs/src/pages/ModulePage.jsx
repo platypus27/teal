@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router'
+import { Link, Navigate, useParams } from 'react-router'
 import { Button } from '@kryv/teal'
 import { Check, X } from 'lucide-react'
 import api from '../generated/api.json'
@@ -10,6 +10,7 @@ import { Playground } from '../components/Playground.jsx'
 import { PropsTable } from '../components/PropsTable.jsx'
 import { accessibility } from '../data/accessibility.js'
 import { catalog, loadModuleRecord } from '../data/catalog.jsx'
+import { moduleRedirects } from '../data/module-index.js'
 import { moduleMarkdown } from '../lib/markdown.js'
 import { NotFoundPage } from './NotFoundPage.jsx'
 
@@ -41,7 +42,11 @@ export function ModulePage() {
     }
   }, [moduleId])
 
-  if (!module) return <NotFoundPage />
+  if (!module) {
+    const target = moduleRedirects[moduleId ?? '']
+    if (target) return <Navigate to={`/modules/${target}`} replace />
+    return <NotFoundPage />
+  }
   if (failedId === moduleId) {
     return (
       <Page title={module.name} eyebrow="Module" description={module.description}>

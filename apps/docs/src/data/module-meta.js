@@ -16,6 +16,7 @@ import m_floating_action_button from './modules/floating-action-button.js'
 import m_share_button from './modules/share-button.js'
 import m_field from './modules/field.js'
 import m_input from './modules/input.js'
+import m_text_area from './modules/text-area.js'
 import m_select from './modules/select.js'
 import m_checkbox from './modules/checkbox.js'
 import m_switch from './modules/switch.js'
@@ -175,11 +176,15 @@ import m_virtual_list from './modules/virtual-list.js'
 export const moduleGroups = [
 	{
 		name: "Actions",
-		modules: [m_button, m_button_group, m_link, m_toggle, m_toolbar, m_split_button, m_action_bar, m_bulk_action_bar, m_floating_action_button, m_share_button],
+		modules: [m_button, m_button_group, m_toggle_group, m_link, m_toggle, m_toolbar, m_split_button, m_action_bar, m_bulk_action_bar, m_floating_action_button, m_share_button],
 	},
 	{
 		name: "Forms",
-		modules: [m_field, m_input, m_select, m_checkbox, m_switch, m_radio_group, m_slider, m_combobox, m_date_picker, m_number_input, m_file_upload, m_pin_input, m_tags_input, m_input_group, m_editable, m_time_picker, m_color_picker, m_currency_input, m_fieldset, m_form, m_form_error_summary, m_masked_input, m_mention_input, m_password_strength_meter, m_phone_input, m_rich_text_editor, m_timezone_select, m_toggle_group, m_transfer_list, m_tree_select],
+		modules: [m_field, m_input, m_text_area, m_select, m_checkbox, m_switch, m_radio_group, m_slider, m_combobox, m_number_input, m_file_upload, m_pin_input, m_tags_input, m_input_group, m_editable, m_currency_input, m_fieldset, m_form, m_form_error_summary, m_masked_input, m_mention_input, m_password_strength_meter, m_phone_input, m_rich_text_editor, m_transfer_list],
+	},
+	{
+		name: "Pickers",
+		modules: [m_date_picker, m_time_picker, m_color_picker, m_timezone_select, m_tree_select],
 	},
 	{
 		name: "Surfaces",
@@ -199,7 +204,11 @@ export const moduleGroups = [
 	},
 	{
 		name: "Data",
-		modules: [m_permission_matrix, m_table, m_separator, m_avatar, m_description_list, m_avatar_group, m_stat, m_list, m_sparkline, m_calendar, m_activity_feed, m_bar_chart, m_calendar_heatmap, m_chart_container, m_comment_thread, m_diff_viewer, m_funnel_chart, m_gantt_chart, m_gauge_chart, m_heatmap, m_json_viewer, m_kanban_board, m_line_chart, m_log_viewer, m_markdown_view, m_org_chart, m_pie_chart, m_qr_code, m_radar_chart, m_scatter_chart, m_tree_grid],
+		modules: [m_permission_matrix, m_table, m_separator, m_avatar, m_description_list, m_avatar_group, m_stat, m_list, m_calendar, m_activity_feed, m_comment_thread, m_diff_viewer, m_json_viewer, m_kanban_board, m_log_viewer, m_markdown_view, m_qr_code, m_tree_grid],
+	},
+	{
+		name: "Charts",
+		modules: [m_sparkline, m_calendar_heatmap, m_chart_container, m_bar_chart, m_funnel_chart, m_gantt_chart, m_gauge_chart, m_heatmap, m_line_chart, m_org_chart, m_pie_chart, m_radar_chart, m_scatter_chart],
 	},
 	{
 		name: "Layout",

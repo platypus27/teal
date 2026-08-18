@@ -1,6 +1,7 @@
 import { access, readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { moduleGroups } from '../src/data/module-meta.js'
+import { moduleIndexGroups } from '../src/data/module-index.js'
 
 const docsRoot = resolve(import.meta.dirname, '..')
 const workspaceRoot = resolve(docsRoot, '../..')
@@ -12,7 +13,11 @@ function pascalCase(value) {
 }
 
 if (new Set(modules.map((module) => module.id)).size !== modules.length) errors.push('module ids must be unique')
-if (modules.length !== 199 && modules.length !== 200) errors.push(`expected 199 or 200 module pages, found ${modules.length}`)
+// 200 pre-0.5.1 pages − 33 merged-away + 1 new text-area page (M17).
+if (modules.length !== 168) errors.push(`expected 168 module pages after the 0.5.1 consolidation, found ${modules.length}`)
+const indexShape = moduleIndexGroups.map((group) => [group.name, group.modules.map((module) => module.id)])
+const fullShape = moduleGroups.map((group) => [group.name, group.modules.map((module) => module.id)])
+if (JSON.stringify(indexShape) !== JSON.stringify(fullShape)) errors.push('module-index.js and module-meta.js disagree on groups or module order')
 
 for (const module of modules) {
   if (module.examples.length < 2) errors.push(`${module.id} needs at least two examples`)
@@ -35,8 +40,11 @@ for (const name of documented) {
   if (!api.some((entry) => entry.displayName === name)) errors.push(`registry apiName ${name} has no api.json entry`)
 }
 const exported = new Set()
-for (const match of indexSource.matchAll(/export\s+(?:type\s+)?\{([^}]+)\}/g)) {
-  for (const name of match[1].split(',').map((part) => part.trim().split(/\s+as\s+/)[0]).filter(Boolean)) exported.add(name)
+// Type-only re-exports (TableSort, SelectOption, …) are documented alongside
+// their component's props table, so only value exports need registry entries.
+for (const match of indexSource.matchAll(/export\s+(type\s+)?\{([^}]+)\}/g)) {
+  if (match[1]) continue
+  for (const name of match[2].split(',').map((part) => part.trim().split(/\s+as\s+/)[0]).filter(Boolean)) exported.add(name)
 }
 const intentionallyUndocumented = new Set([
   'buttonVariants',

@@ -26,6 +26,15 @@ export const moduleIndexGroups = [
         ]
       },
       {
+        "id": "toggle-group",
+        "name": "Toggle Group",
+        "description": "A cluster of Toggle-styled options with roving focus, in mutually exclusive single mode or independent multiple mode; variant=\"segmented\" renders an options array with a sliding selection pill.",
+        "apiNames": [
+          "ToggleGroup",
+          "ToggleGroupItem"
+        ]
+      },
+      {
         "id": "link",
         "name": "Link",
         "description": "Themed inline and standalone links with an external indicator.",
@@ -107,10 +116,17 @@ export const moduleIndexGroups = [
       },
       {
         "id": "input",
-        "name": "Input and TextArea",
-        "description": "Native text controls with Teal sizing, invalid states, and forwarded refs; Input adds a clear action, a loading spinner, and a password reveal toggle, while autosize on TextArea grows with the content.",
+        "name": "Input",
+        "description": "A native single-line text control with Teal sizing, invalid states, and a forwarded ref; clearable adds a clear action, loading swaps it for a spinner, and type=\"password\" adds a reveal toggle.",
         "apiNames": [
-          "Input",
+          "Input"
+        ]
+      },
+      {
+        "id": "text-area",
+        "name": "TextArea",
+        "description": "Multi-line text entry with Teal sizing, invalid states, and a forwarded ref; autosize grows the field with its content.",
+        "apiNames": [
           "TextArea"
         ]
       },
@@ -163,14 +179,6 @@ export const moduleIndexGroups = [
         ]
       },
       {
-        "id": "date-picker",
-        "name": "Date Picker",
-        "description": "A date field with a keyboard-navigable popover: day, month, year, or datetime modes, plus two-click range selection.",
-        "apiNames": [
-          "DatePicker"
-        ]
-      },
-      {
         "id": "number-input",
         "name": "Number Input",
         "description": "A numeric field with stepper buttons and min/max clamping.",
@@ -217,22 +225,6 @@ export const moduleIndexGroups = [
         "description": "Click-to-edit text that commits on Enter or blur and cancels with Escape.",
         "apiNames": [
           "Editable"
-        ]
-      },
-      {
-        "id": "time-picker",
-        "name": "Time Picker",
-        "description": "A segmented hour and minute field with 12- and 24-hour cycles.",
-        "apiNames": [
-          "TimePicker"
-        ]
-      },
-      {
-        "id": "color-picker",
-        "name": "Color Picker",
-        "description": "A swatch trigger with preset colors and a validated hex field.",
-        "apiNames": [
-          "ColorPicker"
         ]
       },
       {
@@ -308,28 +300,48 @@ export const moduleIndexGroups = [
         ]
       },
       {
-        "id": "timezone-select",
-        "name": "Timezone Select",
-        "description": "A searchable select over a curated set of IANA timezones with UTC offset labels.",
-        "apiNames": [
-          "TimezoneSelect"
-        ]
-      },
-      {
-        "id": "toggle-group",
-        "name": "Toggle Group",
-        "description": "A cluster of Toggle-styled options with roving focus, in mutually exclusive single mode or independent multiple mode; variant=\"segmented\" renders an options array with a sliding selection pill.",
-        "apiNames": [
-          "ToggleGroup",
-          "ToggleGroupItem"
-        ]
-      },
-      {
         "id": "transfer-list",
         "name": "Transfer List",
         "description": "A dual listbox that moves options between an available list and a chosen list with buttons or the keyboard.",
         "apiNames": [
           "TransferList"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Pickers",
+    "modules": [
+      {
+        "id": "date-picker",
+        "name": "Date Picker",
+        "description": "A date field with a keyboard-navigable popover: day, month, year, or datetime modes, plus two-click range selection.",
+        "apiNames": [
+          "DatePicker"
+        ]
+      },
+      {
+        "id": "time-picker",
+        "name": "Time Picker",
+        "description": "A segmented hour and minute field with 12- and 24-hour cycles.",
+        "apiNames": [
+          "TimePicker"
+        ]
+      },
+      {
+        "id": "color-picker",
+        "name": "Color Picker",
+        "description": "A swatch trigger with preset colors and a validated hex field.",
+        "apiNames": [
+          "ColorPicker"
+        ]
+      },
+      {
+        "id": "timezone-select",
+        "name": "Timezone Select",
+        "description": "A searchable select over a curated set of IANA timezones with UTC offset labels.",
+        "apiNames": [
+          "TimezoneSelect"
         ]
       },
       {
@@ -965,14 +977,6 @@ export const moduleIndexGroups = [
         ]
       },
       {
-        "id": "sparkline",
-        "name": "Sparkline",
-        "description": "A tiny inline trend chart in line, area, or bar form with an accessible summary.",
-        "apiNames": [
-          "Sparkline"
-        ]
-      },
-      {
         "id": "calendar",
         "name": "Calendar",
         "description": "A month grid for picking a single date with bounds and disabled days.",
@@ -989,11 +993,80 @@ export const moduleIndexGroups = [
         ]
       },
       {
-        "id": "bar-chart",
-        "name": "Bar Chart",
-        "description": "Grouped SVG bar chart with vertical or horizontal bars, optional value labels, a legend, and a built-in accessible data table.",
+        "id": "comment-thread",
+        "name": "Comment Thread",
+        "description": "Nested comment list with author avatars, timestamps, caller-wired reply buttons, and collapsible reply threads.",
         "apiNames": [
-          "BarChart"
+          "CommentThread"
+        ]
+      },
+      {
+        "id": "diff-viewer",
+        "name": "Diff Viewer",
+        "description": "Line-based diff view with added/removed/context coloring, a +/- gutter, and old/new line numbers.",
+        "apiNames": [
+          "DiffViewer"
+        ]
+      },
+      {
+        "id": "json-viewer",
+        "name": "JSON Viewer",
+        "description": "Collapsible JSON tree with type-colored values, key-count summaries, and optional hover copy-path buttons.",
+        "apiNames": [
+          "JsonViewer"
+        ]
+      },
+      {
+        "id": "kanban-board",
+        "name": "Kanban Board",
+        "description": "A column-based board where cards move between workflow stages with full keyboard support.",
+        "apiNames": [
+          "KanbanBoard"
+        ]
+      },
+      {
+        "id": "log-viewer",
+        "name": "Log Viewer",
+        "description": "Scrollable monospace log pane with severity coloring, a follow/auto-scroll toggle, and optional search highlighting.",
+        "apiNames": [
+          "LogViewer"
+        ]
+      },
+      {
+        "id": "markdown-view",
+        "name": "Markdown View",
+        "description": "Renders a safe markdown subset — headings, emphasis, links, lists, code, and quotes — as teal-styled elements with no raw HTML.",
+        "apiNames": [
+          "MarkdownView"
+        ]
+      },
+      {
+        "id": "qr-code",
+        "name": "QR Code",
+        "description": "Dependency-free SVG QR code renderer with a hand-rolled byte-mode encoder (error-correction level L).",
+        "apiNames": [
+          "QrCode"
+        ]
+      },
+      {
+        "id": "tree-grid",
+        "name": "Tree Grid",
+        "description": "A data table whose rows form an expandable tree, following the WAI-ARIA treegrid pattern.",
+        "apiNames": [
+          "TreeGrid"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Charts",
+    "modules": [
+      {
+        "id": "sparkline",
+        "name": "Sparkline",
+        "description": "A tiny inline trend chart in line, area, or bar form with an accessible summary.",
+        "apiNames": [
+          "Sparkline"
         ]
       },
       {
@@ -1016,19 +1089,11 @@ export const moduleIndexGroups = [
         ]
       },
       {
-        "id": "comment-thread",
-        "name": "Comment Thread",
-        "description": "Nested comment list with author avatars, timestamps, caller-wired reply buttons, and collapsible reply threads.",
+        "id": "bar-chart",
+        "name": "Bar Chart",
+        "description": "Grouped SVG bar chart with vertical or horizontal bars, optional value labels, a legend, and a built-in accessible data table.",
         "apiNames": [
-          "CommentThread"
-        ]
-      },
-      {
-        "id": "diff-viewer",
-        "name": "Diff Viewer",
-        "description": "Line-based diff view with added/removed/context coloring, a +/- gutter, and old/new line numbers.",
-        "apiNames": [
-          "DiffViewer"
+          "BarChart"
         ]
       },
       {
@@ -1064,43 +1129,11 @@ export const moduleIndexGroups = [
         ]
       },
       {
-        "id": "json-viewer",
-        "name": "JSON Viewer",
-        "description": "Collapsible JSON tree with type-colored values, key-count summaries, and optional hover copy-path buttons.",
-        "apiNames": [
-          "JsonViewer"
-        ]
-      },
-      {
-        "id": "kanban-board",
-        "name": "Kanban Board",
-        "description": "A column-based board where cards move between workflow stages with full keyboard support.",
-        "apiNames": [
-          "KanbanBoard"
-        ]
-      },
-      {
         "id": "line-chart",
         "name": "Line Chart",
         "description": "Multi-series SVG line chart with axis ticks, focusable points, simple or custom tooltips, a legend, and a built-in accessible data table. type=\"area\" fills under each series, with adjustable fill opacity and a stacked mode for part-to-whole trends.",
         "apiNames": [
           "LineChart"
-        ]
-      },
-      {
-        "id": "log-viewer",
-        "name": "Log Viewer",
-        "description": "Scrollable monospace log pane with severity coloring, a follow/auto-scroll toggle, and optional search highlighting.",
-        "apiNames": [
-          "LogViewer"
-        ]
-      },
-      {
-        "id": "markdown-view",
-        "name": "Markdown View",
-        "description": "Renders a safe markdown subset — headings, emphasis, links, lists, code, and quotes — as teal-styled elements with no raw HTML.",
-        "apiNames": [
-          "MarkdownView"
         ]
       },
       {
@@ -1120,14 +1153,6 @@ export const moduleIndexGroups = [
         ]
       },
       {
-        "id": "qr-code",
-        "name": "QR Code",
-        "description": "Dependency-free SVG QR code renderer with a hand-rolled byte-mode encoder (error-correction level L).",
-        "apiNames": [
-          "QrCode"
-        ]
-      },
-      {
         "id": "radar-chart",
         "name": "Radar Chart",
         "description": "SVG radar (spider) chart that overlays multi-series polygons across a shared set of axes.",
@@ -1141,14 +1166,6 @@ export const moduleIndexGroups = [
         "description": "Hand-rolled SVG scatter plot with x/y axes, multi-series dots, and optional size encoding.",
         "apiNames": [
           "ScatterChart"
-        ]
-      },
-      {
-        "id": "tree-grid",
-        "name": "Tree Grid",
-        "description": "A data table whose rows form an expandable tree, following the WAI-ARIA treegrid pattern.",
-        "apiNames": [
-          "TreeGrid"
         ]
       }
     ]
@@ -1427,3 +1444,67 @@ export const moduleIndexGroups = [
     ]
   }
 ]
+
+/**
+ * Merged-away module ids (0.5.1 consolidation) → surviving page.
+ * ModulePage redirects these so existing bookmarks keep working.
+ */
+export const moduleRedirects = {
+  // M1 — DatePicker
+  'month-picker': 'date-picker',
+  'year-picker': 'date-picker',
+  'date-time-picker': 'date-picker',
+  'date-range-picker': 'date-picker',
+  // M2 — TreeSelect
+  cascader: 'tree-select',
+  // M3 — ToggleGroup
+  'segmented-control': 'toggle-group',
+  // M4 — Dialog
+  'fullscreen-dialog': 'dialog',
+  drawer: 'dialog',
+  'bottom-sheet': 'dialog',
+  // M5 — Alert
+  banner: 'alert',
+  callout: 'alert',
+  // M6 — Slider
+  'range-slider': 'slider',
+  // M7 — Table
+  'data-table': 'table',
+  // M8 — Menu
+  'context-menu': 'menu',
+  // M9 — EmptyState
+  result: 'empty-state',
+  // M10 — AnchorNav
+  'table-of-contents': 'anchor-nav',
+  // M11 — LineChart
+  'area-chart': 'line-chart',
+  // M12 — Sidebar
+  'vertical-nav': 'sidebar',
+  'side-rail': 'sidebar',
+  // M13 — StatusDot
+  'pulse-dot': 'status-dot',
+  // M14 — RadioGroup
+  'radio-card': 'radio-group',
+  // M15 — Checkbox
+  'checkbox-card': 'checkbox',
+  // M16 — Combobox
+  'multi-select': 'combobox',
+  // M17 — TextArea
+  'autosize-textarea': 'text-area',
+  // M18 — Popover
+  'hover-card': 'popover',
+  // M19 — FloatingActionButton
+  'speed-dial': 'floating-action-button',
+  // M20 — Progress (documented on the Loading page)
+  'progress-circle': 'loading',
+  // M21 — Card
+  panel: 'card',
+  'glass-panel': 'card',
+  // M22 — Command
+  'search-overlay': 'command',
+  // M23 — NavigationMenu
+  'mega-menu': 'navigation-menu',
+  // M24 — Input
+  'search-input': 'input',
+  'password-input': 'input',
+}
