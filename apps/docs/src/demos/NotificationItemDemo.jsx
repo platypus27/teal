@@ -7,7 +7,7 @@ export function NotificationItemDemo({ exampleIndex = 0 }) {
       appLabel="Photos"
       timestamp="just now"
       title="Import finished"
-      href="https://photos.kryvlabs.example/imports/1"
+      href="#"
       read
     />
   ) : (
@@ -16,7 +16,7 @@ export function NotificationItemDemo({ exampleIndex = 0 }) {
       appLabel="Yang Operations"
       timestamp="2 hours ago"
       title="photos-api restarted unexpectedly"
-      href="https://yang.kryvlabs.example/incidents/photos-api"
+      href="#"
       onMute={() => undefined}
       onArchive={() => undefined}
     />

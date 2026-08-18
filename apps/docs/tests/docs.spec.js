@@ -250,3 +250,14 @@ test('fixed-position demos render inside their preview box', async ({ page }) =>
   expect(buttonBox.x + buttonBox.width).toBeLessThanOrEqual(previewBox.x + previewBox.width)
   expect(buttonBox.y + buttonBox.height).toBeLessThanOrEqual(previewBox.y + previewBox.height)
 })
+
+test('rendered demos contain no placeholder external links', async ({ page }) => {
+  for (const route of ['/modules/notification-item', '/modules/link', '/modules/launcher-card']) {
+    await page.goto(route)
+    await expect(page.locator('#examples')).toBeVisible()
+    const hrefs = await page
+      .locator('#examples a[href]')
+      .evaluateAll((anchors) => anchors.map((anchor) => anchor.getAttribute('href')))
+    for (const href of hrefs) expect(href).not.toMatch(/^https?:\/\/[a-z0-9.-]*\.example/)
+  }
+})

@@ -100,7 +100,7 @@ export const moduleGroups = [
 				description:
 					"Themed inline and standalone links with an external indicator.",
 				usage: `<Link href="/projects">View projects</Link>
-<Link href="https://status.example" external>Status page</Link>`,
+<Link href="#" external>Status page</Link>`,
 				anatomy: [
 					{ part: "Anchor text", description: "The underlined link text, inline within prose or standalone." },
 					{ part: "External indicator", description: "The icon appended to links that open a new tab, paired with rel=\"noreferrer\"." },
@@ -1786,7 +1786,7 @@ export const moduleGroups = [
 				description:
 					"An interactive application destination card with an icon, description, optional status, and an honest unavailable state.",
 				usage: `<LauncherCard
-  href="https://photos.example"
+  href="#"
   label="Photos"
   description="Household media, albums, and sharing"
   icon={<Camera />}
@@ -2904,7 +2904,7 @@ toast({ title: 'Changes saved', variant: 'success' })`,
   appLabel="Yang Operations"
   timestamp="2 hours ago"
   title="photos-api restarted unexpectedly"
-  href="https://yang.example/incidents/photos-api"
+  href="#"
   onMute={() => undefined}
   onArchive={() => undefined}
 />`,
@@ -3380,11 +3380,11 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 					"An entitlement-filtered application switcher with an explicit Home destination and keyboard navigation.",
 				usage: `<AppSwitcher
   trigger={<Button variant="secondary">Switch application</Button>}
-  homeHref="https://home.example"
+  homeHref="#"
   homeLabel="Home"
   apps={[
-    { id: 'yang', label: 'Yang Operations', href: 'https://yang.example' },
-    { id: 'photos', label: 'Photos', href: 'https://photos.example', current: true },
+    { id: 'yang', label: 'Yang Operations', href: '#' },
+    { id: 'photos', label: 'Photos', href: '#', current: true },
   ]}
 />`,
 				anatomy: [
@@ -3620,10 +3620,10 @@ toast({ title: 'Changes saved', variant: 'success' })`,
 				description:
 					"A persistent cross-product rail with a stable Home destination, caller-filtered applications, and honest health status.",
 				usage: `<EcosystemRail
-  home={{ href: 'https://home.example', label: 'Home', icon: <Home /> }}
+  home={{ href: '#', label: 'Home', icon: <Home /> }}
   destinations={[
-    { id: 'yang', label: 'Yang Operations', href: 'https://yang.example', icon: <Gauge />, current: true },
-    { id: 'photos', label: 'Photos', href: 'https://photos.example', icon: <Camera />, status: 'degraded' },
+    { id: 'yang', label: 'Yang Operations', href: '#', icon: <Gauge />, current: true },
+    { id: 'photos', label: 'Photos', href: '#', icon: <Camera />, status: 'degraded' },
   ]}
 />`,
 				anatomy: [

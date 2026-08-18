@@ -4,14 +4,14 @@ import { Camera } from 'lucide-react'
 export function LauncherCardDemo({ exampleIndex = 0 }) {
   return exampleIndex ? (
     <LauncherCard
-      href="https://trict.kryvlabs.example"
+      href="#"
       label="Trict"
       description="Trading research and execution"
       disabled
     />
   ) : (
     <LauncherCard
-      href="https://photos.kryvlabs.example"
+      href="#"
       label="Photos"
       description="Household media, albums, and sharing"
       icon={<Camera />}
