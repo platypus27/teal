@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from 'react'
 import { Button } from './Button'
+import { Portal } from './Portal'
 import { cn } from './cn'
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
@@ -125,7 +126,9 @@ export const Tour = forwardRef<HTMLDivElement, TourProps>(function Tour(
   }
 
   return (
-    <>
+    // Portaled to document.body so viewport coordinates from
+    // getBoundingClientRect stay correct inside transformed ancestors.
+    <Portal>
       {highlight ? (
         <div
           aria-hidden="true"
@@ -173,6 +176,6 @@ export const Tour = forwardRef<HTMLDivElement, TourProps>(function Tour(
           </div>
         </div>
       </div>
-    </>
+    </Portal>
   )
 })

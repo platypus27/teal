@@ -110,6 +110,20 @@ describe('Tour', () => {
     expect(screen.getByText('Step 1 of 3')).toBeInTheDocument()
   })
 
+  it('portals the highlight and popover to document.body', () => {
+    // The overlay uses viewport coordinates from getBoundingClientRect, so it
+    // must escape transformed ancestors that would rebase position: fixed.
+    const { container } = renderTour()
+
+    const dialog = screen.getByRole('dialog', { name: 'Navigation' })
+    expect(dialog.parentElement).toBe(document.body)
+    expect(container.contains(dialog)).toBe(false)
+
+    const highlight = document.body.querySelector('[aria-hidden="true"]')
+    expect(highlight).not.toBeNull()
+    expect(container.contains(highlight)).toBe(false)
+  })
+
   it('still shows the step content when the target is missing', () => {
     render(
       <Tour
