@@ -11,7 +11,7 @@ export function LinkDemo({ exampleIndex = 0 }) {
 
   if (exampleIndex === 2) {
     return (
-      <Link href="https://example.com/status" external>
+      <Link href="#" external>
         System status
       </Link>
     )
