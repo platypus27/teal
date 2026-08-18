@@ -6,6 +6,15 @@ const demoLoaders = import.meta.glob('../demos/*Demo.jsx')
 const sourceLoaders = import.meta.glob('../demos/*Demo.jsx', { query: '?raw', import: 'default' })
 const metaLoaders = import.meta.glob('../data/modules/*.js')
 
+// Glob keys are build-dependent (rolldown rewrites '../data/modules/x.js' to
+// './modules/x.js'), so look loaders up by file name instead of full path.
+function byFileName(loaders) {
+  return Object.fromEntries(Object.entries(loaders).map(([path, load]) => [path.split('/').pop(), load]))
+}
+const demoLoaderByFile = byFileName(demoLoaders)
+const sourceLoaderByFile = byFileName(sourceLoaders)
+const metaLoaderByFile = byFileName(metaLoaders)
+
 function pascalCase(id) {
   return id
     .split('-')
@@ -17,13 +26,13 @@ function pascalCase(id) {
 export async function loadModuleRecord(id) {
   const module = catalog.find((entry) => entry.id === id)
   if (!module) return null
-  const metaLoader = metaLoaders[`../data/modules/${id}.js`]
+  const metaLoader = metaLoaderByFile[`${id}.js`]
   if (!metaLoader) throw new Error(`Missing metadata for module ${id}`)
   const meta = /** @type {any} */ (await metaLoader()).default
-  const files = [...new Set(meta.examples.map((example) => `../demos/${pascalCase(example.demo ?? id)}Demo.jsx`))]
+  const files = [...new Set(meta.examples.map((example) => `${pascalCase(example.demo ?? id)}Demo.jsx`))]
   const loaded = await Promise.all(files.map(async (file) => {
-    const demoLoader = demoLoaders[file]
-    const sourceLoader = sourceLoaders[file]
+    const demoLoader = demoLoaderByFile[file]
+    const sourceLoader = sourceLoaderByFile[file]
     if (!demoLoader || !sourceLoader) throw new Error(`Missing documentation demo for ${file}`)
     const [demoModule, source] = await Promise.all([demoLoader(), sourceLoader()])
     return /** @type {[string, Record<string, any>, string]} */ ([file, demoModule, source])
@@ -35,7 +44,7 @@ export async function loadModuleRecord(id) {
     ...module,
     ...meta,
     examples: meta.examples.map((example, index) => {
-      const file = `../demos/${pascalCase(example.demo ?? id)}Demo.jsx`
+      const file = `${pascalCase(example.demo ?? id)}Demo.jsx`
       const record = records.get(file)
       const demoModule = record.demoModule
       const source = record.source
@@ -80,7 +89,7 @@ function dialogCode(values) {
 
 /**
  * Live demos, sources, and playgrounds keyed by module id. Merged over the
- * plain metadata from module-meta.js.
+ * light shell metadata from module-index.js.
  */
 const extras = {
   button: {

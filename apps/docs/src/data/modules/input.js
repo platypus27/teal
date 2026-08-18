@@ -1,16 +1,15 @@
 export default {
   "id": "input",
-  "name": "Input and TextArea",
+  "name": "Input",
   "apiNames": [
-    "Input",
-    "TextArea"
+    "Input"
   ],
-  "description": "Native text controls with Teal sizing, invalid states, and forwarded refs; Input adds a clear action, a loading spinner, and a password reveal toggle, while autosize on TextArea grows with the content.",
-  "usage": "<Input placeholder=\"Project name\" />\n<Input clearable label=\"Search projects\" />\n<Input type=\"password\" label=\"Password\" />\n<TextArea autosize label=\"Bio\" minRows={2} maxRows={6} />",
+  "description": "A native single-line text control with Teal sizing, invalid states, and a forwarded ref; clearable adds a clear action, loading swaps it for a spinner, and type=\"password\" adds a reveal toggle.",
+  "usage": "<Input placeholder=\"Project name\" />\n<Input clearable label=\"Search projects\" />\n<Input type=\"password\" label=\"Password\" />",
   "anatomy": [
     {
       "part": "Control",
-      "description": "The native input or textarea element with Teal sizing, focus ring, and a forwarded ref."
+      "description": "The native input element with Teal sizing, focus ring, and a forwarded ref."
     },
     {
       "part": "Placeholder",
@@ -25,7 +24,7 @@ export default {
     "dos": [
       "Set type, inputMode, and autoComplete to match the value, like email or tel.",
       "Wrap the control in a Field so the label and messages stay associated.",
-      "Set rows on TextArea to roughly the expected answer length."
+      "Use TextArea instead when the answer runs to multiple lines."
     ],
     "donts": [
       "Don't use placeholder text as the only label.",
@@ -35,6 +34,7 @@ export default {
   },
   "related": [
     "field",
+    "text-area",
     "input-group",
     "combobox"
   ],
@@ -46,10 +46,6 @@ export default {
     {
       "title": "Semantic types",
       "description": "type, inputMode, and autoComplete steer the on-screen keyboard and autofill."
-    },
-    {
-      "title": "Autosize",
-      "description": "TextArea with autosize grows and shrinks with its content, capped by maxRows before it scrolls."
     },
     {
       "title": "Search and inline validation",
@@ -65,9 +61,9 @@ export default {
     }
   ],
   "guidance": {
-    "useWhen": "Users enter or search for short text, or multi-line text where TextArea with autosize should track the content height.",
-    "avoidWhen": "A constrained set of choices or a long-form editor is clearer.",
-    "behavior": "Native input behavior is preserved, including browser validation and refs. clearable shows a clear action once the field has a value and loading swaps it for a spinner in the same slot; type=\"password\" adds a visibility toggle that reports state through aria-pressed. With autosize, TextArea height follows the content between minRows and maxRows; beyond maxRows the field scrolls instead of growing.",
+    "useWhen": "Users enter or search for a single line of text.",
+    "avoidWhen": "A constrained set of choices, a long-form editor, or multi-line text (use TextArea) is clearer.",
+    "behavior": "Native input behavior is preserved, including browser validation and refs. clearable shows a clear action once the field has a value and loading swaps it for a spinner in the same slot; type=\"password\" adds a visibility toggle that reports state through aria-pressed.",
     "responsive": "Use full width on small screens and constrain width at larger sizes."
   }
 }

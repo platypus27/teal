@@ -38,6 +38,10 @@ export const accessibility = {
       'Input label and description props render a visible label wired with htmlFor and help text linked through aria-describedby; use aria-label when there is no visible label.',
       'The clear action is an IconButton labeled Clear input that appears once a clearable field has a value; loading swaps it for a spinner announced with role status in the same slot, so nothing shifts between states.',
       'With type password, the visibility toggle flips the field between password and text and reports its state through aria-pressed; set autoComplete to new-password or current-password so password managers fill correctly.',
+    ],
+  },
+  'text-area': {
+    notes: [
       'TextArea label and description props render a visible label wired with htmlFor and help text linked through aria-describedby; use aria-label when there is no visible label.',
       'In autosize mode, TextArea suppresses visual resize because the field sizes itself; keyboard and screen-reader behavior match a standard textarea.',
     ],

@@ -12,6 +12,7 @@
 
 - [Button](/modules/button) (Actions): Actions with consistent hierarchy, sizing, loading, and accessible icon treatment.
 - [Button Group](/modules/button-group) (Actions): An attached cluster of related actions with hairline seams and shared corner radius.
+- [Toggle Group](/modules/toggle-group) (Actions): A cluster of Toggle-styled options with roving focus, in mutually exclusive single mode or independent multiple mode; variant="segmented" renders an options array with a sliding selection pill.
 - [Link](/modules/link) (Actions): Themed inline and standalone links with an external indicator.
 - [Toggle](/modules/toggle) (Actions): A pressed-state button for binary preferences in toolbars and filter rows.
 - [Toolbar](/modules/toolbar) (Actions): A horizontal action bar with grouped controls and hairline separators.
@@ -21,22 +22,20 @@
 - [Floating Action Button](/modules/floating-action-button) (Actions): A fixed-position primary action button for the single most important creation task on a screen.
 - [Share Button](/modules/share-button) (Actions): A button that opens a small popover with a copy-link action and, where supported, the native share sheet.
 - [Field](/modules/field) (Forms): A deep form seam that connects labels, descriptions, errors, and required state.
-- [Input and TextArea](/modules/input) (Forms): Native text controls with Teal sizing, invalid states, and forwarded refs; Input adds a clear action, a loading spinner, and a password reveal toggle, while autosize on TextArea grows with the content.
+- [Input](/modules/input) (Forms): A native single-line text control with Teal sizing, invalid states, and a forwarded ref; clearable adds a clear action, loading swaps it for a spinner, and type="password" adds a reveal toggle.
+- [TextArea](/modules/text-area) (Forms): Multi-line text entry with Teal sizing, invalid states, and a forwarded ref; autosize grows the field with its content.
 - [Select](/modules/select) (Forms): An accessible single-value picker with keyboard navigation, typeahead, and collision-aware positioning.
 - [Checkbox](/modules/checkbox) (Forms): Boolean and indeterminate selection with an integrated label and description; pass variant="card" for a selectable card with a title, description, and optional icon.
 - [Switch](/modules/switch) (Forms): An immediate boolean setting with explicit labeling and controlled or uncontrolled state.
 - [Radio Group](/modules/radio-group) (Forms): A single-choice option set with an integrated label, description, and subtle borders; pass variant="card" for selectable cards with a title, description, and optional icon.
 - [Slider](/modules/slider) (Forms): A numeric value scrubber with an optional live value readout; range mode adds a second thumb for low/high pairs.
 - [Combobox](/modules/combobox) (Forms): A filterable picker combining free text with a suggestion list; pass multiple to select several values shown as removable pills.
-- [Date Picker](/modules/date-picker) (Forms): A date field with a keyboard-navigable popover: day, month, year, or datetime modes, plus two-click range selection.
 - [Number Input](/modules/number-input) (Forms): A numeric field with stepper buttons and min/max clamping.
 - [File Upload](/modules/file-upload) (Forms): A drag-and-drop zone with a browse action and a removable file list.
 - [PIN Input](/modules/pin-input) (Forms): A segmented one-time code field with per-cell navigation, paste support, and masking.
 - [Tags Input](/modules/tags-input) (Forms): A token entry field that turns typed text into removable chips.
 - [Input Group](/modules/input-group) (Forms): An input joined with leading or trailing addons such as protocols and units.
 - [Editable](/modules/editable) (Forms): Click-to-edit text that commits on Enter or blur and cancels with Escape.
-- [Time Picker](/modules/time-picker) (Forms): A segmented hour and minute field with 12- and 24-hour cycles.
-- [Color Picker](/modules/color-picker) (Forms): A swatch trigger with preset colors and a validated hex field.
 - [Currency Input](/modules/currency-input) (Forms): A numeric amount field with a leading currency symbol that formats the value with Intl.NumberFormat on blur.
 - [Fieldset](/modules/fieldset) (Forms): A semantic fieldset/legend group for related fields, with optional help text linked to the whole group.
 - [Form](/modules/form) (Forms): A lightweight form wrapper that collects field values on submit and shares an error map through context, with no form library.
@@ -46,10 +45,12 @@
 - [Password Strength Meter](/modules/password-strength-meter) (Forms): A progressbar-style meter that visualizes password strength from a caller-supplied or built-in score.
 - [Phone Input](/modules/phone-input) (Forms): A country calling-code dropdown paired with a national number field that emits an E.164-ish string.
 - [Rich Text Editor](/modules/rich-text-editor) (Forms): A lightweight markdown editor whose toolbar formats the textarea selection, with an optional live preview pane.
-- [Timezone Select](/modules/timezone-select) (Forms): A searchable select over a curated set of IANA timezones with UTC offset labels.
-- [Toggle Group](/modules/toggle-group) (Forms): A cluster of Toggle-styled options with roving focus, in mutually exclusive single mode or independent multiple mode; variant="segmented" renders an options array with a sliding selection pill.
 - [Transfer List](/modules/transfer-list) (Forms): A dual listbox that moves options between an available list and a chosen list with buttons or the keyboard.
-- [Tree Select](/modules/tree-select) (Forms): A single-select control whose popover shows an expandable, typeahead-enabled tree of options; display="columns" walks the hierarchy one column per level.
+- [Date Picker](/modules/date-picker) (Pickers): A date field with a keyboard-navigable popover: day, month, year, or datetime modes, plus two-click range selection.
+- [Time Picker](/modules/time-picker) (Pickers): A segmented hour and minute field with 12- and 24-hour cycles.
+- [Color Picker](/modules/color-picker) (Pickers): A swatch trigger with preset colors and a validated hex field.
+- [Timezone Select](/modules/timezone-select) (Pickers): A searchable select over a curated set of IANA timezones with UTC offset labels.
+- [Tree Select](/modules/tree-select) (Pickers): A single-select control whose popover shows an expandable, typeahead-enabled tree of options; display="columns" walks the hierarchy one column per level.
 - [Card](/modules/card) (Surfaces): A structural surface for related content without ambiguous interactive behavior.
 - [Launcher Card](/modules/launcher-card) (Surfaces): An interactive application destination card with an icon, description, optional status, and an honest unavailable state.
 - [Badge](/modules/badge) (Surfaces): A compact semantic status indicator using canonical information variants.
@@ -122,29 +123,29 @@
 - [Avatar Group](/modules/avatar-group) (Data): An overlapping identity stack with an overflow count.
 - [Stat](/modules/stat) (Data): A labeled metric with a trend delta and optional supporting content.
 - [List](/modules/list) (Data): A vertical item list with leading and trailing slots, secondary text, and a dense mode.
-- [Sparkline](/modules/sparkline) (Data): A tiny inline trend chart in line, area, or bar form with an accessible summary.
 - [Calendar](/modules/calendar) (Data): A month grid for picking a single date with bounds and disabled days.
 - [Activity Feed](/modules/activity-feed) (Data): Chronological list of actor-plus-action events with avatars or icons and timestamps, optionally grouped under day headings.
-- [Bar Chart](/modules/bar-chart) (Data): Grouped SVG bar chart with vertical or horizontal bars, optional value labels, a legend, and a built-in accessible data table.
-- [Calendar Heatmap](/modules/calendar-heatmap) (Data): GitHub-style year calendar heatmap with weeks-by-weekday cells, a 0–4 level color scale, and month labels.
-- [Chart Container](/modules/chart-container) (Data): Accessible SVG frame for hand-rolled charts with an aria-label summary, a toggleable screen-reader data table, and reusable axis, grid, and legend primitives.
 - [Comment Thread](/modules/comment-thread) (Data): Nested comment list with author avatars, timestamps, caller-wired reply buttons, and collapsible reply threads.
 - [Diff Viewer](/modules/diff-viewer) (Data): Line-based diff view with added/removed/context coloring, a +/- gutter, and old/new line numbers.
-- [Funnel Chart](/modules/funnel-chart) (Data): SVG funnel of stages whose widths follow their values, with stage-to-stage conversion percentages.
-- [Gantt Chart](/modules/gantt-chart) (Data): A read-only SVG Gantt chart that plots task bars on a day grid with a today marker.
-- [Gauge Chart](/modules/gauge-chart) (Data): Semicircle SVG gauge with min/max scale, threshold zones, and a centered value label.
-- [Heatmap](/modules/heatmap) (Data): Matrix heatmap that maps values to a color scale with row/column labels and cell tooltips.
 - [JSON Viewer](/modules/json-viewer) (Data): Collapsible JSON tree with type-colored values, key-count summaries, and optional hover copy-path buttons.
 - [Kanban Board](/modules/kanban-board) (Data): A column-based board where cards move between workflow stages with full keyboard support.
-- [Line Chart](/modules/line-chart) (Data): Multi-series SVG line chart with axis ticks, focusable points, simple or custom tooltips, a legend, and a built-in accessible data table. type="area" fills under each series, with adjustable fill opacity and a stacked mode for part-to-whole trends.
 - [Log Viewer](/modules/log-viewer) (Data): Scrollable monospace log pane with severity coloring, a follow/auto-scroll toggle, and optional search highlighting.
 - [Markdown View](/modules/markdown-view) (Data): Renders a safe markdown subset — headings, emphasis, links, lists, code, and quotes — as teal-styled elements with no raw HTML.
-- [Org Chart](/modules/org-chart) (Data): A hierarchy of person nodes rendered as connected boxes, with collapsible subtrees.
-- [Pie Chart](/modules/pie-chart) (Data): SVG pie and donut chart with keyboard-focusable segments, percentage labels, a legend, and a built-in accessible data table.
 - [QR Code](/modules/qr-code) (Data): Dependency-free SVG QR code renderer with a hand-rolled byte-mode encoder (error-correction level L).
-- [Radar Chart](/modules/radar-chart) (Data): SVG radar (spider) chart that overlays multi-series polygons across a shared set of axes.
-- [Scatter Chart](/modules/scatter-chart) (Data): Hand-rolled SVG scatter plot with x/y axes, multi-series dots, and optional size encoding.
 - [Tree Grid](/modules/tree-grid) (Data): A data table whose rows form an expandable tree, following the WAI-ARIA treegrid pattern.
+- [Sparkline](/modules/sparkline) (Charts): A tiny inline trend chart in line, area, or bar form with an accessible summary.
+- [Calendar Heatmap](/modules/calendar-heatmap) (Charts): GitHub-style year calendar heatmap with weeks-by-weekday cells, a 0–4 level color scale, and month labels.
+- [Chart Container](/modules/chart-container) (Charts): Accessible SVG frame for hand-rolled charts with an aria-label summary, a toggleable screen-reader data table, and reusable axis, grid, and legend primitives.
+- [Bar Chart](/modules/bar-chart) (Charts): Grouped SVG bar chart with vertical or horizontal bars, optional value labels, a legend, and a built-in accessible data table.
+- [Funnel Chart](/modules/funnel-chart) (Charts): SVG funnel of stages whose widths follow their values, with stage-to-stage conversion percentages.
+- [Gantt Chart](/modules/gantt-chart) (Charts): A read-only SVG Gantt chart that plots task bars on a day grid with a today marker.
+- [Gauge Chart](/modules/gauge-chart) (Charts): Semicircle SVG gauge with min/max scale, threshold zones, and a centered value label.
+- [Heatmap](/modules/heatmap) (Charts): Matrix heatmap that maps values to a color scale with row/column labels and cell tooltips.
+- [Line Chart](/modules/line-chart) (Charts): Multi-series SVG line chart with axis ticks, focusable points, simple or custom tooltips, a legend, and a built-in accessible data table. type="area" fills under each series, with adjustable fill opacity and a stacked mode for part-to-whole trends.
+- [Org Chart](/modules/org-chart) (Charts): A hierarchy of person nodes rendered as connected boxes, with collapsible subtrees.
+- [Pie Chart](/modules/pie-chart) (Charts): SVG pie and donut chart with keyboard-focusable segments, percentage labels, a legend, and a built-in accessible data table.
+- [Radar Chart](/modules/radar-chart) (Charts): SVG radar (spider) chart that overlays multi-series polygons across a shared set of axes.
+- [Scatter Chart](/modules/scatter-chart) (Charts): Hand-rolled SVG scatter plot with x/y axes, multi-series dots, and optional size encoding.
 - [Stack](/modules/stack) (Layout): A flex primitive that stacks children along one axis with consistent spacing and alignment.
 - [Grid](/modules/grid) (Layout): A grid primitive with fixed columns or responsive auto-fit tracks.
 - [Resizable](/modules/resizable) (Layout): Pointer- and keyboard-resizable panes with percentage sizing and double-click reset.

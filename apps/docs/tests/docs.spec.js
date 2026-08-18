@@ -222,6 +222,15 @@ test('visual states expose focus, disabled, loading, invalid, and selected feedb
   await expect(page.getByRole('tab', { name: 'Overview' })).toHaveAttribute('aria-selected', 'true')
 })
 
+test('merged-away module routes redirect to their surviving page', async ({ page }) => {
+  await page.goto('/modules/speed-dial')
+  await expect(page).toHaveURL(/\/modules\/floating-action-button$/)
+  await expect(page.getByRole('heading', { level: 1, name: 'Floating Action Button' })).toBeVisible()
+  await page.goto('/modules/date-range-picker')
+  await expect(page).toHaveURL(/\/modules\/date-picker$/)
+  await expect(page.getByRole('heading', { level: 1, name: 'Date Picker' })).toBeVisible()
+})
+
 test('sidebar marks only the current module as active', async ({ page }) => {
   const nav = page.getByRole('navigation', { name: 'Documentation' })
 
