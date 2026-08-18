@@ -9,14 +9,14 @@ export function EcosystemRailDemo({ exampleIndex = 0 }) {
           className="absolute"
           mode="full"
           home={{
-            href: 'https://home.kryvlabs.example',
+            href: '#',
             label: 'Home',
             icon: <Home className="size-5" />,
             current: true,
           }}
           destinations={[
-            { id: 'yang', label: 'Yang Operations', href: 'https://yang.kryvlabs.example', icon: <Gauge className="size-5" /> },
-            { id: 'photos', label: 'Photos', href: 'https://photos.kryvlabs.example', icon: <Camera className="size-5" />, status: 'degraded' },
+            { id: 'yang', label: 'Yang Operations', href: '#', icon: <Gauge className="size-5" /> },
+            { id: 'photos', label: 'Photos', href: '#', icon: <Camera className="size-5" />, status: 'degraded' },
           ]}
         />
       </div>
@@ -34,11 +34,11 @@ export function EcosystemRailDemo({ exampleIndex = 0 }) {
             </span>
           </span>
         }
-        home={{ href: 'https://home.kryvlabs.example', label: 'Home', icon: <Home className="size-5" /> }}
+        home={{ href: '#', label: 'Home', icon: <Home className="size-5" /> }}
         destinations={[
-          { id: 'yang', label: 'Yang Operations', href: 'https://yang.kryvlabs.example', icon: <Gauge className="size-5" />, current: true, status: 'healthy' },
-          { id: 'photos', label: 'Photos', href: 'https://photos.kryvlabs.example', icon: <Camera className="size-5" /> },
-          { id: 'trict', label: 'Trict', href: 'https://trict.kryvlabs.example', icon: <LineChart className="size-5" />, status: 'stale' },
+          { id: 'yang', label: 'Yang Operations', href: '#', icon: <Gauge className="size-5" />, current: true, status: 'healthy' },
+          { id: 'photos', label: 'Photos', href: '#', icon: <Camera className="size-5" /> },
+          { id: 'trict', label: 'Trict', href: '#', icon: <LineChart className="size-5" />, status: 'stale' },
         ]}
         footer={<SidebarItem icon={<Settings className="size-5" />}>Account</SidebarItem>}
       />

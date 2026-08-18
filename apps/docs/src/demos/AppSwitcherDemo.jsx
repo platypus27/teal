@@ -5,15 +5,15 @@ export function AppSwitcherDemo({ exampleIndex = 0 }) {
   return (
     <AppSwitcher
       trigger={<Button variant="secondary">Switch application</Button>}
-      homeHref="https://home.kryvlabs.example"
+      homeHref="#"
       homeLabel="Home"
       apps={
         exampleIndex
-          ? [{ id: 'yang', label: 'Yang Operations', href: 'https://yang.kryvlabs.example', icon: <Gauge /> }]
+          ? [{ id: 'yang', label: 'Yang Operations', href: '#', icon: <Gauge /> }]
           : [
-              { id: 'yang', label: 'Yang Operations', href: 'https://yang.kryvlabs.example', icon: <Gauge /> },
-              { id: 'photos', label: 'Photos', href: 'https://photos.kryvlabs.example', icon: <Camera /> },
-              { id: 'trict', label: 'Trict', href: 'https://trict.kryvlabs.example', icon: <LineChart />, current: true },
+              { id: 'yang', label: 'Yang Operations', href: '#', icon: <Gauge /> },
+              { id: 'photos', label: 'Photos', href: '#', icon: <Camera /> },
+              { id: 'trict', label: 'Trict', href: '#', icon: <LineChart />, current: true },
             ]
       }
     />
