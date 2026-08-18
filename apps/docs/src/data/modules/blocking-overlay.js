@@ -1,0 +1,54 @@
+export default {
+  "id": "blocking-overlay",
+  "name": "Blocking Overlay",
+  "apiNames": [
+    "BlockingOverlay"
+  ],
+  "description": "A full-surface overlay with a spinner that blocks interaction with the wrapped content during async work.",
+  "usage": "<BlockingOverlay\n  visible={isSaving}\n  label=\"Saving changes\"\n>\n  <SettingsForm />\n</BlockingOverlay>",
+  "anatomy": [
+    {
+      "part": "Wrapper",
+      "description": "Relative container around the protected content; sets aria-busy while the overlay is visible."
+    },
+    {
+      "part": "Scrim",
+      "description": "Full-surface layer that blocks pointer interaction and traps Tab while shown."
+    },
+    {
+      "part": "Status",
+      "description": "Centered spinner in a role=\"status\" region labeled by the label prop."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use it when concurrent edits would corrupt state, such as during a bulk save.",
+      "Keep the label specific to the work in progress, such as \"Saving changes\"."
+    ],
+    "donts": [
+      "Don't block the whole page for one control's work; use a Button loading state instead.",
+      "Don't leave the overlay visible without a failure or timeout path."
+    ]
+  },
+  "related": [
+    "loading",
+    "error-boundary",
+    "dialog"
+  ],
+  "examples": [
+    {
+      "title": "Always-on overlay",
+      "description": "The overlay covering placeholder content while visible."
+    },
+    {
+      "title": "Triggered by work",
+      "description": "A simulated save that shows and hides the overlay around real async work."
+    }
+  ],
+  "guidance": {
+    "useWhen": "An in-flight operation must not be interrupted by further edits, such as a form save or a bulk action.",
+    "avoidWhen": "The content can remain interactive or a small inline spinner is enough; use Spinner or LoadingState instead.",
+    "behavior": "While visible it covers the wrapped content, sets aria-busy, moves focus into the overlay, and traps Tab until hidden.",
+    "responsive": "Fills its positioned container at any size; keep the container relative and full-width on small screens."
+  }
+}

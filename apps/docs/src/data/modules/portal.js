@@ -1,0 +1,52 @@
+export default {
+  "id": "portal",
+  "name": "Portal",
+  "apiNames": [
+    "Portal"
+  ],
+  "description": "Renders children into a different DOM container, escaping overflow and stacking-context traps.",
+  "usage": "<Portal>\n  <div className=\"fixed bottom-4 right-4\">Floating notice</div>\n</Portal>",
+  "anatomy": [
+    {
+      "part": "Host container",
+      "description": "The target element, document.body by default, that receives the children."
+    },
+    {
+      "part": "Portalled content",
+      "description": "The children mounted after the first client render and removed on unmount."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Use it for overlays that must escape an overflow-hidden or transformed ancestor.",
+      "Prefer higher-level components like Dialog or Tooltip that portal for you when they fit.",
+      "Choose the container deliberately when coordinating stacking contexts."
+    ],
+    "donts": [
+      "Don't portal interactive content without managing focus; DOM order diverges from visual order.",
+      "Don't portal content that belongs to the normal layout flow.",
+      "Don't expect server-rendered output; nothing renders until the client mounts."
+    ]
+  },
+  "related": [
+    "dialog",
+    "focus-trap",
+    "popover"
+  ],
+  "examples": [
+    {
+      "title": "Portal to document.body",
+      "description": "A fixed-position notice rendered outside its parent tree so clipping and z-index of ancestors do not apply."
+    },
+    {
+      "title": "Portal into a custom container",
+      "description": "Pass a container element to render into a specific region instead of the document body."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Overlay content such as notifications, menus, or modals must visually escape an ancestor with overflow hidden or its own stacking context.",
+    "avoidWhen": "The content belongs to the normal layout flow; rendering inline keeps semantics and focus order simpler.",
+    "behavior": "Renders nothing on the server, then mounts children into the container after the first client render and removes them on unmount.",
+    "responsive": "Has no layout of its own; position and sizing are fully controlled by the portalled content."
+  }
+}

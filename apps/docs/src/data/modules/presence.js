@@ -1,0 +1,52 @@
+export default {
+  "id": "presence",
+  "name": "Presence",
+  "apiNames": [
+    "Presence"
+  ],
+  "description": "Keeps children mounted through their exit transition before unmounting them.",
+  "usage": "<Presence present={showCard}>\n  <Card>Sync complete</Card>\n</Presence>",
+  "anatomy": [
+    {
+      "part": "Wrapper",
+      "description": "The div that keeps children mounted while their exit transition runs."
+    },
+    {
+      "part": "Exiting content",
+      "description": "Children flagged data-state=\"closed\" until transitionend, then unmounted."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Move focus out of exiting content before setting present to false.",
+      "Drive the enter and exit CSS from the data-state hooks.",
+      "Keep exit transitions short so content does not linger after dismissal."
+    ],
+    "donts": [
+      "Don't use it without an exit animation; plain conditional rendering is simpler.",
+      "Don't wrap large, frequently updating subtrees; each exit defers unmount.",
+      "Don't depend on transitions deep in the subtree; style the direct child."
+    ]
+  },
+  "related": [
+    "collapse",
+    "reveal",
+    "dialog"
+  ],
+  "examples": [
+    {
+      "title": "Fading card",
+      "description": "A card that fades out: it stays mounted with data-state=\"closed\" until the opacity transition ends."
+    },
+    {
+      "title": "Removable filter chip",
+      "description": "A filter indicator that animates away instead of disappearing instantly."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Content needs an exit animation — a fade, slide, or scale — before it leaves the DOM.",
+    "avoidWhen": "Simple conditional rendering with no exit animation; plain {show && <Content />} is enough.",
+    "behavior": "Exposes data-state=\"open\" while present and data-state=\"closed\" during the exit, then unmounts on transitionend (or immediately when there is no transition) and calls onExitComplete.",
+    "responsive": "Renders a plain div wrapper; layout responsibility stays with the children."
+  }
+}

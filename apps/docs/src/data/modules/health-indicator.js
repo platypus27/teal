@@ -1,0 +1,53 @@
+export default {
+  "id": "health-indicator",
+  "name": "Health Indicator",
+  "apiNames": [
+    "HealthIndicator"
+  ],
+  "imports": [
+    "HealthIndicator"
+  ],
+  "description": "An explicit ecosystem health status that reports unknown and stale evidence instead of implying health.",
+  "usage": "<HealthIndicator status=\"healthy\" label=\"Photos\" />\n<HealthIndicator status=\"unknown\" label=\"Trict\" />",
+  "anatomy": [
+    {
+      "part": "Status badge",
+      "description": "Badge whose text and variant come straight from the reported status."
+    },
+    {
+      "part": "Label",
+      "description": "Optional application name rendered beside the badge."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Report missing evidence as unknown rather than implying healthy.",
+      "Keep the status mapping on the evidence side; the indicator never infers."
+    ],
+    "donts": [
+      "Don't hide stale or unknown states to keep a dashboard green.",
+      "Don't show a healthy badge without fresh evidence behind it."
+    ]
+  },
+  "related": [
+    "status-dot",
+    "badge",
+    "notification-item"
+  ],
+  "examples": [
+    {
+      "title": "Reported statuses",
+      "description": "Healthy, degraded, and down come straight from source evidence."
+    },
+    {
+      "title": "Missing evidence",
+      "description": "Stale, unknown, and checking states stay visible; health is never inferred."
+    }
+  ],
+  "guidance": {
+    "useWhen": "A surface reports one application or ecosystem health status.",
+    "avoidWhen": "The status is decorative; omit it instead of implying health.",
+    "behavior": "Unknown, stale, and checking are explicit states; health is never inferred from missing evidence.",
+    "responsive": "The badge and label wrap naturally in compact headers."
+  }
+}

@@ -1,0 +1,56 @@
+export default {
+  "id": "truncated-text",
+  "name": "Truncated Text",
+  "apiNames": [
+    "TruncatedText"
+  ],
+  "description": "Clamps text to one or more lines with a show more/less toggle and a tooltip for the full text.",
+  "usage": "<TruncatedText\n  text=\"The full audit summary that may not fit...\"\n  lines={3}\n/>",
+  "anatomy": [
+    {
+      "part": "Clamped text",
+      "description": "The content ellipsized to one line or clamped to the configured number of lines."
+    },
+    {
+      "part": "Toggle button",
+      "description": "The Show more/Show less control with aria-expanded, rendered only when text overflows."
+    },
+    {
+      "part": "Full-text tooltip",
+      "description": "The native title carrying the complete text while clamped."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Set lines to match the height budget of the card or row.",
+      "Let the built-in measurement decide; the toggle appears only when text actually truncates.",
+      "Keep the full text reachable in place rather than linking away."
+    ],
+    "donts": [
+      "Don't truncate code; use CodeBlock with scrolling instead.",
+      "Don't hide critical errors or actions behind truncation.",
+      "Don't add your own tooltip on top; the title already exposes the full text."
+    ]
+  },
+  "related": [
+    "tooltip",
+    "code-block",
+    "highlight-text"
+  ],
+  "examples": [
+    {
+      "title": "Single line",
+      "description": "Ellipsizes text that overflows a narrow container and offers a Show more toggle plus a native title tooltip."
+    },
+    {
+      "title": "Multi-line clamp",
+      "description": "Clamps a paragraph to three lines using the lines prop before offering expansion."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Long user-generated text must fit a fixed-height region such as a card, table cell, or feed item, with an in-place way to read the rest.",
+    "avoidWhen": "The full text is short or always visible; a plain element avoids the measurement overhead. For code, use CodeBlock with scrolling instead.",
+    "behavior": "Measures overflow with scrollWidth/scrollHeight and only renders the toggle when the text actually truncates; while collapsed the full text is available as a title tooltip, and the toggle button reflects its state with aria-expanded.",
+    "responsive": "Re-measures through ResizeObserver, so resizing the container re-evaluates whether truncation and the toggle are needed."
+  }
+}

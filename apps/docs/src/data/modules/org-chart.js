@@ -1,0 +1,56 @@
+export default {
+  "id": "org-chart",
+  "name": "Org Chart",
+  "apiNames": [
+    "OrgChart"
+  ],
+  "description": "A hierarchy of person nodes rendered as connected boxes, with collapsible subtrees.",
+  "usage": "<OrgChart\n  root={{\n    id: 'ceo',\n    name: 'Ada',\n    title: 'CEO',\n    children: [{ id: 'cto', name: 'Ben', title: 'CTO' }],\n  }}\n/>",
+  "anatomy": [
+    {
+      "part": "Node card",
+      "description": "Bordered box with the person's name and an optional role or team line."
+    },
+    {
+      "part": "Subtree toggle",
+      "description": "Round chevron button that collapses or expands the node's reports."
+    },
+    {
+      "part": "Connectors",
+      "description": "aria-hidden stubs and horizontal bars linking parents to their children."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Collapse dense branches with defaultCollapsedIds so first render stays scannable.",
+      "Keep node titles to one short line, like a role or team.",
+      "Control collapsedIds when the view must sync with filters elsewhere in the app."
+    ],
+    "donts": [
+      "Don't use it as a navigation outline; TreeView is the interactive choice.",
+      "Don't show per-person data columns; use TreeGrid for tabular hierarchy.",
+      "Don't render hundreds of nodes expanded; the horizontal layout grows quickly."
+    ]
+  },
+  "related": [
+    "tree-view",
+    "tree-grid",
+    "avatar"
+  ],
+  "examples": [
+    {
+      "title": "Leadership tree",
+      "description": "A fully expanded three-level hierarchy with name and role lines on every node."
+    },
+    {
+      "title": "Partially collapsed",
+      "description": "defaultCollapsedIds hides a subtree on first render; the toggle button reveals it."
+    }
+  ],
+  "guidance": {
+    "useWhen": "Showing reporting lines or team structures where collapsing whole branches keeps large trees scannable.",
+    "avoidWhen": "The hierarchy is navigational rather than informational — use TreeView; for tabular hierarchy with per-row data columns, use TreeGrid.",
+    "behavior": "Every node with reports shows a toggle button that collapses or expands its whole subtree; collapse state is controlled or uncontrolled via collapsedIds.",
+    "responsive": "The chart keeps its node sizes and scrolls horizontally when the tree is wider than the viewport."
+  }
+}

@@ -1,0 +1,56 @@
+export default {
+  "id": "heatmap",
+  "name": "Heatmap",
+  "apiNames": [
+    "Heatmap"
+  ],
+  "description": "Matrix heatmap that maps values to a color scale with row/column labels and cell tooltips.",
+  "usage": "<Heatmap\n  aria-label=\"Tickets by day and hour\"\n  rows={[{ label: \"Mon\", values: [12, 30, 44] }]}\n  columnLabels={[\"Morning\", \"Midday\", \"Evening\"]}\n/>",
+  "anatomy": [
+    {
+      "part": "Column labels",
+      "description": "Time buckets or categories rendered above the grid."
+    },
+    {
+      "part": "Row label",
+      "description": "Left-hand label for each matrix row."
+    },
+    {
+      "part": "Cell",
+      "description": "Rounded rect whose fill opacity scales between the data min and max, with a value tooltip."
+    }
+  ],
+  "dosDonts": {
+    "dos": [
+      "Keep rows and columns on ordered scales (days, hours) so intensity patterns read correctly.",
+      "Wrap it in a horizontally scrollable container when columns overflow narrow viewports.",
+      "Give the aria-label the matrix subject, like 'Tickets by weekday and hour'."
+    ],
+    "donts": [
+      "Don't use it for exact per-cell comparisons; use Table.",
+      "Don't use it for a year of daily activity; CalendarHeatmap is purpose-built for that.",
+      "Don't mix units across cells; the shared opacity scale assumes one unit."
+    ]
+  },
+  "related": [
+    "calendar-heatmap",
+    "chart-container",
+    "table"
+  ],
+  "examples": [
+    {
+      "title": "Activity matrix",
+      "description": "Weekday-by-time-of-day grid showing intensity through fill opacity."
+    },
+    {
+      "title": "Larger cells",
+      "description": "Quarterly comparison with an increased cellSize for a roomier readout."
+    }
+  ],
+  "guidance": {
+    "useWhen": "You need a compact density view of a two-dimensional matrix, such as activity by weekday and hour.",
+    "avoidWhen": "You need exact per-cell comparisons or sorting; use Table instead. For a year of daily activity use CalendarHeatmap.",
+    "behavior": "Purely presentational: values scale to cell opacity between the data min and max, and every cell carries a native title tooltip with its row, column, and value.",
+    "responsive": "Sized from cellSize and the number of rows and columns; wrap it in a horizontally scrollable container at narrow widths."
+  }
+}
