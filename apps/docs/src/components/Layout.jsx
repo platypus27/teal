@@ -148,10 +148,12 @@ function DocsSidebar({ navOpen, setNavOpen }) {
                   active={active(`/modules/${module.id}`)}
                   onClick={() => setNavOpen(false)}
                 >
-                  {module.name}
-                  {module.hasPlayground ? (
-                    <FlaskConical aria-hidden="true" className="ml-auto size-3.5 text-teal-primary/70" />
-                  ) : null}
+                  <span className="flex w-full items-center justify-between gap-2">
+                    <span className="truncate">{module.name}</span>
+                    {module.hasPlayground ? (
+                      <FlaskConical aria-hidden="true" className="size-3.5 shrink-0 text-teal-primary/70" />
+                    ) : null}
+                  </span>
                 </SidebarItem>
               ))}
             </SidebarSection>
