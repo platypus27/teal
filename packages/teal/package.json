@@ -41,7 +41,6 @@
     "./styles.css": "./dist/styles.css",
     "./base.css": "./dist/base.css",
     "./tokens.css": "./dist/tokens.css",
-    "./authentik.css": "./dist/authentik.css",
     "./tailwind-preset": "./dist/tailwind.preset.js"
   },
   "publishConfig": {
@@ -51,10 +50,7 @@
     "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "lint": "eslint src test --max-warnings 0",
-    "fixture:authentik": "docker compose -f test/authentik/docker-compose.yml up -d && node test/authentik/setup.mjs && node test/authentik/setup-flows.mjs",
-    "fixture:authentik:down": "docker compose -f test/authentik/docker-compose.yml down",
-    "capture:authentik": "node test/authentik/capture.mjs"
+    "lint": "eslint src test --max-warnings 0"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.18",

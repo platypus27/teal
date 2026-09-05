@@ -40,6 +40,5 @@ await mkdir(dist, { recursive: true })
 await Promise.all([
   copyFile(resolve(root, 'src/tokens.css'), resolve(dist, 'tokens.css')),
   copyFile(resolve(root, 'src/base.css'), resolve(dist, 'base.css')),
-  copyFile(resolve(root, 'src/authentik.css'), resolve(dist, 'authentik.css')),
   copyFile(resolve(root, 'tailwind.preset.js'), resolve(dist, 'tailwind.preset.js')),
 ])

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Check, Copy } from 'lucide-react'
 import { toast } from '@kryv/teal'
 import { Page, Section } from '../components/Page.jsx'
-import { colorTokens, authentikAdapter, shapeNotes, typeTokens, visualTokens } from '../data/foundations.js'
+import { colorTokens, shapeNotes, typeTokens, visualTokens } from '../data/foundations.js'
 import { foundationsMarkdown } from '../lib/markdown.js'
 
 const shapeStyles = [
@@ -108,22 +108,6 @@ export function FoundationsPage() {
               <span className="font-mono text-xs text-teal-on-surface-variant">{token}</span>
             </button>
           ))}
-        </div>
-      </Section>
-      <Section
-        title="Authentik adapter"
-        description={`${authentikAdapter.exportName} maps Teal tokens onto supported Authentik and PatternFly variables.`}
-      >
-        <div className="space-y-3 rounded-2xl border border-teal-outline-variant/30 bg-teal-surface-container p-6">
-          <p className="text-sm text-teal-on-surface-variant">
-            Pinned to Authentik {authentikAdapter.version}. Regenerate with{' '}
-            <code className="font-mono text-teal-on-surface">{authentikAdapter.regenerate}</code>.
-          </p>
-          <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-teal-on-surface-variant">
-            {authentikAdapter.notes.map((note) => (
-              <li key={note}>{note}</li>
-            ))}
-          </ul>
         </div>
       </Section>
     </Page>

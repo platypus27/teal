@@ -5,7 +5,7 @@
  */
 
 import { accessibility } from '../data/accessibility.js'
-import { authentikAdapter, colorTokens, shapeNotes, typeTokens, visualTokens } from '../data/foundations.js'
+import { colorTokens, shapeNotes, typeTokens, visualTokens } from '../data/foundations.js'
 import { installSteps, packageManagers, principles } from '../data/getting-started.js'
 import { moduleIndexGroups } from '../data/module-index.js'
 import { mergePropDocs } from '../data/prop-docs.js'
@@ -163,14 +163,6 @@ export function foundationsMarkdown() {
   for (const note of shapeNotes) lines.push(`- ${note}`)
   lines.push('', '## Visual tokens', '', 'Override these supported CSS properties at `:root` to tune Teal without rewriting module styles.', '')
   for (const token of visualTokens) lines.push(`- **${token.name}** - \`${token.token}\``)
-  lines.push(
-    '',
-    '## Authentik adapter',
-    '',
-    `\`${authentikAdapter.exportName}\` maps Teal tokens onto supported Authentik and PatternFly variables. Pinned to Authentik ${authentikAdapter.version}; regenerate with \`${authentikAdapter.regenerate}\`.`,
-    '',
-  )
-  for (const note of authentikAdapter.notes) lines.push(`- ${note}`)
   return collapse(lines)
 }
 
