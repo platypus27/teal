@@ -107,6 +107,9 @@ jobs:
           cache: npm
       - run: npm install --global npm@11.5.1
       - run: npm ci
+      # The packed tarball must contain packages/teal/dist (see "files" in its
+      # package.json); without this build the release publishes src/ only.
+      - run: npm run build --workspace @kryv/teal
       - name: Determine whether a release is needed
         id: release-plan
         run: |
