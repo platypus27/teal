@@ -24,6 +24,10 @@ run the four Playwright projects in the CI browser matrix.
   `src/demos/`, content data in `src/data/`, and Playwright browser tests in
   `tests/`.
 
+The published site (<https://teal.kryvlabs.com>) renders this workspace:
+the module catalog, [recipes](https://teal.kryvlabs.com/recipes), foundations,
+and the generated [changelog](https://teal.kryvlabs.com/changelog).
+
 ## Making changes
 
 - Every module ships TypeScript declarations, keyboard interaction support, and
@@ -55,7 +59,7 @@ changeset for any user-facing change to `@kryv/teal`:
 npx changeset
 ```
 
-The release notes on the docs site's Changelog page are generated from
+The release notes on the docs site's [Changelog](https://teal.kryvlabs.com/changelog) page are generated from
 `packages/teal/CHANGELOG.md`.
 
 ## License

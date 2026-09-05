@@ -179,7 +179,14 @@ export function recipesMarkdown(recipeEntries) {
     lines.push('', `## ${recipe.title}`, '', recipe.description, '')
     if (recipe.source) lines.push(fence(recipe.source))
   }
-  lines.push('', '## Promotion rule', '', promotionRule)
+  lines.push(
+    '',
+    '## Promotion rule',
+    '',
+    promotionRule,
+    '',
+    'The contribution bar and promotion criteria live in the repository CONTRIBUTING.md: https://github.com/platypus27/teal/blob/master/CONTRIBUTING.md',
+  )
   return collapse(lines)
 }
 

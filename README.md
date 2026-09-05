@@ -4,7 +4,7 @@ Kryv Labs shared React design system. Teal provides typed React modules,
 semantic design tokens, compiled styles, and a documentation site with live
 examples, interactive playgrounds, and generated interface tables.
 
-Documentation: <https://teal.kryvlabs.com>
+Documentation: <https://teal.kryvlabs.com> — getting started, [foundations](https://teal.kryvlabs.com/foundations), [recipes](https://teal.kryvlabs.com/recipes), and the generated [changelog](https://teal.kryvlabs.com/changelog).
 
 ## Install
 

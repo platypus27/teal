@@ -46,7 +46,7 @@
 ## Demand-led additions
 
 - The 0.5.0 expansion brought the catalog to 200 modules; further growth returns to a demand-led pace.
-- Add recipes for filter toolbars, confirmation flows, and empty tables.
+- Recipes for filter toolbars, confirmation flows, and empty tables are [published on the docs site](https://teal.kryvlabs.com/recipes).
 - Promote a recipe into the package only after two Kryv products require the same behavior.
 - Harden and deepen the 0.5.0 additions (charts, boards, editors) against real product usage before adding more.
 - Add Tailwind 4 semantic utility integration when a consuming Kryv application adopts it.
