@@ -57,6 +57,16 @@ export function RecipesPage() {
         <p className="max-w-3xl rounded-2xl border border-teal-outline-variant/30 bg-teal-surface-container p-5 text-sm leading-relaxed text-teal-on-surface-variant">
           {promotionRule}
         </p>
+        <p className="mt-3 text-sm text-teal-on-surface-variant">
+          The contribution bar and promotion criteria live in{' '}
+          <a
+            href="https://github.com/platypus27/teal/blob/master/CONTRIBUTING.md"
+            className="text-teal-primary underline"
+          >
+            CONTRIBUTING.md
+          </a>
+          .
+        </p>
       </Section>
     </Page>
   )

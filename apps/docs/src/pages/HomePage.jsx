@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import { Badge, Button, Card, CardDescription, CardTitle, Dialog, Field, Input, Switch, Table, Tabs, toast } from '@kryv/teal'
 import { CodeBlock } from '../components/CodeBlock.jsx'
 import { Page, Section } from '../components/Page.jsx'
-import { catalogGroups } from '../data/docs-module-registry.js'
+import { catalog, catalogGroups } from '../data/docs-module-registry.js'
 import { installSteps, packageManagers, principles } from '../data/getting-started.js'
 import { gettingStartedMarkdown } from '../lib/markdown.js'
 
@@ -149,7 +149,7 @@ export function HomePage() {
 
       <Section
         title="Modules"
-        description="Twenty-six typed modules across seven groups. Each page ships live examples, a playground, a generated interface reference, and keyboard documentation."
+        description={`${catalog.length} typed modules across ${catalogGroups.length} groups. Each page ships live examples, a playground, a generated interface reference, and keyboard documentation.`}
       >
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {catalogGroups.flatMap((group) =>
