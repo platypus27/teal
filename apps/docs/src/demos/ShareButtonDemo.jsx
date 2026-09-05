@@ -5,7 +5,7 @@ export function ShareButtonDemo({ exampleIndex = 0 }) {
     return (
       <div className="flex items-center gap-6">
         <ShareButton
-          url="https://teal.kryv.dev/modules/share-button"
+          url="https://teal.kryvlabs.com/modules/share-button"
           title="ShareButton — Teal"
           variant="ghost"
           size="sm"
@@ -16,7 +16,7 @@ export function ShareButtonDemo({ exampleIndex = 0 }) {
 
   return (
     <div className="flex items-center gap-6">
-      <ShareButton url="https://teal.kryv.dev" title="Teal design system" />
+      <ShareButton url="https://teal.kryvlabs.com" title="Teal design system" />
     </div>
   )
 }

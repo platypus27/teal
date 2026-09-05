@@ -48,11 +48,11 @@ icons. Radix is not part of the public interface.
 
 ## Modules
 
-Twenty-six documented module pages across seven groups: Button and IconButton;
-Field, Input, TextArea, Select, Checkbox, Switch; Card, Badge, and Accordion;
-Dialog, Tooltip, Menu, and Popover; Toast, EmptyState, loading, and Alert; Tabs,
-Pagination, PageHeader, VerticalNav, TopBar, and Breadcrumb; Table, Separator,
-and Avatar.
+168 documented module pages across eleven groups — Actions, Forms, Pickers,
+Surfaces, Overlays, Feedback, Navigation, Data, Charts, Layout, and Utilities —
+backed by 170 components in `packages/teal/src`. The full catalog with live
+examples, playgrounds, and generated interface tables lives at
+<https://teal.kryvlabs.com/modules>.
 
 ## Workspace
 
