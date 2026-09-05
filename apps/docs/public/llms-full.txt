@@ -156,16 +156,6 @@ Override these supported CSS properties at `:root` to tune Teal without rewritin
 - **Fast motion** - `--teal-motion-fast`
 - **Standard motion** - `--teal-motion-standard`
 
-## Authentik adapter
-
-`@kryv/teal/authentik.css` maps Teal tokens onto supported Authentik and PatternFly variables. Pinned to Authentik 2026.5; regenerate with `npm run generate:authentik`.
-
-- Apply the generated file as brand Custom CSS; pinned to Authentik 2026.5.
-- Covers color, typography, radii, elevation, focus, light and dark, and reduced motion through supported Authentik and PatternFly variables only.
-- Brand logo, favicon, background, and app icons are brand settings in Authentik, not CSS.
-- Never edit the generated file or target private shadow-DOM structure.
-- Upgrade procedure: bump authentikVersion in packages/teal/authentik-source.mjs, regenerate, then verify the reference flow screenshots (login, WebAuthn, recovery, consent, denial; light, dark, reduced-motion, phone, desktop) before rollout.
-
 ---
 
 # Button

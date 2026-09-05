@@ -312,7 +312,6 @@ export default {
     await access(resolve(installedPackage, 'dist/styles.css'))
     await access(resolve(installedPackage, 'dist/base.css'))
     await access(resolve(installedPackage, 'dist/tokens.css'))
-    await access(resolve(installedPackage, 'dist/authentik.css'))
     await access(resolve(installedPackage, 'dist/tailwind.preset.js'))
     for (const file of await readdir(resolve(installedPackage, 'dist'))) {
       if (!file.endsWith('.d.ts.map')) continue
