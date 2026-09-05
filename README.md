@@ -59,6 +59,18 @@ and Avatar.
 - `packages/teal`: published package - tokens, source, compiled styles, and interface tests
 - `apps/docs`: documentation site - live examples, interactive playgrounds, generated interface tables, keyboard documentation, recipes, and browser tests
 
+## Documentation
+
+- [CONTRIBUTING.md](CONTRIBUTING.md) - contribution process, workspace layout, and the change bar
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) - workspace and package structure, docs data pipeline
+- [docs/OPERATIONS.md](docs/OPERATIONS.md) - dev setup, docs site, release and publish operations
+- [docs/TESTING.md](docs/TESTING.md) - how to run checks, tests, builds, and generated-output verification
+- [docs/SECURITY.md](docs/SECURITY.md) - supported versions and private vulnerability reporting
+- [docs/ROADMAP.md](docs/ROADMAP.md) - shipped milestones and demand-led catalog plan
+- [docs/API.md](docs/API.md) - where the generated module API reference is published
+- [packages/teal/CHANGELOG.md](packages/teal/CHANGELOG.md) - generated release notes for `@kryv/teal`
+- [docs/archive/](docs/archive/) - superseded plans and specs, kept for reference
+
 ## Development
 
 ```bash

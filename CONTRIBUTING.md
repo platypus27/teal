@@ -3,7 +3,7 @@
 Teal is the Kryv Labs shared React design system. Contributions are welcome,
 but the catalog grows deliberately: product behavior stays in products, and a
 recipe is promoted into the package only after two Kryv products need the same
-behavior. See [ROADMAP.md](ROADMAP.md).
+behavior. See [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## Setup
 
@@ -14,7 +14,9 @@ npm run verify
 
 `npm run verify` runs lint, typecheck, unit tests, generated-output checks, both
 workspace builds, and packed React consumer verification. Pull requests also
-run the four Playwright projects in the CI browser matrix.
+run the four Playwright projects in the CI browser matrix. See
+[docs/TESTING.md](docs/TESTING.md) for the full check breakdown and
+[docs/OPERATIONS.md](docs/OPERATIONS.md) for release and publish operations.
 
 ## Workspace layout
 
