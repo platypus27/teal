@@ -29,23 +29,23 @@
 
 ## Released in 0.5.0
 
-- catalog grown from 96 to 200 modules across all nine groups
+- catalog grown from 96 to 168 modules across eleven groups
 - SVG chart family (line, area, bar, pie, scatter, radar, heatmap, calendar heatmap, funnel, gauge) on shared ChartContainer scaffolding with screen-reader data tables
 - data displays: KanbanBoard, GanttChart, OrgChart, TreeGrid, ActivityFeed, CommentThread, JsonViewer, DiffViewer, LogViewer, MarkdownView, QrCode
 - advanced form controls: Cascader, TreeSelect, TransferList, MentionInput, RichTextEditor, masked/currency/phone inputs, date-time/month/year pickers, card-style choices
 - overlays (BottomSheet, ActionSheet, Lightbox, ImageViewer, SearchOverlay, NotificationCenter, and more), navigation (Sidebar, Dock, MegaMenu, AnchorNav, BottomNav, TableOfContents, SkipLink), layout primitives (Box, Flex, Container, Masonry, AppShell, StickyHeader, and more), and utility modules (FocusTrap, Collapse, Presence, VirtualList, InfiniteScroll, TimeAgo, and more)
-- every module documented with anatomy, do/don't guidance, accessibility notes, and at least two live examples on the docs site
-- central axe suite extended to cover all 200 modules; three real accessibility bugs found and fixed in the process
+- every module documented with anatomy, do/don't guidance, accessibility notes, and at least two live examples on the [docs site](https://teal.kryvlabs.com)
+- central axe suite extended to cover all 168 modules; three real accessibility bugs found and fixed in the process
 
 ## Consumer rollout
 
-1. Install the latest `@kryv/teal` patch from the npm registry in Daedalus.
+1. Install the latest `@kryv/teal` patch from the npm registry in a private Kryv app.
 2. Migrate the Settings workflow as the first accessibility and responsive-layout pilot.
-3. Migrate remaining call sites and remove Daedalus local UI copies.
+3. Migrate remaining call sites and remove the app's local UI copies.
 
 ## Demand-led additions
 
-- The 0.5.0 expansion brought the catalog to 200 modules; further growth returns to a demand-led pace.
+- The 0.5.0 expansion brought the catalog to 168 modules; further growth returns to a demand-led pace.
 - Add recipes for filter toolbars, confirmation flows, and empty tables.
 - Promote a recipe into the package only after two Kryv products require the same behavior.
 - Harden and deepen the 0.5.0 additions (charts, boards, editors) against real product usage before adding more.
@@ -57,4 +57,4 @@
 - Changesets owns version PRs, generated changelogs, and npm publishing.
 - Open: reduce the packed package from 52.5 kB toward the 35 kB target without dropping source files, declaration maps, or verification coverage.
 
-With 200 modules shipped, Teal's focus shifts back to deepening existing interfaces before growing the catalog further. Product behavior remains in products.
+With 168 modules shipped, Teal's focus shifts back to deepening existing interfaces before growing the catalog further. Product behavior remains in products.
