@@ -61,7 +61,7 @@ export function RecipesPage() {
           The contribution bar and promotion criteria live in{' '}
           <a
             href="https://github.com/platypus27/teal/blob/master/CONTRIBUTING.md"
-            className="text-teal-primary hover:underline"
+            className="text-teal-primary underline"
           >
             CONTRIBUTING.md
           </a>
