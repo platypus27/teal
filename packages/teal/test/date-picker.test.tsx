@@ -255,6 +255,18 @@ describe("DatePicker range selection", () => {
 		return new Date(now.getFullYear(), now.getMonth(), day);
 	}
 
+	// The 42-cell grid also renders trailing days of the next month, so a
+	// plain role+name query (for example "10") can match two buttons.
+	// Resolve the intended current-month cell via its data-date attribute.
+	function currentMonthDayButton(day: number) {
+		const expected = dateKey(dayOfCurrentMonth(day));
+		const button = screen
+			.getAllByRole("button", { name: String(day) })
+			.find((candidate) => candidate.getAttribute("data-date") === expected);
+		if (!button) throw new Error(`Current-month day ${day} is not rendered`);
+		return button;
+	}
+
 	it("selects a start then an end date, reports both steps, and closes", async () => {
 		const user = userEvent.setup();
 		const onValueChange = vi.fn();
@@ -263,13 +275,14 @@ describe("DatePicker range selection", () => {
 		);
 		await user.click(screen.getByRole("textbox", { name: "Range" }));
 
-		await user.click(await screen.findByRole("button", { name: "10" }));
+		await screen.findAllByRole("button", { name: "10" });
+		await user.click(currentMonthDayButton(10));
 		expect(onValueChange).toHaveBeenLastCalledWith({
 			from: startOfDay(dayOfCurrentMonth(10)),
 			to: null,
 		});
 
-		await user.click(screen.getByRole("button", { name: "15" }));
+		await user.click(currentMonthDayButton(15));
 		expect(onValueChange).toHaveBeenLastCalledWith({
 			from: startOfDay(dayOfCurrentMonth(10)),
 			to: startOfDay(dayOfCurrentMonth(15)),
@@ -305,7 +318,7 @@ describe("DatePicker range selection", () => {
 			/>,
 		);
 		await user.click(screen.getByRole("textbox", { name: "Range" }));
-		await screen.findByRole("button", { name: "12" });
+		await screen.findAllByRole("button", { name: "12" });
 
 		const key = (day: number) => dateKey(dayOfCurrentMonth(day));
 		const startCell = container.querySelector(`[data-date-cell="${key(10)}"]`);
@@ -318,7 +331,7 @@ describe("DatePicker range selection", () => {
 		);
 		expect(endCell).toHaveClass("teal-u-bg-primary/10", "teal-u-rounded-r-full");
 		// Endpoints keep their primary circle:
-		expect(screen.getByRole("button", { name: "10" })).toHaveClass(
+		expect(currentMonthDayButton(10)).toHaveClass(
 			"teal-u-bg-primary",
 			"teal-u-rounded-full",
 		);
