@@ -165,6 +165,18 @@ test('visual QA surface covers every module family in both themes', async ({ pag
   await expect(page).toHaveScreenshot(`visual-qa-${viewport}-dark.png`, { fullPage: true, maxDiffPixels: 600 })
 })
 
+test('visual QA surface mirrors correctly under RTL', async ({ page, browserName }) => {
+  test.skip(browserName !== 'chromium', 'Stable visual baseline uses Chromium')
+  await page.goto('/visual-qa')
+  await waitForVisualReady(page, 'Visual QA')
+  // Logical properties do the mirroring; the dir attribute flips the canvas.
+  await page.evaluate(() => document.documentElement.setAttribute('dir', 'rtl'))
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
+  expect(overflow).toBeLessThanOrEqual(0)
+  await expect(page).toHaveScreenshot('visual-qa-rtl.png', { fullPage: true, maxDiffPixels: 900, animations: 'disabled' })
+  await page.evaluate(() => document.documentElement.removeAttribute('dir'))
+})
+
 test('overlay modules match their approved open-state baselines', async ({ page, browserName, isMobile }) => {
   test.skip(browserName !== 'chromium' || isMobile, 'Stable overlay baseline uses desktop Chromium')
   await page.goto('/visual-qa')
