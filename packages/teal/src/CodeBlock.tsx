@@ -1,13 +1,11 @@
 import {
 	forwardRef,
-	useEffect,
-	useRef,
-	useState,
 	type HTMLAttributes,
 } from "react";
 import { Check, Copy } from "lucide-react";
 import { IconButton } from "./Button";
 import { cn } from "./cn";
+import { useCopied } from "./use-copied";
 
 export interface CodeBlockProps
 	extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
@@ -24,15 +22,7 @@ export const CodeBlock = forwardRef<HTMLDivElement, CodeBlockProps>(
 		{ className, code, language, showLineNumbers = false, ...props },
 		ref,
 	) {
-		const [copied, setCopied] = useState(false);
-		const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-		useEffect(
-			() => () => {
-				if (timeoutRef.current !== null) clearTimeout(timeoutRef.current);
-			},
-			[],
-		);
+		const [copied, markCopied] = useCopied(2000);
 
 		const copyCode = async () => {
 			try {
@@ -40,9 +30,7 @@ export const CodeBlock = forwardRef<HTMLDivElement, CodeBlockProps>(
 			} catch {
 				// Clipboard access can be denied; still give feedback so the UI feels responsive.
 			}
-			setCopied(true);
-			if (timeoutRef.current !== null) clearTimeout(timeoutRef.current);
-			timeoutRef.current = setTimeout(() => setCopied(false), 2000);
+			markCopied();
 		};
 
 		const lines = code.split("\n");
@@ -56,7 +44,7 @@ export const CodeBlock = forwardRef<HTMLDivElement, CodeBlockProps>(
 				)}
 				{...props}
 			>
-				<div className="teal-u-flex teal-u-items-center teal-u-justify-between teal-u-gap-2 teal-u-border-0 teal-u-border-b teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-py-1 teal-u-pl-4 teal-u-pr-2">
+				<div className="teal-u-flex teal-u-items-center teal-u-justify-between teal-u-gap-2 teal-u-border-0 teal-u-border-b teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-py-1 teal-u-ps-4 teal-u-pe-2">
 					<span className="teal-u-text-xs teal-u-font-semibold teal-u-uppercase teal-u-tracking-wider teal-u-opacity-70">
 						{language ?? "code"}
 					</span>
@@ -82,7 +70,7 @@ export const CodeBlock = forwardRef<HTMLDivElement, CodeBlockProps>(
 							<div key={index} className="teal-u-flex teal-u-min-w-max">
 								<span
 									aria-hidden="true"
-									className="teal-u-w-8 teal-u-shrink-0 teal-u-select-none teal-u-pr-4 teal-u-text-right teal-u-opacity-40"
+									className="teal-u-w-8 teal-u-shrink-0 teal-u-select-none teal-u-pe-4 teal-u-text-end teal-u-opacity-40"
 								>
 									{index + 1}
 								</span>

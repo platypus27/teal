@@ -1,4 +1,5 @@
-import { forwardRef, useRef, useState, type HTMLAttributes, type KeyboardEvent } from 'react'
+import { forwardRef, useRef, type HTMLAttributes, type KeyboardEvent } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { Star } from 'lucide-react'
 import { cn } from './cn'
 
@@ -36,14 +37,14 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
   { className, defaultValue = 0, label = 'Rating', max = 5, onChange, readOnly = false, size = 'md', value, ...props },
   ref,
 ) {
-  const [internalValue, setInternalValue] = useState(defaultValue)
-  const rating = Math.min(max, Math.max(0, value !== undefined ? value : internalValue))
+  const [currentValue, setInternalValue] = useControllableState(value, defaultValue)
+  const rating = Math.min(max, Math.max(0, currentValue))
   const buttonRefs = useRef<Array<HTMLButtonElement | null>>([])
 
   const stars = Array.from({ length: max }, (_, index) => index + 1)
 
   function commit(next: number) {
-    if (value === undefined) setInternalValue(next)
+    setInternalValue(next)
     onChange?.(next)
   }
 

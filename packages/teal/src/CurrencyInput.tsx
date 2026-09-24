@@ -1,4 +1,5 @@
 import { forwardRef, useState, type ChangeEvent, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { cn } from './cn'
 import { FieldScaffolding } from './field-scaffolding'
 import { hasFormContent, isAriaTrue, mergeDescriptionIds, useFormSemantics } from './form-semantics'
@@ -102,14 +103,13 @@ export const CurrencyInput = forwardRef<HTMLInputElement, CurrencyInputProps>(fu
     required,
   })
 
-  const [internalAmount, setInternalAmount] = useState<number | undefined>(defaultValue)
+  const [amount, setInternalAmount] = useControllableState<number | undefined>(value, defaultValue)
   const [draft, setDraft] = useState<string | null>(null)
-  const amount = value !== undefined ? value : internalAmount
   const formatter = createNumberFormatter(currency, locale)
   const text = draft ?? (amount === undefined ? '' : formatter.format(amount))
 
   function commit(next: number | undefined) {
-    if (value === undefined) setInternalAmount(next)
+    setInternalAmount(next)
     onChange?.(next)
   }
 

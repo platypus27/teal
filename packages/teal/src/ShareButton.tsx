@@ -1,8 +1,9 @@
-import { forwardRef, useEffect, useRef, useState } from 'react'
+import { forwardRef, useState } from 'react'
 import { Check, Link as LinkIcon, Share2 } from 'lucide-react'
 import { Button } from './Button'
 import { Popover } from './Popover'
 import { VisuallyHidden } from './VisuallyHidden'
+import { useCopied } from './use-copied'
 
 export interface ShareButtonProps {
   /** Feedback label shown briefly after the link is copied. */
@@ -27,16 +28,8 @@ export const ShareButton = forwardRef<HTMLButtonElement, ShareButtonProps>(funct
   { className, copiedLabel = 'Link copied', label = 'Share', size, text, title, url, variant = 'secondary' },
   ref,
 ) {
-  const [copied, setCopied] = useState(false)
+  const [copied, markCopied] = useCopied()
   const [open, setOpen] = useState(false)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  useEffect(
-    () => () => {
-      if (timeoutRef.current !== null) clearTimeout(timeoutRef.current)
-    },
-    [],
-  )
 
   const shareUrl = url ?? (typeof window !== 'undefined' ? window.location.href : '')
   const canNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
@@ -47,9 +40,7 @@ export const ShareButton = forwardRef<HTMLButtonElement, ShareButtonProps>(funct
     } catch {
       // Clipboard access can be denied; still give feedback so the UI feels responsive.
     }
-    setCopied(true)
-    if (timeoutRef.current !== null) clearTimeout(timeoutRef.current)
-    timeoutRef.current = setTimeout(() => setCopied(false), 1600)
+    markCopied()
   }
 
   const shareNatively = async () => {

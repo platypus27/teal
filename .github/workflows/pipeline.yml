@@ -33,6 +33,7 @@ jobs:
       - run: npm run build --workspace @kryv/teal
       - run: npm run typecheck
       - run: npm run test:unit
+      - run: npm run test:coverage --workspace @kryv/teal
       - run: npm run check:generated
       - run: npm run build
       - run: npx playwright install --with-deps chromium
