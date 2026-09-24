@@ -63,7 +63,26 @@ export default {
 
 ## Fonts and theming
 
-Teal pairs Manrope (body) with Plus Jakarta Sans (headline). Load them once:
+Teal pairs Manrope (body) with Plus Jakarta Sans (headline). The supported
+path is self-hosting through Fontsource, which keeps fonts on your origin (no
+third-party request, no GDPR banner, preloaded with the bundle):
+
+```sh
+npm install @fontsource/manrope @fontsource/plus-jakarta-sans
+```
+
+```js
+import '@fontsource/manrope/400.css'
+import '@fontsource/manrope/500.css'
+import '@fontsource/manrope/600.css'
+import '@fontsource/manrope/700.css'
+import '@fontsource/plus-jakarta-sans/500.css'
+import '@fontsource/plus-jakarta-sans/700.css'
+import '@fontsource/plus-jakarta-sans/800.css'
+```
+
+The Google Fonts CDN link below still works when a quick prototype matters
+more than origin control:
 
 ```html
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet" />
