@@ -28,7 +28,8 @@
   "files": [
     "dist",
     "src/**/*.ts",
-    "src/**/*.tsx"
+    "src/**/*.tsx",
+    "src/tokens.json"
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -42,6 +43,7 @@
     "./base.css": "./dist/base.css",
     "./tokens.css": "./dist/tokens.css",
     "./tailwind-preset": "./dist/tailwind.preset.js",
+      "./tokens.json": "./src/tokens.json",
     "./package.json": "./package.json"
   },
   "publishConfig": {
