@@ -79,17 +79,28 @@ document.documentElement.classList.toggle('dark')
 The complete supported token list is documented at
 [teal.kryvlabs.com/foundations](https://teal.kryvlabs.com/foundations).
 
+## Bundle and styling model
+
+The JavaScript ships as one ES module per component, so your bundler parses and
+tree-shakes only what you import; `"use client"` is present on every module for
+React Server Component consumers. Styles are intentionally different:
+`styles.css` is a single ~64 KB precompiled stylesheet (tokens included)
+covering the whole library, and importing it once is the supported path.
+
+A per-component CSS split is not shipped because the component classes are
+Tailwind utilities compiled under a private `teal-u-` prefix at publish time —
+keeping them in one file is what lets the compiled output stay small, ordered,
+and free of Tailwind build requirements for consumers. At ~10 KB gzipped the
+monolith is smaller than most per-component alternatives once an app uses more
+than a handful of modules. If you need to trim further, import `tokens.css`
+alone and rely on the optional Tailwind preset instead.
+
 ## Modules
 
-Twenty-six documented module pages across seven groups:
-
-- **Actions** - Button, IconButton
-- **Forms** - Field, Input, TextArea, Select, Checkbox, Switch
-- **Surfaces** - Card, Badge, Accordion
-- **Overlays** - Dialog, Tooltip, Menu, Popover
-- **Feedback** - Toast, EmptyState, Spinner, Progress, Skeleton, LoadingState, Alert
-- **Navigation** - Tabs, Pagination, PageHeader, VerticalNav, TopBar, Breadcrumb
-- **Data** - Table, Separator, Avatar
+168 documented modules across eleven groups — Actions, Forms, Pickers,
+Surfaces, Overlays, Feedback, Navigation, Data, Charts, Layout, and Utilities —
+each with live examples, a generated props table, and accessibility notes at
+[teal.kryvlabs.com](https://teal.kryvlabs.com).
 
 Every module ships TypeScript declarations, keyboard interaction support, and
 visible focus states. Complex interactions (Select, Dialog, Toast, and others)
