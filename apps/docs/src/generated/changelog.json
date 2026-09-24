@@ -1,6 +1,26 @@
 {
-  "version": "0.5.2",
+  "version": "0.6.0",
   "entries": [
+    {
+      "version": "0.6.0",
+      "groups": [
+        {
+          "label": "Minor Changes",
+          "items": [
+            "Ship a `\"use client\"` directive on every dist module so React Server Component consumers (Next.js App Router and friends) can import components from server files, and guard the directive in the packed-package verification.",
+            "Add right-to-left support: all layout classes now use CSS logical properties (ps/pe, start/end, ms/me, border-s/e, rounded-s/e) so components mirror automatically under `dir=\"rtl\"`, tree and menu depth indents indent from the start side, and the DatePicker day grid flips its horizontal arrow keys to match the drawn layout. Left-to-right rendering is pixel-identical.",
+            "Ship the package as per-module ES modules instead of one bundled barrel: consumers' bundlers now parse and tree-shake only the components they import instead of the whole ~400 KB library. dist also ships JavaScript source maps, the package exports `./package.json`, and CI enforces size budgets on the total dist JS, the largest module, and styles.css.",
+            "Forward refs on all remaining public components: AccountMenu, AppSwitcher, Chip, Command, EcosystemRail, FileUpload, Menu, Menubar, NavigationMenu, PermissionMatrix, Popconfirm, Popover, Tooltip, and TreeView. Each ref lands on the element that carries the component's `className` — the root element for always-rendered components and the popup surface for overlay components."
+          ]
+        },
+        {
+          "label": "Patch Changes",
+          "items": [
+            "Fix keyboard and screen-reader gaps in interactive widgets: TreeSelect now keeps a roving tabindex in its tree and columns popovers (no more keyboard dead end when deferred focus loses the race) and skips disabled items during arrow navigation; RichTextEditor adds Cmd/Ctrl+B and Cmd/Ctrl+I shortcuts, aria-pressed state on its toolbar toggles, and a live-region announcement for formatting actions; toast ids are unique across server requests; GanttChart month labels use Intl locale data."
+          ]
+        }
+      ]
+    },
     {
       "version": "0.5.2",
       "groups": [

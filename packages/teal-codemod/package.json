@@ -1,6 +1,6 @@
 {
   "name": "@kryv/teal-codemod",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Codemods for migrating @kryv/teal across breaking releases",
   "license": "MIT",
   "repository": {
