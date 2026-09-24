@@ -302,3 +302,21 @@ test('rendered demos contain no placeholder external links', async ({ page }) =>
     for (const href of hrefs) expect(href).not.toMatch(/^https?:\/\/[a-z0-9.-]*\.example/)
   }
 })
+
+test('toasts dismiss with a pointer swipe', async ({ page, browserName, isMobile }) => {
+  test.skip(browserName !== 'webkit', 'Swipe behavior is browser-level; exercise it outside the chromium visual project')
+  await page.goto('/modules/toast')
+  await page.getByRole('button', { name: 'Show toast' }).click()
+  const toast = page.getByRole('status').filter({ hasText: 'Changes saved' })
+  await expect(toast).toBeVisible()
+
+  // Drag the toast right past the swipe threshold; Radix dismisses on release.
+  const box = await toast.boundingBox()
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2)
+  await page.mouse.down()
+  for (let step = 1; step <= 8; step += 1) {
+    await page.mouse.move(box.x + box.width / 2 + step * 25, box.y + box.height / 2, { steps: 2 })
+  }
+  await page.mouse.up()
+  await expect(toast).not.toBeVisible()
+})
