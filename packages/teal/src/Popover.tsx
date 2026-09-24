@@ -1,4 +1,4 @@
-import { type ReactElement, type ReactNode } from 'react'
+import { forwardRef, type ReactElement, type ReactNode } from 'react'
 import * as HoverCardPrimitive from '@radix-ui/react-hover-card'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { cn } from './cn'
@@ -29,20 +29,23 @@ export interface PopoverProps {
   trigger: ReactElement
 }
 
-export function Popover({
-  align = 'center',
-  children,
-  className,
-  closeDelay,
-  defaultOpen,
-  label,
-  onOpenChange,
-  open,
-  openDelay,
-  openOn = 'click',
-  side = 'bottom',
-  trigger,
-}: PopoverProps) {
+export const Popover = forwardRef<HTMLDivElement, PopoverProps>(function Popover(
+  {
+    align = 'center',
+    children,
+    className,
+    closeDelay,
+    defaultOpen,
+    label,
+    onOpenChange,
+    open,
+    openDelay,
+    openOn = 'click',
+    side = 'bottom',
+    trigger,
+  },
+  ref,
+) {
   if (openOn === 'hover') {
     return (
       <HoverCardPrimitive.Root
@@ -55,6 +58,7 @@ export function Popover({
         <HoverCardPrimitive.Trigger asChild>{trigger}</HoverCardPrimitive.Trigger>
         <HoverCardPrimitive.Portal>
           <HoverCardPrimitive.Content
+            ref={ref}
             aria-label={label}
             align={align}
             side={side}
@@ -80,6 +84,7 @@ export function Popover({
       <PopoverPrimitive.Trigger asChild>{trigger}</PopoverPrimitive.Trigger>
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
+          ref={ref}
           aria-label={label}
           align={align}
           side={side}
@@ -95,4 +100,4 @@ export function Popover({
       </PopoverPrimitive.Portal>
     </PopoverPrimitive.Root>
   )
-}
+})

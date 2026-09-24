@@ -1,4 +1,4 @@
-import { createContext, useContext, type ComponentPropsWithoutRef, type ReactElement, type ReactNode } from 'react'
+import { forwardRef, createContext, useContext, type ComponentPropsWithoutRef, type ReactElement, type ReactNode } from 'react'
 import * as TooltipPrimitive from '@radix-ui/react-tooltip'
 import { cn } from './cn'
 
@@ -37,7 +37,10 @@ export interface TooltipProps {
   align?: 'center' | 'start' | 'end'
 }
 
-export function Tooltip({ align = 'center', children, className, content, delayDuration, placement, side, sideOffset = 6 }: TooltipProps) {
+export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
+  { align = 'center', children, className, content, delayDuration, placement, side, sideOffset = 6 },
+  ref,
+) {
   const hasProvider = useContext(TooltipProviderContext)
   const resolvedSide = placement ?? side ?? 'top'
   const root = (
@@ -45,6 +48,7 @@ export function Tooltip({ align = 'center', children, className, content, delayD
       <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
       <TooltipPrimitive.Portal>
         <TooltipPrimitive.Content
+          ref={ref}
           side={resolvedSide}
           sideOffset={sideOffset}
           align={align}
@@ -62,4 +66,4 @@ export function Tooltip({ align = 'center', children, className, content, delayD
   )
   if (hasProvider && delayDuration === undefined) return root
   return <TooltipPrimitive.Provider delayDuration={delayDuration ?? 300}>{root}</TooltipPrimitive.Provider>
-}
+})

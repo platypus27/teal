@@ -1,4 +1,4 @@
-import { useState, type ReactElement, type ReactNode } from 'react'
+import { forwardRef, useState, type ReactElement, type ReactNode } from 'react'
 import { CircleAlert } from 'lucide-react'
 import { Button } from './Button'
 import { cn } from './cn'
@@ -30,20 +30,23 @@ export interface PopconfirmProps {
   trigger: ReactElement
 }
 
-export function Popconfirm({
-  cancelText = 'Cancel',
-  className,
-  confirmText = 'Confirm',
-  defaultOpen = false,
-  message,
-  onCancel,
-  onConfirm,
-  onOpenChange,
-  open,
-  title,
-  tone = 'default',
-  trigger,
-}: PopconfirmProps) {
+export const Popconfirm = forwardRef<HTMLDivElement, PopconfirmProps>(function Popconfirm(
+  {
+    cancelText = 'Cancel',
+    className,
+    confirmText = 'Confirm',
+    defaultOpen = false,
+    message,
+    onCancel,
+    onConfirm,
+    onOpenChange,
+    open,
+    title,
+    tone = 'default',
+    trigger,
+  },
+  ref,
+) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen)
   const isOpen = open !== undefined ? open : internalOpen
 
@@ -64,6 +67,7 @@ export function Popconfirm({
 
   return (
     <Popover
+      ref={ref}
       open={isOpen}
       onOpenChange={setOpen}
       label={title}
@@ -93,4 +97,4 @@ export function Popconfirm({
       </div>
     </Popover>
   )
-}
+})

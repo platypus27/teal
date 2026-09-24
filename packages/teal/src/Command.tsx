@@ -1,4 +1,4 @@
-import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { forwardRef, useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { Search, X } from 'lucide-react'
 import { IconButton } from './Button'
@@ -79,20 +79,23 @@ const hintKeyClasses =
  * the query input and the keyboard highlight (Arrow Up/Down cycle, Enter
  * selects, Escape closes).
  */
-export function Command({
-  children,
-  closeLabel = 'Close',
-  defaultOpen,
-  emptyMessage = 'No results',
-  groups,
-  label,
-  onOpenChange,
-  onQueryChange,
-  onSelect,
-  open,
-  placeholder,
-  resultCount = 0,
-}: CommandProps) {
+export const Command = forwardRef<HTMLDivElement, CommandProps>(function Command(
+  {
+    children,
+    closeLabel = 'Close',
+    defaultOpen,
+    emptyMessage = 'No results',
+    groups,
+    label,
+    onOpenChange,
+    onQueryChange,
+    onSelect,
+    open,
+    placeholder,
+    resultCount = 0,
+  },
+  ref,
+) {
   if (typeof children === 'function') {
     const searchLabel = label ?? 'Search'
     return (
@@ -103,7 +106,7 @@ export function Command({
       >
         <DialogPrimitive.Portal>
           <DialogPrimitive.Overlay className="teal-dialog-overlay teal-u-fixed teal-u-inset-0 teal-u-z-[var(--teal-z-overlay)] teal-u-bg-black/50 teal-u-backdrop-blur-sm" />
-          <DialogPrimitive.Content className="teal-u-fixed teal-u-inset-0 teal-u-z-[var(--teal-z-dialog)] teal-u-flex teal-u-flex-col teal-u-bg-surface teal-u-text-on-surface teal-u-outline-none">
+          <DialogPrimitive.Content ref={ref} className="teal-u-fixed teal-u-inset-0 teal-u-z-[var(--teal-z-dialog)] teal-u-flex teal-u-flex-col teal-u-bg-surface teal-u-text-on-surface teal-u-outline-none">
             <DialogPrimitive.Title className="teal-u-sr-only">{searchLabel}</DialogPrimitive.Title>
             {/* Radix unmounts closed dialog content, so query and highlight
                 state reset to fresh values on every open. */}
@@ -131,7 +134,7 @@ export function Command({
     >
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="teal-dialog-overlay teal-u-fixed teal-u-inset-0 teal-u-z-[var(--teal-z-overlay)] teal-u-bg-black/50 teal-u-backdrop-blur-sm" />
-        <DialogPrimitive.Content className="teal-dialog-content teal-overlay-surface teal-u-fixed teal-u-left-1/2 teal-u-top-[20%] teal-u-z-[var(--teal-z-dialog)] teal-u-w-[min(32rem,calc(100vw-2rem))] -teal-u-translate-x-1/2 teal-u-overflow-hidden teal-u-border teal-u-bg-surface teal-u-text-on-surface teal-u-outline-none">
+        <DialogPrimitive.Content ref={ref} className="teal-dialog-content teal-overlay-surface teal-u-fixed teal-u-start-1/2 teal-u-top-[20%] teal-u-z-[var(--teal-z-dialog)] teal-u-w-[min(32rem,calc(100vw-2rem))] -teal-u-translate-x-1/2 teal-u-overflow-hidden teal-u-border teal-u-bg-surface teal-u-text-on-surface teal-u-outline-none">
           <DialogPrimitive.Title className="teal-u-sr-only">{label ?? 'Command palette'}</DialogPrimitive.Title>
           {/* Radix unmounts closed dialog content, so the panel's filter and
               highlight state reset to fresh values on every open. */}
@@ -145,7 +148,7 @@ export function Command({
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
   )
-}
+})
 
 interface CommandSearchPanelProps {
   children: (state: CommandRenderState) => ReactNode
@@ -342,7 +345,7 @@ function CommandPanel({ emptyMessage, groups, onOpenChange, placeholder }: Comma
                       <span className="teal-u-shrink-0 [&_svg]:teal-u-size-[var(--teal-icon-sm)]">{item.icon}</span>
                     ) : null}
                     <span className="teal-u-truncate">{item.label}</span>
-                    {item.hint ? <span className="teal-u-ml-auto teal-u-text-xs teal-u-text-on-surface-variant">{item.hint}</span> : null}
+                    {item.hint ? <span className="teal-u-ms-auto teal-u-text-xs teal-u-text-on-surface-variant">{item.hint}</span> : null}
                   </div>
                 )
               })}

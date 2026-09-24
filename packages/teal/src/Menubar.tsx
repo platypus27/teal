@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import { forwardRef, type ReactNode } from 'react'
 import * as MenubarPrimitive from '@radix-ui/react-menubar'
 import { cn } from './cn'
 import { MenuItems, type MenuItem } from './menu-items'
@@ -20,9 +20,10 @@ export interface MenubarProps {
   menus: MenubarMenu[]
 }
 
-export function Menubar({ className, label, menus }: MenubarProps) {
+export const Menubar = forwardRef<HTMLDivElement, MenubarProps>(function Menubar({ className, label, menus }, ref) {
   return (
     <MenubarPrimitive.Root
+      ref={ref}
       aria-label={label}
       className={cn('teal-u-flex teal-u-items-center teal-u-gap-1', className)}
     >
@@ -44,4 +45,4 @@ export function Menubar({ className, label, menus }: MenubarProps) {
       ))}
     </MenubarPrimitive.Root>
   )
-}
+})

@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import { forwardRef, type ReactNode } from 'react'
 import * as MenuPrimitive from '@radix-ui/react-dropdown-menu'
 import { Avatar } from './Avatar'
 import { cn } from './cn'
@@ -39,15 +39,10 @@ export interface AccountMenuProps {
 const itemClass =
   'teal-focus-ring teal-u-flex teal-u-min-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-gap-2 teal-u-rounded-lg teal-u-px-3 teal-u-py-2 teal-u-text-sm teal-u-text-on-surface data-[highlighted]:teal-u-bg-surface-container-high'
 
-export function AccountMenu({
-  align = 'end',
-  appSignOut,
-  className,
-  items = [],
-  label,
-  ssoSignOut,
-  user,
-}: AccountMenuProps) {
+export const AccountMenu = forwardRef<HTMLDivElement, AccountMenuProps>(function AccountMenu(
+  { align = 'end', appSignOut, className, items = [], label, ssoSignOut, user },
+  ref,
+) {
   return (
     <MenuPrimitive.Root modal={false}>
       <MenuPrimitive.Trigger
@@ -58,6 +53,7 @@ export function AccountMenu({
       </MenuPrimitive.Trigger>
       <MenuPrimitive.Portal>
         <MenuPrimitive.Content
+          ref={ref}
           align={align}
           sideOffset={6}
           aria-label={label}
@@ -114,4 +110,4 @@ export function AccountMenu({
       </MenuPrimitive.Portal>
     </MenuPrimitive.Root>
   )
-}
+})

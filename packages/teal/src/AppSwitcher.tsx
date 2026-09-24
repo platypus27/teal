@@ -1,4 +1,4 @@
-import { type ReactElement, type ReactNode } from 'react'
+import { forwardRef, type ReactElement, type ReactNode } from 'react'
 import * as MenuPrimitive from '@radix-ui/react-dropdown-menu'
 import { cn } from './cn'
 
@@ -38,22 +38,16 @@ export interface AppSwitcherProps {
 const itemClass =
   'teal-focus-ring teal-u-flex teal-u-min-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-gap-2 teal-u-rounded-lg teal-u-px-3 teal-u-py-2 teal-u-text-sm teal-u-text-on-surface teal-u-no-underline data-[highlighted]:teal-u-bg-surface-container-high'
 
-export function AppSwitcher({
-  align = 'end',
-  apps,
-  className,
-  homeCurrent = false,
-  homeHref,
-  homeLabel,
-  label,
-  onNavigate,
-  trigger,
-}: AppSwitcherProps) {
+export const AppSwitcher = forwardRef<HTMLDivElement, AppSwitcherProps>(function AppSwitcher(
+  { align = 'end', apps, className, homeCurrent = false, homeHref, homeLabel, label, onNavigate, trigger },
+  ref,
+) {
   return (
     <MenuPrimitive.Root modal={false}>
       <MenuPrimitive.Trigger asChild>{trigger}</MenuPrimitive.Trigger>
       <MenuPrimitive.Portal>
         <MenuPrimitive.Content
+          ref={ref}
           align={align}
           sideOffset={6}
           aria-label={label}
@@ -88,4 +82,4 @@ export function AppSwitcher({
       </MenuPrimitive.Portal>
     </MenuPrimitive.Root>
   )
-}
+})

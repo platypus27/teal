@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import { forwardRef, type ReactNode } from 'react'
 import { Table } from './Table'
 
 export interface PermissionMatrixColumn {
@@ -31,16 +31,13 @@ export interface PermissionMatrixProps {
   rowHeader?: ReactNode
 }
 
-export function PermissionMatrix({
-  caption,
-  className,
-  columns,
-  emptyCell = '—',
-  rowHeader = 'Name',
-  rows,
-}: PermissionMatrixProps) {
+export const PermissionMatrix = forwardRef<HTMLDivElement, PermissionMatrixProps>(function PermissionMatrix(
+  { caption, className, columns, emptyCell = '—', rowHeader = 'Name', rows },
+  ref,
+) {
   return (
     <Table
+      ref={ref}
       caption={caption}
       {...(className !== undefined ? { className } : {})}
       getRowKey={(row) => row.id}
@@ -55,4 +52,4 @@ export function PermissionMatrix({
       ]}
     />
   )
-}
+})

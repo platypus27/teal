@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import { forwardRef, type ReactNode } from 'react'
 import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu'
 import { ChevronDown } from 'lucide-react'
 import { cn } from './cn'
@@ -34,9 +34,16 @@ export interface NavigationMenuProps {
 const triggerClasses =
   'teal-focus-ring teal-u-group teal-u-flex teal-u-h-9 teal-u-select-none teal-u-items-center teal-u-gap-1 teal-u-rounded-lg teal-u-px-3 teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface-variant teal-u-outline-none hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface data-[state=open]:teal-u-bg-surface-container-high data-[state=open]:teal-u-text-on-surface'
 
-export function NavigationMenu({ className, items, label }: NavigationMenuProps) {
+export const NavigationMenu = forwardRef<HTMLElement, NavigationMenuProps>(function NavigationMenu(
+  { className, items, label },
+  ref,
+) {
   return (
-    <NavigationMenuPrimitive.Root aria-label={label} className={cn('teal-u-relative teal-u-z-10 teal-u-flex', className)}>
+    <NavigationMenuPrimitive.Root
+      ref={ref}
+      aria-label={label}
+      className={cn('teal-u-relative teal-u-z-10 teal-u-flex', className)}
+    >
       <NavigationMenuPrimitive.List className="teal-u-flex teal-u-list-none teal-u-items-center teal-u-gap-1 teal-u-p-0">
         {items.map((item, index) =>
           item.type === 'link' ? (
@@ -74,9 +81,9 @@ export function NavigationMenu({ className, items, label }: NavigationMenuProps)
           ),
         )}
       </NavigationMenuPrimitive.List>
-      <div className="teal-u-absolute teal-u-left-0 teal-u-top-full teal-u-flex teal-u-pt-1">
+      <div className="teal-u-absolute teal-u-start-0 teal-u-top-full teal-u-flex teal-u-pt-1">
         <NavigationMenuPrimitive.Viewport className="teal-popper-content teal-overlay-surface teal-u-relative teal-u-z-[var(--teal-z-popover)] teal-u-border teal-u-bg-surface teal-u-text-on-surface teal-u-outline-none motion-reduce:teal-u-animate-none" />
       </div>
     </NavigationMenuPrimitive.Root>
   )
-}
+})
