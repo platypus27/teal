@@ -52,16 +52,27 @@ export function deriveAutoControls(componentName) {
   const entry = api.find((item) => item.displayName === componentName)
   if (!entry) return null
   const controls = []
+  // A skipped `label` prop (ReactNode-typed) still has to carry sample text,
+  // otherwise the bare playground renders an unlabeled form field (axe: label).
+  const staticProps = {}
   for (const prop of entry.props ?? []) {
     if (AUTO_SKIP_PROPS.has(prop.name) || prop.name.startsWith('aria-') || prop.name.startsWith('on')) continue
     const inferred = inferFromType(prop.type)
     if (!inferred) {
       if (prop.required) return null
+      if (prop.name === 'label') staticProps.label = 'Sample label'
       continue
     }
-    controls.push({ ...inferred, name: prop.name, required: prop.required === true })
+    controls.push({
+      ...inferred,
+      name: prop.name,
+      required: prop.required === true,
+      // A control's visible label defaults to sample text so derived
+      // playgrounds never render unlabeled form fields (axe: label).
+      ...(prop.name === 'label' && inferred.kind === 'text' ? { defaultValue: 'Sample label' } : {}),
+    })
   }
-  return controls.length >= 2 ? controls : null
+  return controls.length >= 2 ? { controls, staticProps } : null
 }
 
 /**

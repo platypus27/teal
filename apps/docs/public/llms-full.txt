@@ -71,7 +71,7 @@ export default {
 
 ### 5. Load the fonts
 
-Teal typesets headlines in Plus Jakarta Sans and body copy in Manrope. Add the Google Fonts links to your document head.
+Teal typesets headlines in Plus Jakarta Sans and body copy in Manrope. Self-host them with @fontsource so the fonts ship from your own origin, or use the Google Fonts links for quick prototypes.
 
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -106,6 +106,15 @@ export function SignInForm() {
     </form>
   )
 }
+```
+
+### 8. Migrate across breaking releases
+
+When a release consolidates components, run the published codemod on a clean working tree: it renames removed components, inserts the replacement attributes, and lists the prop changes it cannot make automatically.
+
+```sh
+npx @kryv/teal-codemod@latest src/
+# Review the diff, then apply the printed manual follow-ups.
 ```
 
 ---
