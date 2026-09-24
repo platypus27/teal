@@ -1,4 +1,5 @@
-import { forwardRef, useId, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { forwardRef, useId, type KeyboardEvent, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { X } from 'lucide-react'
 import { IconButton } from './Button'
 import { cn } from './cn'
@@ -47,12 +48,11 @@ export const FloatingPanel = forwardRef<HTMLDivElement, FloatingPanelProps>(func
   },
   ref,
 ) {
-  const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false)
-  const isOpen = open !== undefined ? open : internalOpen
+  const [isOpen, setInternalOpen] = useControllableState(open, defaultOpen ?? false)
   const titleId = useId()
 
   function setOpen(next: boolean) {
-    if (open === undefined) setInternalOpen(next)
+    setInternalOpen(next)
     onOpenChange?.(next)
   }
 

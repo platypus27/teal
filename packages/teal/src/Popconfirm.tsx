@@ -1,4 +1,5 @@
-import { forwardRef, useState, type ReactElement, type ReactNode } from 'react'
+import { forwardRef, type ReactElement, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { CircleAlert } from 'lucide-react'
 import { Button } from './Button'
 import { cn } from './cn'
@@ -47,11 +48,10 @@ export const Popconfirm = forwardRef<HTMLDivElement, PopconfirmProps>(function P
   },
   ref,
 ) {
-  const [internalOpen, setInternalOpen] = useState(defaultOpen)
-  const isOpen = open !== undefined ? open : internalOpen
+  const [isOpen, setInternalOpen] = useControllableState(open, defaultOpen ?? false)
 
   function setOpen(nextOpen: boolean) {
-    if (open === undefined) setInternalOpen(nextOpen)
+    setInternalOpen(nextOpen)
     onOpenChange?.(nextOpen)
   }
 

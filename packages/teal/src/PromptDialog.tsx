@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useId, useState, type FormEvent, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { Button } from './Button'
 import { Input } from './Input'
@@ -50,8 +51,7 @@ export const PromptDialog = forwardRef<HTMLDivElement, PromptDialogProps>(functi
   },
   ref,
 ) {
-  const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false)
-  const isOpen = open !== undefined ? open : internalOpen
+  const [isOpen, setInternalOpen] = useControllableState(open, defaultOpen ?? false)
   const [value, setValue] = useState(defaultValue)
   const inputId = useId()
 
@@ -60,7 +60,7 @@ export const PromptDialog = forwardRef<HTMLDivElement, PromptDialogProps>(functi
   }, [isOpen, defaultValue])
 
   function setOpen(next: boolean) {
-    if (open === undefined) setInternalOpen(next)
+    setInternalOpen(next)
     onOpenChange?.(next)
   }
 

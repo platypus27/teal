@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { Check, ChevronDown, ChevronRight } from 'lucide-react'
 import { cn } from './cn'
@@ -122,8 +123,7 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
   const treeId = `${semantics.controlId}-tree`
   const listboxId = `${semantics.controlId}-listbox`
 
-  const [internalValue, setInternalValue] = useState<string | string[] | undefined>(defaultValue)
-  const selectedValue = value !== undefined ? value : internalValue
+  const [selectedValue, setInternalValue] = useControllableState<string | string[] | undefined>(value, defaultValue)
   const selectedTreeValue = typeof selectedValue === 'string' ? selectedValue : undefined
   const selectedPath = Array.isArray(selectedValue) ? selectedValue : []
   const [open, setOpen] = useState(false)
@@ -197,7 +197,7 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
   const tabbableNodeValue = activeNodeVisible ? activeValue : visible.find((node) => !node.disabled)?.value
 
   function commit(next: string | string[]) {
-    if (value === undefined) setInternalValue(next)
+    setInternalValue(next)
     onValueChange?.(next)
   }
 

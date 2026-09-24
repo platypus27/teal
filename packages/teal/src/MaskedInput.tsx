@@ -2,10 +2,10 @@ import {
   forwardRef,
   useLayoutEffect,
   useRef,
-  useState,
   type ChangeEvent,
   type ReactNode,
 } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { cn } from './cn'
 import { FieldScaffolding } from './field-scaffolding'
 import { hasFormContent, isAriaTrue, mergeDescriptionIds, useFormSemantics } from './form-semantics'
@@ -89,7 +89,7 @@ export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(functi
   })
 
   const capacity = maskCapacity(mask)
-  const [internalDigits, setInternalDigits] = useState(() => extractDigits(defaultValue ?? '', capacity))
+  const [internalDigits, setInternalDigits] = useControllableState(value, () => extractDigits(defaultValue ?? '', capacity))
   const digits = value !== undefined ? extractDigits(value, capacity) : internalDigits
   const text = applyMask(digits, mask)
 
@@ -112,7 +112,7 @@ export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(functi
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const nextDigits = extractDigits(event.target.value, capacity)
-    if (value === undefined) setInternalDigits(nextDigits)
+    setInternalDigits(nextDigits)
     const nextText = applyMask(nextDigits, mask)
     pendingCaret.current = nextText.length
     onChange?.(nextText)

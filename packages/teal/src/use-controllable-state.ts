@@ -8,7 +8,7 @@ import { useState } from 'react'
  */
 export function useControllableState<T>(
   value: T | undefined,
-  defaultValue: T,
+  defaultValue: T | (() => T),
 ): [T, (next: T) => void] {
   const [internalValue, setInternalValue] = useState(defaultValue)
   const set = (next: T) => {

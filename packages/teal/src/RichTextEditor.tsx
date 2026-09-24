@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useId, useRef, useState, type HTMLAttributes, type KeyboardEvent, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { Bold, Heading2, Italic, Link as LinkIcon, List } from 'lucide-react'
 import { cn } from './cn'
 import { fieldVariants } from './Input'
@@ -145,8 +146,7 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(fu
   const generatedId = useId()
   const controlId = id ?? `teal-rich-text-editor-${generatedId.replaceAll(':', '')}`
 
-  const [internalValue, setInternalValue] = useState(defaultValue ?? '')
-  const currentValue = value !== undefined ? value : internalValue
+  const [currentValue, setInternalValue] = useControllableState(value, defaultValue ?? '')
   // Mirrors the textarea selection so toggle buttons can report pressed state.
   const [selection, setSelection] = useState<Selection>({ end: 0, start: 0 })
   const [announcement, setAnnouncement] = useState('')
@@ -165,7 +165,7 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(fu
   })
 
   function commit(next: string, selection: Selection) {
-    if (value === undefined) setInternalValue(next)
+    setInternalValue(next)
     onChange?.(next)
     pendingSelection.current = selection
     setSelection(selection)
@@ -336,7 +336,7 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(fu
           placeholder={placeholder}
           aria-label={ariaLabel}
           onChange={(event) => {
-            if (value === undefined) setInternalValue(event.target.value)
+            setInternalValue(event.target.value)
             onChange?.(event.target.value)
           }}
           onKeyDown={handleTextareaKeyDown}

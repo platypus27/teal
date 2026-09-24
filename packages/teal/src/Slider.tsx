@@ -71,7 +71,7 @@ export const Slider = forwardRef<React.ComponentRef<typeof SliderPrimitive.Root>
   const currentValue: number[] = value === undefined ? internalValue : Array.isArray(value) ? value : [value]
 
   function handleValueChange(next: number[]) {
-    if (value === undefined) setInternalValue(next)
+    setInternalValue(next)
     if (isRange) {
       onValueChange?.([next[0] ?? min, next[1] ?? max])
     } else {

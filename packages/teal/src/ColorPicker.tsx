@@ -1,4 +1,5 @@
 import { forwardRef, useState } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { cn } from './cn'
 import { Input } from './Input'
 import { Popover } from './Popover'
@@ -54,14 +55,14 @@ export const ColorPicker = forwardRef<HTMLButtonElement, ColorPickerProps>(funct
   { className, defaultValue = '#006a6c', disabled = false, label = 'Choose color', onChange, value },
   ref,
 ) {
-  const [internalValue, setInternalValue] = useState(defaultValue)
-  const current = normalizeHex(value !== undefined ? value : internalValue) ?? '#006a6c'
+  const [rawCurrent, setInternalValue] = useControllableState(value, defaultValue)
+  const current = normalizeHex(rawCurrent) ?? '#006a6c'
   const [open, setOpen] = useState(false)
   const [hexDraft, setHexDraft] = useState(current)
   const [hexInvalid, setHexInvalid] = useState(false)
 
   function commit(color: string) {
-    if (value === undefined) setInternalValue(color)
+    setInternalValue(color)
     setHexDraft(color)
     onChange?.(color)
   }

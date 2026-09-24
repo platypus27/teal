@@ -1,4 +1,5 @@
 import { forwardRef, useRef, useState, type KeyboardEvent, type ReactNode, type Ref } from 'react'
+import { useControllableState } from './use-controllable-state'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { Check, ChevronDown, X } from 'lucide-react'
 import { cn } from './cn'
@@ -104,8 +105,7 @@ const ComboboxSingle = forwardRef<HTMLInputElement, ComboboxSingleProps>(functio
   const showDescription = hasFormContent(description)
   const listboxId = `${semantics.controlId}-listbox`
 
-  const [internalValue, setInternalValue] = useState(defaultValue)
-  const selectedValue = value !== undefined ? value : internalValue
+  const [selectedValue, setInternalValue] = useControllableState(value, defaultValue)
   const selectedOption = options.find((option) => option.value === selectedValue)
 
   const [open, setOpen] = useState(false)
@@ -132,7 +132,7 @@ const ComboboxSingle = forwardRef<HTMLInputElement, ComboboxSingleProps>(functio
 
   function selectOption(option: ComboboxOption) {
     if (option.disabled) return
-    if (value === undefined) setInternalValue(option.value)
+    setInternalValue(option.value)
     onValueChange?.(option.value)
     setInputText(option.label)
     setOpen(false)
@@ -320,8 +320,7 @@ const ComboboxMultiple = forwardRef<HTMLDivElement, ComboboxMultipleProps>(funct
   const listboxId = `${semantics.controlId}-listbox`
   const labelId = `${semantics.controlId}-label`
 
-  const [internalValue, setInternalValue] = useState<string[]>(defaultValue ?? [])
-  const selectedValues = value !== undefined ? value : internalValue
+  const [selectedValues, setInternalValue] = useControllableState<string[]>(value, defaultValue ?? [])
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
 
@@ -334,7 +333,7 @@ const ComboboxMultiple = forwardRef<HTMLDivElement, ComboboxMultipleProps>(funct
     .filter((option): option is ComboboxOption => option !== undefined)
 
   function commit(next: string[]) {
-    if (value === undefined) setInternalValue(next)
+    setInternalValue(next)
     onValueChange?.(next)
   }
 

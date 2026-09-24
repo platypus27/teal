@@ -2,11 +2,12 @@ import {
   forwardRef,
   useEffect,
   useRef,
-  useState,
+ 
   type ButtonHTMLAttributes,
   type KeyboardEvent,
   type ReactNode,
 } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { Plus, X } from 'lucide-react'
 import { cn } from './cn'
 import { Tooltip } from './Tooltip'
@@ -89,8 +90,7 @@ export const FloatingActionButton = forwardRef<HTMLButtonElement, FloatingAction
     },
     ref,
   ) {
-    const [internalOpen, setInternalOpen] = useState(defaultOpen)
-    const isOpen = open !== undefined ? open : internalOpen
+    const [isOpen, setInternalOpen] = useControllableState(open, defaultOpen ?? false)
     const triggerRef = useRef<HTMLButtonElement | null>(null)
     const menuRef = useRef<HTMLDivElement | null>(null)
 
@@ -101,7 +101,7 @@ export const FloatingActionButton = forwardRef<HTMLButtonElement, FloatingAction
     }
 
     function setOpen(next: boolean) {
-      if (open === undefined) setInternalOpen(next)
+      setInternalOpen(next)
       onOpenChange?.(next)
     }
 

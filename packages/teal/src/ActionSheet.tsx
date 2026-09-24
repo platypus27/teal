@@ -1,4 +1,5 @@
-import { forwardRef, useState, type ReactNode } from 'react'
+import { forwardRef, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { cn } from './cn'
 
@@ -50,11 +51,10 @@ export const ActionSheet = forwardRef<HTMLDivElement, ActionSheetProps>(function
   },
   ref,
 ) {
-  const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false)
-  const isOpen = open !== undefined ? open : internalOpen
+  const [isOpen, setInternalOpen] = useControllableState(open, defaultOpen ?? false)
 
   function setOpen(next: boolean) {
-    if (open === undefined) setInternalOpen(next)
+    setInternalOpen(next)
     onOpenChange?.(next)
   }
 

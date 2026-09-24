@@ -7,6 +7,7 @@ import {
 	type ReactNode,
 	type RefObject,
 } from "react";
+import { useControllableState } from "./use-controllable-state";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button, IconButton } from "./Button";
@@ -347,10 +348,10 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
 		const showDescription = hasFormContent(description);
 		const calendarId = `${semantics.controlId}-calendar`;
 
-		const [internalValue, setInternalValue] = useState<
-			Date | DateRange | undefined
-		>(() => defaultValue ?? (isRange ? { from: null, to: null } : undefined));
-		const selected = value !== undefined ? value : internalValue;
+		const [selected, setInternalValue] = useControllableState<Date | DateRange | undefined>(
+			value,
+			defaultValue ?? (isRange ? { from: null, to: null } : undefined),
+		);
 		const selectedDate = selected instanceof Date ? selected : undefined;
 		const rangeValue: DateRange =
 			isRange && selected !== undefined && !(selected instanceof Date)
@@ -434,7 +435,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
 		}
 
 		function commit(next: Date | DateRange) {
-			if (value === undefined) setInternalValue(next);
+			setInternalValue(next);
 			onValueChange?.(next);
 		}
 

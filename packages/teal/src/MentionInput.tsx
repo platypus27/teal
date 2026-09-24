@@ -9,6 +9,7 @@ import {
   type ReactNode,
   type TextareaHTMLAttributes,
 } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { cn } from './cn'
 import { fieldVariants } from './Input'
 import { hasFormContent } from './form-semantics'
@@ -81,8 +82,7 @@ export const MentionInput = forwardRef<HTMLTextAreaElement, MentionInputProps>(f
   const controlId = id ?? `teal-mention-input-${generatedId.replaceAll(':', '')}`
   const listboxId = `${controlId}-listbox`
 
-  const [internalValue, setInternalValue] = useState(defaultValue ?? '')
-  const currentValue = value !== undefined ? value : internalValue
+  const [currentValue, setInternalValue] = useControllableState(value, defaultValue ?? '')
   const [mention, setMention] = useState<ActiveMention | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)
 
@@ -105,7 +105,7 @@ export const MentionInput = forwardRef<HTMLTextAreaElement, MentionInputProps>(f
   const clampedActiveIndex = Math.min(activeIndex, Math.max(0, filtered.length - 1))
 
   function commitValue(next: string) {
-    if (value === undefined) setInternalValue(next)
+    setInternalValue(next)
     onChange?.(next)
   }
 

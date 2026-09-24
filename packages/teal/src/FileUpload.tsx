@@ -1,4 +1,5 @@
 import { forwardRef, useRef, useState, type DragEvent, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { File as FileIcon, Upload, X } from 'lucide-react'
 import { Button, IconButton } from './Button'
 import { cn } from './cn'
@@ -75,11 +76,10 @@ export const FileUpload = forwardRef<HTMLDivElement, FileUploadProps>(function F
 
   const inputRef = useRef<HTMLInputElement>(null)
   const [dragOver, setDragOver] = useState(false)
-  const [internalFiles, setInternalFiles] = useState<FileUploadFile[]>([])
-  const files = value ?? internalFiles
+  const [files, setInternalFiles] = useControllableState<FileUploadFile[]>(value, [])
 
   function commitFiles(next: FileUploadFile[], added?: File[]) {
-    if (value === undefined) setInternalFiles(next)
+    setInternalFiles(next)
     onValueChange?.(next)
     if (added && added.length > 0) onFilesAdded?.(added)
   }

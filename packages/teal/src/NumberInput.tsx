@@ -89,7 +89,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
 		}
 
 		function commit(next: number | undefined) {
-			if (value === undefined) setInternalNumber(next);
+			setInternalNumber(next);
 			onValueChange?.(next);
 		}
 

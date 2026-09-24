@@ -1,4 +1,5 @@
 import { forwardRef, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { ChevronRight } from 'lucide-react'
 import { cn } from './cn'
 
@@ -52,8 +53,7 @@ export const TreeView = forwardRef<HTMLUListElement, TreeViewProps>(function Tre
   },
   ref,
 ) {
-  const [internalExpanded, setInternalExpanded] = useState<string[]>(defaultExpandedIds ?? [])
-  const effectiveExpanded = expandedIds ?? internalExpanded
+  const [effectiveExpanded, setInternalExpanded] = useControllableState(expandedIds, defaultExpandedIds ?? [])
   const expandedSet = new Set(effectiveExpanded)
 
   const [activeId, setActiveId] = useState<string | undefined>(selectedId)
@@ -73,7 +73,7 @@ export const TreeView = forwardRef<HTMLUListElement, TreeViewProps>(function Tre
   const tabbableId = visible.some((entry) => entry.id === activeId) ? activeId : visible[0]?.id
 
   function setExpanded(next: string[]) {
-    if (expandedIds === undefined) setInternalExpanded(next)
+    setInternalExpanded(next)
     onExpandedChange?.(next)
   }
 
