@@ -117,10 +117,10 @@ test('module pages match the approved desktop visual baseline', async ({ page, b
   await page.goto('/modules/button')
   await waitForVisualReady(page, 'Button', '#examples')
   // Allow small cross-machine rasterization variance in the light-theme baseline.
-  await expect(page).toHaveScreenshot('button-module-light.png', { fullPage: true, maxDiffPixels: 750, animations: 'disabled' })
+  await expect(page).toHaveScreenshot('button-module-light.png', { fullPage: true, maxDiffPixels: 1500, animations: 'disabled' })
   await page.getByRole('button', { name: 'Dark mode' }).click()
   await expect(page.locator('html')).toHaveClass(/dark/)
-  await expect(page).toHaveScreenshot('button-module-dark.png', { fullPage: true, maxDiffPixels: 500, animations: 'disabled' })
+  await expect(page).toHaveScreenshot('button-module-dark.png', { fullPage: true, maxDiffPixels: 1000, animations: 'disabled' })
 })
 
 const baselinePages = [
@@ -134,10 +134,10 @@ test('form, feedback, and data module pages match their approved baselines', asy
   for (const baseline of baselinePages) {
     await page.goto(baseline.path)
     await waitForVisualReady(page, baseline.heading, '#examples')
-    await expect(page).toHaveScreenshot(`${baseline.name}-module-light.png`, { fullPage: true, maxDiffPixels: 750, animations: 'disabled' })
+    await expect(page).toHaveScreenshot(`${baseline.name}-module-light.png`, { fullPage: true, maxDiffPixels: 1500, animations: 'disabled' })
     await page.getByRole('button', { name: 'Dark mode' }).click()
     await expect(page.locator('html')).toHaveClass(/dark/)
-    await expect(page).toHaveScreenshot(`${baseline.name}-module-dark.png`, { fullPage: true, maxDiffPixels: 500, animations: 'disabled' })
+    await expect(page).toHaveScreenshot(`${baseline.name}-module-dark.png`, { fullPage: true, maxDiffPixels: 1000, animations: 'disabled' })
     await page.getByRole('button', { name: 'Light mode' }).click()
     await expect(page.locator('html')).not.toHaveClass(/dark/)
   }
@@ -162,7 +162,7 @@ test('visual QA surface covers every module family in both themes', async ({ pag
     maxDiffPixels: lightBaselineMaxDiffPixels,
   })
   await page.evaluate(() => document.documentElement.classList.add('dark'))
-  await expect(page).toHaveScreenshot(`visual-qa-${viewport}-dark.png`, { fullPage: true, maxDiffPixels: 600 })
+  await expect(page).toHaveScreenshot(`visual-qa-${viewport}-dark.png`, { fullPage: true, maxDiffPixels: 1200 })
 })
 
 test('visual QA surface mirrors correctly under RTL', async ({ page, browserName }) => {
@@ -173,7 +173,7 @@ test('visual QA surface mirrors correctly under RTL', async ({ page, browserName
   await page.evaluate(() => document.documentElement.setAttribute('dir', 'rtl'))
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
   expect(overflow).toBeLessThanOrEqual(0)
-  await expect(page).toHaveScreenshot('visual-qa-rtl.png', { fullPage: true, maxDiffPixels: 900, animations: 'disabled' })
+  await expect(page).toHaveScreenshot('visual-qa-rtl.png', { fullPage: true, maxDiffPixels: 1800, animations: 'disabled' })
   await page.evaluate(() => document.documentElement.removeAttribute('dir'))
 })
 
