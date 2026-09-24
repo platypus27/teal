@@ -123,6 +123,26 @@ test('module pages match the approved desktop visual baseline', async ({ page, b
   await expect(page).toHaveScreenshot('button-module-dark.png', { fullPage: true, maxDiffPixels: 500, animations: 'disabled' })
 })
 
+const baselinePages = [
+  { path: '/modules/input', name: 'input', heading: 'Input' },
+  { path: '/modules/alert', name: 'alert', heading: 'Alert' },
+  { path: '/modules/table', name: 'table', heading: 'Table' },
+]
+
+test('form, feedback, and data module pages match their approved baselines', async ({ page, browserName, isMobile }) => {
+  test.skip(browserName !== 'chromium' || isMobile, 'Stable visual baseline uses desktop Chromium')
+  for (const baseline of baselinePages) {
+    await page.goto(baseline.path)
+    await waitForVisualReady(page, baseline.heading, '#examples')
+    await expect(page).toHaveScreenshot(`${baseline.name}-module-light.png`, { fullPage: true, maxDiffPixels: 750, animations: 'disabled' })
+    await page.getByRole('button', { name: 'Dark mode' }).click()
+    await expect(page.locator('html')).toHaveClass(/dark/)
+    await expect(page).toHaveScreenshot(`${baseline.name}-module-dark.png`, { fullPage: true, maxDiffPixels: 500, animations: 'disabled' })
+    await page.getByRole('button', { name: 'Light mode' }).click()
+    await expect(page.locator('html')).not.toHaveClass(/dark/)
+  }
+})
+
 test('visual QA surface covers every module family in both themes', async ({ page, browserName, isMobile }) => {
   test.skip(browserName !== 'chromium', 'Stable visual baseline uses Chromium')
   await page.goto('/visual-qa')

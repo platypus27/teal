@@ -1,25 +1,18 @@
 import { createElement, useMemo } from 'react'
 import { useSearchParams } from 'react-router'
 import { RotateCcw } from 'lucide-react'
-import {
-  Badge,
-  Button,
-  Card,
-  Checkbox,
-  Dialog,
-  EmptyState,
-  IconButton,
-  Input,
-  Pagination,
-  Progress,
-  Select,
-  Separator,
-  Switch,
-} from '@kryv/teal'
+import * as Teal from '@kryv/teal'
+import { IconButton, Input, Select, Switch } from '@kryv/teal'
 import { CodeBlock } from './CodeBlock.jsx'
 import { coerceValue, generateJsx, resolveControls } from '../lib/playground.js'
 
-const registry = { Badge, Button, Card, Checkbox, Dialog, EmptyState, Input, Pagination, Progress, Select, Separator, Switch }
+function getRegistryComponent(componentName) {
+  const component = Teal[componentName]
+  if (typeof component !== 'function' && typeof component !== 'object') {
+    throw new Error(`"${componentName}" is not an exported component of @kryv/teal`)
+  }
+  return component
+}
 
 function PlaygroundControl({ control, value, onChange }) {
   if (control.kind === 'boolean') {
@@ -98,7 +91,7 @@ export function Playground({ config }) {
   }
 
   const Render = config.render
-  const preview = Render ? <Render {...renderProps} /> : createElement(registry[config.component], renderProps)
+  const preview = Render ? <Render {...renderProps} /> : createElement(getRegistryComponent(config.component), renderProps)
   const code = config.code ? config.code(values) : generateJsx(config.component, values, controls)
 
   return (

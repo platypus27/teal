@@ -33,20 +33,49 @@ function parseDefault(raw, kind) {
   return match ? match[1] : String(raw)
 }
 
-function fallbackDefault(kind, options) {
+function fallbackDefault(kind, options, required) {
   if (kind === 'boolean') return false
   if (kind === 'number') return 0
   if (kind === 'select') return options[0]
-  return ''
+  return required ? 'Sample text' : ''
+}
+
+// Props that never make useful playground controls.
+const AUTO_SKIP_PROPS = new Set(['as', 'children', 'className', 'id', 'key', 'style'])
+
+/**
+ * Derives playground controls purely from generated api.json metadata, or
+ * returns null when the component needs data structures, callbacks, or
+ * required render content that a primitive control cannot express.
+ */
+export function deriveAutoControls(componentName) {
+  const entry = api.find((item) => item.displayName === componentName)
+  if (!entry) return null
+  const controls = []
+  for (const prop of entry.props ?? []) {
+    if (AUTO_SKIP_PROPS.has(prop.name) || prop.name.startsWith('aria-') || prop.name.startsWith('on')) continue
+    const inferred = inferFromType(prop.type)
+    if (!inferred) {
+      if (prop.required) return null
+      continue
+    }
+    controls.push({ ...inferred, name: prop.name, required: prop.required === true })
+  }
+  return controls.length >= 2 ? controls : null
 }
 
 /**
  * Merges curated control specs with generated api.json metadata and the
  * prop-docs overlay so options and defaults stay in sync with the source.
+ * When `specs` is omitted the controls are derived from the generated types.
  */
 export function resolveControls(componentName, specs) {
   const entry = api.find((item) => item.displayName === componentName)
-  return specs.map((spec) => {
+  const resolvedSpecs = specs ?? deriveAutoControls(componentName)
+  if (resolvedSpecs === null) {
+    throw new Error(`No playground controls could be derived for "${componentName}"`)
+  }
+  return resolvedSpecs.map((spec) => {
     const generated = entry?.props.find((prop) => prop.name === spec.name)
     const overlay = propDocs[componentName]?.[spec.name]
     const inferred = inferFromType(generated?.type) ?? inferFromType(overlay?.type) ?? null
@@ -61,7 +90,7 @@ export function resolveControls(componentName, specs) {
       control.defaultValue ??
       parseDefault(overlay?.defaultValue, control.kind) ??
       parseDefault(generated?.defaultValue, control.kind)
-    control.defaultValue = resolvedDefault ?? fallbackDefault(control.kind, control.options)
+    control.defaultValue = resolvedDefault ?? fallbackDefault(control.kind, control.options, control.required === true)
     control.label = control.label ?? control.name
     return control
   })

@@ -1406,6 +1406,10 @@ _This module forwards native element properties._
 
 ## Accessibility
 
+| Keys | Action |
+| --- | --- |
+| `Tab` | Moves through the toolbar's controls in DOM order; the toolbar itself implements no roving focus. |
+
 - Renders role="toolbar" so assistive technology announces the grouped controls as one toolbar.
 - ToolbarGroup uses role="group" to keep related controls together in the accessibility tree.
 - ToolbarSeparator is decorative and hidden from assistive technology.
@@ -7782,8 +7786,11 @@ export function RichTextEditorDemo({ exampleIndex = 0 }) {
 | Keys | Action |
 | --- | --- |
 | `Tab` | Moves between the toolbar buttons and the textarea. |
+| `Control B` + `Meta B` | Toggles bold on the text area selection. |
+| `Control I` + `Meta I` | Toggles italic on the text area selection. |
 
 - Toolbar actions are grouped in a labelled toolbar and each button has an accessible name.
+- Bold, italic, heading, and bulleted-list buttons expose their active state with aria-pressed, and formatting actions are announced through a live region.
 - The preview is a labelled region so screen reader users can skip or inspect the rendered markdown.
 
 ## Related modules
@@ -8756,7 +8763,7 @@ export function DatePickerDemo({ exampleIndex = 0 }) {
 | Keys | Action |
 | --- | --- |
 | `Arrow Down` | Opens the popover from the field. |
-| `Arrow Left` + `Arrow Right` | Moves the focused day by one day; in month or year mode, moves by one month or year. |
+| `Arrow Left` + `Arrow Right` | Moves the focused day by one day; in month or year mode, moves by one month or year. In RTL layouts the horizontal directions flip with the grid. |
 | `Arrow Up` + `Arrow Down` | Moves the focused day by one week; in month or year mode, moves by one row. |
 | `Home` + `End` | Jumps to the first or last month of the year, or year of the decade page. |
 | `Enter` + `Space` | Selects the focused day, month, or year; in range mode, picks the start then the end. |
@@ -9672,6 +9679,7 @@ export function TreeSelectDemo({ exampleIndex = 0 }) {
 | `Escape` | Closes the popover and returns focus to the trigger. |
 
 - The trigger is a combobox with aria-haspopup="tree"; options follow the tree/treeitem roles with aria-expanded and aria-selected.
+- Exactly one rendered item is tabbable at a time (a roving tabindex), and arrow navigation skips disabled items.
 - With display="columns" the trigger uses aria-haspopup="listbox" and each level is a labelled listbox that commits the full path of values.
 - The selected value's ancestors are expanded automatically so the selection is visible on open.
 

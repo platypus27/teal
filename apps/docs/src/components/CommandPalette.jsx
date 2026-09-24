@@ -99,7 +99,10 @@ function scoreEntry(entry, query) {
   if (title.startsWith(query)) return 3
   if (title.includes(query)) return 2
   const haystack = `${entry.group} ${entry.description} ${entry.keywords}`.toLowerCase()
-  return haystack.includes(query) ? 1 : 0
+  if (haystack.includes(query)) return 1
+  // Full-text prose (guidance, anatomy, accessibility notes) ranks below
+  // dedicated fields but still surfaces the module.
+  return entry.body?.includes(query) ? 0.5 : 0
 }
 
 function KbdHint({ children }) {
@@ -116,10 +119,23 @@ function PaletteBody({ onClose }) {
   const [query, setQuery] = useState('')
   const [activeIndex, setActiveIndex] = useState(0)
   const [recents] = useState(() => readRecents())
+  const [fullText, setFullText] = useState({})
 
   useEffect(() => {
     const frame = requestAnimationFrame(() => inputRef.current?.focus())
     return () => cancelAnimationFrame(frame)
+  }, [])
+
+  // The generated prose index is ~300 KB, so it loads only once the palette
+  // is actually opened rather than weighing down every docs page.
+  useEffect(() => {
+    let cancelled = false
+    import('../generated/search-index.json').then((index) => {
+      if (!cancelled) setFullText(index.default)
+    })
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   const trimmed = query.trim().toLowerCase()
@@ -127,12 +143,15 @@ function PaletteBody({ onClose }) {
   const results = useMemo(() => {
     if (!trimmed) return []
     return searchEntries
-      .map((entry) => ({ entry, score: scoreEntry(entry, trimmed) }))
+      .map((entry) => {
+        const withBody = { ...entry, body: fullText[entry.to.replace('/modules/', '')] }
+        return { entry: withBody, score: scoreEntry(withBody, trimmed) }
+      })
       .filter((result) => result.score > 0)
       .sort((a, b) => b.score - a.score || a.entry.title.localeCompare(b.entry.title))
       .slice(0, MAX_RESULTS)
       .map((result) => result.entry)
-  }, [trimmed])
+  }, [trimmed, fullText])
 
   const visible = trimmed ? results : recents.length ? recents : searchEntries.slice(0, MAX_RESULTS)
 
