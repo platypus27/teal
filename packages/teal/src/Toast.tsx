@@ -26,6 +26,12 @@ let records: ToastRecord[] = []
 const emptyRecords: ToastRecord[] = []
 const listeners = new Set<() => void>()
 
+// The counter keeps ids readable; the random suffix keeps them unique when
+// several SSR requests share this module instance.
+function createToastId() {
+  return `teal-toast-${nextToastId++}-${Math.random().toString(36).slice(2, 8)}`
+}
+
 function emit() {
   listeners.forEach((listener) => listener())
 }
@@ -36,7 +42,7 @@ function subscribe(listener: () => void) {
 }
 
 export function toast(input: ToastInput) {
-  const id = `teal-toast-${nextToastId++}`
+  const id = createToastId()
   records = [...records, { ...input, id }]
   emit()
   return id
@@ -99,7 +105,7 @@ export const Toaster = forwardRef<ElementRef<typeof ToastPrimitive.Viewport>>(fu
               ) : null}
             </div>
             <ToastPrimitive.Close asChild>
-              <IconButton label="Dismiss notification" size="sm" className="-teal-u-mr-2 -teal-u-mt-2">
+              <IconButton label="Dismiss notification" size="sm" className="-teal-u-me-2 -teal-u-mt-2">
                 <X />
               </IconButton>
             </ToastPrimitive.Close>
@@ -108,7 +114,7 @@ export const Toaster = forwardRef<ElementRef<typeof ToastPrimitive.Viewport>>(fu
       })}
       <ToastPrimitive.Viewport
         ref={ref}
-        className="teal-u-fixed teal-u-bottom-0 teal-u-right-0 teal-u-z-[var(--teal-z-toast)] teal-u-flex teal-u-max-h-screen teal-u-w-full teal-u-flex-col teal-u-items-end teal-u-gap-2 teal-u-p-4 sm:teal-u-w-auto"
+        className="teal-u-fixed teal-u-bottom-0 teal-u-end-0 teal-u-z-[var(--teal-z-toast)] teal-u-flex teal-u-max-h-screen teal-u-w-full teal-u-flex-col teal-u-items-end teal-u-gap-2 teal-u-p-4 sm:teal-u-w-auto"
       />
     </ToastPrimitive.Provider>
   )

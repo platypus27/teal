@@ -1,7 +1,8 @@
-import { forwardRef, useEffect, useId, useRef, useState, type HTMLAttributes, type ReactNode } from 'react'
+import { forwardRef, useEffect, useId, useRef, useState, type HTMLAttributes, type KeyboardEvent, type ReactNode } from 'react'
 import { Bold, Heading2, Italic, Link as LinkIcon, List } from 'lucide-react'
 import { cn } from './cn'
 import { fieldVariants } from './Input'
+import { Announcer } from './Announcer'
 
 export interface RichTextEditorProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
   /** Accessible name for the text area when there is no visible label. */
@@ -25,6 +26,16 @@ export interface RichTextEditorProps extends Omit<HTMLAttributes<HTMLDivElement>
 interface Selection {
   end: number
   start: number
+}
+
+type WrapOutcome = 'applied' | 'removed'
+
+interface EditorAction {
+  icon: typeof Bold
+  keyshortcuts?: string
+  label: string
+  onClick: () => void
+  pressed?: boolean
 }
 
 /** Renders inline markdown (`**bold**`, `*italic*`, `[label](href)`) as React nodes. */
@@ -81,7 +92,7 @@ function renderMarkdown(markdown: string): ReactNode {
     if (list.length === 0) return
     const items = list
     blocks.push(
-      <ul key={key} className="teal-u-list-disc teal-u-space-y-1 teal-u-pl-5">
+      <ul key={key} className="teal-u-list-disc teal-u-space-y-1 teal-u-ps-5">
         {items.map((item, index) => (
           <li key={index}>{renderInline(item)}</li>
         ))}
@@ -136,6 +147,9 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(fu
 
   const [internalValue, setInternalValue] = useState(defaultValue ?? '')
   const currentValue = value !== undefined ? value : internalValue
+  // Mirrors the textarea selection so toggle buttons can report pressed state.
+  const [selection, setSelection] = useState<Selection>({ end: 0, start: 0 })
+  const [announcement, setAnnouncement] = useState('')
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null)
   const pendingSelection = useRef<Selection | null>(null)
@@ -154,12 +168,17 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(fu
     if (value === undefined) setInternalValue(next)
     onChange?.(next)
     pendingSelection.current = selection
+    setSelection(selection)
+  }
+
+  function announce(label: string, outcome: WrapOutcome | undefined) {
+    if (outcome !== undefined) setAnnouncement(`${label} ${outcome}`)
   }
 
   /** Wraps the selection with `marker`, or unwraps it when already wrapped. */
-  function toggleWrap(marker: string) {
+  function toggleWrap(marker: string): WrapOutcome | undefined {
     const textarea = textareaRef.current
-    if (!textarea) return
+    if (!textarea) return undefined
     const start = textarea.selectionStart
     const end = textarea.selectionEnd
     const selected = currentValue.slice(start, end)
@@ -170,18 +189,19 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(fu
         start: start - marker.length,
         end: end - marker.length,
       })
-    } else {
-      commit(before + marker + selected + marker + after, {
-        start: start + marker.length,
-        end: end + marker.length,
-      })
+      return 'removed'
     }
+    commit(before + marker + selected + marker + after, {
+      start: start + marker.length,
+      end: end + marker.length,
+    })
+    return 'applied'
   }
 
   /** Adds or removes `prefix` at the start of every line touched by the selection. */
-  function toggleLinePrefix(prefix: string) {
+  function toggleLinePrefix(prefix: string): WrapOutcome | undefined {
     const textarea = textareaRef.current
-    if (!textarea) return
+    if (!textarea) return undefined
     const lineStart = currentValue.lastIndexOf('\n', textarea.selectionStart - 1) + 1
     const selectionEnd = textarea.selectionEnd
     const lineEndIndex = currentValue.indexOf('\n', selectionEnd)
@@ -199,6 +219,7 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(fu
       start: lineStart,
       end: lineStart + nextBlock.length,
     })
+    return allPrefixed ? 'removed' : 'applied'
   }
 
   /** Turns the selection into a markdown link and selects the placeholder URL. */
@@ -215,12 +236,68 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(fu
     })
   }
 
-  const actions = [
-    { icon: Bold, label: 'Bold', onClick: () => toggleWrap('**') },
-    { icon: Italic, label: 'Italic', onClick: () => toggleWrap('*') },
-    { icon: Heading2, label: 'Heading', onClick: () => toggleLinePrefix('## ') },
-    { icon: List, label: 'Bulleted list', onClick: () => toggleLinePrefix('- ') },
-    { icon: LinkIcon, label: 'Insert link', onClick: insertLink },
+  /** Whether the selection already sits inside `marker` on both sides. */
+  function isWrapActive(marker: string) {
+    return (
+      currentValue.slice(Math.max(0, selection.start - marker.length), selection.start) === marker &&
+      currentValue.slice(selection.end, selection.end + marker.length) === marker
+    )
+  }
+
+  /** Whether the first line touched by the selection starts with `prefix`. */
+  function isLinePrefixActive(prefix: string) {
+    const lineStart = currentValue.lastIndexOf('\n', selection.start - 1) + 1
+    const lineEndIndex = currentValue.indexOf('\n', lineStart)
+    const line = currentValue.slice(lineStart, lineEndIndex === -1 ? currentValue.length : lineEndIndex)
+    return line.startsWith(prefix)
+  }
+
+  function handleTextareaKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
+    if (!event.metaKey && !event.ctrlKey) return
+    if (event.key === 'b' || event.key === 'B') {
+      event.preventDefault()
+      announce('Bold', toggleWrap('**'))
+    } else if (event.key === 'i' || event.key === 'I') {
+      event.preventDefault()
+      announce('Italic', toggleWrap('*'))
+    }
+  }
+
+  const actions: EditorAction[] = [
+    {
+      icon: Bold,
+      label: 'Bold',
+      pressed: isWrapActive('**'),
+      keyshortcuts: 'Meta+B Control+B',
+      onClick: () => announce('Bold', toggleWrap('**')),
+    },
+    {
+      icon: Italic,
+      label: 'Italic',
+      pressed: isWrapActive('*'),
+      keyshortcuts: 'Meta+I Control+I',
+      onClick: () => announce('Italic', toggleWrap('*')),
+    },
+    {
+      icon: Heading2,
+      label: 'Heading',
+      pressed: isLinePrefixActive('## '),
+      onClick: () => announce('Heading', toggleLinePrefix('## ')),
+    },
+    {
+      icon: List,
+      label: 'Bulleted list',
+      pressed: isLinePrefixActive('- '),
+      onClick: () => announce('Bulleted list', toggleLinePrefix('- ')),
+    },
+    {
+      icon: LinkIcon,
+      label: 'Insert link',
+      onClick: () => {
+        insertLink()
+        setAnnouncement('Link inserted')
+      },
+    },
   ]
 
   return (
@@ -240,9 +317,11 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(fu
             key={action.label}
             type="button"
             aria-label={action.label}
+            aria-pressed={action.pressed}
+            aria-keyshortcuts={action.keyshortcuts}
             onMouseDown={(event) => event.preventDefault()}
             onClick={action.onClick}
-            className="teal-focus-ring teal-u-inline-flex teal-u-size-8 teal-u-items-center teal-u-justify-center teal-u-rounded-lg teal-u-text-on-surface-variant hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface"
+            className="teal-focus-ring teal-u-inline-flex teal-u-size-8 teal-u-items-center teal-u-justify-center teal-u-rounded-lg teal-u-text-on-surface-variant hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface aria-pressed:teal-u-bg-primary/10 aria-pressed:teal-u-text-primary"
           >
             <action.icon aria-hidden="true" className="teal-u-size-[var(--teal-icon-sm)]" />
           </button>
@@ -260,6 +339,11 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(fu
             if (value === undefined) setInternalValue(event.target.value)
             onChange?.(event.target.value)
           }}
+          onKeyDown={handleTextareaKeyDown}
+          onSelect={(event) => {
+            const textarea = event.currentTarget
+            setSelection({ start: textarea.selectionStart, end: textarea.selectionEnd })
+          }}
           className={cn(fieldVariants(), 'teal-u-resize-y teal-u-font-mono teal-u-leading-relaxed')}
         />
         {preview ? (
@@ -272,6 +356,7 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(fu
           </div>
         ) : null}
       </div>
+      <Announcer message={announcement} />
     </div>
   )
 })

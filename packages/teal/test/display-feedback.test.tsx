@@ -194,6 +194,22 @@ describe('overlays and feedback', () => {
     expect(screen.queryByText('Changes saved')).not.toBeInTheDocument()
   })
 
+  it('generates a unique id per toast', () => {
+    let first = ''
+    let second = ''
+    act(() => {
+      first = toast({ title: 'First' })
+      second = toast({ title: 'Second' })
+    })
+    expect(first).not.toBe(second)
+    act(() => {
+      dismissToast(first)
+      dismissToast(second)
+    })
+    expect(screen.queryByText('First')).not.toBeInTheDocument()
+    expect(screen.queryByText('Second')).not.toBeInTheDocument()
+  })
+
   it('forwards the toaster ref to its viewport', () => {
     const ref = createRef<HTMLOListElement>()
     render(<Toaster ref={ref} />)

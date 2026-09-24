@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { GanttChart, type GanttTask } from '../src/GanttChart'
+import { monthShortNames } from '../src/date-utils'
 
 const tasks: GanttTask[] = [
   { id: 'design', label: 'Design', start: '2025-03-03', end: '2025-03-05' },
@@ -46,5 +47,14 @@ describe('GanttChart', () => {
     render(<GanttChart tasks={tasks} label="Release plan" today="2025-03-04" />)
 
     expect(screen.getByText('Design: 2025-03-03 to 2025-03-05. Build: 2025-03-06 to 2025-03-12')).toBeInTheDocument()
+  })
+
+  it('labels month starts with the localized short month name', () => {
+    render(<GanttChart tasks={tasks} startDate="2025-01-28" endDate="2025-03-03" today="2025-02-14" />)
+
+    const chart = screen.getByRole('img')
+    expect(chart).toHaveTextContent(monthShortNames[0]!)
+    expect(chart).toHaveTextContent(monthShortNames[1]!)
+    expect(chart).toHaveTextContent(monthShortNames[2]!)
   })
 })

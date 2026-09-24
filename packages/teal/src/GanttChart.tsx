@@ -1,5 +1,6 @@
 import { forwardRef, type HTMLAttributes } from 'react'
 import { cn } from './cn'
+import { monthShortNames, pad } from './date-utils'
 
 export interface GanttTask {
   /** End date (inclusive) as YYYY-MM-DD. */
@@ -31,8 +32,6 @@ const LABEL_WIDTH = 160
 const HEADER_HEIGHT = 28
 const BAR_HEIGHT = 16
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
 function parseDay(value: string): number {
   const [year = 0, month = 1, day = 1] = value.split('-').map(Number)
   return Date.UTC(year, month - 1, day) / 86400000
@@ -40,14 +39,12 @@ function parseDay(value: string): number {
 
 function formatDay(dayNumber: number): { day: number; month: string } {
   const date = new Date(dayNumber * 86400000)
-  return { day: date.getUTCDate(), month: MONTHS[date.getUTCMonth()] ?? '' }
+  return { day: date.getUTCDate(), month: monthShortNames[date.getUTCMonth()] ?? '' }
 }
 
 function localToday(): string {
   const now = new Date()
-  const month = `${now.getMonth() + 1}`.padStart(2, '0')
-  const day = `${now.getDate()}`.padStart(2, '0')
-  return `${now.getFullYear()}-${month}-${day}`
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`
 }
 
 /** A read-only SVG Gantt chart: task bars on a day grid with a today marker. */
