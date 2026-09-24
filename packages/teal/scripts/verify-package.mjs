@@ -318,6 +318,16 @@ export default {
       const map = JSON.parse(await readFile(resolve(installedPackage, 'dist', file), 'utf8'))
       for (const source of map.sources ?? []) await access(resolve(installedPackage, 'dist', source))
     }
+    // React Server Component consumers (Next.js App Router and friends) import
+    // modules directly, so every shipped module must declare itself a client
+    // component. The Tailwind preset runs in Node config, not in React.
+    for (const file of await readdir(resolve(installedPackage, 'dist'))) {
+      if (!file.endsWith('.js') || file === 'tailwind.preset.js') continue
+      const contents = await readFile(resolve(installedPackage, 'dist', file), 'utf8')
+      if (!contents.startsWith('"use client"') && !contents.startsWith("'use client'")) {
+        throw new Error(`dist/${file} is missing the "use client" directive`)
+      }
+    }
   }
 } finally {
   await rm(temp, { recursive: true, force: true })

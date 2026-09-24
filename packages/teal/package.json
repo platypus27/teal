@@ -41,7 +41,8 @@
     "./styles.css": "./dist/styles.css",
     "./base.css": "./dist/base.css",
     "./tokens.css": "./dist/tokens.css",
-    "./tailwind-preset": "./dist/tailwind.preset.js"
+    "./tailwind-preset": "./dist/tailwind.preset.js",
+    "./package.json": "./package.json"
   },
   "publishConfig": {
     "access": "public"
@@ -51,6 +52,8 @@
     "prepublishOnly": "npm run build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "check:size": "node scripts/check-size.mjs",
     "lint": "eslint src test --max-warnings 0"
   },
   "dependencies": {
@@ -97,8 +100,10 @@
     "@types/node": "^26.1.2",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
+    "@vitest/coverage-v8": "^4.1.11",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
+    "fast-check": "^4.10.2",
     "globals": "^17.8.0",
     "jest-axe": "^10.0.0",
     "jsdom": "^29.1.1",
