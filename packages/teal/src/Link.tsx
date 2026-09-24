@@ -44,7 +44,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
     <a ref={ref} className={classes} {...(external ? { target: '_blank', rel: 'noreferrer' } : {})} {...props}>
       {children}
       {external ? (
-        <ArrowUpRight aria-hidden="true" className="teal-u-ml-0.5 teal-u-inline-block teal-u-size-[0.875em] teal-u-align-[-0.1em]" />
+        <ArrowUpRight aria-hidden="true" className="teal-u-ms-0.5 teal-u-inline-block teal-u-size-[0.875em] teal-u-align-[-0.1em]" />
       ) : null}
     </a>
   )

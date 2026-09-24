@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { TreeSelect } from '../src/TreeSelect'
 
@@ -116,6 +116,47 @@ describe('TreeSelect', () => {
     const backend = await screen.findByRole('treeitem', { name: 'Backend' })
     expect(backend).toHaveAttribute('aria-selected', 'true')
   })
+
+  it('keeps exactly one tabbable node and follows focus with a roving tabindex', async () => {
+    render(<TreeSelect label="Department" options={options} />)
+    const control = screen.getByRole('combobox', { name: 'Department' })
+
+    fireEvent.keyDown(control, { key: 'ArrowDown' })
+    const engineering = (await screen.findByRole('treeitem', { name: 'Engineering' })).querySelector('button') as HTMLElement
+    await waitFor(() => expect(engineering).toHaveFocus())
+
+    expect(engineering).toHaveAttribute('tabindex', '0')
+    expect(screen.getByRole('button', { name: 'Design' })).toHaveAttribute('tabindex', '-1')
+    expect(screen.getByRole('button', { name: 'Marketing' })).toHaveAttribute('tabindex', '-1')
+
+    fireEvent.keyDown(engineering, { key: 'ArrowRight' })
+    fireEvent.keyDown(engineering, { key: 'ArrowRight' })
+    const frontend = screen.getByRole('button', { name: 'Frontend' })
+    await waitFor(() => expect(frontend).toHaveFocus())
+    expect(frontend).toHaveAttribute('tabindex', '0')
+    expect(engineering).toHaveAttribute('tabindex', '-1')
+  })
+
+  it('skips disabled nodes when arrowing and never focuses them', async () => {
+    const withDisabled = [
+      { value: 'alpha', label: 'Alpha' },
+      { value: 'blocked', label: 'Blocked', disabled: true },
+      { value: 'gamma', label: 'Gamma' },
+    ]
+    render(<TreeSelect label="Team" options={withDisabled} />)
+    const control = screen.getByRole('combobox', { name: 'Team' })
+
+    fireEvent.keyDown(control, { key: 'ArrowDown' })
+    const alpha = await screen.findByRole('button', { name: 'Alpha' })
+    await waitFor(() => expect(alpha).toHaveFocus())
+
+    fireEvent.keyDown(alpha, { key: 'ArrowDown' })
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Gamma' })).toHaveFocus())
+    expect(screen.getByRole('button', { name: 'Blocked' })).toHaveAttribute('tabindex', '-1')
+
+    fireEvent.keyDown(screen.getByRole('button', { name: 'Gamma' }), { key: 'ArrowUp' })
+    await waitFor(() => expect(alpha).toHaveFocus())
+  })
 })
 
 describe('TreeSelect columns display', () => {
@@ -181,5 +222,22 @@ describe('TreeSelect columns display', () => {
 
     expect(control).toHaveAttribute('aria-expanded', 'false')
     expect(control).toHaveFocus()
+  })
+
+  it('keeps exactly one tabbable option per column', async () => {
+    const user = userEvent.setup()
+    render(<TreeSelect label="Team" display="columns" options={options} />)
+    await user.click(screen.getByRole('combobox', { name: 'Team' }))
+
+    const [firstColumn] = await screen.findAllByRole('listbox')
+    expect(within(firstColumn!).getByRole('option', { name: /Engineering/ })).toHaveAttribute('tabindex', '0')
+    expect(within(firstColumn!).getByRole('option', { name: 'Operations' })).toHaveAttribute('tabindex', '-1')
+
+    await user.click(within(firstColumn!).getByRole('option', { name: /Engineering/ }))
+    const listboxes = await screen.findAllByRole('listbox')
+    expect(listboxes).toHaveLength(2)
+    expect(within(listboxes[0]!).getByRole('option', { name: /Engineering/ })).toHaveAttribute('tabindex', '0')
+    expect(within(listboxes[1]!).getByRole('option', { name: 'Frontend' })).toHaveAttribute('tabindex', '0')
+    expect(within(listboxes[1]!).getByRole('option', { name: 'Backend' })).toHaveAttribute('tabindex', '-1')
   })
 })

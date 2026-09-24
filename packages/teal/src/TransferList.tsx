@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useRef, useState, type HTMLAttributes, type KeyboardEvent } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from './cn'
 
@@ -52,8 +53,7 @@ export const TransferList = forwardRef<HTMLDivElement, TransferListProps>(functi
   },
   ref,
 ) {
-  const [internalValue, setInternalValue] = useState<string[]>(defaultValue ?? [])
-  const targetValues = value !== undefined ? value : internalValue
+  const [targetValues, setInternalValue] = useControllableState<string[]>(value, defaultValue ?? [])
   const targetSet = new Set(targetValues)
 
   const sourceOptions = options.filter((option) => !targetSet.has(option.value))
@@ -89,7 +89,7 @@ export const TransferList = forwardRef<HTMLDivElement, TransferListProps>(functi
   }
 
   function commit(nextTarget: string[]) {
-    if (value === undefined) setInternalValue(nextTarget)
+    setInternalValue(nextTarget)
     onValueChange?.(nextTarget)
   }
 

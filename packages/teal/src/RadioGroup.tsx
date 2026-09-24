@@ -1,4 +1,5 @@
-import { forwardRef, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { forwardRef, useRef, type KeyboardEvent, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 import { cn } from './cn'
 import { hasFormContent, isAriaTrue, mergeDescriptionIds, useFormSemantics } from './form-semantics'
@@ -67,8 +68,7 @@ export const RadioGroup = forwardRef<React.ComponentRef<typeof RadioGroupPrimiti
 
     // Card variant state: hand-rolled roving-tabindex radiogroup (Radix does
     // not provide Home/End, wrap-around, or skip-disabled semantics).
-    const [internalValue, setInternalValue] = useState(defaultValue)
-    const selected = value !== undefined ? value : internalValue
+    const [selected, setInternalValue] = useControllableState(value, defaultValue)
     const cardRefs = useRef<Array<HTMLButtonElement | null>>([])
 
     const enabledIndexes = options.reduce<number[]>((acc, option, index) => {
@@ -77,7 +77,7 @@ export const RadioGroup = forwardRef<React.ComponentRef<typeof RadioGroupPrimiti
     }, [])
 
     function commit(next: string) {
-      if (value === undefined) setInternalValue(next)
+      setInternalValue(next)
       onValueChange?.(next)
     }
 
@@ -177,7 +177,7 @@ export const RadioGroup = forwardRef<React.ComponentRef<typeof RadioGroupPrimiti
                     if (!option.disabled) commit(option.value)
                   }}
                   className={cn(
-                    'teal-focus-ring teal-u-flex teal-u-min-w-40 teal-u-flex-1 teal-u-flex-col teal-u-items-start teal-u-gap-1 teal-u-rounded-2xl teal-u-border teal-u-border-solid teal-u-p-4 teal-u-text-left teal-u-transition-colors',
+                    'teal-focus-ring teal-u-flex teal-u-min-w-40 teal-u-flex-1 teal-u-flex-col teal-u-items-start teal-u-gap-1 teal-u-rounded-2xl teal-u-border teal-u-border-solid teal-u-p-4 teal-u-text-start teal-u-transition-colors',
                     checked
                       ? 'teal-u-border-primary teal-u-bg-primary/5'
                       : 'teal-u-border-[color:var(--teal-border-subtle)] teal-u-bg-surface-container hover:teal-u-border-[color:var(--teal-border-strong)]',

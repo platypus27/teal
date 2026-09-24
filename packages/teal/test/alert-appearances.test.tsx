@@ -49,23 +49,23 @@ describe('Alert callout appearance', () => {
 
   it('shows the left accent bar by default per variant', () => {
     const { container, rerender } = render(<Alert appearance="callout" title="Note" variant="info" />)
-    expect(container.firstChild).toHaveClass('teal-u-border-l-4', 'teal-u-border-l-primary')
+    expect(container.firstChild).toHaveClass('teal-u-border-s-4', 'teal-u-border-s-primary')
 
     rerender(<Alert appearance="callout" title="Note" variant="success" />)
-    expect(container.firstChild).toHaveClass('teal-u-border-l-tertiary')
+    expect(container.firstChild).toHaveClass('teal-u-border-s-tertiary')
 
     rerender(<Alert appearance="callout" title="Note" variant="warning" />)
-    expect(container.firstChild).toHaveClass('teal-u-border-l-warning')
+    expect(container.firstChild).toHaveClass('teal-u-border-s-warning')
 
     rerender(<Alert appearance="callout" title="Note" variant="danger" />)
-    expect(container.firstChild).toHaveClass('teal-u-border-l-error')
+    expect(container.firstChild).toHaveClass('teal-u-border-s-error')
   })
 
   it('hides the left accent bar when accent is false', () => {
     const { container } = render(<Alert appearance="callout" accent={false} title="Note" variant="info" />)
 
-    expect(container.firstChild).not.toHaveClass('teal-u-border-l-4')
-    expect(container.firstChild).not.toHaveClass('teal-u-border-l-primary')
+    expect(container.firstChild).not.toHaveClass('teal-u-border-s-4')
+    expect(container.firstChild).not.toHaveClass('teal-u-border-s-primary')
   })
 
   it('renders the variant icon hidden from assistive technology and accepts a custom icon', () => {

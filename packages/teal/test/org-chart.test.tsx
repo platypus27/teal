@@ -80,10 +80,10 @@ describe('OrgChart', () => {
     )
     expect(horizontal).toHaveLength(2)
     // First child: line runs from the node center past its right edge.
-    expect(horizontal[0]!.className).toContain('teal-u-left-1/2')
-    expect(horizontal[0]!.className).toContain('-teal-u-right-2')
+    expect(horizontal[0]!.className).toContain('teal-u-start-1/2')
+    expect(horizontal[0]!.className).toContain('-teal-u-end-2')
     // Last child: line runs from past its left edge to the node center.
-    expect(horizontal[1]!.className).toContain('-teal-u-left-2')
-    expect(horizontal[1]!.className).toContain('teal-u-right-1/2')
+    expect(horizontal[1]!.className).toContain('-teal-u-start-2')
+    expect(horizontal[1]!.className).toContain('teal-u-end-1/2')
   })
 })

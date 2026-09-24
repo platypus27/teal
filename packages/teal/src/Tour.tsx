@@ -148,7 +148,7 @@ export const Tour = forwardRef<HTMLDivElement, TourProps>(function Tour(
         aria-labelledby={titleId}
         className={cn(
           'teal-overlay-surface teal-u-fixed teal-u-z-[var(--teal-z-popover)] teal-u-w-80 teal-u-border teal-u-bg-surface teal-u-p-4 teal-u-text-on-surface',
-          position.centered && 'teal-u-left-1/2 teal-u-top-1/2 -teal-u-translate-x-1/2 -teal-u-translate-y-1/2',
+          position.centered && 'teal-u-start-1/2 teal-u-top-1/2 -teal-u-translate-x-1/2 -teal-u-translate-y-1/2',
           !position.centered && step.placement === 'top' && '-teal-u-translate-y-full',
         )}
         style={position.centered ? undefined : { top: position.top, left: position.left, width: POPOVER_WIDTH }}
@@ -163,7 +163,7 @@ export const Tour = forwardRef<HTMLDivElement, TourProps>(function Tour(
           <span className="teal-u-text-xs teal-u-text-on-surface-variant">
             Step {index + 1} of {steps.length}
           </span>
-          <div className="teal-u-ml-auto teal-u-flex teal-u-gap-2">
+          <div className="teal-u-ms-auto teal-u-flex teal-u-gap-2">
             <Button variant="ghost" size="sm" onClick={() => onOpenChange(false)}>
               Skip
             </Button>

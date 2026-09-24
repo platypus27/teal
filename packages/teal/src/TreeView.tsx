@@ -1,4 +1,5 @@
-import { useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { forwardRef, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { ChevronRight } from 'lucide-react'
 import { cn } from './cn'
 
@@ -39,18 +40,20 @@ interface FlatItem {
 }
 
 /** A navigable tree with roving focus, expansion, and selection. */
-export function TreeView({
-  'aria-label': ariaLabel,
-  className,
-  defaultExpandedIds,
-  expandedIds,
-  items,
-  onExpandedChange,
-  onSelect,
-  selectedId,
-}: TreeViewProps) {
-  const [internalExpanded, setInternalExpanded] = useState<string[]>(defaultExpandedIds ?? [])
-  const effectiveExpanded = expandedIds ?? internalExpanded
+export const TreeView = forwardRef<HTMLUListElement, TreeViewProps>(function TreeView(
+  {
+    'aria-label': ariaLabel,
+    className,
+    defaultExpandedIds,
+    expandedIds,
+    items,
+    onExpandedChange,
+    onSelect,
+    selectedId,
+  },
+  ref,
+) {
+  const [effectiveExpanded, setInternalExpanded] = useControllableState(expandedIds, defaultExpandedIds ?? [])
   const expandedSet = new Set(effectiveExpanded)
 
   const [activeId, setActiveId] = useState<string | undefined>(selectedId)
@@ -70,7 +73,7 @@ export function TreeView({
   const tabbableId = visible.some((entry) => entry.id === activeId) ? activeId : visible[0]?.id
 
   function setExpanded(next: string[]) {
-    if (expandedIds === undefined) setInternalExpanded(next)
+    setInternalExpanded(next)
     onExpandedChange?.(next)
   }
 
@@ -117,9 +120,9 @@ export function TreeView({
           }}
           type="button"
           tabIndex={item.id === tabbableId ? 0 : -1}
-          style={{ paddingLeft: `${0.5 + depth * 1.25}rem` }}
+          style={{ paddingInlineStart: `${0.5 + depth * 1.25}rem` }}
           className={cn(
-            'teal-focus-ring teal-u-flex teal-u-w-full teal-u-items-center teal-u-gap-1 teal-u-rounded-lg teal-u-px-2 teal-u-py-1.5 teal-u-text-left teal-u-text-sm teal-u-text-on-surface hover:teal-u-bg-surface-container-high',
+            'teal-focus-ring teal-u-flex teal-u-w-full teal-u-items-center teal-u-gap-1 teal-u-rounded-lg teal-u-px-2 teal-u-py-1.5 teal-u-text-start teal-u-text-sm teal-u-text-on-surface hover:teal-u-bg-surface-container-high',
             isSelected && 'teal-u-bg-primary/10 teal-u-font-semibold teal-u-text-primary hover:teal-u-bg-primary/10',
           )}
           onClick={() => {
@@ -151,8 +154,8 @@ export function TreeView({
   }
 
   return (
-    <ul role="tree" aria-label={ariaLabel} className={cn('teal-u-grid teal-u-gap-0.5', className)}>
+    <ul ref={ref} role="tree" aria-label={ariaLabel} className={cn('teal-u-grid teal-u-gap-0.5', className)}>
       {items.map((item) => renderItem(item, 0, undefined))}
     </ul>
   )
-}
+})

@@ -46,7 +46,7 @@ export const ListItem = forwardRef<HTMLLIElement, ListItemProps>(function ListIt
     </>
   )
 
-  const layoutClasses = cn('teal-u-flex teal-u-w-full teal-u-items-center teal-u-gap-3 teal-u-text-left', dense ? 'teal-u-px-3 teal-u-py-1.5' : 'teal-u-px-3 teal-u-py-3')
+  const layoutClasses = cn('teal-u-flex teal-u-w-full teal-u-items-center teal-u-gap-3 teal-u-text-start', dense ? 'teal-u-px-3 teal-u-py-1.5' : 'teal-u-px-3 teal-u-py-3')
 
   return (
     <li

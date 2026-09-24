@@ -52,6 +52,16 @@ export const monthFormatter = new Intl.DateTimeFormat(undefined, {
   year: 'numeric',
 })
 
+const monthShortFormatter = new Intl.DateTimeFormat(undefined, {
+  month: 'short',
+  timeZone: 'UTC',
+})
+
+/** Localized short month names (Jan-first), computed in UTC so a plain month number can't shift days. */
+export const monthShortNames = Array.from({ length: 12 }, (_, index) =>
+  monthShortFormatter.format(new Date(Date.UTC(2024, index, 15))),
+)
+
 // 2024-01-07 is a Sunday; formatting one week yields localized weekday names.
 export const weekdayNames = Array.from({ length: 7 }, (_, i) =>
   weekdayFormatter.format(addDays(new Date(2024, 0, 7), i)),

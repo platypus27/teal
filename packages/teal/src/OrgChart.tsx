@@ -77,9 +77,9 @@ function OrgNodeView({ collapsedSet, node, onToggle }: OrgNodeViewProps) {
                     aria-hidden="true"
                     className={cn(
                       'teal-u-absolute teal-u-top-0 teal-u-h-px teal-u-bg-outline-variant',
-                      index === 0 && 'teal-u-left-1/2 -teal-u-right-2',
-                      index > 0 && index < childCount - 1 && '-teal-u-left-2 -teal-u-right-2',
-                      index === childCount - 1 && '-teal-u-left-2 teal-u-right-1/2',
+                      index === 0 && 'teal-u-start-1/2 -teal-u-end-2',
+                      index > 0 && index < childCount - 1 && '-teal-u-start-2 -teal-u-end-2',
+                      index === childCount - 1 && '-teal-u-start-2 teal-u-end-1/2',
                     )}
                   />
                 ) : null}

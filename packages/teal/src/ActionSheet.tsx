@@ -1,4 +1,5 @@
-import { forwardRef, useState, type ReactNode } from 'react'
+import { forwardRef, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { cn } from './cn'
 
@@ -50,11 +51,10 @@ export const ActionSheet = forwardRef<HTMLDivElement, ActionSheetProps>(function
   },
   ref,
 ) {
-  const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false)
-  const isOpen = open !== undefined ? open : internalOpen
+  const [isOpen, setInternalOpen] = useControllableState(open, defaultOpen ?? false)
 
   function setOpen(next: boolean) {
-    if (open === undefined) setInternalOpen(next)
+    setInternalOpen(next)
     onOpenChange?.(next)
   }
 
@@ -71,7 +71,7 @@ export const ActionSheet = forwardRef<HTMLDivElement, ActionSheetProps>(function
           ref={ref}
           aria-label={title ? undefined : label}
           className={cn(
-            'teal-bottom-sheet-content teal-u-fixed teal-u-bottom-0 teal-u-left-1/2 teal-u-z-[var(--teal-z-dialog)] teal-u-flex teal-u-w-full teal-u-max-w-xl -teal-u-translate-x-1/2 teal-u-flex-col teal-u-gap-2 teal-u-p-3 teal-u-text-on-surface teal-u-outline-none',
+            'teal-bottom-sheet-content teal-u-fixed teal-u-bottom-0 teal-u-start-1/2 teal-u-z-[var(--teal-z-dialog)] teal-u-flex teal-u-w-full teal-u-max-w-xl -teal-u-translate-x-1/2 teal-u-flex-col teal-u-gap-2 teal-u-p-3 teal-u-text-on-surface teal-u-outline-none',
             className,
           )}
         >

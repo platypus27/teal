@@ -22,7 +22,7 @@
     "generate:tokens": "node packages/teal/scripts/generate-tokens.mjs",
     "check:generated": "node packages/teal/scripts/generate-tokens.mjs --check && npm run check:generated --workspace @kryv/teal-docs",
     "pack:check": "npm pack --workspace @kryv/teal --dry-run --cache /tmp/teal-npm-cache",
-    "pack:verify": "npm run pack:check && npm run verify:package",
+    "pack:verify": "npm run pack:check && npm run verify:package && npm run check:size --workspace @kryv/teal",
     "verify:package": "node packages/teal/scripts/verify-package.mjs",
     "release:version": "npx changeset version && npm run generate --workspace @kryv/teal-docs && npm install --package-lock-only --ignore-scripts --no-audit --no-fund",
     "publish:package": "npm publish --workspace @kryv/teal --access public --provenance",

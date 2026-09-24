@@ -1,4 +1,5 @@
 import { forwardRef, useRef, useState, type HTMLAttributes, type KeyboardEvent } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { Pencil } from 'lucide-react'
 import { IconButton } from './Button'
 import { cn } from './cn'
@@ -25,8 +26,7 @@ export const Editable = forwardRef<HTMLDivElement, EditableProps>(function Edita
   { className, defaultValue = '', disabled = false, label = 'text', onChange, onSubmit, placeholder = 'Empty', value, ...props },
   ref,
 ) {
-  const [internalValue, setInternalValue] = useState(defaultValue)
-  const committed = value !== undefined ? value : internalValue
+  const [committed, setInternalValue] = useControllableState(value, defaultValue)
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState('')
   // Set by Escape so the following blur cancels instead of committing.
@@ -40,7 +40,7 @@ export const Editable = forwardRef<HTMLDivElement, EditableProps>(function Edita
 
   function commit() {
     setEditing(false)
-    if (value === undefined) setInternalValue(draft)
+    setInternalValue(draft)
     onSubmit?.(draft)
   }
 

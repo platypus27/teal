@@ -54,6 +54,9 @@ const fontsMarkup = `<link rel="preconnect" href="https://fonts.googleapis.com" 
 const themeSnippet = `// Teal themes by toggling the "dark" class on <html>.
 document.documentElement.classList.toggle('dark', darkMode)`
 
+const migrationSnippet = `npx @kryv/teal-codemod@latest src/
+# Review the diff, then apply the printed manual follow-ups.`
+
 const usageSnippet = `import { Button, Field, Input } from '@kryv/teal'
 
 export function SignInForm() {
@@ -100,7 +103,7 @@ export const installSteps = [
   {
     title: 'Load the fonts',
     description:
-      'Teal typesets headlines in Plus Jakarta Sans and body copy in Manrope. Add the Google Fonts links to your document head.',
+      'Teal typesets headlines in Plus Jakarta Sans and body copy in Manrope. Self-host them with @fontsource so the fonts ship from your own origin, or use the Google Fonts links for quick prototypes.',
     code: fontsMarkup,
     lang: 'html',
     label: 'index.html',
@@ -118,5 +121,13 @@ export const installSteps = [
     code: usageSnippet,
     lang: 'jsx',
     label: 'SignInForm.jsx',
+  },
+  {
+    title: 'Migrate across breaking releases',
+    description:
+      'When a release consolidates components, run the published codemod on a clean working tree: it renames removed components, inserts the replacement attributes, and lists the prop changes it cannot make automatically.',
+    code: migrationSnippet,
+    lang: 'sh',
+    label: 'terminal',
   },
 ]

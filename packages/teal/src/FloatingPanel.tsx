@@ -1,13 +1,14 @@
-import { forwardRef, useId, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { forwardRef, useId, type KeyboardEvent, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { X } from 'lucide-react'
 import { IconButton } from './Button'
 import { cn } from './cn'
 
 const anchorClasses = {
-  'top-left': 'teal-u-left-4 teal-u-top-4',
-  'top-right': 'teal-u-right-4 teal-u-top-4',
-  'bottom-left': 'teal-u-bottom-4 teal-u-left-4',
-  'bottom-right': 'teal-u-bottom-4 teal-u-right-4',
+  'top-left': 'teal-u-start-4 teal-u-top-4',
+  'top-right': 'teal-u-end-4 teal-u-top-4',
+  'bottom-left': 'teal-u-bottom-4 teal-u-start-4',
+  'bottom-right': 'teal-u-bottom-4 teal-u-end-4',
 }
 
 export interface FloatingPanelProps {
@@ -47,12 +48,11 @@ export const FloatingPanel = forwardRef<HTMLDivElement, FloatingPanelProps>(func
   },
   ref,
 ) {
-  const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false)
-  const isOpen = open !== undefined ? open : internalOpen
+  const [isOpen, setInternalOpen] = useControllableState(open, defaultOpen ?? false)
   const titleId = useId()
 
   function setOpen(next: boolean) {
-    if (open === undefined) setInternalOpen(next)
+    setInternalOpen(next)
     onOpenChange?.(next)
   }
 
@@ -80,7 +80,7 @@ export const FloatingPanel = forwardRef<HTMLDivElement, FloatingPanelProps>(func
         className,
       )}
     >
-      <div className="teal-u-flex teal-u-shrink-0 teal-u-items-center teal-u-justify-between teal-u-gap-2 teal-u-border-b teal-u-border-[color:var(--teal-border-subtle)] teal-u-py-3 teal-u-pl-4 teal-u-pr-2">
+      <div className="teal-u-flex teal-u-shrink-0 teal-u-items-center teal-u-justify-between teal-u-gap-2 teal-u-border-b teal-u-border-[color:var(--teal-border-subtle)] teal-u-py-3 teal-u-ps-4 teal-u-pe-2">
         <h2 id={titleId} className="teal-u-font-headline teal-u-text-sm teal-u-font-bold teal-u-text-on-surface">
           {title}
         </h2>

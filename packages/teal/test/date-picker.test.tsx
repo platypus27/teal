@@ -327,9 +327,9 @@ describe("DatePicker range selection", () => {
 		expect(midCell).toHaveClass("teal-u-w-full", "teal-u-bg-primary/10");
 		expect(startCell).toHaveClass(
 			"teal-u-bg-primary/10",
-			"teal-u-rounded-l-full",
+			"teal-u-rounded-s-full",
 		);
-		expect(endCell).toHaveClass("teal-u-bg-primary/10", "teal-u-rounded-r-full");
+		expect(endCell).toHaveClass("teal-u-bg-primary/10", "teal-u-rounded-e-full");
 		// Endpoints keep their primary circle:
 		expect(currentMonthDayButton(10)).toHaveClass(
 			"teal-u-bg-primary",

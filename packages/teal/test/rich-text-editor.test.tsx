@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { RichTextEditor } from '../src/RichTextEditor'
 
@@ -101,5 +101,62 @@ describe('RichTextEditor', () => {
     fireEvent.change(editor(), { target: { value: 'locked!' } })
     expect(onChange).toHaveBeenCalledWith('locked!')
     expect(editor().value).toBe('locked')
+  })
+
+  it('applies bold and italic with keyboard shortcuts', () => {
+    const onChange = vi.fn()
+    render(<RichTextEditor label="Body" defaultValue="hello world" onChange={onChange} />)
+
+    const textarea = editor()
+    textarea.setSelectionRange(0, 5)
+    fireEvent.keyDown(textarea, { key: 'b', ctrlKey: true })
+    expect(onChange).toHaveBeenLastCalledWith('**hello** world')
+
+    textarea.setSelectionRange(10, 15)
+    fireEvent.keyDown(textarea, { key: 'i', metaKey: true })
+    expect(onChange).toHaveBeenLastCalledWith('**hello** *world*')
+    expect(textarea.value).toBe('**hello** *world*')
+  })
+
+  it('reports the active wrap format with aria-pressed', async () => {
+    const user = userEvent.setup()
+    render(<RichTextEditor label="Body" defaultValue="a **bold** word" />)
+
+    const bold = screen.getByRole('button', { name: 'Bold' })
+    expect(bold).toHaveAttribute('aria-pressed', 'false')
+
+    const textarea = editor()
+    textarea.setSelectionRange(4, 8)
+    fireEvent.select(textarea)
+    expect(bold).toHaveAttribute('aria-pressed', 'true')
+
+    await user.click(bold)
+    expect(bold).toHaveAttribute('aria-pressed', 'false')
+    expect(textarea.value).toBe('a bold word')
+  })
+
+  it('reports line-prefix formats with aria-pressed', () => {
+    render(<RichTextEditor label="Body" defaultValue={'## Title\n- item'} />)
+
+    expect(screen.getByRole('button', { name: 'Heading' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: 'Bulleted list' })).toHaveAttribute('aria-pressed', 'false')
+
+    const textarea = editor()
+    textarea.setSelectionRange(9, 13)
+    fireEvent.select(textarea)
+    expect(screen.getByRole('button', { name: 'Bulleted list' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: 'Heading' })).toHaveAttribute('aria-pressed', 'false')
+  })
+
+  it('announces formatting actions to screen readers', async () => {
+    const user = userEvent.setup()
+    render(<RichTextEditor label="Body" defaultValue="hello" />)
+
+    editor().setSelectionRange(0, 5)
+    await user.click(screen.getByRole('button', { name: 'Bold' }))
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Bold applied'))
+
+    await user.click(screen.getByRole('button', { name: 'Bold' }))
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Bold removed'))
   })
 })

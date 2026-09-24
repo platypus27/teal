@@ -29,8 +29,8 @@ describe('ButtonGroup', () => {
     const group = screen.getByRole('group')
     expect(group.className).toContain('[&_button]:teal-u-rounded-none')
     expect(group.className).toContain('-teal-u-space-x-px')
-    expect(group.className).toContain('[&>:first-child]:teal-u-rounded-l-xl')
-    expect(group.className).toContain('[&>:last-child]:teal-u-rounded-r-xl')
+    expect(group.className).toContain('[&>:first-child]:teal-u-rounded-s-xl')
+    expect(group.className).toContain('[&>:last-child]:teal-u-rounded-e-xl')
   })
 
   it('applies vertical stacking classes for orientation="vertical"', () => {

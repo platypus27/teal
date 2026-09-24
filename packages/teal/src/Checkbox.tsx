@@ -67,7 +67,7 @@ export const Checkbox = forwardRef<React.ComponentRef<typeof CheckboxPrimitive.R
           disabled={disabled}
           onClick={toggle}
           className={cn(
-            'teal-focus-ring teal-u-flex teal-u-min-w-40 teal-u-items-start teal-u-justify-between teal-u-gap-3 teal-u-rounded-2xl teal-u-border teal-u-border-solid teal-u-p-4 teal-u-text-left teal-u-transition-colors',
+            'teal-focus-ring teal-u-flex teal-u-min-w-40 teal-u-items-start teal-u-justify-between teal-u-gap-3 teal-u-rounded-2xl teal-u-border teal-u-border-solid teal-u-p-4 teal-u-text-start teal-u-transition-colors',
             isChecked
               ? 'teal-u-border-primary teal-u-bg-primary/5'
               : 'teal-u-border-[color:var(--teal-border-subtle)] teal-u-bg-surface-container hover:teal-u-border-[color:var(--teal-border-strong)]',

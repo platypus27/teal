@@ -17,7 +17,7 @@ export default tseslint.config(
   {
     files: ['test/**/*.mjs'],
     languageOptions: {
-      globals: { ...globals.browser, ...globals.node },
+      globals: { ...globals.browser, ...globals.node, describe: 'readonly', it: 'readonly', expect: 'readonly' },
     },
   },
 )

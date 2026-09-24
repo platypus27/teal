@@ -151,9 +151,9 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(function
                     key={country.code}
                     value={country.dial}
                     textValue={`${country.label} (+${country.dial})`}
-                    className="teal-focus-ring teal-u-relative teal-u-flex teal-u-min-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-rounded-lg teal-u-py-2 teal-u-pl-8 teal-u-pr-3 teal-u-text-sm data-[disabled]:teal-u-pointer-events-none data-[disabled]:teal-u-opacity-45 data-[highlighted]:teal-u-bg-primary/10 data-[highlighted]:teal-u-text-primary"
+                    className="teal-focus-ring teal-u-relative teal-u-flex teal-u-min-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-rounded-lg teal-u-py-2 teal-u-ps-8 teal-u-pe-3 teal-u-text-sm data-[disabled]:teal-u-pointer-events-none data-[disabled]:teal-u-opacity-45 data-[highlighted]:teal-u-bg-primary/10 data-[highlighted]:teal-u-text-primary"
                   >
-                    <span className="teal-u-absolute teal-u-left-2 teal-u-flex teal-u-size-[var(--teal-icon-sm)] teal-u-items-center teal-u-justify-center">
+                    <span className="teal-u-absolute teal-u-start-2 teal-u-flex teal-u-size-[var(--teal-icon-sm)] teal-u-items-center teal-u-justify-center">
                       <SelectPrimitive.ItemIndicator>
                         <Check aria-hidden="true" className="teal-u-size-[var(--teal-icon-sm)]" />
                       </SelectPrimitive.ItemIndicator>

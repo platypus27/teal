@@ -54,7 +54,7 @@ export const NavRailItem = forwardRef<HTMLElement, NavRailItemProps>(function Na
       {badge ? (
         <span
           aria-hidden="true"
-          className="teal-u-absolute teal-u-right-1.5 teal-u-top-1.5 teal-u-size-2 teal-u-rounded-full teal-u-bg-error"
+          className="teal-u-absolute teal-u-end-1.5 teal-u-top-1.5 teal-u-size-2 teal-u-rounded-full teal-u-bg-error"
         />
       ) : null}
     </>

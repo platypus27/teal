@@ -51,7 +51,7 @@ export const TopBarSearch = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivEle
 
 export const TopBarActions = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   function TopBarActions({ className, ...props }, ref) {
-    return <div ref={ref} className={cn('teal-u-ml-auto teal-u-flex teal-u-items-center teal-u-gap-1', className)} {...props} />
+    return <div ref={ref} className={cn('teal-u-ms-auto teal-u-flex teal-u-items-center teal-u-gap-1', className)} {...props} />
   },
 )
 

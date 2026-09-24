@@ -132,7 +132,7 @@ export const accessibility = {
   'date-picker': {
     keyboard: [
       { keys: ['Arrow Down'], action: 'Opens the popover from the field.' },
-      { keys: ['Arrow Left', 'Arrow Right'], action: 'Moves the focused day by one day; in month or year mode, moves by one month or year.' },
+      { keys: ['Arrow Left', 'Arrow Right'], action: 'Moves the focused day by one day; in month or year mode, moves by one month or year. In RTL layouts the horizontal directions flip with the grid.' },
       { keys: ['Arrow Up', 'Arrow Down'], action: 'Moves the focused day by one week; in month or year mode, moves by one row.' },
       { keys: ['Home', 'End'], action: 'Jumps to the first or last month of the year, or year of the decade page.' },
       { keys: ['Enter', 'Space'], action: 'Selects the focused day, month, or year; in range mode, picks the start then the end.' },
@@ -292,6 +292,9 @@ export const accessibility = {
     ],
   },
   toolbar: {
+    keyboard: [
+      { keys: ['Tab'], action: 'Moves through the toolbar\'s controls in DOM order; the toolbar itself implements no roving focus.' },
+    ],
     notes: [
       'Renders role="toolbar" so assistive technology announces the grouped controls as one toolbar.',
       'ToolbarGroup uses role="group" to keep related controls together in the accessibility tree.',
@@ -757,9 +760,12 @@ export const accessibility = {
   'rich-text-editor': {
     keyboard: [
       { keys: ['Tab'], action: 'Moves between the toolbar buttons and the textarea.' },
+      { keys: ['Control B', 'Meta B'], action: 'Toggles bold on the text area selection.' },
+      { keys: ['Control I', 'Meta I'], action: 'Toggles italic on the text area selection.' },
     ],
     notes: [
       'Toolbar actions are grouped in a labelled toolbar and each button has an accessible name.',
+      'Bold, italic, heading, and bulleted-list buttons expose their active state with aria-pressed, and formatting actions are announced through a live region.',
       'The preview is a labelled region so screen reader users can skip or inspect the rendered markdown.',
     ],
   },
@@ -811,7 +817,8 @@ export const accessibility = {
     ],
     notes: [
       'The trigger is a combobox with aria-haspopup="tree"; options follow the tree/treeitem roles with aria-expanded and aria-selected.',
-      'With display="columns" the trigger uses aria-haspopup="listbox" and each level is a labelled listbox that commits the full path of values.',
+      'Exactly one rendered item is tabbable at a time (a roving tabindex), and arrow navigation skips disabled items.',
+      "With display=\"columns\" the trigger uses aria-haspopup=\"listbox\" and each level is a labelled listbox that commits the full path of values.",
       'The selected value\'s ancestors are expanded automatically so the selection is visible on open.',
     ],
   },

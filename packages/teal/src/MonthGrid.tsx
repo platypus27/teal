@@ -88,8 +88,8 @@ export function MonthGrid({
                 className={cn(
                   'teal-u-flex teal-u-h-9 teal-u-w-full teal-u-items-center teal-u-justify-center',
                   hasBand && 'teal-u-bg-primary/10',
-                  isStart && range.to != null && 'teal-u-rounded-l-full',
-                  isEnd && 'teal-u-rounded-r-full',
+                  isStart && range.to != null && 'teal-u-rounded-s-full',
+                  isEnd && 'teal-u-rounded-e-full',
                 )}
               >
                 <button

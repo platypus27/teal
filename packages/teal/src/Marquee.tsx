@@ -50,10 +50,10 @@ export const Marquee = forwardRef<HTMLDivElement, MarqueeProps>(function Marquee
     >
       <style>{marqueeStyles}</style>
       <div className="teal-marquee-track teal-u-flex teal-u-w-max">
-        <div className="teal-u-flex teal-u-shrink-0 teal-u-items-center teal-u-gap-8 teal-u-pr-8">{children}</div>
+        <div className="teal-u-flex teal-u-shrink-0 teal-u-items-center teal-u-gap-8 teal-u-pe-8">{children}</div>
         <div
           aria-hidden="true"
-          className="teal-u-flex teal-u-shrink-0 teal-u-items-center teal-u-gap-8 teal-u-pr-8"
+          className="teal-u-flex teal-u-shrink-0 teal-u-items-center teal-u-gap-8 teal-u-pe-8"
         >
           {children}
         </div>

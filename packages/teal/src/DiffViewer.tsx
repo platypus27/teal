@@ -106,10 +106,10 @@ export const DiffViewer = forwardRef<HTMLDivElement, DiffViewerProps>(function D
           <div key={index} className={cn('teal-u-flex teal-u-items-baseline', styles.row)}>
             {lineNumbers ? (
               <>
-                <span aria-hidden="true" className="teal-u-w-10 teal-u-shrink-0 teal-u-select-none teal-u-pr-2 teal-u-text-right teal-u-text-on-surface-variant teal-u-opacity-60">
+                <span aria-hidden="true" className="teal-u-w-10 teal-u-shrink-0 teal-u-select-none teal-u-pe-2 teal-u-text-end teal-u-text-on-surface-variant teal-u-opacity-60">
                   {line.type === 'add' ? '' : oldLine}
                 </span>
-                <span aria-hidden="true" className="teal-u-w-10 teal-u-shrink-0 teal-u-select-none teal-u-pr-2 teal-u-text-right teal-u-text-on-surface-variant teal-u-opacity-60">
+                <span aria-hidden="true" className="teal-u-w-10 teal-u-shrink-0 teal-u-select-none teal-u-pe-2 teal-u-text-end teal-u-text-on-surface-variant teal-u-opacity-60">
                   {line.type === 'remove' ? '' : newLine}
                 </span>
               </>

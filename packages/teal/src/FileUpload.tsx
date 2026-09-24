@@ -1,4 +1,5 @@
-import { useRef, useState, type DragEvent, type ReactNode } from 'react'
+import { forwardRef, useRef, useState, type DragEvent, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { File as FileIcon, Upload, X } from 'lucide-react'
 import { Button, IconButton } from './Button'
 import { cn } from './cn'
@@ -45,21 +46,24 @@ function formatSize(bytes: number) {
 }
 
 /** A labeled dropzone with a browsable file input and a removable file list. */
-export function FileUpload({
-  'aria-describedby': describedBy,
-  'aria-invalid': invalid,
-  accept,
-  className,
-  description,
-  disabled = false,
-  id,
-  label,
-  multiple = false,
-  onFilesAdded,
-  onValueChange,
-  required,
-  value,
-}: FileUploadProps) {
+export const FileUpload = forwardRef<HTMLDivElement, FileUploadProps>(function FileUpload(
+  {
+    'aria-describedby': describedBy,
+    'aria-invalid': invalid,
+    accept,
+    className,
+    description,
+    disabled = false,
+    id,
+    label,
+    multiple = false,
+    onFilesAdded,
+    onValueChange,
+    required,
+    value,
+  },
+  ref,
+) {
   const semantics = useFormSemantics({
     description,
     id,
@@ -72,11 +76,10 @@ export function FileUpload({
 
   const inputRef = useRef<HTMLInputElement>(null)
   const [dragOver, setDragOver] = useState(false)
-  const [internalFiles, setInternalFiles] = useState<FileUploadFile[]>([])
-  const files = value ?? internalFiles
+  const [files, setInternalFiles] = useControllableState<FileUploadFile[]>(value, [])
 
   function commitFiles(next: FileUploadFile[], added?: File[]) {
-    if (value === undefined) setInternalFiles(next)
+    setInternalFiles(next)
     onValueChange?.(next)
     if (added && added.length > 0) onFilesAdded?.(added)
   }
@@ -106,7 +109,7 @@ export function FileUpload({
   }
 
   return (
-    <div className={cn('teal-u-grid teal-u-gap-1.5', className)}>
+    <div ref={ref} className={cn('teal-u-grid teal-u-gap-1.5', className)}>
       {showLabel ? (
         <label htmlFor={semantics.controlId} className="teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface">
           {label}
@@ -179,4 +182,4 @@ export function FileUpload({
       ) : null}
     </div>
   )
-}
+})

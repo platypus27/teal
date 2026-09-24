@@ -45,7 +45,7 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(function T
   const displayHour = is12h ? time.hour % 12 || 12 : time.hour
 
   function commit(hour: number, minute: number) {
-    if (value === undefined) setInternalTime({ hour, minute })
+    setInternalTime({ hour, minute })
     onChange?.(`${pad(hour)}:${pad(minute)}`)
   }
 

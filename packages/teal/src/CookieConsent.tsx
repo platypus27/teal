@@ -1,4 +1,5 @@
-import { forwardRef, useState, type HTMLAttributes, type ReactNode } from 'react'
+import { forwardRef, type HTMLAttributes, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import { Cookie } from 'lucide-react'
 import { Button } from './Button'
 import { cn } from './cn'
@@ -51,11 +52,10 @@ export const CookieConsent = forwardRef<HTMLDivElement, CookieConsentProps>(func
   },
   ref,
 ) {
-  const [internalOpen, setInternalOpen] = useState(defaultOpen)
-  const visible = open !== undefined ? open : internalOpen
+  const [visible, setInternalOpen] = useControllableState(open, defaultOpen ?? false)
 
   function dismiss() {
-    if (open === undefined) setInternalOpen(false)
+    setInternalOpen(false)
     onOpenChange?.(false)
   }
 

@@ -1,4 +1,5 @@
 import { forwardRef, useState, type ChangeEvent, type ReactNode } from "react";
+import { useControllableState } from "./use-controllable-state";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "./cn";
 import {
@@ -74,11 +75,11 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
 		const showLabel = hasFormContent(label) && !semantics.labeledByField;
 		const showDescription = hasFormContent(description);
 
-		const [internalNumber, setInternalNumber] = useState<number | undefined>(
+		const [number, setInternalNumber] = useControllableState<number | undefined>(
+			value,
 			defaultValue,
 		);
 		const [draft, setDraft] = useState<string | null>(null);
-		const number = value !== undefined ? value : internalNumber;
 		const text = draft ?? (number === undefined ? "" : String(number));
 
 		function clamp(next: number) {
@@ -88,7 +89,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
 		}
 
 		function commit(next: number | undefined) {
-			if (value === undefined) setInternalNumber(next);
+			setInternalNumber(next);
 			onValueChange?.(next);
 		}
 
@@ -155,10 +156,10 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
 						onBlur={handleBlur}
 						className={cn(
 							fieldVariants(),
-							"teal-u-min-h-12 teal-u-pr-9 [appearance:textfield] [&::-webkit-inner-spin-button]:teal-u-appearance-none [&::-webkit-outer-spin-button]:teal-u-appearance-none",
+							"teal-u-min-h-12 teal-u-pe-9 [appearance:textfield] [&::-webkit-inner-spin-button]:teal-u-appearance-none [&::-webkit-outer-spin-button]:teal-u-appearance-none",
 						)}
 					/>
-					<div className="teal-u-absolute teal-u-inset-y-0 teal-u-right-0 teal-u-flex teal-u-flex-col teal-u-overflow-hidden teal-u-rounded-r-xl teal-u-border-l teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)]">
+					<div className="teal-u-absolute teal-u-inset-y-0 teal-u-end-0 teal-u-flex teal-u-flex-col teal-u-overflow-hidden teal-u-rounded-e-xl teal-u-border-s teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)]">
 						<button
 							type="button"
 							aria-label="Increment"

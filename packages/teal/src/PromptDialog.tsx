@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useId, useState, type FormEvent, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { Button } from './Button'
 import { Input } from './Input'
@@ -50,8 +51,7 @@ export const PromptDialog = forwardRef<HTMLDivElement, PromptDialogProps>(functi
   },
   ref,
 ) {
-  const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false)
-  const isOpen = open !== undefined ? open : internalOpen
+  const [isOpen, setInternalOpen] = useControllableState(open, defaultOpen ?? false)
   const [value, setValue] = useState(defaultValue)
   const inputId = useId()
 
@@ -60,7 +60,7 @@ export const PromptDialog = forwardRef<HTMLDivElement, PromptDialogProps>(functi
   }, [isOpen, defaultValue])
 
   function setOpen(next: boolean) {
-    if (open === undefined) setInternalOpen(next)
+    setInternalOpen(next)
     onOpenChange?.(next)
   }
 
@@ -82,7 +82,7 @@ export const PromptDialog = forwardRef<HTMLDivElement, PromptDialogProps>(functi
         <DialogPrimitive.Content
           ref={ref}
           className={cn(
-            'teal-dialog-content teal-overlay-surface teal-u-fixed teal-u-left-1/2 teal-u-top-1/2 teal-u-z-[var(--teal-z-dialog)] teal-u-max-h-[calc(100vh-2rem)] teal-u-w-[calc(100%-2rem)] teal-u-max-w-md -teal-u-translate-x-1/2 -teal-u-translate-y-1/2 teal-u-overflow-y-auto teal-u-border teal-u-bg-surface teal-u-p-6 teal-u-text-on-surface teal-u-outline-none',
+            'teal-dialog-content teal-overlay-surface teal-u-fixed teal-u-start-1/2 teal-u-top-1/2 teal-u-z-[var(--teal-z-dialog)] teal-u-max-h-[calc(100vh-2rem)] teal-u-w-[calc(100%-2rem)] teal-u-max-w-md -teal-u-translate-x-1/2 -teal-u-translate-y-1/2 teal-u-overflow-y-auto teal-u-border teal-u-bg-surface teal-u-p-6 teal-u-text-on-surface teal-u-outline-none',
             className,
           )}
         >

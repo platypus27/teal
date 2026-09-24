@@ -54,7 +54,7 @@ function CommentNode({ comment, depth, formatTime, onReply }: CommentNodeProps) 
   const hasReplies = replies.length > 0
 
   return (
-    <li className={cn(depth > 0 && 'teal-u-ml-4 teal-u-border-0 teal-u-border-l-2 teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-pl-4')}>
+    <li className={cn(depth > 0 && 'teal-u-ms-4 teal-u-border-0 teal-u-border-s-2 teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-ps-4')}>
       <div className="teal-u-flex teal-u-items-start teal-u-gap-3">
         <Avatar size="sm" name={comment.author} {...(comment.avatarSrc !== undefined ? { src: comment.avatarSrc } : {})} />
         <div className="teal-u-min-w-0 teal-u-flex-1">

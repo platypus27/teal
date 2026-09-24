@@ -97,7 +97,7 @@ export const LogViewer = forwardRef<HTMLDivElement, LogViewerProps>(function Log
       )}
       {...props}
     >
-      <div className="teal-u-flex teal-u-items-center teal-u-justify-between teal-u-gap-2 teal-u-border-0 teal-u-border-b teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-py-1 teal-u-pl-3 teal-u-pr-1.5">
+      <div className="teal-u-flex teal-u-items-center teal-u-justify-between teal-u-gap-2 teal-u-border-0 teal-u-border-b teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-py-1 teal-u-ps-3 teal-u-pe-1.5">
         <span className="teal-u-text-xs teal-u-font-semibold teal-u-uppercase teal-u-tracking-wider teal-u-text-on-surface-variant">
           {label} · {lines.length} {lines.length === 1 ? 'line' : 'lines'}
         </span>

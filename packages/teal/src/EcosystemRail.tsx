@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { forwardRef, type ReactNode } from 'react'
 import { HealthIndicator, type HealthIndicatorStatus } from './HealthIndicator'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarItem, SidebarSection } from './Sidebar'
 
@@ -52,23 +52,16 @@ export interface EcosystemRailProps {
   side?: 'left' | 'right'
 }
 
-export function EcosystemRail({
-  ariaLabel = 'Kryv ecosystem',
-  brand,
-  className,
-  destinations,
-  footer,
-  home,
-  mode = 'rail',
-  onNavigate,
-  side = 'left',
-}: EcosystemRailProps) {
+export const EcosystemRail = forwardRef<HTMLElement, EcosystemRailProps>(function EcosystemRail(
+  { ariaLabel = 'Kryv ecosystem', brand, className, destinations, footer, home, mode = 'rail', onNavigate, side = 'left' },
+  ref,
+) {
   const reportNavigation = (id: string) => () => {
     onNavigate?.(id)
   }
 
   return (
-    <Sidebar aria-label={ariaLabel} className={className} mode={mode} side={side}>
+    <Sidebar ref={ref} aria-label={ariaLabel} className={className} mode={mode} side={side}>
       {brand ? <SidebarHeader>{brand}</SidebarHeader> : null}
       <SidebarContent>
         <SidebarSection label="Ecosystem">
@@ -106,4 +99,4 @@ export function EcosystemRail({
       {footer ? <SidebarFooter>{footer}</SidebarFooter> : null}
     </Sidebar>
   )
-}
+})

@@ -1,7 +1,8 @@
-import { forwardRef, useEffect, useRef, useState } from 'react'
+import { forwardRef } from 'react'
 import { Check, Copy } from 'lucide-react'
 import { Button, IconButton } from './Button'
 import { VisuallyHidden } from './VisuallyHidden'
+import { useCopied } from './use-copied'
 
 export interface CopyButtonProps {
   /** Text written to the clipboard when the button is clicked. */
@@ -24,15 +25,7 @@ export const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>(functio
   { className, copiedLabel = 'Copied', iconOnly = false, label = 'Copy', size, value, variant },
   ref,
 ) {
-  const [copied, setCopied] = useState(false)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  useEffect(
-    () => () => {
-      if (timeoutRef.current !== null) clearTimeout(timeoutRef.current)
-    },
-    [],
-  )
+  const [copied, markCopied] = useCopied()
 
   const copyValue = async () => {
     try {
@@ -40,9 +33,7 @@ export const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>(functio
     } catch {
       // Clipboard access can be denied; still give feedback so the UI feels responsive.
     }
-    setCopied(true)
-    if (timeoutRef.current !== null) clearTimeout(timeoutRef.current)
-    timeoutRef.current = setTimeout(() => setCopied(false), 1600)
+    markCopied()
   }
 
   const icon = copied ? (

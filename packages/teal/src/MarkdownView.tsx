@@ -190,14 +190,14 @@ function renderBlock(block: Block, index: number): ReactNode {
       return (
         <blockquote
           key={index}
-          className="teal-u-border-0 teal-u-border-l-4 teal-u-border-solid teal-u-border-primary/40 teal-u-pl-3 teal-u-italic teal-u-text-on-surface-variant"
+          className="teal-u-border-0 teal-u-border-s-4 teal-u-border-solid teal-u-border-primary/40 teal-u-ps-3 teal-u-italic teal-u-text-on-surface-variant"
         >
           {renderInline(block.text)}
         </blockquote>
       )
     case 'ul':
       return (
-        <ul key={index} className="teal-u-list-disc teal-u-pl-6">
+        <ul key={index} className="teal-u-list-disc teal-u-ps-6">
           {block.items.map((item, itemIndex) => (
             <li key={itemIndex}>{renderInline(item)}</li>
           ))}
@@ -205,7 +205,7 @@ function renderBlock(block: Block, index: number): ReactNode {
       )
     case 'ol':
       return (
-        <ol key={index} className="teal-u-list-decimal teal-u-pl-6">
+        <ol key={index} className="teal-u-list-decimal teal-u-ps-6">
           {block.items.map((item, itemIndex) => (
             <li key={itemIndex}>{renderInline(item)}</li>
           ))}

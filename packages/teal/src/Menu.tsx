@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react'
+import { forwardRef, type ReactElement } from 'react'
 import * as MenuPrimitive from '@radix-ui/react-dropdown-menu'
 import * as ContextMenuPrimitive from '@radix-ui/react-context-menu'
 import { cn } from './cn'
@@ -34,7 +34,7 @@ export type MenuProps = MenuSharedProps &
       }
   )
 
-export function Menu(props: MenuProps) {
+export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(props, ref) {
   const { className, items, label } = props
   const contentClassName = cn(
     'teal-popper-content teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-min-w-44 teal-u-border teal-u-bg-surface teal-u-p-1 teal-u-text-on-surface',
@@ -46,7 +46,7 @@ export function Menu(props: MenuProps) {
       <ContextMenuPrimitive.Root>
         <ContextMenuPrimitive.Trigger asChild>{props.children}</ContextMenuPrimitive.Trigger>
         <ContextMenuPrimitive.Portal>
-          <ContextMenuPrimitive.Content aria-label={label} className={contentClassName}>
+          <ContextMenuPrimitive.Content ref={ref} aria-label={label} className={contentClassName}>
             <MenuItems items={items} Item={ContextMenuPrimitive.Item} Separator={ContextMenuPrimitive.Separator} />
           </ContextMenuPrimitive.Content>
         </ContextMenuPrimitive.Portal>
@@ -59,10 +59,10 @@ export function Menu(props: MenuProps) {
     <MenuPrimitive.Root modal={modal}>
       <MenuPrimitive.Trigger asChild>{trigger}</MenuPrimitive.Trigger>
       <MenuPrimitive.Portal>
-        <MenuPrimitive.Content align={align} sideOffset={6} aria-label={label} className={contentClassName}>
+        <MenuPrimitive.Content ref={ref} align={align} sideOffset={6} aria-label={label} className={contentClassName}>
           <MenuItems items={items} Item={MenuPrimitive.Item} Separator={MenuPrimitive.Separator} />
         </MenuPrimitive.Content>
       </MenuPrimitive.Portal>
     </MenuPrimitive.Root>
   )
-}
+})

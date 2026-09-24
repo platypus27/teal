@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import { forwardRef, type ReactNode } from 'react'
 import { X } from 'lucide-react'
 import { cn } from './cn'
 
@@ -16,10 +16,14 @@ export interface ChipProps {
   variant?: 'neutral' | 'primary'
 }
 
-export function Chip({ className, disabled = false, label, onRemove, selected = false, variant = 'neutral' }: ChipProps) {
+export const Chip = forwardRef<HTMLSpanElement, ChipProps>(function Chip(
+  { className, disabled = false, label, onRemove, selected = false, variant = 'neutral' },
+  ref,
+) {
   const emphasized = selected || variant === 'primary'
   return (
     <span
+      ref={ref}
       className={cn(
         'teal-u-inline-flex teal-u-items-center teal-u-gap-1 teal-u-rounded-full teal-u-border teal-u-border-solid teal-u-px-2.5 teal-u-py-1 teal-u-text-xs teal-u-font-semibold',
         emphasized
@@ -43,4 +47,4 @@ export function Chip({ className, disabled = false, label, onRemove, selected = 
       ) : null}
     </span>
   )
-}
+})

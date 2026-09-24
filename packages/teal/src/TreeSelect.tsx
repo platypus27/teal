@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { useControllableState } from './use-controllable-state'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { Check, ChevronDown, ChevronRight } from 'lucide-react'
 import { cn } from './cn'
@@ -122,8 +123,7 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
   const treeId = `${semantics.controlId}-tree`
   const listboxId = `${semantics.controlId}-listbox`
 
-  const [internalValue, setInternalValue] = useState<string | string[] | undefined>(defaultValue)
-  const selectedValue = value !== undefined ? value : internalValue
+  const [selectedValue, setInternalValue] = useControllableState<string | string[] | undefined>(value, defaultValue)
   const selectedTreeValue = typeof selectedValue === 'string' ? selectedValue : undefined
   const selectedPath = Array.isArray(selectedValue) ? selectedValue : []
   const [open, setOpen] = useState(false)
@@ -184,8 +184,20 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
     labelOptions = node.children ?? []
   }
 
+  // Roving tabindex: exactly one rendered node per column is tabbable — the
+  // active one when visible, otherwise the first enabled node — so keyboard
+  // users can always Tab into the popup even if deferred focus loses the race
+  // with Radix's focus move.
+  const tabbableColumnValues = columns.map((column, depth) => {
+    const active = activePath[depth]
+    const activeNode = active !== undefined ? column.find((node) => node.value === active && !node.disabled) : undefined
+    return (activeNode ?? column.find((node) => !node.disabled))?.value
+  })
+  const activeNodeVisible = activeValue !== undefined && visible.some((node) => node.value === activeValue && !node.disabled)
+  const tabbableNodeValue = activeNodeVisible ? activeValue : visible.find((node) => !node.disabled)?.value
+
   function commit(next: string | string[]) {
-    if (value === undefined) setInternalValue(next)
+    setInternalValue(next)
     onValueChange?.(next)
   }
 
@@ -198,6 +210,14 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
   function focusNode(nodeValue: string) {
     setActiveValue(nodeValue)
     pendingFocus.current = nodeValue
+  }
+
+  /** Moves roving focus to the nearest enabled node in `delta` direction, skipping disabled ones. */
+  function moveFocus(delta: 1 | -1, fromIndex: number) {
+    let next = fromIndex + delta
+    while (next >= 0 && next < visible.length && visible[next]?.disabled) next += delta
+    const target = visible[next]
+    if (target) focusNode(target.value)
   }
 
   function closePopover() {
@@ -223,7 +243,7 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
       const ancestors = ancestorValues(options, selectedTreeValue)
       if (ancestors) setExpandedValues((current) => Array.from(new Set([...current, ...ancestors])))
     }
-    const initial = selectedTreeValue ?? visible[0]?.value
+    const initial = selectedTreeValue ?? visible.find((node) => !node.disabled)?.value
     if (initial !== undefined) focusNode(initial)
     setOpen(true)
   }
@@ -290,28 +310,29 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
 
   function handleNodeKeyDown(event: KeyboardEvent<HTMLButtonElement>, entry: FlatNode) {
     const index = visible.findIndex((candidate) => candidate.value === entry.value)
-    if (event.key === 'ArrowDown') {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault()
-      const next = visible[index + 1]
-      if (next) focusNode(next.value)
-    } else if (event.key === 'ArrowUp') {
-      event.preventDefault()
-      const next = visible[index - 1]
-      if (next) focusNode(next.value)
+      moveFocus(event.key === 'ArrowDown' ? 1 : -1, index)
     } else if (event.key === 'Home') {
       event.preventDefault()
-      if (visible[0]) focusNode(visible[0].value)
+      const first = visible.find((node) => !node.disabled)
+      if (first) focusNode(first.value)
     } else if (event.key === 'End') {
       event.preventDefault()
-      const last = visible[visible.length - 1]
-      if (last) focusNode(last.value)
+      for (let cursor = visible.length - 1; cursor >= 0; cursor -= 1) {
+        const node = visible[cursor]
+        if (node && !node.disabled) {
+          focusNode(node.value)
+          break
+        }
+      }
     } else if (event.key === 'ArrowRight') {
       event.preventDefault()
-      if (!entry.hasChildren) return
+      if (entry.disabled || !entry.hasChildren) return
       if (!expandedSet.has(entry.value)) toggleExpanded(entry.value)
       else {
         const child = visible[index + 1]
-        if (child) focusNode(child.value)
+        if (child && !child.disabled) focusNode(child.value)
       }
     } else if (event.key === 'ArrowLeft') {
       event.preventDefault()
@@ -393,7 +414,7 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
               aria-disabled={disabled || undefined}
               className={cn(
                 fieldVariants(),
-                'teal-u-flex teal-u-items-center teal-u-pr-9',
+                'teal-u-flex teal-u-items-center teal-u-pe-9',
                 disabled ? 'teal-u-cursor-not-allowed teal-u-bg-surface-container-high teal-u-opacity-55' : 'teal-u-cursor-pointer',
               )}
               onClick={() => {
@@ -415,7 +436,7 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
             </div>
             <ChevronDown
               aria-hidden="true"
-              className="teal-u-pointer-events-none teal-u-absolute teal-u-right-3 teal-u-top-3.5 teal-u-size-[var(--teal-icon-sm)] teal-u-text-on-surface-variant"
+              className="teal-u-pointer-events-none teal-u-absolute teal-u-end-3 teal-u-top-3.5 teal-u-size-[var(--teal-icon-sm)] teal-u-text-on-surface-variant"
             />
           </div>
         </PopoverPrimitive.Anchor>
@@ -439,7 +460,7 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
                     aria-label={`Level ${depth + 1}`}
                     className={cn(
                       'teal-u-flex teal-u-max-h-60 teal-u-w-44 teal-u-flex-col teal-u-overflow-y-auto teal-u-p-0.5',
-                      depth > 0 && 'teal-u-border-0 teal-u-border-l teal-u-border-solid teal-u-border-outline-variant/30',
+                      depth > 0 && 'teal-u-border-0 teal-u-border-s teal-u-border-solid teal-u-border-outline-variant/30',
                     )}
                   >
                     {column.map((node) => {
@@ -455,9 +476,9 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
                           role="option"
                           aria-selected={isSelected}
                           aria-disabled={node.disabled || undefined}
-                          tabIndex={-1}
+                          tabIndex={tabbableColumnValues[depth] === node.value ? 0 : -1}
                           className={cn(
-                            'teal-focus-ring teal-u-relative teal-u-flex teal-u-min-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-rounded-lg teal-u-py-2 teal-u-pl-3 teal-u-pr-8 teal-u-text-sm teal-u-text-on-surface hover:teal-u-bg-surface-container-high aria-[disabled=true]:teal-u-pointer-events-none aria-[disabled=true]:teal-u-opacity-45',
+                            'teal-focus-ring teal-u-relative teal-u-flex teal-u-min-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-rounded-lg teal-u-py-2 teal-u-ps-3 teal-u-pe-8 teal-u-text-sm teal-u-text-on-surface hover:teal-u-bg-surface-container-high aria-[disabled=true]:teal-u-pointer-events-none aria-[disabled=true]:teal-u-opacity-45',
                             isActive && 'teal-u-bg-surface-container-high',
                             isSelected && 'teal-u-font-semibold teal-u-text-primary',
                           )}
@@ -472,11 +493,11 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
                           {isBranch(node) ? (
                             <ChevronRight
                               aria-hidden="true"
-                              className="teal-u-absolute teal-u-right-2 teal-u-size-[var(--teal-icon-sm)] teal-u-text-on-surface-variant"
+                              className="teal-u-absolute teal-u-end-2 teal-u-size-[var(--teal-icon-sm)] teal-u-text-on-surface-variant"
                             />
                           ) : null}
                           {!isBranch(node) && isSelected ? (
-                            <Check aria-hidden="true" className="teal-u-absolute teal-u-right-2 teal-u-size-[var(--teal-icon-sm)]" />
+                            <Check aria-hidden="true" className="teal-u-absolute teal-u-end-2 teal-u-size-[var(--teal-icon-sm)]" />
                           ) : null}
                         </div>
                       )
@@ -520,11 +541,11 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
             else nodeRefs.current.delete(node.value)
           }}
           type="button"
-          tabIndex={-1}
+          tabIndex={node.value === tabbableNodeValue ? 0 : -1}
           disabled={node.disabled}
-          style={{ paddingLeft: `${0.5 + depth * 1.25}rem` }}
+          style={{ paddingInlineStart: `${0.5 + depth * 1.25}rem` }}
           className={cn(
-            'teal-focus-ring teal-u-flex teal-u-w-full teal-u-items-center teal-u-gap-1 teal-u-rounded-lg teal-u-px-2 teal-u-py-1.5 teal-u-text-left teal-u-text-sm teal-u-text-on-surface hover:teal-u-bg-surface-container-high disabled:teal-u-pointer-events-none disabled:teal-u-opacity-45',
+            'teal-focus-ring teal-u-flex teal-u-w-full teal-u-items-center teal-u-gap-1 teal-u-rounded-lg teal-u-px-2 teal-u-py-1.5 teal-u-text-start teal-u-text-sm teal-u-text-on-surface hover:teal-u-bg-surface-container-high disabled:teal-u-pointer-events-none disabled:teal-u-opacity-45',
             isSelected && 'teal-u-bg-primary/10 teal-u-font-semibold teal-u-text-primary hover:teal-u-bg-primary/10',
           )}
           onClick={() => choose(entry)}
@@ -542,7 +563,7 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
             <span aria-hidden="true" className="teal-u-size-[var(--teal-icon-sm)] teal-u-shrink-0" />
           )}
           <span className="teal-u-truncate">{node.label}</span>
-          {isSelected ? <Check aria-hidden="true" className="teal-u-ml-auto teal-u-size-[var(--teal-icon-sm)] teal-u-shrink-0" /> : null}
+          {isSelected ? <Check aria-hidden="true" className="teal-u-ms-auto teal-u-size-[var(--teal-icon-sm)] teal-u-shrink-0" /> : null}
         </button>
         {isExpanded ? <ul role="group">{node.children?.map((child) => renderNode(child, depth + 1, node.value))}</ul> : null}
       </li>

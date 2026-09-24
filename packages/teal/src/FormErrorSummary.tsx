@@ -55,7 +55,7 @@ export const FormErrorSummary = forwardRef<HTMLDivElement, FormErrorSummaryProps
       </span>
       <div className="teal-u-min-w-0 teal-u-flex-1">
         <p className="teal-u-font-semibold">{title}</p>
-        <ul className="teal-u-mt-1 teal-u-list-disc teal-u-space-y-1 teal-u-pl-5">
+        <ul className="teal-u-mt-1 teal-u-list-disc teal-u-space-y-1 teal-u-ps-5">
           {errors.map((error) => (
             <li key={error.fieldId}>
               <a

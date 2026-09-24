@@ -70,7 +70,7 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(function Acc
           className="teal-u-px-4"
         >
           <AccordionPrimitive.Header className="teal-u-flex">
-            <AccordionPrimitive.Trigger className="teal-focus-ring teal-u-group teal-u-flex teal-u-flex-1 teal-u-items-center teal-u-justify-between teal-u-gap-2 teal-u-rounded-lg teal-u-py-4 teal-u-text-left teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface hover:teal-u-text-primary disabled:teal-u-pointer-events-none disabled:teal-u-opacity-45">
+            <AccordionPrimitive.Trigger className="teal-focus-ring teal-u-group teal-u-flex teal-u-flex-1 teal-u-items-center teal-u-justify-between teal-u-gap-2 teal-u-rounded-lg teal-u-py-4 teal-u-text-start teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface hover:teal-u-text-primary disabled:teal-u-pointer-events-none disabled:teal-u-opacity-45">
               {item.title}
               <ChevronDown
                 aria-hidden="true"

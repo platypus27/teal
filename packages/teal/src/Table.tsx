@@ -154,7 +154,7 @@ function TableRender<Row>(
           {loadingLabel}
         </span>
       ) : null}
-      <table ref={contentRef} className="teal-u-w-full teal-u-border-collapse teal-u-text-left teal-u-text-sm">
+      <table ref={contentRef} className="teal-u-w-full teal-u-border-collapse teal-u-text-start teal-u-text-sm">
         <caption className="teal-u-sr-only">{caption}</caption>
         <thead className={cn('teal-u-text-xs teal-u-font-semibold teal-u-uppercase teal-u-tracking-wide teal-u-text-on-surface-variant', 'teal-u-bg-surface-container-highest')}>
           <tr>

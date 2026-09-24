@@ -38,7 +38,7 @@ export const BackTop = forwardRef<HTMLButtonElement, BackTopProps>(function Back
         window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' })
       }}
       className={cn(
-        'teal-u-fixed teal-u-bottom-6 teal-u-right-6 teal-u-z-[var(--teal-z-toast)] teal-u-shadow-overlay',
+        'teal-u-fixed teal-u-bottom-6 teal-u-end-6 teal-u-z-[var(--teal-z-toast)] teal-u-shadow-overlay',
         className,
       )}
     >
