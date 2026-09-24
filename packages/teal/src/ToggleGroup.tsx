@@ -123,7 +123,7 @@ const SegmentedToggleGroup = forwardRef<HTMLDivElement, SegmentedToggleGroupProp
       {indicator ? (
         <span
           aria-hidden="true"
-          className="teal-u-absolute teal-u-bottom-1 teal-u-left-0 teal-u-top-1 teal-u-rounded-lg teal-u-bg-surface teal-u-shadow-sm teal-u-transition-[transform,width] teal-u-duration-[var(--teal-motion-standard)] motion-reduce:teal-u-transition-none"
+          className="teal-u-absolute teal-u-bottom-1 teal-u-start-0 teal-u-top-1 teal-u-rounded-lg teal-u-bg-surface teal-u-shadow-sm teal-u-transition-[transform,width] teal-u-duration-[var(--teal-motion-standard)] motion-reduce:teal-u-transition-none"
           style={{ transform: `translateX(${indicator.left}px)`, width: indicator.width }}
         />
       ) : null}

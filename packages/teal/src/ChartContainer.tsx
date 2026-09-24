@@ -113,7 +113,7 @@ export const ChartContainer = forwardRef<HTMLDivElement, ChartContainerProps>(fu
           </button>
           <table
             className={cn(
-              'teal-u-mt-2 teal-u-w-full teal-u-border-collapse teal-u-text-left teal-u-text-sm',
+              'teal-u-mt-2 teal-u-w-full teal-u-border-collapse teal-u-text-start teal-u-text-sm',
               !show && 'teal-u-sr-only',
             )}
           >
@@ -124,7 +124,7 @@ export const ChartContainer = forwardRef<HTMLDivElement, ChartContainerProps>(fu
                   <th
                     key={column.key}
                     scope="col"
-                    className="teal-u-border-b teal-u-border-outline-variant/30 teal-u-py-1 teal-u-pr-4 teal-u-font-medium teal-u-text-on-surface"
+                    className="teal-u-border-b teal-u-border-outline-variant/30 teal-u-py-1 teal-u-pe-4 teal-u-font-medium teal-u-text-on-surface"
                   >
                     {column.label}
                   </th>
@@ -137,7 +137,7 @@ export const ChartContainer = forwardRef<HTMLDivElement, ChartContainerProps>(fu
                   {columns.map((column) => (
                     <td
                       key={column.key}
-                      className="teal-u-border-b teal-u-border-outline-variant/30 teal-u-py-1 teal-u-pr-4 teal-u-text-on-surface-variant"
+                      className="teal-u-border-b teal-u-border-outline-variant/30 teal-u-py-1 teal-u-pe-4 teal-u-text-on-surface-variant"
                     >
                       {row[column.key]}
                     </td>

@@ -132,7 +132,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           required={required ?? semantics.required}
           aria-invalid={invalid ?? (semantics.invalid || undefined)}
           aria-describedby={mergeDescriptionIds(describedBy, semantics.descriptionId, semantics.errorId)}
-          className={cn(fieldVariants({ size }), hasTrailingSlot && 'teal-u-pr-10', className)}
+          className={cn(fieldVariants({ size }), hasTrailingSlot && 'teal-u-pe-10', className)}
           {...props}
         />
         {isPassword ? (
@@ -142,7 +142,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
             size="sm"
             disabled={disabled}
             onClick={() => setVisible((current) => !current)}
-            className="teal-u-absolute teal-u-right-1 teal-u-top-1/2 teal-u--translate-y-1/2"
+            className="teal-u-absolute teal-u-end-1 teal-u-top-1/2 teal-u--translate-y-1/2"
           >
             {visible ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
           </IconButton>
@@ -150,7 +150,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           <span
             role="status"
             aria-label="Loading"
-            className="teal-u-absolute teal-u-right-1 teal-u-top-1/2 teal-u-flex teal-u-size-8 teal-u-items-center teal-u-justify-center teal-u--translate-y-1/2"
+            className="teal-u-absolute teal-u-end-1 teal-u-top-1/2 teal-u-flex teal-u-size-8 teal-u-items-center teal-u-justify-center teal-u--translate-y-1/2"
           >
             <LoaderCircle aria-hidden="true" className="teal-u-size-4 teal-u-animate-spin teal-u-text-on-surface-variant motion-reduce:teal-u-animate-none" />
           </span>
@@ -159,7 +159,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
             label={clearLabel}
             size="sm"
             onClick={handleClear}
-            className="teal-u-absolute teal-u-right-1 teal-u-top-1/2 teal-u--translate-y-1/2"
+            className="teal-u-absolute teal-u-end-1 teal-u-top-1/2 teal-u--translate-y-1/2"
           >
             <X />
           </IconButton>

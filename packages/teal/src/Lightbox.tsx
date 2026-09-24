@@ -144,7 +144,7 @@ function LightboxPanel({ closeLabel, defaultIndex, images, index, label, onIndex
             label="Previous image"
             variant="secondary"
             onClick={() => commit(current - 1)}
-            className="teal-u-absolute teal-u-left-4 teal-u-top-1/2 -teal-u-translate-y-1/2"
+            className="teal-u-absolute teal-u-start-4 teal-u-top-1/2 -teal-u-translate-y-1/2"
           >
             <ChevronLeft />
           </IconButton>
@@ -152,20 +152,20 @@ function LightboxPanel({ closeLabel, defaultIndex, images, index, label, onIndex
             label="Next image"
             variant="secondary"
             onClick={() => commit(current + 1)}
-            className="teal-u-absolute teal-u-right-4 teal-u-top-1/2 -teal-u-translate-y-1/2"
+            className="teal-u-absolute teal-u-end-4 teal-u-top-1/2 -teal-u-translate-y-1/2"
           >
             <ChevronRight />
           </IconButton>
           <div
             aria-live="polite"
-            className="teal-u-absolute teal-u-bottom-4 teal-u-left-1/2 -teal-u-translate-x-1/2 teal-u-rounded-full teal-u-bg-black/60 teal-u-px-3 teal-u-py-1 teal-u-text-sm teal-u-text-white"
+            className="teal-u-absolute teal-u-bottom-4 teal-u-start-1/2 -teal-u-translate-x-1/2 teal-u-rounded-full teal-u-bg-black/60 teal-u-px-3 teal-u-py-1 teal-u-text-sm teal-u-text-white"
           >
             {current + 1} of {count}
           </div>
         </>
       ) : null}
       <DialogPrimitive.Close asChild>
-        <IconButton label={closeLabel} variant="secondary" className="teal-u-absolute teal-u-right-4 teal-u-top-4">
+        <IconButton label={closeLabel} variant="secondary" className="teal-u-absolute teal-u-end-4 teal-u-top-4">
           <X />
         </IconButton>
       </DialogPrimitive.Close>

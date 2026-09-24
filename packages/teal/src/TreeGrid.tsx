@@ -114,7 +114,7 @@ export const TreeGrid = forwardRef<HTMLDivElement, TreeGridProps>(function TreeG
       )}
       {...props}
     >
-      <table role="treegrid" aria-label={ariaLabel} className="teal-u-w-full teal-u-border-collapse teal-u-text-left teal-u-text-sm">
+      <table role="treegrid" aria-label={ariaLabel} className="teal-u-w-full teal-u-border-collapse teal-u-text-start teal-u-text-sm">
         <thead className="teal-u-bg-surface-container-highest teal-u-text-xs teal-u-font-semibold teal-u-uppercase teal-u-tracking-wide teal-u-text-on-surface-variant">
           <tr role="row">
             {columns.map((column) => (
@@ -147,7 +147,7 @@ export const TreeGrid = forwardRef<HTMLDivElement, TreeGridProps>(function TreeG
                     {columnIndex === 0 ? (
                       <span
                         className="teal-u-flex teal-u-items-center teal-u-gap-1"
-                        style={{ paddingLeft: `${entry.depth * 1.25}rem` }}
+                        style={{ paddingInlineStart: `${entry.depth * 1.25}rem` }}
                       >
                         {entry.hasChildren ? (
                           <button

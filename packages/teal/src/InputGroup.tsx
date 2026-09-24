@@ -15,7 +15,7 @@ export const InputAddon = forwardRef<HTMLSpanElement, InputAddonProps>(function 
       ref={ref}
       className={cn(
         'teal-u-inline-flex teal-u-shrink-0 teal-u-items-center teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-bg-surface-container-high teal-u-px-3 teal-u-text-sm teal-u-font-medium teal-u-text-on-surface-variant',
-        position === 'leading' ? 'teal-u-border-r' : 'teal-u-border-l',
+        position === 'leading' ? 'teal-u-border-e' : 'teal-u-border-s',
         className,
       )}
       {...props}

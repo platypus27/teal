@@ -150,8 +150,8 @@ describe('AnchorNav nested items', () => {
     render(<AnchorNav items={nestedItems} />)
 
     const pnpm = screen.getByRole('link', { name: 'pnpm' })
-    expect(pnpm.closest('ul')).toHaveClass('teal-u-pl-4')
-    expect(screen.getByRole('link', { name: 'Install' }).closest('ul')).not.toHaveClass('teal-u-pl-4')
+    expect(pnpm.closest('ul')).toHaveClass('teal-u-ps-4')
+    expect(screen.getByRole('link', { name: 'Install' }).closest('ul')).not.toHaveClass('teal-u-ps-4')
   })
 
   it('tracks nested section ids with the scroll spy', () => {

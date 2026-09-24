@@ -46,7 +46,7 @@ function JsonNode({ copyable, defaultExpandedDepth, depth, name, path, value }: 
 
   if (!isContainer(value)) {
     return (
-      <div className="teal-u-group teal-u-flex teal-u-items-center teal-u-gap-1 teal-u-py-px" style={{ paddingLeft: depth * 16 }}>
+      <div className="teal-u-group teal-u-flex teal-u-items-center teal-u-gap-1 teal-u-py-px" style={{ paddingInlineStart: depth * 16 }}>
         <span className="teal-u-inline-block teal-u-size-6 teal-u-shrink-0" aria-hidden="true" />
         <span className="teal-u-text-on-surface-variant">{name}:</span>
         <PrimitiveValue value={value} />
@@ -63,7 +63,7 @@ function JsonNode({ copyable, defaultExpandedDepth, depth, name, path, value }: 
 
   return (
     <div>
-      <div className="teal-u-group teal-u-flex teal-u-items-center teal-u-gap-1 teal-u-py-px" style={{ paddingLeft: depth * 16 }}>
+      <div className="teal-u-group teal-u-flex teal-u-items-center teal-u-gap-1 teal-u-py-px" style={{ paddingInlineStart: depth * 16 }}>
         <button
           type="button"
           aria-expanded={expanded}
@@ -90,7 +90,7 @@ function JsonNode({ copyable, defaultExpandedDepth, depth, name, path, value }: 
               value={child}
             />
           ))}
-          <div className="teal-u-py-px teal-u-text-on-surface-variant" style={{ paddingLeft: depth * 16 + 24 }}>
+          <div className="teal-u-py-px teal-u-text-on-surface-variant" style={{ paddingInlineStart: depth * 16 + 24 }}>
             {isArray ? ']' : '}'}
           </div>
         </div>

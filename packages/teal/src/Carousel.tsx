@@ -168,7 +168,7 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps>(
 					label="Previous slide"
 					disabled={!loop && active === 0}
 					onClick={goPrev}
-					className="teal-u-absolute teal-u-left-2 teal-u-top-1/2 -teal-u-translate-y-1/2"
+					className="teal-u-absolute teal-u-start-2 teal-u-top-1/2 -teal-u-translate-y-1/2"
 				>
 					<ChevronLeft aria-hidden="true" />
 				</IconButton>
@@ -178,7 +178,7 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps>(
 					label="Next slide"
 					disabled={!loop && active >= count - 1}
 					onClick={goNext}
-					className="teal-u-absolute teal-u-right-2 teal-u-top-1/2 -teal-u-translate-y-1/2"
+					className="teal-u-absolute teal-u-end-2 teal-u-top-1/2 -teal-u-translate-y-1/2"
 				>
 					<ChevronRight aria-hidden="true" />
 				</IconButton>

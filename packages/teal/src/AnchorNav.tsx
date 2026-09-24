@@ -71,7 +71,7 @@ export const AnchorNav = forwardRef<HTMLElement, AnchorNavProps>(function Anchor
 
   function renderItems(nodes: AnchorNavItem[], depth: number) {
     return (
-      <ul className={depth > 0 ? 'teal-u-mt-1 teal-u-pl-4' : undefined}>
+      <ul className={depth > 0 ? 'teal-u-mt-1 teal-u-ps-4' : undefined}>
         {nodes.map((item) => (
           <li key={item.id}>
             <a
@@ -79,7 +79,7 @@ export const AnchorNav = forwardRef<HTMLElement, AnchorNavProps>(function Anchor
               aria-current={item.id === active ? 'location' : undefined}
               onClick={(event) => handleClick(event, item.id)}
               className={cn(
-                'teal-focus-ring teal-u-block teal-u-border-l-2 teal-u-border-solid teal-u-py-1.5 teal-u-pl-3 teal-u-text-sm teal-u-transition-colors teal-u-duration-[var(--teal-motion-fast)] motion-reduce:teal-u-transition-none',
+                'teal-focus-ring teal-u-block teal-u-border-s-2 teal-u-border-solid teal-u-py-1.5 teal-u-ps-3 teal-u-text-sm teal-u-transition-colors teal-u-duration-[var(--teal-motion-fast)] motion-reduce:teal-u-transition-none',
                 item.id === active
                   ? 'teal-u-border-primary teal-u-font-semibold teal-u-text-primary'
                   : 'teal-u-border-[color:var(--teal-border-subtle)] teal-u-text-on-surface-variant hover:teal-u-text-on-surface',

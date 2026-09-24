@@ -35,13 +35,13 @@ describe('Input clearable/loading', () => {
 
   it('replaces the clear button with a spinner in the SAME slot while loading (fix 1.8)', () => {
     const { container, rerender } = render(<Input label="Search" clearable defaultValue="roadmap" />)
-    expect(container.querySelector('.teal-u-right-1')).toBeInTheDocument()
+    expect(container.querySelector('.teal-u-end-1')).toBeInTheDocument()
 
     rerender(<Input label="Search" clearable defaultValue="roadmap" loading />)
 
     expect(screen.queryByRole('button', { name: 'Clear input' })).toBeNull()
     const status = screen.getByRole('status')
-    expect(status).toHaveClass('teal-u-right-1') // no right-3 → right-1 jump
+    expect(status).toHaveClass('teal-u-end-1') // no right-3 → right-1 jump
   })
 
   it('does not show a clear button when empty or disabled', () => {

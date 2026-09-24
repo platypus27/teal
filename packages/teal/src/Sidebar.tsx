@@ -23,8 +23,8 @@ const sidebarVariants = cva(
         full: '',
       },
       side: {
-        left: 'teal-u-border-r',
-        right: 'teal-u-border-l',
+        left: 'teal-u-border-e',
+        right: 'teal-u-border-s',
       },
     },
     defaultVariants: {
@@ -251,7 +251,7 @@ const SidebarItemImpl = forwardRef<HTMLElement, SidebarItemProps>(function Sideb
           )}
         </span>
       ) : null}
-      <span className={cn(labelClass, icon ? undefined : 'teal-u-pl-3')}>{children}</span>
+      <span className={cn(labelClass, icon ? undefined : 'teal-u-ps-3')}>{children}</span>
     </Component>
   )
 })
@@ -284,7 +284,7 @@ export const SidebarCollapseButton = forwardRef<HTMLButtonElement, ButtonHTMLAtt
         <span
           className={cn(
             'teal-u-overflow-hidden teal-u-whitespace-nowrap teal-u-transition-[width,opacity] teal-u-duration-[var(--teal-motion-standard)] motion-reduce:teal-u-transition-none',
-            collapsed ? 'teal-u-w-0 teal-u-opacity-0' : 'teal-u-flex-1 teal-u-text-left teal-u-opacity-100',
+            collapsed ? 'teal-u-w-0 teal-u-opacity-0' : 'teal-u-flex-1 teal-u-text-start teal-u-opacity-100',
           )}
         >
           {collapsed ? 'Expand' : 'Collapse'}

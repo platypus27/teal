@@ -16,7 +16,7 @@ describe('FloatingActionButton', () => {
     const button = screen.getByRole('button', { name: 'Create item' })
     expect(button.className).toContain('teal-u-fixed')
     expect(button.className).toContain('teal-u-top-6')
-    expect(button.className).toContain('teal-u-left-6')
+    expect(button.className).toContain('teal-u-start-6')
   })
 
   it('shows the extended label text when provided', () => {

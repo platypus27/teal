@@ -55,7 +55,7 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(function Field(
       <div ref={ref} className={cn('teal-u-grid teal-u-gap-1.5', className)} {...props}>
         <Label htmlFor={semantics.controlId}>
           {label}
-          {required ? <span className="teal-u-ml-1 teal-u-text-error" aria-hidden="true">*</span> : null}
+          {required ? <span className="teal-u-ms-1 teal-u-text-error" aria-hidden="true">*</span> : null}
         </Label>
         {children}
         {hasFormContent(description) ? (

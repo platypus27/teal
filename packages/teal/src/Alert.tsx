@@ -93,11 +93,11 @@ const variantIconClasses: Record<AlertVariant, string> = {
 }
 
 const variantAccentClasses: Record<AlertVariant, string> = {
-  neutral: 'teal-u-border-l-outline-variant',
-  info: 'teal-u-border-l-primary',
-  success: 'teal-u-border-l-tertiary',
-  warning: 'teal-u-border-l-warning',
-  danger: 'teal-u-border-l-error',
+  neutral: 'teal-u-border-s-outline-variant',
+  info: 'teal-u-border-s-primary',
+  success: 'teal-u-border-s-tertiary',
+  warning: 'teal-u-border-s-warning',
+  danger: 'teal-u-border-s-error',
 }
 
 export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'>, VariantProps<typeof alertVariants> {
@@ -127,7 +127,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
       role={resolvedAppearance === 'callout' ? undefined : resolvedVariant === 'danger' ? 'alert' : 'status'}
       className={cn(
         alertVariants({ appearance: resolvedAppearance, variant: resolvedVariant }),
-        resolvedAccent && cn('teal-u-border-l-4', variantAccentClasses[resolvedVariant]),
+        resolvedAccent && cn('teal-u-border-s-4', variantAccentClasses[resolvedVariant]),
         className,
       )}
       {...props}
@@ -143,7 +143,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
       </div>
       {action ? <div className="teal-u-shrink-0">{action}</div> : null}
       {onDismiss ? (
-        <IconButton label="Dismiss" size="sm" variant="ghost" className="-teal-u-mr-1 -teal-u-mt-1" onClick={onDismiss}>
+        <IconButton label="Dismiss" size="sm" variant="ghost" className="-teal-u-me-1 -teal-u-mt-1" onClick={onDismiss}>
           <X />
         </IconButton>
       ) : null}

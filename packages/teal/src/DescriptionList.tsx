@@ -31,7 +31,7 @@ export const DescriptionList = forwardRef<HTMLDListElement, DescriptionListProps
       {items.map((item, index) => (
         <div key={index} className={rowClasses}>
           <dt className="teal-u-text-sm teal-u-text-on-surface-variant">{item.label}</dt>
-          <dd className="teal-u-text-right teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface">{item.value}</dd>
+          <dd className="teal-u-text-end teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface">{item.value}</dd>
         </div>
       ))}
     </dl>

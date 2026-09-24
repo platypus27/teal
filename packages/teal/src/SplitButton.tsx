@@ -37,7 +37,7 @@ export const SplitButton = forwardRef<HTMLDivElement, SplitButtonProps>(function
         {...(size !== undefined ? { size } : {})}
         disabled={disabled}
         onClick={onClick}
-        className="teal-u-rounded-r-none"
+        className="teal-u-rounded-e-none"
       >
         {label}
       </Button>
@@ -51,7 +51,7 @@ export const SplitButton = forwardRef<HTMLDivElement, SplitButtonProps>(function
             {...(size !== undefined ? { size } : {})}
             disabled={disabled}
             aria-label={menuLabel}
-            className="teal-u-rounded-l-none teal-u-px-2.5"
+            className="teal-u-rounded-s-none teal-u-px-2.5"
           >
             <ChevronDown aria-hidden="true" className="teal-u-size-[var(--teal-icon-sm)]" />
           </Button>

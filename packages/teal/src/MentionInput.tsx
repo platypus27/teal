@@ -191,7 +191,7 @@ export const MentionInput = forwardRef<HTMLTextAreaElement, MentionInputProps>(f
             role="listbox"
             id={listboxId}
             aria-label="Mentions"
-            className="teal-overlay-surface teal-u-absolute teal-u-left-0 teal-u-top-full teal-u-z-[var(--teal-z-popover)] teal-u-mt-1 teal-u-max-h-48 teal-u-w-56 teal-u-overflow-y-auto teal-u-border teal-u-bg-surface teal-u-p-1 teal-u-text-on-surface"
+            className="teal-overlay-surface teal-u-absolute teal-u-start-0 teal-u-top-full teal-u-z-[var(--teal-z-popover)] teal-u-mt-1 teal-u-max-h-48 teal-u-w-56 teal-u-overflow-y-auto teal-u-border teal-u-bg-surface teal-u-p-1 teal-u-text-on-surface"
           >
             {filtered.map((option, index) => (
               <div

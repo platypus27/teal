@@ -168,7 +168,7 @@ export const KanbanBoard = forwardRef<HTMLDivElement, KanbanBoardProps>(function
             className="teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface"
           >
             {column.title}
-            <span className="teal-u-ml-1.5 teal-u-font-normal teal-u-text-on-surface-variant">{column.cards.length}</span>
+            <span className="teal-u-ms-1.5 teal-u-font-normal teal-u-text-on-surface-variant">{column.cards.length}</span>
           </h3>
           <ul className="teal-u-mt-3 teal-u-flex teal-u-flex-1 teal-u-flex-col teal-u-gap-2">
             {column.cards.map((card) => (
@@ -184,7 +184,7 @@ export const KanbanBoard = forwardRef<HTMLDivElement, KanbanBoardProps>(function
                   onKeyDown={(event) => handleCardKeyDown(event, card.id)}
                   onFocus={() => setActiveId(card.id)}
                   className={cn(
-                    'teal-focus-ring teal-u-w-full teal-u-rounded-xl teal-u-border teal-u-border-outline-variant/30 teal-u-bg-surface teal-u-p-3 teal-u-text-left',
+                    'teal-focus-ring teal-u-w-full teal-u-rounded-xl teal-u-border teal-u-border-outline-variant/30 teal-u-bg-surface teal-u-p-3 teal-u-text-start',
                     grabbedId === card.id && 'teal-u-border-primary teal-u-shadow-lg',
                   )}
                 >

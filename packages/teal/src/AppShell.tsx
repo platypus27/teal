@@ -46,7 +46,7 @@ export const AppShellSidebar = forwardRef<HTMLElement, AppShellSidebarProps>(fun
   return (
     <aside
       ref={ref}
-      className={cn('teal-u-border-r teal-u-border-solid teal-u-border-outline-variant/30 teal-u-bg-surface', className)}
+      className={cn('teal-u-border-e teal-u-border-solid teal-u-border-outline-variant/30 teal-u-bg-surface', className)}
       style={{ gridArea: 'sidebar', width: typeof width === 'number' ? `${width}px` : width, ...style }}
       {...props}
     />

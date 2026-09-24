@@ -71,7 +71,7 @@ export const ActionSheet = forwardRef<HTMLDivElement, ActionSheetProps>(function
           ref={ref}
           aria-label={title ? undefined : label}
           className={cn(
-            'teal-bottom-sheet-content teal-u-fixed teal-u-bottom-0 teal-u-left-1/2 teal-u-z-[var(--teal-z-dialog)] teal-u-flex teal-u-w-full teal-u-max-w-xl -teal-u-translate-x-1/2 teal-u-flex-col teal-u-gap-2 teal-u-p-3 teal-u-text-on-surface teal-u-outline-none',
+            'teal-bottom-sheet-content teal-u-fixed teal-u-bottom-0 teal-u-start-1/2 teal-u-z-[var(--teal-z-dialog)] teal-u-flex teal-u-w-full teal-u-max-w-xl -teal-u-translate-x-1/2 teal-u-flex-col teal-u-gap-2 teal-u-p-3 teal-u-text-on-surface teal-u-outline-none',
             className,
           )}
         >

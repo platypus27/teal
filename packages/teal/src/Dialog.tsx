@@ -89,7 +89,7 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
           {...(isDrawer ? { style: { width } } : {})}
           className={cn(
             isCenter &&
-              'teal-dialog-content teal-overlay-surface teal-u-fixed teal-u-left-1/2 teal-u-top-1/2 teal-u-z-[var(--teal-z-dialog)] teal-u-max-h-[calc(100vh-2rem)] teal-u-w-[calc(100%-2rem)] -teal-u-translate-x-1/2 -teal-u-translate-y-1/2 teal-u-overflow-y-auto teal-u-border teal-u-bg-surface teal-u-p-6 teal-u-text-on-surface teal-u-outline-none',
+              'teal-dialog-content teal-overlay-surface teal-u-fixed teal-u-start-1/2 teal-u-top-1/2 teal-u-z-[var(--teal-z-dialog)] teal-u-max-h-[calc(100vh-2rem)] teal-u-w-[calc(100%-2rem)] -teal-u-translate-x-1/2 -teal-u-translate-y-1/2 teal-u-overflow-y-auto teal-u-border teal-u-bg-surface teal-u-p-6 teal-u-text-on-surface teal-u-outline-none',
             isCenter && size === 'sm' && 'teal-u-max-w-sm',
             isCenter && size === 'md' && 'teal-u-max-w-lg',
             isCenter && size === 'lg' && 'teal-u-max-w-2xl',
@@ -97,16 +97,16 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
               'teal-dialog-content teal-u-fixed teal-u-inset-0 teal-u-z-[var(--teal-z-dialog)] teal-u-flex teal-u-h-dvh teal-u-w-full teal-u-flex-col teal-u-bg-surface teal-u-text-on-surface teal-u-outline-none',
             isDrawer &&
               'teal-drawer-content teal-u-fixed teal-u-inset-y-3 teal-u-z-[var(--teal-z-dialog)] teal-u-flex teal-u-flex-col teal-u-rounded-xl teal-u-border teal-u-border-[color:var(--teal-border-subtle)] teal-u-bg-surface teal-u-shadow-overlay teal-u-text-on-surface teal-u-outline-none',
-            isDrawer && (placement === 'right' ? 'teal-u-right-3' : 'teal-u-left-3'),
+            isDrawer && (placement === 'right' ? 'teal-u-end-3' : 'teal-u-start-3'),
             isBottom &&
-              'teal-bottom-sheet-content teal-u-fixed teal-u-bottom-0 teal-u-left-1/2 teal-u-z-[var(--teal-z-dialog)] teal-u-flex teal-u-w-full teal-u-max-w-xl -teal-u-translate-x-1/2 teal-u-flex-col teal-u-rounded-t-2xl teal-u-border teal-u-border-b-0 teal-u-border-[color:var(--teal-border-subtle)] teal-u-bg-surface teal-u-shadow-overlay teal-u-text-on-surface teal-u-outline-none',
+              'teal-bottom-sheet-content teal-u-fixed teal-u-bottom-0 teal-u-start-1/2 teal-u-z-[var(--teal-z-dialog)] teal-u-flex teal-u-w-full teal-u-max-w-xl -teal-u-translate-x-1/2 teal-u-flex-col teal-u-rounded-t-2xl teal-u-border teal-u-border-b-0 teal-u-border-[color:var(--teal-border-subtle)] teal-u-bg-surface teal-u-shadow-overlay teal-u-text-on-surface teal-u-outline-none',
             isBottom && snapClasses[snap],
             className,
           )}
         >
           {isFullscreen ? (
             <>
-              <div className="teal-u-flex teal-u-shrink-0 teal-u-items-center teal-u-justify-between teal-u-gap-4 teal-u-border-b teal-u-border-[color:var(--teal-border-subtle)] teal-u-py-4 teal-u-pl-6 teal-u-pr-4">
+              <div className="teal-u-flex teal-u-shrink-0 teal-u-items-center teal-u-justify-between teal-u-gap-4 teal-u-border-b teal-u-border-[color:var(--teal-border-subtle)] teal-u-py-4 teal-u-ps-6 teal-u-pe-4">
                 <div>
                   {title ? (
                     <DialogPrimitive.Title className="teal-u-font-headline teal-u-text-lg teal-u-font-bold teal-u-text-on-surface">
@@ -146,9 +146,9 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
               ) : (
                 <div
                   className={cn(
-                    isCenter && 'teal-u-pr-10',
-                    isDrawer && 'teal-u-border-b teal-u-border-[color:var(--teal-border-subtle)] teal-u-p-6 teal-u-pr-14',
-                    isBottom && 'teal-u-shrink-0 teal-u-p-6 teal-u-pr-14 teal-u-pt-3',
+                    isCenter && 'teal-u-pe-10',
+                    isDrawer && 'teal-u-border-b teal-u-border-[color:var(--teal-border-subtle)] teal-u-p-6 teal-u-pe-14',
+                    isBottom && 'teal-u-shrink-0 teal-u-p-6 teal-u-pe-14 teal-u-pt-3',
                   )}
                 >
                   {title ? (
@@ -166,7 +166,7 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
                 </div>
               )}
               <DialogPrimitive.Close asChild>
-                <IconButton label={closeLabel} size="sm" className="teal-u-absolute teal-u-right-4 teal-u-top-4">
+                <IconButton label={closeLabel} size="sm" className="teal-u-absolute teal-u-end-4 teal-u-top-4">
                   <X />
                 </IconButton>
               </DialogPrimitive.Close>

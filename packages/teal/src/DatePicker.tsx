@@ -525,8 +525,17 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
 		}
 
 		function handleGridKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-			const delta = arrowDeltas[event.key];
+			let delta = arrowDeltas[event.key];
 			if (delta === undefined) return;
+			// In RTL layouts the horizontal axes flip, so left/right move the
+			// focused day the way the grid is actually drawn. The dir attribute is
+			// how RTL is declared in practice; computed direction catches the rest.
+			if (delta === -1 || delta === 1) {
+				const rtl =
+					event.currentTarget.closest('[dir="rtl"]') !== null ||
+					event.currentTarget.ownerDocument?.defaultView?.getComputedStyle(event.currentTarget).direction === "rtl";
+				if (rtl) delta = -delta;
+			}
 			event.preventDefault();
 			const next = addDays(focusedDate, delta);
 			setFocusedDate(next);
@@ -629,7 +638,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
 								placeholder={placeholder}
 								readOnly
 								value={displayValue}
-								className="teal-u-cursor-pointer teal-u-pr-9"
+								className="teal-u-cursor-pointer teal-u-pe-9"
 								onFocus={() => {
 									if (suppressFocusOpen.current) {
 										suppressFocusOpen.current = false;
@@ -649,7 +658,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
 							/>
 							<Calendar
 								aria-hidden="true"
-								className="teal-u-pointer-events-none teal-u-absolute teal-u-right-3 teal-u-top-1/2 teal-u-size-[var(--teal-icon-sm)] teal-u--translate-y-1/2 teal-u-text-on-surface-variant"
+								className="teal-u-pointer-events-none teal-u-absolute teal-u-end-3 teal-u-top-1/2 teal-u-size-[var(--teal-icon-sm)] teal-u--translate-y-1/2 teal-u-text-on-surface-variant"
 							/>
 						</div>
 					</PopoverPrimitive.Anchor>

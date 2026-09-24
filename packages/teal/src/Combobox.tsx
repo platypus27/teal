@@ -204,7 +204,7 @@ const ComboboxSingle = forwardRef<HTMLInputElement, ComboboxSingleProps>(functio
               disabled={disabled}
               placeholder={placeholder}
               value={inputText}
-              className="teal-u-pr-9"
+              className="teal-u-pe-9"
               onMouseDown={(event) => {
                 // Toggle semantics: clicking the already-focused input while open closes the list.
                 if (open && document.activeElement === event.currentTarget) {
@@ -225,7 +225,7 @@ const ComboboxSingle = forwardRef<HTMLInputElement, ComboboxSingleProps>(functio
             />
             <ChevronDown
               aria-hidden="true"
-              className="teal-u-pointer-events-none teal-u-absolute teal-u-right-3 teal-u-top-1/2 teal-u-size-[var(--teal-icon-sm)] teal-u--translate-y-1/2 teal-u-text-on-surface-variant"
+              className="teal-u-pointer-events-none teal-u-absolute teal-u-end-3 teal-u-top-1/2 teal-u-size-[var(--teal-icon-sm)] teal-u--translate-y-1/2 teal-u-text-on-surface-variant"
             />
           </div>
         </PopoverPrimitive.Anchor>
@@ -257,14 +257,14 @@ const ComboboxSingle = forwardRef<HTMLInputElement, ComboboxSingleProps>(functio
                       aria-selected={isSelected}
                       aria-disabled={option.disabled || undefined}
                       data-highlighted={isHighlighted || undefined}
-                      className="teal-u-relative teal-u-flex teal-u-min-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-rounded-lg teal-u-py-2 teal-u-pl-8 teal-u-pr-3 teal-u-text-sm teal-u-text-on-surface aria-[disabled=true]:teal-u-pointer-events-none aria-[disabled=true]:teal-u-opacity-45 data-[highlighted]:teal-u-bg-primary/10 data-[highlighted]:teal-u-text-primary"
+                      className="teal-u-relative teal-u-flex teal-u-min-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-rounded-lg teal-u-py-2 teal-u-ps-8 teal-u-pe-3 teal-u-text-sm teal-u-text-on-surface aria-[disabled=true]:teal-u-pointer-events-none aria-[disabled=true]:teal-u-opacity-45 data-[highlighted]:teal-u-bg-primary/10 data-[highlighted]:teal-u-text-primary"
                       onMouseDown={(event) => event.preventDefault()}
                       onMouseEnter={() => {
                         if (!option.disabled) setHighlightIndex(index)
                       }}
                       onClick={() => selectOption(option)}
                     >
-                      <span className="teal-u-absolute teal-u-left-2 teal-u-flex teal-u-size-[var(--teal-icon-sm)] teal-u-items-center teal-u-justify-center">
+                      <span className="teal-u-absolute teal-u-start-2 teal-u-flex teal-u-size-[var(--teal-icon-sm)] teal-u-items-center teal-u-justify-center">
                         {isSelected ? <Check aria-hidden="true" className="teal-u-size-[var(--teal-icon-sm)]" /> : null}
                       </span>
                       {option.label}
@@ -391,7 +391,7 @@ const ComboboxMultiple = forwardRef<HTMLDivElement, ComboboxMultipleProps>(funct
               aria-disabled={disabled || undefined}
               className={cn(
                 fieldVariants(),
-                'teal-u-flex teal-u-flex-wrap teal-u-items-center teal-u-gap-1.5 teal-u-py-1.5 teal-u-pr-9',
+                'teal-u-flex teal-u-flex-wrap teal-u-items-center teal-u-gap-1.5 teal-u-py-1.5 teal-u-pe-9',
                 disabled
                   ? 'teal-u-cursor-not-allowed teal-u-bg-surface-container-high teal-u-opacity-55'
                   : 'teal-u-cursor-pointer',
@@ -426,7 +426,7 @@ const ComboboxMultiple = forwardRef<HTMLDivElement, ComboboxMultipleProps>(funct
             </div>
             <ChevronDown
               aria-hidden="true"
-              className="teal-u-pointer-events-none teal-u-absolute teal-u-right-3 teal-u-top-3.5 teal-u-size-[var(--teal-icon-sm)] teal-u-text-on-surface-variant"
+              className="teal-u-pointer-events-none teal-u-absolute teal-u-end-3 teal-u-top-3.5 teal-u-size-[var(--teal-icon-sm)] teal-u-text-on-surface-variant"
             />
           </div>
         </PopoverPrimitive.Anchor>
@@ -468,10 +468,10 @@ const ComboboxMultiple = forwardRef<HTMLDivElement, ComboboxMultipleProps>(funct
                       role="option"
                       aria-selected={isSelected}
                       aria-disabled={option.disabled || undefined}
-                      className="teal-u-relative teal-u-flex teal-u-min-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-rounded-lg teal-u-py-2 teal-u-pl-8 teal-u-pr-3 teal-u-text-sm teal-u-text-on-surface hover:teal-u-bg-surface-container-high aria-[disabled=true]:teal-u-pointer-events-none aria-[disabled=true]:teal-u-opacity-45 aria-[selected=true]:teal-u-text-primary"
+                      className="teal-u-relative teal-u-flex teal-u-min-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-rounded-lg teal-u-py-2 teal-u-ps-8 teal-u-pe-3 teal-u-text-sm teal-u-text-on-surface hover:teal-u-bg-surface-container-high aria-[disabled=true]:teal-u-pointer-events-none aria-[disabled=true]:teal-u-opacity-45 aria-[selected=true]:teal-u-text-primary"
                       onClick={() => toggleOption(option)}
                     >
-                      <span className="teal-u-absolute teal-u-left-2 teal-u-flex teal-u-size-[var(--teal-icon-sm)] teal-u-items-center teal-u-justify-center">
+                      <span className="teal-u-absolute teal-u-start-2 teal-u-flex teal-u-size-[var(--teal-icon-sm)] teal-u-items-center teal-u-justify-center">
                         {isSelected ? <Check aria-hidden="true" className="teal-u-size-[var(--teal-icon-sm)]" /> : null}
                       </span>
                       {option.label}

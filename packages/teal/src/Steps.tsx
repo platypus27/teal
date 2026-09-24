@@ -54,7 +54,7 @@ export const Steps = forwardRef<HTMLOListElement, StepsProps>(function Steps(
         )
 
         const text = (
-          <span className="teal-u-grid teal-u-gap-0.5 teal-u-text-left">
+          <span className="teal-u-grid teal-u-gap-0.5 teal-u-text-start">
             <span
               className={cn(
                 'teal-u-text-sm teal-u-font-semibold',
