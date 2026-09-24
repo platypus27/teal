@@ -1,9 +1,16 @@
 services:
   docs:
-    image: ${TEAL_DOCS_IMAGE:-ghcr.io/platypus27/teal-docs:local}
+    image: ${TEAL_DOCS_IMAGE:-teal-docs:local}
     build:
       context: .
       dockerfile: apps/docs/Dockerfile
     ports:
       - "127.0.0.1:8087:80"
+    volumes:
+      # Versions accumulate here across image rebuilds; the entrypoint adds
+      # the newly built version and regenerates the root index.
+      - docs-versions:/usr/share/nginx/html
     restart: unless-stopped
+
+volumes:
+  docs-versions:
