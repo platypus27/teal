@@ -1,0 +1,29 @@
+{
+  "name": "@kryv/teal-codemod",
+  "version": "0.0.0",
+  "description": "Codemods for migrating @kryv/teal across breaking releases",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/platypus27/teal.git",
+    "directory": "packages/teal-codemod"
+  },
+  "type": "module",
+  "bin": {
+    "teal-codemod": "./cli.mjs"
+  },
+  "exports": {
+    ".": "./index.mjs"
+  },
+  "files": [
+    "index.mjs",
+    "cli.mjs",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "typescript": "^5.9.3"
+  }
+}
