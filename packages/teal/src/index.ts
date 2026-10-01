@@ -40,6 +40,8 @@ export type {
 } from './EcosystemRail'
 export { EcosystemShell } from './EcosystemShell'
 export type { EcosystemShellProps } from './EcosystemShell'
+export { SettingsShell } from './SettingsShell'
+export type { SettingsShellGroup, SettingsShellItem, SettingsShellProps } from './SettingsShell'
 export { AccountMenu } from './AccountMenu'
 export type { AccountMenuAction, AccountMenuProps, AccountMenuUser } from './AccountMenu'
 export { LauncherCard } from './LauncherCard'
