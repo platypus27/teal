@@ -2,6 +2,7 @@ import { forwardRef, useState } from 'react'
 import { Moon, Sun } from 'lucide-react'
 import { IconButton } from './Button'
 import { cn } from './cn'
+import { useOptionalTheme } from './ThemeProvider'
 
 export type Theme = 'light' | 'dark'
 
@@ -16,20 +17,26 @@ export interface ThemeToggleProps {
 const iconClasses =
   'teal-u-absolute teal-u-transition-opacity teal-u-duration-[var(--teal-motion-standard)] motion-reduce:teal-u-transition-none'
 
-/** Toggles the 'dark' class on the document root to switch between light and dark themes. */
+/** Toggles the 'dark' class on the document root to switch between light and dark themes. Inside a ThemeProvider it becomes controlled: it flips the provider's choice between explicit light and dark instead of touching the document itself. */
 export const ThemeToggle = forwardRef<HTMLButtonElement, ThemeToggleProps>(function ThemeToggle(
   { className, label = 'Toggle dark mode', onChange },
   ref,
 ) {
-  const [theme, setTheme] = useState<Theme>(() =>
+  const provider = useOptionalTheme()
+  const [localTheme, setLocalTheme] = useState<Theme>(() =>
     document.documentElement.classList.contains('dark') ? 'dark' : 'light',
   )
+  const theme = provider ? provider.resolved : localTheme
   const dark = theme === 'dark'
 
   const toggle = () => {
     const next: Theme = dark ? 'light' : 'dark'
-    document.documentElement.classList.toggle('dark', next === 'dark')
-    setTheme(next)
+    if (provider) {
+      provider.setChoice(next)
+    } else {
+      document.documentElement.classList.toggle('dark', next === 'dark')
+      setLocalTheme(next)
+    }
     onChange?.(next)
   }
 

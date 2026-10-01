@@ -131,6 +131,12 @@ Use semantic roles instead of raw palette values.
 - **Success** - `--teal-color-tertiary`
 - **Warning** - `--teal-color-warning`
 - **Danger** - `--teal-color-error`
+- **Stale** - `--teal-color-stale`
+- **Home accent** - `--teal-color-product-home`
+- **Photos accent** - `--teal-color-product-photos`
+- **Yang accent** - `--teal-color-product-yang`
+- **Trict accent** - `--teal-color-product-trict`
+- **Twinkle accent** - `--teal-color-product-twinkle`
 - **Surface** - `--teal-color-surface-container`
 - **Elevated surface** - `--teal-color-surface-container-high`
 
@@ -141,9 +147,9 @@ Use semantic roles instead of raw palette values.
 
 ## Shape, elevation, and motion
 
-- Controls use 12 to 16 pixel radii.
-- Surfaces use soft teal elevation.
-- Motion stays between 150 and 200 milliseconds and respects reduced motion.
+- Radii scale 10/14/20/28 pixels from nested inputs up to hero surfaces.
+- Panels carry the voxel bevel: an inset top highlight over a deep ambient drop.
+- Motion runs 160 to 600 milliseconds on one ease curve and respects reduced motion.
 
 ## Visual tokens
 
@@ -151,12 +157,14 @@ Override these supported CSS properties at `:root` to tune Teal without rewritin
 
 - **Control radius** - `--teal-radius-control`
 - **Surface radius** - `--teal-radius-surface`
+- **Extra-large radius** - `--teal-radius-xl`
 - **Pill radius** - `--teal-radius-pill`
 - **Subtle border** - `--teal-border-subtle`
 - **Strong border** - `--teal-border-strong`
 - **Focus ring** - `--teal-focus-ring`
 - **Raised elevation** - `--teal-shadow-raised`
 - **Overlay elevation** - `--teal-shadow-overlay`
+- **Voxel bevel** - `--teal-shadow-voxel`
 - **Extra-small icon** - `--teal-icon-xs`
 - **Small icon** - `--teal-icon-sm`
 - **Medium icon** - `--teal-icon-md`
@@ -164,6 +172,9 @@ Override these supported CSS properties at `:root` to tune Teal without rewritin
 - **Extra-large icon** - `--teal-icon-xl`
 - **Fast motion** - `--teal-motion-fast`
 - **Standard motion** - `--teal-motion-standard`
+- **Medium motion** - `--teal-motion-med`
+- **Slow motion** - `--teal-motion-slow`
+- **Voxel ease** - `--teal-motion-ease`
 
 ---
 
@@ -22480,6 +22491,294 @@ export function EcosystemRailDemo({ exampleIndex = 0 }) {
 
 ---
 
+# Ecosystem Shell
+
+The assembled ecosystem chrome: the EcosystemRail with brand, Home, health-dotted destinations, settings and account footer, plus a top bar slot, a scrolling main region, and a mobile drawer.
+
+## Usage
+
+```js
+import { EcosystemShell } from '@kryv/teal'
+```
+
+```jsx
+<EcosystemShell
+  brand={<KryvBrand />}
+  home={{ href: '/', label: 'Home', icon: <House /> }}
+  destinations={entitledDestinations}
+  settingsHref="/settings"
+  user={{ name: me.name }}
+  appSignOut={{ label: 'Sign out of Photos', onSelect: signOut }}
+  ssoSignOut={{ label: 'Sign out everywhere', onSelect: signOutEverywhere }}
+>
+  <Outlet />
+</EcosystemShell>
+```
+
+## Design guidance
+
+### Use when
+
+A Kryv product needs the shared ecosystem frame; every product renders the same chrome so moving between products feels like moving within one world.
+### Avoid when
+
+In-product navigation belongs to Sidebar or the product's own shell; embed those inside the main region.
+### Behavior
+
+Purely presentational: anchors navigate natively, onNavigate reports the destination id first (use it to close menus or instrument), and the mobile drawer closes itself on navigation.
+### Responsive
+
+At and above md the icon rail is visible and expands on hover or focus; below md it collapses into the Ecosystem drawer trigger.
+
+## Examples
+
+### Full ecosystem chrome
+
+Brand, Home, health-dotted destinations, settings and account footer, and a top bar above the scrolling main region.
+
+```jsx
+import { Camera, ChartLine, Gauge, House, Sparkles } from 'lucide-react'
+import { EcosystemShell } from '@kryv/teal'
+
+const brand = (
+  <>
+    <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-teal-product-home text-sm font-extrabold text-white shadow-teal-raised">
+      K
+    </span>
+    <span
+      className="w-0 overflow-hidden whitespace-nowrap font-teal-headline text-base font-extrabold tracking-tight text-teal-on-surface opacity-0 transition-all duration-200 group-hover:w-auto group-hover:opacity-100 group-focus-within:w-auto group-focus-within:opacity-100"
+      aria-hidden="true"
+    >
+      Kryv
+    </span>
+  </>
+)
+
+const home = { href: '#home', label: 'Home', icon: <House className="size-5" aria-hidden="true" /> }
+
+/** @type {import('@kryv/teal').EcosystemRailDestination[]} */
+const destinations = [
+  { id: 'photos', label: 'Photos', href: '#photos', icon: <Camera className="size-5" aria-hidden="true" />, current: true, status: 'healthy' },
+  { id: 'yang', label: 'Yang', href: '#yang', icon: <Gauge className="size-5" aria-hidden="true" />, status: 'degraded' },
+  { id: 'trict', label: 'Trict', href: '#trict', icon: <ChartLine className="size-5" aria-hidden="true" /> },
+  { id: 'twinkle', label: 'Twinkle', href: '#twinkle', icon: <Sparkles className="size-5" aria-hidden="true" />, status: 'stale' },
+]
+
+export function EcosystemShellDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="h-[26rem] w-full overflow-hidden rounded-xl border border-teal-outline-variant/50">
+        <EcosystemShell
+          className="!h-[26rem]"
+          brand={brand}
+          home={{ ...home, current: true }}
+          destinations={destinations.map(({ current: _current, ...destination }) => destination)}
+        >
+          <div className="p-6">
+            <h2 className="font-teal-headline text-lg font-bold">Good morning.</h2>
+            <p className="mt-1 max-w-md text-sm text-teal-on-surface-variant">
+              No user, settings link, or top bar: the shell is just the rail and the main region. Resize below
+              the md breakpoint and the rail folds into the Ecosystem drawer.
+            </p>
+          </div>
+        </EcosystemShell>
+      </div>
+    )
+  }
+
+  return (
+    <div className="h-[30rem] w-full overflow-hidden rounded-xl border border-teal-outline-variant/50">
+      <EcosystemShell
+        className="!h-[30rem]"
+        brand={brand}
+        home={home}
+        destinations={destinations}
+        settingsHref="#settings"
+        user={{ name: 'Avery Morgan', email: 'avery@kryvlabs.com' }}
+        accountItems={[{ id: 'sessions', label: 'Sessions and trusted devices', onSelect: () => {} }]}
+        appSignOut={{ label: 'Sign out of Photos', onSelect: () => {} }}
+        ssoSignOut={{ label: 'Sign out everywhere', onSelect: () => {} }}
+        topBar={
+          <div className="flex items-center justify-between px-4 py-2.5">
+            <span className="text-sm font-semibold text-teal-on-surface">Library</span>
+            <span className="text-xs text-teal-on-surface-variant">12,408 items</span>
+          </div>
+        }
+      >
+        <div className="space-y-3 p-6">
+          <h2 className="font-teal-headline text-lg font-bold">Good morning.</h2>
+          <p className="max-w-md text-sm text-teal-on-surface-variant">
+            The full ecosystem chrome: brand with wordmark reveal, Home first, health dots on every
+            destination, settings and account pinned to the rail footer, and a top bar slot above the
+            scrolling main region.
+          </p>
+          <div className="grid max-w-lg gap-3 sm:grid-cols-2">
+            <div className="rounded-xl border border-teal-outline-variant/40 bg-teal-surface-container-low p-4 shadow-teal-voxel">
+              <p className="text-sm font-semibold">From Yang</p>
+              <p className="mt-1 text-xs text-teal-on-surface-variant">Photos API recovered at 12:04</p>
+            </div>
+            <div className="rounded-xl border border-teal-outline-variant/40 bg-teal-surface-container-low p-4 shadow-teal-voxel">
+              <p className="text-sm font-semibold">Ask Twinkle</p>
+              <p className="mt-1 text-xs text-teal-on-surface-variant">“Find the beach photos from July”</p>
+            </div>
+          </div>
+        </div>
+      </EcosystemShell>
+    </div>
+  )
+}
+```
+
+### Minimal shell
+
+Without user, settingsHref, or topBar the shell is just the rail and the main region.
+
+```jsx
+import { Camera, ChartLine, Gauge, House, Sparkles } from 'lucide-react'
+import { EcosystemShell } from '@kryv/teal'
+
+const brand = (
+  <>
+    <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-teal-product-home text-sm font-extrabold text-white shadow-teal-raised">
+      K
+    </span>
+    <span
+      className="w-0 overflow-hidden whitespace-nowrap font-teal-headline text-base font-extrabold tracking-tight text-teal-on-surface opacity-0 transition-all duration-200 group-hover:w-auto group-hover:opacity-100 group-focus-within:w-auto group-focus-within:opacity-100"
+      aria-hidden="true"
+    >
+      Kryv
+    </span>
+  </>
+)
+
+const home = { href: '#home', label: 'Home', icon: <House className="size-5" aria-hidden="true" /> }
+
+/** @type {import('@kryv/teal').EcosystemRailDestination[]} */
+const destinations = [
+  { id: 'photos', label: 'Photos', href: '#photos', icon: <Camera className="size-5" aria-hidden="true" />, current: true, status: 'healthy' },
+  { id: 'yang', label: 'Yang', href: '#yang', icon: <Gauge className="size-5" aria-hidden="true" />, status: 'degraded' },
+  { id: 'trict', label: 'Trict', href: '#trict', icon: <ChartLine className="size-5" aria-hidden="true" /> },
+  { id: 'twinkle', label: 'Twinkle', href: '#twinkle', icon: <Sparkles className="size-5" aria-hidden="true" />, status: 'stale' },
+]
+
+export function EcosystemShellDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="h-[26rem] w-full overflow-hidden rounded-xl border border-teal-outline-variant/50">
+        <EcosystemShell
+          className="!h-[26rem]"
+          brand={brand}
+          home={{ ...home, current: true }}
+          destinations={destinations.map(({ current: _current, ...destination }) => destination)}
+        >
+          <div className="p-6">
+            <h2 className="font-teal-headline text-lg font-bold">Good morning.</h2>
+            <p className="mt-1 max-w-md text-sm text-teal-on-surface-variant">
+              No user, settings link, or top bar: the shell is just the rail and the main region. Resize below
+              the md breakpoint and the rail folds into the Ecosystem drawer.
+            </p>
+          </div>
+        </EcosystemShell>
+      </div>
+    )
+  }
+
+  return (
+    <div className="h-[30rem] w-full overflow-hidden rounded-xl border border-teal-outline-variant/50">
+      <EcosystemShell
+        className="!h-[30rem]"
+        brand={brand}
+        home={home}
+        destinations={destinations}
+        settingsHref="#settings"
+        user={{ name: 'Avery Morgan', email: 'avery@kryvlabs.com' }}
+        accountItems={[{ id: 'sessions', label: 'Sessions and trusted devices', onSelect: () => {} }]}
+        appSignOut={{ label: 'Sign out of Photos', onSelect: () => {} }}
+        ssoSignOut={{ label: 'Sign out everywhere', onSelect: () => {} }}
+        topBar={
+          <div className="flex items-center justify-between px-4 py-2.5">
+            <span className="text-sm font-semibold text-teal-on-surface">Library</span>
+            <span className="text-xs text-teal-on-surface-variant">12,408 items</span>
+          </div>
+        }
+      >
+        <div className="space-y-3 p-6">
+          <h2 className="font-teal-headline text-lg font-bold">Good morning.</h2>
+          <p className="max-w-md text-sm text-teal-on-surface-variant">
+            The full ecosystem chrome: brand with wordmark reveal, Home first, health dots on every
+            destination, settings and account pinned to the rail footer, and a top bar slot above the
+            scrolling main region.
+          </p>
+          <div className="grid max-w-lg gap-3 sm:grid-cols-2">
+            <div className="rounded-xl border border-teal-outline-variant/40 bg-teal-surface-container-low p-4 shadow-teal-voxel">
+              <p className="text-sm font-semibold">From Yang</p>
+              <p className="mt-1 text-xs text-teal-on-surface-variant">Photos API recovered at 12:04</p>
+            </div>
+            <div className="rounded-xl border border-teal-outline-variant/40 bg-teal-surface-container-low p-4 shadow-teal-voxel">
+              <p className="text-sm font-semibold">Ask Twinkle</p>
+              <p className="mt-1 text-xs text-teal-on-surface-variant">“Find the beach photos from July”</p>
+            </div>
+          </div>
+        </div>
+      </EcosystemShell>
+    </div>
+  )
+}
+```
+
+## Anatomy
+
+- **Rail** - The EcosystemRail in rail mode on desktop: brand with wordmark reveal, the stable Home destination first, then caller-filtered destinations with honest health dots.
+- **Footer** - Composed from settingsHref and user: a Settings SidebarItem above an AccountMenu with app-level and SSO sign-out. The footer prop replaces it entirely.
+- **Top bar slot** - Optional product-level bar above the main region, kept outside the scroll area.
+- **Main region** - The scrolling content area; the shell itself is viewport-height so the rail stays put.
+- **Mobile drawer** - Below the md breakpoint the rail folds into an Ecosystem trigger that opens a left Dialog drawer carrying the voxel shadow, with the rail in full mode inside.
+
+## Do and don't
+
+### Do
+
+- Filter destinations by entitlement before passing them in; the shell renders exactly what it is given.
+- Pass status only with real evidence; omit it or use unknown otherwise.
+- Use footer to fully replace the composed footer when a product needs different session controls.
+
+### Don't
+
+- Don't import routing or auth logic into the shell; callers supply hrefs and sign-out callbacks.
+- Don't reorder Home into the destinations list; it is always rendered first.
+- Don't hide the mobile trigger; it is the only ecosystem navigation on small screens.
+
+## Interface
+
+### EcosystemShell
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `accountItems` | `MenuItem[]` | - | Extra account menu items rendered above the sign-out actions. |
+| `appSignOut` | `AccountMenuAction` | - | Sign-out that ends only the current application session. |
+| `ariaLabel` | `string` | `Kryv ecosystem` | Accessible name for the ecosystem navigation. |
+| `brand` | `ReactNode` | - | Product-family brand content rendered at the top of the rail, such as the Kryv mark with its wordmark reveal. |
+| `children` (required) | `ReactNode` | - | Main content of the application. |
+| `className` | `string` | - | - |
+| `destinations` (required) | `EcosystemRailDestination[]` | - | Caller-filtered destinations, each with an optional honest HealthIndicator status. The shell never derives entitlements. |
+| `footer` | `ReactNode` | - | Replaces the composed rail footer (settings link plus account menu) entirely. |
+| `home` (required) | `EcosystemRailHome` | - | Stable Home destination, always rendered first in the rail. |
+| `onNavigate` | `(id: string) => void` | - | Called with a destination id before ordinary anchor navigation. |
+| `settingsHref` | `string` | - | Settings destination pinned in the rail footer above the account menu. |
+| `settingsCurrent` | `boolean` | `false` | Marks the settings footer item as current (aria-current="page"). |
+| `ssoSignOut` | `AccountMenuAction` | - | Sign-out that ends the shared single-sign-on session. |
+| `topBar` | `ReactNode` | - | Content rendered in a top bar above the main region. |
+| `user` | `AccountMenuUser` | - | Signed-in household identity shown in the rail footer's account menu. |
+
+## Related modules
+
+- [Ecosystem Rail](/modules/ecosystem-rail)
+- [Account Menu](/modules/account-menu)
+- [Settings Shell](/modules/settings-shell)
+- [Theme Provider](/modules/theme-provider)
+
+---
+
 # Top Bar
 
 A sticky top bar with brand, search, and action slots.
@@ -33053,6 +33352,265 @@ _This module forwards native element properties._
 
 ---
 
+# Settings Shell
+
+The unified settings layout: a sections nav on the left with an accent edge on the current item, a content panel on the right, and slots for a step-up notice and a save bar.
+
+## Usage
+
+```js
+import { SettingsShell, StepUpNotice, Button } from '@kryv/teal'
+```
+
+```jsx
+<SettingsShell
+  accent="--teal-color-product-trict"
+  title="Risk"
+  description="Caps the execution worker enforces."
+  sections={[
+    { label: 'Trict', items: [
+      { id: 'account', label: 'Account', href: '/settings/account' },
+      { id: 'risk', label: 'Risk', href: '/settings/risk', current: true },
+    ]},
+  ]}
+  notice={<StepUpNotice title="Step-up required">Changing risk caps needs fresh verification.</StepUpNotice>}
+  saveBar={<><Button>Save changes</Button><Button variant="ghost">Discard</Button></>}
+>
+  <RiskForm />
+</SettingsShell>
+```
+
+## Design guidance
+
+### Use when
+
+Any product settings page; Home's account and household settings and every product's own settings share this layout, each in its own accent.
+### Avoid when
+
+Full-page wizards or single-toggle pages do not need a sections nav.
+### Behavior
+
+Purely presentational: anchors navigate, buttons report through onSelect, and the current item is marked with aria-current. Keyboard users tab through the items natively.
+### Responsive
+
+Below md the sections nav stacks above the content panel; at md and up it sits in a 15rem column on the left.
+
+## Examples
+
+### Product settings with step-up and save bar
+
+Trict settings in the trict accent: anchor sections, a StepUpNotice, and a save bar with a dirty hint.
+
+```jsx
+import { Button, Field, Input, SettingsShell, StepUpNotice } from '@kryv/teal'
+
+const trictSections = [
+  {
+    label: 'Trict',
+    items: [
+      { id: 'account', label: 'Account', href: '#account' },
+      { id: 'risk', label: 'Risk', href: '#risk', current: true },
+      { id: 'schedule', label: 'Schedule', href: '#schedule' },
+      { id: 'strategy', label: 'Strategy', href: '#strategy' },
+      { id: 'ai', label: 'AI & research', href: '#ai' },
+    ],
+  },
+  {
+    label: 'Ecosystem',
+    items: [{ id: 'home', label: '← Back to Home settings', href: '#home-settings' }],
+  },
+]
+
+export function SettingsShellDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <SettingsShell
+        accent="--teal-color-product-yang"
+        title="Integrations"
+        description="Services Yang watches on behalf of the household."
+        sections={[
+          {
+            label: 'Yang',
+            items: [
+              { id: 'integrations', label: 'Integrations', current: true, onSelect: () => {} },
+              { id: 'monitoring', label: 'Monitoring', onSelect: () => {} },
+              { id: 'fleet', label: 'Fleet', onSelect: () => {} },
+            ],
+          },
+        ]}
+      >
+        <p className="max-w-md text-sm text-teal-on-surface-variant">
+          Items without an href render as buttons and report through onSelect — for settings pages that swap
+          panels in place instead of navigating.
+        </p>
+      </SettingsShell>
+    )
+  }
+
+  return (
+    <SettingsShell
+      accent="--teal-color-product-trict"
+      title="Risk"
+      description="Caps the execution worker enforces before any order reaches OANDA."
+      sections={trictSections}
+      notice={
+        <StepUpNotice title="Step-up required" action={<Button size="sm">Verify to save</Button>}>
+          Changing risk caps needs a fresh step-up (password + TOTP).
+        </StepUpNotice>
+      }
+      saveBar={
+        <>
+          <Button size="sm">Save changes</Button>
+          <Button size="sm" variant="ghost">Discard</Button>
+          <span className="text-xs text-teal-on-surface-variant">Unsaved changes · autosaves drafts</span>
+        </>
+      }
+    >
+      <div className="grid max-w-md gap-4">
+        <Field label="Max risk per trade">
+          <Input defaultValue="1.0%" />
+        </Field>
+        <Field label="Max daily drawdown">
+          <Input defaultValue="3.0%" />
+        </Field>
+        <Field label="ATR stop-loss multiplier">
+          <Input defaultValue="1.5×" />
+        </Field>
+      </div>
+    </SettingsShell>
+  )
+}
+```
+
+### In-place panels with onSelect
+
+Items without an href render as buttons for settings pages that swap panels without navigating.
+
+```jsx
+import { Button, Field, Input, SettingsShell, StepUpNotice } from '@kryv/teal'
+
+const trictSections = [
+  {
+    label: 'Trict',
+    items: [
+      { id: 'account', label: 'Account', href: '#account' },
+      { id: 'risk', label: 'Risk', href: '#risk', current: true },
+      { id: 'schedule', label: 'Schedule', href: '#schedule' },
+      { id: 'strategy', label: 'Strategy', href: '#strategy' },
+      { id: 'ai', label: 'AI & research', href: '#ai' },
+    ],
+  },
+  {
+    label: 'Ecosystem',
+    items: [{ id: 'home', label: '← Back to Home settings', href: '#home-settings' }],
+  },
+]
+
+export function SettingsShellDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <SettingsShell
+        accent="--teal-color-product-yang"
+        title="Integrations"
+        description="Services Yang watches on behalf of the household."
+        sections={[
+          {
+            label: 'Yang',
+            items: [
+              { id: 'integrations', label: 'Integrations', current: true, onSelect: () => {} },
+              { id: 'monitoring', label: 'Monitoring', onSelect: () => {} },
+              { id: 'fleet', label: 'Fleet', onSelect: () => {} },
+            ],
+          },
+        ]}
+      >
+        <p className="max-w-md text-sm text-teal-on-surface-variant">
+          Items without an href render as buttons and report through onSelect — for settings pages that swap
+          panels in place instead of navigating.
+        </p>
+      </SettingsShell>
+    )
+  }
+
+  return (
+    <SettingsShell
+      accent="--teal-color-product-trict"
+      title="Risk"
+      description="Caps the execution worker enforces before any order reaches OANDA."
+      sections={trictSections}
+      notice={
+        <StepUpNotice title="Step-up required" action={<Button size="sm">Verify to save</Button>}>
+          Changing risk caps needs a fresh step-up (password + TOTP).
+        </StepUpNotice>
+      }
+      saveBar={
+        <>
+          <Button size="sm">Save changes</Button>
+          <Button size="sm" variant="ghost">Discard</Button>
+          <span className="text-xs text-teal-on-surface-variant">Unsaved changes · autosaves drafts</span>
+        </>
+      }
+    >
+      <div className="grid max-w-md gap-4">
+        <Field label="Max risk per trade">
+          <Input defaultValue="1.0%" />
+        </Field>
+        <Field label="Max daily drawdown">
+          <Input defaultValue="3.0%" />
+        </Field>
+        <Field label="ATR stop-loss multiplier">
+          <Input defaultValue="1.5×" />
+        </Field>
+      </div>
+    </SettingsShell>
+  )
+}
+```
+
+## Anatomy
+
+- **Sections nav** - Grouped section labels above items; items render as anchors when they carry an href and as buttons with onSelect otherwise. The current item sets aria-current="page" and draws the accent edge.
+- **Content panel** - Title, description, and the section's form or controls.
+- **Notice area** - Optional slot above the content; compose StepUpNotice here when a sensitive section needs fresh verification before saving.
+- **Save bar** - Optional row behind a dashed divider for the save and discard actions plus a dirty-state hint.
+
+## Do and don't
+
+### Do
+
+- Pass the product's own accent token so the active edge keeps product identity.
+- Use href items for real routes and onSelect items for panels swapped in place.
+- Render a StepUpNotice in the notice slot for sensitive sections; saving still belongs to the product.
+
+### Don't
+
+- Don't mix href and onSelect on one item; href wins.
+- Don't build a per-product settings layout; the point of the shell is that every product's settings work the same.
+- Don't put the save action inside the form when the save bar slot exists; keep it in one predictable place.
+
+## Interface
+
+### SettingsShell
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `accent` | `string` | `--teal-color-product-home` | Product accent token name used for the active item's edge, for example '--teal-color-product-trict'. Defaults to '--teal-color-product-home'. |
+| `children` (required) | `ReactNode` | - | Panel content: the form or settings controls for the current section. |
+| `className` | `string` | - | - |
+| `description` | `ReactNode` | - | Supporting text rendered under the title. |
+| `notice` | `ReactNode` | - | Notice area rendered above the content; compose StepUpNotice here when a sensitive section needs fresh verification. |
+| `saveBar` | `ReactNode` | - | Save/discard/dirty-hint row rendered below the content behind a dashed divider. |
+| `sections` (required) | `SettingsShellGroup[]` | - | Section groups for the left navigation. |
+| `title` (required) | `ReactNode` | - | Panel heading naming the current section. |
+
+## Related modules
+
+- [Step-Up Notice](/modules/step-up-notice)
+- [Ecosystem Shell](/modules/ecosystem-shell)
+- [Sidebar](/modules/sidebar)
+
+---
+
 # Box
 
 The lowest-level layout primitive: a polymorphic box with spacing props, leaving surfaces and colors to className.
@@ -35063,6 +35621,200 @@ export function ThemeToggleDemo({ exampleIndex = 0 }) {
 
 ---
 
+# Theme Provider
+
+Owns the ecosystem-wide 3-way theme preference (light, dark, system), applies the dark class to the document root, and persists the choice to localStorage.
+
+## Usage
+
+```js
+import { ThemeProvider, ThemeToggle, useTheme } from '@kryv/teal'
+```
+
+```jsx
+<ThemeProvider>
+  <App />
+</ThemeProvider>
+
+function ThemeControl() {
+  const { choice, resolved, setChoice } = useTheme()
+  return <Button onClick={() => setChoice(resolved === 'dark' ? 'light' : 'dark')}>{choice}</Button>
+}
+```
+
+## Design guidance
+
+### Use when
+
+Every Kryv application: the provider is the single owner of the light/dark/system preference and the document's dark class contract.
+### Avoid when
+
+Nothing else should own theme state; static pages without theming can skip it.
+### Behavior
+
+On mount the stored choice wins, then defaultChoice (system by default); system tracks prefers-color-scheme live, and every change is applied to document.documentElement and persisted to localStorage. Storage and matchMedia are guarded, so SSR and older engines render light without crashing.
+### Responsive
+
+No visual footprint of its own.
+
+## Examples
+
+### Provider with a 3-way chooser
+
+useTheme exposes the stored choice and the resolved theme; ThemeToggle inside the provider flips the stored choice.
+
+```jsx
+import { Button, ThemeProvider, ThemeToggle, useTheme } from '@kryv/teal'
+
+function ThemeReadout() {
+  const { choice, resolved, setChoice } = useTheme()
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-teal-on-surface-variant">
+        choice: <strong className="text-teal-on-surface">{choice}</strong> · resolved:{' '}
+        <strong className="text-teal-on-surface">{resolved}</strong>
+      </p>
+      <div className="flex flex-wrap items-center gap-2">
+        {/** @type {import('@kryv/teal').ThemeChoice[]} */ (['light', 'dark', 'system']).map((value) => (
+          <Button
+            key={value}
+            size="sm"
+            variant={choice === value ? 'primary' : 'secondary'}
+            onClick={() => setChoice(value)}
+          >
+            {value}
+          </Button>
+        ))}
+        <span className="mx-1 h-5 w-px bg-teal-outline-variant/50" aria-hidden="true" />
+        <ThemeToggle />
+      </div>
+    </div>
+  )
+}
+
+export function ThemeProviderDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <ThemeProvider storageKey="teal-docs:theme-demo" defaultChoice="light">
+        <div className="space-y-2">
+          <ThemeReadout />
+          <p className="text-xs text-teal-on-surface-variant">
+            Persisted under teal-docs:theme-demo — reload the page and the choice survives.
+          </p>
+        </div>
+      </ThemeProvider>
+    )
+  }
+
+  return (
+    <ThemeProvider>
+      <div className="space-y-2">
+        <ThemeReadout />
+        <p className="text-xs text-teal-on-surface-variant">
+          The provider owns the dark class on the document root; ThemeToggle inside it flips the stored choice.
+        </p>
+      </div>
+    </ThemeProvider>
+  )
+}
+```
+
+### Custom storage key
+
+storageKey and defaultChoice are configurable; the choice persists across reloads.
+
+```jsx
+import { Button, ThemeProvider, ThemeToggle, useTheme } from '@kryv/teal'
+
+function ThemeReadout() {
+  const { choice, resolved, setChoice } = useTheme()
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-teal-on-surface-variant">
+        choice: <strong className="text-teal-on-surface">{choice}</strong> · resolved:{' '}
+        <strong className="text-teal-on-surface">{resolved}</strong>
+      </p>
+      <div className="flex flex-wrap items-center gap-2">
+        {/** @type {import('@kryv/teal').ThemeChoice[]} */ (['light', 'dark', 'system']).map((value) => (
+          <Button
+            key={value}
+            size="sm"
+            variant={choice === value ? 'primary' : 'secondary'}
+            onClick={() => setChoice(value)}
+          >
+            {value}
+          </Button>
+        ))}
+        <span className="mx-1 h-5 w-px bg-teal-outline-variant/50" aria-hidden="true" />
+        <ThemeToggle />
+      </div>
+    </div>
+  )
+}
+
+export function ThemeProviderDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <ThemeProvider storageKey="teal-docs:theme-demo" defaultChoice="light">
+        <div className="space-y-2">
+          <ThemeReadout />
+          <p className="text-xs text-teal-on-surface-variant">
+            Persisted under teal-docs:theme-demo — reload the page and the choice survives.
+          </p>
+        </div>
+      </ThemeProvider>
+    )
+  }
+
+  return (
+    <ThemeProvider>
+      <div className="space-y-2">
+        <ThemeReadout />
+        <p className="text-xs text-teal-on-surface-variant">
+          The provider owns the dark class on the document root; ThemeToggle inside it flips the stored choice.
+        </p>
+      </div>
+    </ThemeProvider>
+  )
+}
+```
+
+## Anatomy
+
+- **ThemeProvider** - Wraps the application once, reads the stored choice (default storage key kryv:theme), subscribes to prefers-color-scheme, and keeps the document root's dark class in sync with the resolved theme.
+- **useTheme** - Hook returning { choice, resolved, setChoice }; choice is the stored 3-way preference, resolved is the effective light or dark.
+- **ThemeToggle** - Rendered inside a provider it becomes controlled, flipping the stored choice between explicit light and dark instead of touching the document itself.
+
+## Do and don't
+
+### Do
+
+- Mount one ThemeProvider per application, near the root, before any component reads useTheme.
+- Read resolved for anything that needs the effective theme, such as chart palettes or map tiles.
+- Keep the default storage key so the choice follows the person across the ecosystem.
+
+### Don't
+
+- Don't implement a parallel per-app theme store; the provider replaces those.
+- Don't toggle the dark class directly alongside the provider; the two will fight.
+- Don't call useTheme outside a provider; it throws on purpose.
+
+## Interface
+
+### ThemeProvider
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `defaultChoice` | `enum` | `system` | Choice applied when nothing is persisted yet; defaults to 'system'. |
+| `storageKey` | `string` | `kryv:theme` | localStorage key the choice is persisted under; defaults to 'kryv:theme'. |
+
+## Related modules
+
+- [Theme Toggle](/modules/theme-toggle)
+- [Ecosystem Shell](/modules/ecosystem-shell)
+
+---
+
 # Carousel
 
 A scroll-snap carousel with previous and next controls, dot indicators, and arrow-key support.
@@ -36922,9 +37674,9 @@ export function RevealDemo({ exampleIndex = 0 }) {
     return (
       <div className="flex gap-4">
         {cards.map((card) => (
-          <Reveal key={card.title} once={false} className="w-52 rounded-xl border border-gray-200 p-4">
+          <Reveal key={card.title} once={false} className="w-52 rounded-xl border border-teal-outline-variant/50 p-4">
             <p className="font-medium">{card.title}</p>
-            <p className="mt-1 text-sm text-gray-500">{card.body}</p>
+            <p className="mt-1 text-sm text-teal-on-surface-variant">{card.body}</p>
           </Reveal>
         ))}
       </div>
@@ -36934,9 +37686,9 @@ export function RevealDemo({ exampleIndex = 0 }) {
   return (
     <div className="flex gap-4">
       {cards.map((card) => (
-        <Reveal key={card.title} className="w-52 rounded-xl border border-gray-200 p-4">
+        <Reveal key={card.title} className="w-52 rounded-xl border border-teal-outline-variant/50 p-4">
           <p className="font-medium">{card.title}</p>
-          <p className="mt-1 text-sm text-gray-500">{card.body}</p>
+          <p className="mt-1 text-sm text-teal-on-surface-variant">{card.body}</p>
         </Reveal>
       ))}
     </div>
@@ -36962,9 +37714,9 @@ export function RevealDemo({ exampleIndex = 0 }) {
     return (
       <div className="flex gap-4">
         {cards.map((card) => (
-          <Reveal key={card.title} once={false} className="w-52 rounded-xl border border-gray-200 p-4">
+          <Reveal key={card.title} once={false} className="w-52 rounded-xl border border-teal-outline-variant/50 p-4">
             <p className="font-medium">{card.title}</p>
-            <p className="mt-1 text-sm text-gray-500">{card.body}</p>
+            <p className="mt-1 text-sm text-teal-on-surface-variant">{card.body}</p>
           </Reveal>
         ))}
       </div>
@@ -36974,9 +37726,9 @@ export function RevealDemo({ exampleIndex = 0 }) {
   return (
     <div className="flex gap-4">
       {cards.map((card) => (
-        <Reveal key={card.title} className="w-52 rounded-xl border border-gray-200 p-4">
+        <Reveal key={card.title} className="w-52 rounded-xl border border-teal-outline-variant/50 p-4">
           <p className="font-medium">{card.title}</p>
-          <p className="mt-1 text-sm text-gray-500">{card.body}</p>
+          <p className="mt-1 text-sm text-teal-on-surface-variant">{card.body}</p>
         </Reveal>
       ))}
     </div>

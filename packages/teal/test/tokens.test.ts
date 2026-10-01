@@ -59,8 +59,8 @@ describe('semantic color tokens', () => {
   ] as const
 
   it('publishes complete namespaced CSS colors without legacy channel tokens', () => {
-    expect(Object.keys(light)).toHaveLength(51)
-    expect(Object.keys(dark)).toHaveLength(51)
+    expect(Object.keys(light)).toHaveLength(57)
+    expect(Object.keys(dark)).toHaveLength(57)
     expect(css).not.toMatch(/--color-[\w-]+:/)
   })
 
@@ -82,6 +82,8 @@ describe('semantic color tokens', () => {
     ]),
     ['light warning text', light['teal-color-warning'], composite(light['teal-color-warning'], light['teal-color-surface-container'], 0.1)],
     ['dark warning text', dark['teal-color-warning'], composite(dark['teal-color-warning'], dark['teal-color-surface-container'], 0.1)],
+    ['light tertiary text', light['teal-color-tertiary'], composite(light['teal-color-tertiary'], light['teal-color-surface-container'], 0.1)],
+    ['dark tertiary text', dark['teal-color-tertiary'], composite(dark['teal-color-tertiary'], dark['teal-color-surface-container'], 0.1)],
   ])('%s meets WCAG AA for normal text', (_name, foreground, background) => {
     expect(contrast(foreground ?? [], background ?? [])).toBeGreaterThanOrEqual(4.5)
   })
@@ -102,12 +104,14 @@ describe('visual system tokens', () => {
   it.each([
     '--teal-radius-control',
     '--teal-radius-surface',
+    '--teal-radius-xl',
     '--teal-radius-pill',
     '--teal-border-subtle',
     '--teal-border-strong',
     '--teal-focus-ring',
     '--teal-shadow-raised',
     '--teal-shadow-overlay',
+    '--teal-shadow-voxel',
     '--teal-icon-xs',
     '--teal-icon-sm',
     '--teal-icon-md',
@@ -115,6 +119,9 @@ describe('visual system tokens', () => {
     '--teal-icon-xl',
     '--teal-motion-fast',
     '--teal-motion-standard',
+    '--teal-motion-med',
+    '--teal-motion-slow',
+    '--teal-motion-ease',
   ])('publishes %s as a supported theming hook', (token) => {
     expect(css).toMatch(new RegExp(`${token}:\\s*[^;]+;`))
   })

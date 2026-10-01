@@ -101,6 +101,7 @@
 - [Page Header](/modules/page-header) (Navigation): A responsive page title, supporting text, and action area.
 - [Nav Rail](/modules/nav-rail) (Navigation): A fully rounded floating icon rail for dense product navigation.
 - [Ecosystem Rail](/modules/ecosystem-rail) (Navigation): A persistent cross-product rail with a stable Home destination, caller-filtered applications, and honest health status.
+- [Ecosystem Shell](/modules/ecosystem-shell) (Navigation): The assembled ecosystem chrome: the EcosystemRail with brand, Home, health-dotted destinations, settings and account footer, plus a top bar slot, a scrolling main region, and a mobile drawer.
 - [Top Bar](/modules/top-bar) (Navigation): A sticky top bar with brand, search, and action slots.
 - [Breadcrumb](/modules/breadcrumb) (Navigation): A hierarchical trail with router-ready items and automatic middle-item collapse.
 - [Steps](/modules/steps) (Navigation): A numbered flow indicator with done, current, and upcoming states.
@@ -151,6 +152,7 @@
 - [Resizable](/modules/resizable) (Layout): Pointer- and keyboard-resizable panes with percentage sizing and double-click reset.
 - [Aspect Ratio](/modules/aspect-ratio) (Layout): Keeps media or content at a consistent width-to-height ratio.
 - [AppShell](/modules/app-shell) (Layout): An application frame that places header, sidebar, main and footer regions into named grid areas.
+- [Settings Shell](/modules/settings-shell) (Layout): The unified settings layout: a sections nav on the left with an accent edge on the current item, a content panel on the right, and slots for a step-up notice and a save bar.
 - [Box](/modules/box) (Layout): The lowest-level layout primitive: a polymorphic box with spacing props, leaving surfaces and colors to className.
 - [Center](/modules/center) (Layout): Centers children horizontally and vertically inside their box, with an inline option for flow content.
 - [Columns](/modules/columns) (Layout): An equal-width grid column layout that keeps row alignment and collapses to fewer columns on narrow screens.
@@ -163,6 +165,7 @@
 - [Visually Hidden](/modules/visually-hidden) (Utilities): Hides content visually while keeping it available to assistive technology.
 - [Copy Button](/modules/copy-button) (Utilities): A button that copies a value to the clipboard and confirms with an icon swap and live feedback.
 - [Theme Toggle](/modules/theme-toggle) (Utilities): An icon button that toggles the dark class on the document root and reports its state.
+- [Theme Provider](/modules/theme-provider) (Utilities): Owns the ecosystem-wide 3-way theme preference (light, dark, system), applies the dark class to the document root, and persists the choice to localStorage.
 - [Carousel](/modules/carousel) (Utilities): A scroll-snap carousel with previous and next controls, dot indicators, and arrow-key support.
 - [Collapse](/modules/collapse) (Utilities): Animates a region's height to show or hide content, marking it hidden and inert while closed.
 - [Countdown Timer](/modules/countdown-timer) (Utilities): Counts down to a target date with a default HH:MM:SS display or a custom render prop, firing onComplete at zero.

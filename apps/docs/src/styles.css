@@ -23,10 +23,10 @@ body {
 
 :root {
   --prism-text: #24292f;
-  --prism-comment: #67727c;
+  --prism-comment: #636d77;
   --prism-keyword: #cf222e;
   --prism-string: #0a7a3d;
-  --prism-function: #8250df;
+  --prism-function: #7f4bdb;
   --prism-number: #0550ae;
   --prism-tag: #116329;
   --prism-attr: #953800;

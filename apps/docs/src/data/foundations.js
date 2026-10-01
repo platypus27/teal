@@ -10,7 +10,7 @@ export const typeTokens = [
 ]
 
 export const shapeNotes = [
-  'Controls use 12 to 16 pixel radii.',
-  'Surfaces use soft teal elevation.',
-  'Motion stays between 150 and 200 milliseconds and respects reduced motion.',
+  'Radii scale 10/14/20/28 pixels from nested inputs up to hero surfaces.',
+  'Panels carry the voxel bevel: an inset top highlight over a deep ambient drop.',
+  'Motion runs 160 to 600 milliseconds on one ease curve and respects reduced motion.',
 ]

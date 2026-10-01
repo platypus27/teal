@@ -17,13 +17,49 @@ export default {
       "name": "Warning",
       "token": "--teal-color-warning",
       "bg": "bg-teal-warning",
-      "fg": "text-black"
+      "fg": "text-teal-on-primary"
     },
     {
       "name": "Danger",
       "token": "--teal-color-error",
       "bg": "bg-teal-error",
       "fg": "text-teal-on-error"
+    },
+    {
+      "name": "Stale",
+      "token": "--teal-color-stale",
+      "bg": "bg-teal-stale",
+      "fg": "text-teal-on-primary"
+    },
+    {
+      "name": "Home accent",
+      "token": "--teal-color-product-home",
+      "bg": "bg-teal-product-home",
+      "fg": "text-teal-on-primary"
+    },
+    {
+      "name": "Photos accent",
+      "token": "--teal-color-product-photos",
+      "bg": "bg-teal-product-photos",
+      "fg": "text-teal-on-primary"
+    },
+    {
+      "name": "Yang accent",
+      "token": "--teal-color-product-yang",
+      "bg": "bg-teal-product-yang",
+      "fg": "text-teal-on-primary"
+    },
+    {
+      "name": "Trict accent",
+      "token": "--teal-color-product-trict",
+      "bg": "bg-teal-product-trict",
+      "fg": "text-teal-on-primary"
+    },
+    {
+      "name": "Twinkle accent",
+      "token": "--teal-color-product-twinkle",
+      "bg": "bg-teal-product-twinkle",
+      "fg": "text-teal-on-primary"
     },
     {
       "name": "Surface",
@@ -126,6 +162,10 @@ export default {
       "token": "--teal-radius-surface"
     },
     {
+      "name": "Extra-large radius",
+      "token": "--teal-radius-xl"
+    },
+    {
       "name": "Pill radius",
       "token": "--teal-radius-pill"
     },
@@ -148,6 +188,10 @@ export default {
     {
       "name": "Overlay elevation",
       "token": "--teal-shadow-overlay"
+    },
+    {
+      "name": "Voxel bevel",
+      "token": "--teal-shadow-voxel"
     },
     {
       "name": "Extra-small icon",
@@ -176,6 +220,18 @@ export default {
     {
       "name": "Standard motion",
       "token": "--teal-motion-standard"
+    },
+    {
+      "name": "Medium motion",
+      "token": "--teal-motion-med"
+    },
+    {
+      "name": "Slow motion",
+      "token": "--teal-motion-slow"
+    },
+    {
+      "name": "Voxel ease",
+      "token": "--teal-motion-ease"
     }
   ]
 }
