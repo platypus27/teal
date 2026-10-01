@@ -31,6 +31,7 @@ export default {
         "teal-on-primary": "color-mix(in srgb, var(--teal-color-on-primary) calc(<alpha-value> * 100%), transparent)",
         "teal-error": "color-mix(in srgb, var(--teal-color-error) calc(<alpha-value> * 100%), transparent)",
         "teal-warning": "color-mix(in srgb, var(--teal-color-warning) calc(<alpha-value> * 100%), transparent)",
+        "teal-stale": "color-mix(in srgb, var(--teal-color-stale) calc(<alpha-value> * 100%), transparent)",
         "teal-on-primary-fixed": "color-mix(in srgb, var(--teal-color-on-primary-fixed) calc(<alpha-value> * 100%), transparent)",
         "teal-primary-fixed": "color-mix(in srgb, var(--teal-color-primary-fixed) calc(<alpha-value> * 100%), transparent)",
         "teal-inverse-primary": "color-mix(in srgb, var(--teal-color-inverse-primary) calc(<alpha-value> * 100%), transparent)",
@@ -54,7 +55,12 @@ export default {
         "teal-surface-container-low": "color-mix(in srgb, var(--teal-color-surface-container-low) calc(<alpha-value> * 100%), transparent)",
         "teal-surface-tint": "color-mix(in srgb, var(--teal-color-surface-tint) calc(<alpha-value> * 100%), transparent)",
         "teal-primary-container": "color-mix(in srgb, var(--teal-color-primary-container) calc(<alpha-value> * 100%), transparent)",
-        "teal-on-error": "color-mix(in srgb, var(--teal-color-on-error) calc(<alpha-value> * 100%), transparent)"
+        "teal-on-error": "color-mix(in srgb, var(--teal-color-on-error) calc(<alpha-value> * 100%), transparent)",
+        "teal-product-home": "color-mix(in srgb, var(--teal-color-product-home) calc(<alpha-value> * 100%), transparent)",
+        "teal-product-photos": "color-mix(in srgb, var(--teal-color-product-photos) calc(<alpha-value> * 100%), transparent)",
+        "teal-product-yang": "color-mix(in srgb, var(--teal-color-product-yang) calc(<alpha-value> * 100%), transparent)",
+        "teal-product-trict": "color-mix(in srgb, var(--teal-color-product-trict) calc(<alpha-value> * 100%), transparent)",
+        "teal-product-twinkle": "color-mix(in srgb, var(--teal-color-product-twinkle) calc(<alpha-value> * 100%), transparent)"
 },
       fontFamily: {
         'teal-headline': ['var(--teal-font-headline)'],
@@ -64,11 +70,21 @@ export default {
       borderRadius: {
         'teal-control': 'var(--teal-radius-control)',
         'teal-surface': 'var(--teal-radius-surface)',
+        'teal-xl': 'var(--teal-radius-xl)',
         'teal-pill': 'var(--teal-radius-pill)',
       },
       boxShadow: {
         'teal-raised': 'var(--teal-shadow-raised)',
         'teal-overlay': 'var(--teal-shadow-overlay)',
+        'teal-voxel': 'var(--teal-shadow-voxel)',
+      },
+      transitionDuration: {
+        'teal-fast': 'var(--teal-motion-fast)',
+        'teal-med': 'var(--teal-motion-med)',
+        'teal-slow': 'var(--teal-motion-slow)',
+      },
+      transitionTimingFunction: {
+        'teal-voxel': 'var(--teal-motion-ease)',
       },
     },
   },

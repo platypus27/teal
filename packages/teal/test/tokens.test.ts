@@ -59,8 +59,8 @@ describe('semantic color tokens', () => {
   ] as const
 
   it('publishes complete namespaced CSS colors without legacy channel tokens', () => {
-    expect(Object.keys(light)).toHaveLength(51)
-    expect(Object.keys(dark)).toHaveLength(51)
+    expect(Object.keys(light)).toHaveLength(57)
+    expect(Object.keys(dark)).toHaveLength(57)
     expect(css).not.toMatch(/--color-[\w-]+:/)
   })
 
@@ -102,12 +102,14 @@ describe('visual system tokens', () => {
   it.each([
     '--teal-radius-control',
     '--teal-radius-surface',
+    '--teal-radius-xl',
     '--teal-radius-pill',
     '--teal-border-subtle',
     '--teal-border-strong',
     '--teal-focus-ring',
     '--teal-shadow-raised',
     '--teal-shadow-overlay',
+    '--teal-shadow-voxel',
     '--teal-icon-xs',
     '--teal-icon-sm',
     '--teal-icon-md',
@@ -115,6 +117,9 @@ describe('visual system tokens', () => {
     '--teal-icon-xl',
     '--teal-motion-fast',
     '--teal-motion-standard',
+    '--teal-motion-med',
+    '--teal-motion-slow',
+    '--teal-motion-ease',
   ])('publishes %s as a supported theming hook', (token) => {
     expect(css).toMatch(new RegExp(`${token}:\\s*[^;]+;`))
   })

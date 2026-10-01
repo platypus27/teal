@@ -33,6 +33,7 @@ export default {
       boxShadow: {
         raised: 'var(--teal-shadow-raised)',
         overlay: 'var(--teal-shadow-overlay)',
+        voxel: 'var(--teal-shadow-voxel)',
       },
     },
   },

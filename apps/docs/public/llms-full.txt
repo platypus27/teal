@@ -131,6 +131,12 @@ Use semantic roles instead of raw palette values.
 - **Success** - `--teal-color-tertiary`
 - **Warning** - `--teal-color-warning`
 - **Danger** - `--teal-color-error`
+- **Stale** - `--teal-color-stale`
+- **Home accent** - `--teal-color-product-home`
+- **Photos accent** - `--teal-color-product-photos`
+- **Yang accent** - `--teal-color-product-yang`
+- **Trict accent** - `--teal-color-product-trict`
+- **Twinkle accent** - `--teal-color-product-twinkle`
 - **Surface** - `--teal-color-surface-container`
 - **Elevated surface** - `--teal-color-surface-container-high`
 
@@ -141,9 +147,9 @@ Use semantic roles instead of raw palette values.
 
 ## Shape, elevation, and motion
 
-- Controls use 12 to 16 pixel radii.
-- Surfaces use soft teal elevation.
-- Motion stays between 150 and 200 milliseconds and respects reduced motion.
+- Radii scale 10/14/20/28 pixels from nested inputs up to hero surfaces.
+- Panels carry the voxel bevel: an inset top highlight over a deep ambient drop.
+- Motion runs 160 to 600 milliseconds on one ease curve and respects reduced motion.
 
 ## Visual tokens
 
@@ -151,12 +157,14 @@ Override these supported CSS properties at `:root` to tune Teal without rewritin
 
 - **Control radius** - `--teal-radius-control`
 - **Surface radius** - `--teal-radius-surface`
+- **Extra-large radius** - `--teal-radius-xl`
 - **Pill radius** - `--teal-radius-pill`
 - **Subtle border** - `--teal-border-subtle`
 - **Strong border** - `--teal-border-strong`
 - **Focus ring** - `--teal-focus-ring`
 - **Raised elevation** - `--teal-shadow-raised`
 - **Overlay elevation** - `--teal-shadow-overlay`
+- **Voxel bevel** - `--teal-shadow-voxel`
 - **Extra-small icon** - `--teal-icon-xs`
 - **Small icon** - `--teal-icon-sm`
 - **Medium icon** - `--teal-icon-md`
@@ -164,6 +172,9 @@ Override these supported CSS properties at `:root` to tune Teal without rewritin
 - **Extra-large icon** - `--teal-icon-xl`
 - **Fast motion** - `--teal-motion-fast`
 - **Standard motion** - `--teal-motion-standard`
+- **Medium motion** - `--teal-motion-med`
+- **Slow motion** - `--teal-motion-slow`
+- **Voxel ease** - `--teal-motion-ease`
 
 ---
 
