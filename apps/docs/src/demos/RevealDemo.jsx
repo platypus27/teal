@@ -11,9 +11,9 @@ export function RevealDemo({ exampleIndex = 0 }) {
     return (
       <div className="flex gap-4">
         {cards.map((card) => (
-          <Reveal key={card.title} once={false} className="w-52 rounded-xl border border-gray-200 p-4">
+          <Reveal key={card.title} once={false} className="w-52 rounded-xl border border-teal-outline-variant/50 p-4">
             <p className="font-medium">{card.title}</p>
-            <p className="mt-1 text-sm text-gray-500">{card.body}</p>
+            <p className="mt-1 text-sm text-teal-on-surface-variant">{card.body}</p>
           </Reveal>
         ))}
       </div>
@@ -23,9 +23,9 @@ export function RevealDemo({ exampleIndex = 0 }) {
   return (
     <div className="flex gap-4">
       {cards.map((card) => (
-        <Reveal key={card.title} className="w-52 rounded-xl border border-gray-200 p-4">
+        <Reveal key={card.title} className="w-52 rounded-xl border border-teal-outline-variant/50 p-4">
           <p className="font-medium">{card.title}</p>
-          <p className="mt-1 text-sm text-gray-500">{card.body}</p>
+          <p className="mt-1 text-sm text-teal-on-surface-variant">{card.body}</p>
         </Reveal>
       ))}
     </div>
