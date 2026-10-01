@@ -42,12 +42,12 @@ variables and `teal-u-*` utilities:
   pale mint night (`#dcefe6`, variant `#93b3a8`).
 - **Primary** stays teal (`#0f6a6c` day / `#2dd4bf` night); secondary and the
   fixed/container families keep their roles.
-- **Status**: success → `tertiary` (`#2e7d4f`/`#4ade80`), error →
-  (`#b3372b`/`#ff7a6b`), warning revalued to `#865914`/`#f5b14c` — the day
-  value is darkened from the mockup amber `#b97b1e` because the mockup value
-  reaches only ~2.9:1 text contrast on tinted chips; the WCAG AA contrast
-  tests are the contract and were not weakened. New `teal-color-stale`
-  (`#717d6f`/`#6b7a70`) covers the fourth status dot.
+- **Status**: success → `tertiary` (`#286e46`/`#4ade80`), error →
+  (`#b3372b`/`#ff7a6b`), warning revalued to `#865914`/`#f5b14c` — both day
+  values are darkened from the mockup hues (amber `#b97b1e` ~2.9:1, success
+  green `#2e7d4f` ~3.9:1) because they miss AA text contrast on tinted chips;
+  the WCAG AA contrast tests are the contract and were not weakened. New
+  `teal-color-stale` (`#717d6f`/`#6b7a70`) covers the fourth status dot.
 - **New per-product accents** `teal-color-product-{home,photos,yang,trict,twinkle}`
   give each subdomain its identity color in both themes. They are decorative
   roles and are intentionally not added to `contrastPairs`.

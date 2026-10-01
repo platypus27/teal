@@ -4,8 +4,8 @@
 
 Revalue the design tokens for the voxel-world redesign (ADR 0007). Surfaces
 move to warm cream glass by day and deep teal glass by night, ink and borders
-follow the new palette, status colors are revalued (warning's day value is
-darkened to keep WCAG AA on tinted chips), and radii revalue to the
+follow the new palette, status colors are revalued (warning's and success's
+day values are darkened to keep WCAG AA on tinted chips), and radii revalue to the
 10/14/20/28px scale with motion tokens at 160/320/600ms on a shared ease
 curve. New tokens: per-product accents
 (`--teal-color-product-{home,photos,yang,trict,twinkle}`),
