@@ -22,9 +22,9 @@ export const colorTokens = {
   'teal-color-error-container': { light: [255, 228, 230], dark: [127, 29, 29] },
   'teal-color-secondary-fixed': { light: [224, 245, 244], dark: [10, 46, 46] },
   /* Status: success / warning / error / stale per the redesign brief. The
-     warning day value is darkened from the mockup amber to keep AA text
-     contrast on tinted chips (see test/tokens.test.ts). */
-  'teal-color-tertiary': { light: [46, 125, 79], dark: [74, 222, 128] },
+     warning and success day values are darkened from the mockup hues to keep
+     AA text contrast on tinted chips (see test/tokens.test.ts). */
+  'teal-color-tertiary': { light: [40, 110, 70], dark: [74, 222, 128] },
   'teal-color-error-dim': { light: [148, 44, 34], dark: [235, 105, 90] },
   'teal-color-surface-bright': { light: [255, 255, 255], dark: [38, 68, 80] },
   'teal-color-tertiary-container': { light: [209, 250, 229], dark: [6, 78, 59] },

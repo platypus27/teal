@@ -82,6 +82,8 @@ describe('semantic color tokens', () => {
     ]),
     ['light warning text', light['teal-color-warning'], composite(light['teal-color-warning'], light['teal-color-surface-container'], 0.1)],
     ['dark warning text', dark['teal-color-warning'], composite(dark['teal-color-warning'], dark['teal-color-surface-container'], 0.1)],
+    ['light tertiary text', light['teal-color-tertiary'], composite(light['teal-color-tertiary'], light['teal-color-surface-container'], 0.1)],
+    ['dark tertiary text', dark['teal-color-tertiary'], composite(dark['teal-color-tertiary'], dark['teal-color-surface-container'], 0.1)],
   ])('%s meets WCAG AA for normal text', (_name, foreground, background) => {
     expect(contrast(foreground ?? [], background ?? [])).toBeGreaterThanOrEqual(4.5)
   })
