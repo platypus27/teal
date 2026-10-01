@@ -48,9 +48,9 @@ icons. Radix is not part of the public interface.
 
 ## Modules
 
-168 documented module pages across eleven groups — Actions, Forms, Pickers,
+171 documented module pages across eleven groups — Actions, Forms, Pickers,
 Surfaces, Overlays, Feedback, Navigation, Data, Charts, Layout, and Utilities —
-backed by 170 components in `packages/teal/src`. The full catalog with live
+backed by 173 components in `packages/teal/src`. The full catalog with live
 examples, playgrounds, and generated interface tables lives at
 <https://teal.kryvlabs.com/modules>.
 

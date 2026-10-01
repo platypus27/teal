@@ -783,6 +783,14 @@ export const moduleIndexGroups = [
         ]
       },
       {
+        "id": "ecosystem-shell",
+        "name": "Ecosystem Shell",
+        "description": "The assembled ecosystem chrome: the EcosystemRail with brand, Home, health-dotted destinations, settings and account footer, plus a top bar slot, a scrolling main region, and a mobile drawer.",
+        "apiNames": [
+          "EcosystemShell"
+        ]
+      },
+      {
         "id": "top-bar",
         "name": "Top Bar",
         "description": "A sticky top bar with brand, search, and action slots.",
@@ -1220,6 +1228,14 @@ export const moduleIndexGroups = [
         ]
       },
       {
+        "id": "settings-shell",
+        "name": "Settings Shell",
+        "description": "The unified settings layout: a sections nav on the left with an accent edge on the current item, a content panel on the right, and slots for a step-up notice and a save bar.",
+        "apiNames": [
+          "SettingsShell"
+        ]
+      },
+      {
         "id": "box",
         "name": "Box",
         "description": "The lowest-level layout primitive: a polymorphic box with spacing props, leaving surfaces and colors to className.",
@@ -1318,6 +1334,14 @@ export const moduleIndexGroups = [
         "description": "An icon button that toggles the dark class on the document root and reports its state.",
         "apiNames": [
           "ThemeToggle"
+        ]
+      },
+      {
+        "id": "theme-provider",
+        "name": "Theme Provider",
+        "description": "Owns the ecosystem-wide 3-way theme preference (light, dark, system), applies the dark class to the document root, and persists the choice to localStorage.",
+        "apiNames": [
+          "ThemeProvider"
         ]
       },
       {

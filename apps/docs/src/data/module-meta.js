@@ -95,6 +95,7 @@ import m_pagination from './modules/pagination.js'
 import m_page_header from './modules/page-header.js'
 import m_nav_rail from './modules/nav-rail.js'
 import m_ecosystem_rail from './modules/ecosystem-rail.js'
+import m_ecosystem_shell from './modules/ecosystem-shell.js'
 import m_top_bar from './modules/top-bar.js'
 import m_breadcrumb from './modules/breadcrumb.js'
 import m_steps from './modules/steps.js'
@@ -145,6 +146,7 @@ import m_grid from './modules/grid.js'
 import m_resizable from './modules/resizable.js'
 import m_aspect_ratio from './modules/aspect-ratio.js'
 import m_app_shell from './modules/app-shell.js'
+import m_settings_shell from './modules/settings-shell.js'
 import m_box from './modules/box.js'
 import m_center from './modules/center.js'
 import m_columns from './modules/columns.js'
@@ -157,6 +159,7 @@ import m_sticky_header from './modules/sticky-header.js'
 import m_visually_hidden from './modules/visually-hidden.js'
 import m_copy_button from './modules/copy-button.js'
 import m_theme_toggle from './modules/theme-toggle.js'
+import m_theme_provider from './modules/theme-provider.js'
 import m_carousel from './modules/carousel.js'
 import m_collapse from './modules/collapse.js'
 import m_countdown_timer from './modules/countdown-timer.js'
@@ -200,7 +203,7 @@ export const moduleGroups = [
 	},
 	{
 		name: "Navigation",
-		modules: [m_app_switcher, m_account_menu, m_tabs, m_pagination, m_page_header, m_nav_rail, m_ecosystem_rail, m_top_bar, m_breadcrumb, m_steps, m_tree_view, m_menubar, m_navigation_menu, m_back_top, m_anchor_nav, m_bottom_nav, m_dock, m_floating_toolbar, m_sidebar, m_skip_link, m_sub_nav],
+		modules: [m_app_switcher, m_account_menu, m_tabs, m_pagination, m_page_header, m_nav_rail, m_ecosystem_rail, m_ecosystem_shell, m_top_bar, m_breadcrumb, m_steps, m_tree_view, m_menubar, m_navigation_menu, m_back_top, m_anchor_nav, m_bottom_nav, m_dock, m_floating_toolbar, m_sidebar, m_skip_link, m_sub_nav],
 	},
 	{
 		name: "Data",
@@ -212,11 +215,11 @@ export const moduleGroups = [
 	},
 	{
 		name: "Layout",
-		modules: [m_stack, m_grid, m_resizable, m_aspect_ratio, m_app_shell, m_box, m_center, m_columns, m_container, m_flex, m_masonry, m_scroll_shadow, m_section, m_sticky_header],
+		modules: [m_stack, m_grid, m_resizable, m_aspect_ratio, m_app_shell, m_settings_shell, m_box, m_center, m_columns, m_container, m_flex, m_masonry, m_scroll_shadow, m_section, m_sticky_header],
 	},
 	{
 		name: "Utilities",
-		modules: [m_visually_hidden, m_copy_button, m_theme_toggle, m_carousel, m_collapse, m_countdown_timer, m_focus_trap, m_highlight_text, m_infinite_scroll, m_lazy_image, m_marquee, m_number_ticker, m_portal, m_presence, m_reveal, m_time_ago, m_truncated_text, m_virtual_list],
+		modules: [m_visually_hidden, m_copy_button, m_theme_toggle, m_theme_provider, m_carousel, m_collapse, m_countdown_timer, m_focus_trap, m_highlight_text, m_infinite_scroll, m_lazy_image, m_marquee, m_number_ticker, m_portal, m_presence, m_reveal, m_time_ago, m_truncated_text, m_virtual_list],
 	},
 ]
 

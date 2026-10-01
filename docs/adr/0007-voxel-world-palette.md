@@ -80,3 +80,37 @@ variables and `teal-u-*` utilities:
 - Remaining redesign work (EcosystemShell, ThemeProvider, SettingsShell,
   world scenes) builds on these tokens in later steps; this ADR covers the
   token layer only.
+
+## Addendum (2026-10-01): the component layer
+
+The component half of the redesign landed on the same branch:
+
+- **`ThemeProvider` + `useTheme`** replace five divergent per-app theme
+  implementations with one owner of the ADR 0004 contract: a 3-way
+  `light | dark | system` choice persisted to localStorage (default key
+  `kryv:theme`), `system` tracking `prefers-color-scheme` through a
+  matchMedia listener, and the resolved theme applied as the `dark` class on
+  `document.documentElement`. Storage and matchMedia are guarded so SSR and
+  older engines render light without crashing. `useTheme` throws outside a
+  provider on purpose — silently diverging document state is worse than a
+  loud error. `ThemeToggle` keeps its uncontrolled behavior outside a
+  provider and becomes controlled inside one, flipping the stored choice
+  between explicit light and dark.
+- **`EcosystemShell`** assembles the chrome every product shares: the
+  `EcosystemRail` configured as production Home uses it (brand with wordmark
+  reveal, Home first, health-dotted destinations, Settings `SidebarItem` +
+  `AccountMenu` footer), a top bar slot, a viewport-height frame whose main
+  region scrolls internally, and below the md breakpoint a `Dialog` drawer
+  carrying `--teal-shadow-voxel` — absorbing the per-app
+  `EcosystemNavigation` wrappers from photos/trict/yang. It stays purely
+  presentational: callers supply hrefs, entitlements, and sign-out actions.
+- **`SettingsShell`** is the unified settings layout from the approved
+  `settings.html` mockup: sections nav (uppercase group labels, current item
+  with `aria-current` and an inset accent edge driven by the `accent` product
+  token, defaulting to `--teal-color-product-home`) beside a content panel
+  with notice (`StepUpNotice`) and save bar slots. Items render as anchors
+  with `href` or buttons with `onSelect`.
+
+All three consume only `--teal-*` variables and `teal-u-*` utilities — the
+cream-glass day, deep-teal night, and voxel bevel come from the token layer
+with no component-level color values.

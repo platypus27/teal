@@ -2628,6 +2628,117 @@
     ]
   },
   {
+    "description": "The assembled ecosystem chrome shared by every Kryv product: the\nEcosystemRail on the left (icon rail on desktop, a voxel-shadow drawer on\nmobile), an optional top bar slot, and the main content region. It is\npurely presentational — callers supply hrefs, entitlements, and session\nactions; nothing here routes or authenticates.",
+    "displayName": "EcosystemShell",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Extra account menu items rendered above the sign-out actions.",
+        "name": "accountItems",
+        "required": false,
+        "type": "MenuItem[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Sign-out that ends only the current application session.",
+        "name": "appSignOut",
+        "required": false,
+        "type": "AccountMenuAction"
+      },
+      {
+        "defaultValue": "Kryv ecosystem",
+        "description": "Accessible name for the ecosystem navigation.",
+        "name": "ariaLabel",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Product-family brand content rendered at the top of the rail, such as the Kryv mark with its wordmark reveal.",
+        "name": "brand",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Main content of the application.",
+        "name": "children",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Caller-filtered destinations, each with an optional honest HealthIndicator status. The shell never derives entitlements.",
+        "name": "destinations",
+        "required": true,
+        "type": "EcosystemRailDestination[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Replaces the composed rail footer (settings link plus account menu) entirely.",
+        "name": "footer",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Stable Home destination, always rendered first in the rail.",
+        "name": "home",
+        "required": true,
+        "type": "EcosystemRailHome"
+      },
+      {
+        "defaultValue": "",
+        "description": "Called with a destination id before ordinary anchor navigation.",
+        "name": "onNavigate",
+        "required": false,
+        "type": "(id: string) => void"
+      },
+      {
+        "defaultValue": "",
+        "description": "Settings destination pinned in the rail footer above the account menu.",
+        "name": "settingsHref",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "false",
+        "description": "Marks the settings footer item as current (aria-current=\"page\").",
+        "name": "settingsCurrent",
+        "required": false,
+        "type": "boolean"
+      },
+      {
+        "defaultValue": "",
+        "description": "Sign-out that ends the shared single-sign-on session.",
+        "name": "ssoSignOut",
+        "required": false,
+        "type": "AccountMenuAction"
+      },
+      {
+        "defaultValue": "",
+        "description": "Content rendered in a top bar above the main region.",
+        "name": "topBar",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Signed-in household identity shown in the rail footer's account menu.",
+        "name": "user",
+        "required": false,
+        "type": "AccountMenuUser"
+      }
+    ]
+  },
+  {
     "description": "",
     "displayName": "Editable",
     "props": [
@@ -6671,6 +6782,68 @@
     ]
   },
   {
+    "description": "The unified settings layout shared by every Kryv product: a sections nav on\nthe left (group labels, accent edge on the current item in the product's\nown accent color) and a content panel on the right, with slots for a\nstep-up notice and a save bar. Items render as anchors when they carry an\nhref and as buttons otherwise; both are keyboard navigable and the current\nitem sets aria-current=\"page\".",
+    "displayName": "SettingsShell",
+    "props": [
+      {
+        "defaultValue": "--teal-color-product-home",
+        "description": "Product accent token name used for the active item's edge, for example '--teal-color-product-trict'. Defaults to '--teal-color-product-home'.",
+        "name": "accent",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Panel content: the form or settings controls for the current section.",
+        "name": "children",
+        "required": true,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Supporting text rendered under the title.",
+        "name": "description",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Notice area rendered above the content; compose StepUpNotice here when a sensitive section needs fresh verification.",
+        "name": "notice",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Save/discard/dirty-hint row rendered below the content behind a dashed divider.",
+        "name": "saveBar",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
+        "description": "Section groups for the left navigation.",
+        "name": "sections",
+        "required": true,
+        "type": "SettingsShellGroup[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Panel heading naming the current section.",
+        "name": "title",
+        "required": true,
+        "type": "ReactNode"
+      }
+    ]
+  },
+  {
     "description": "Opens a popover with copy-link and, when available, native share actions.",
     "displayName": "ShareButton",
     "props": [
@@ -7504,7 +7677,27 @@
     ]
   },
   {
-    "description": "Toggles the 'dark' class on the document root to switch between light and dark themes.",
+    "description": "Owns the ecosystem-wide theme preference: a 3-way light/dark/system choice,\npersisted to localStorage and applied as the 'dark' class on the document\nroot (the ADR 0004 theming contract). Wrap each application once, near the\nroot, and read the state with useTheme.",
+    "displayName": "ThemeProvider",
+    "props": [
+      {
+        "defaultValue": "system",
+        "description": "Choice applied when nothing is persisted yet; defaults to 'system'.",
+        "name": "defaultChoice",
+        "required": false,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "kryv:theme",
+        "description": "localStorage key the choice is persisted under; defaults to 'kryv:theme'.",
+        "name": "storageKey",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "description": "Toggles the 'dark' class on the document root to switch between light and dark themes. Inside a ThemeProvider it becomes controlled: it flips the provider's choice between explicit light and dark instead of touching the document itself.",
     "displayName": "ThemeToggle",
     "props": [
       {

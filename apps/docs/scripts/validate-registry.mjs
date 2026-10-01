@@ -13,8 +13,9 @@ function pascalCase(value) {
 }
 
 if (new Set(modules.map((module) => module.id)).size !== modules.length) errors.push('module ids must be unique')
-// 200 pre-0.5.1 pages − 33 merged-away + 1 new text-area page (M17).
-if (modules.length !== 168) errors.push(`expected 168 module pages after the 0.5.1 consolidation, found ${modules.length}`)
+// 200 pre-0.5.1 pages − 33 merged-away + 1 new text-area page (M17) + 3 voxel-world
+// component modules (theme-provider, ecosystem-shell, settings-shell).
+if (modules.length !== 171) errors.push(`expected 171 module pages after the 0.5.1 consolidation and the voxel-world components, found ${modules.length}`)
 const indexShape = moduleIndexGroups.map((group) => [group.name, group.modules.map((module) => module.id)])
 const fullShape = moduleGroups.map((group) => [group.name, group.modules.map((module) => module.id)])
 if (JSON.stringify(indexShape) !== JSON.stringify(fullShape)) errors.push('module-index.js and module-meta.js disagree on groups or module order')
@@ -69,6 +70,7 @@ const intentionallyUndocumented = new Set([
   'niceTicks',
   'useFormErrors',
   'useFormFieldError',
+  'useTheme',
   'applyMask',
   'defaultPasswordScore',
   'phoneCountries',

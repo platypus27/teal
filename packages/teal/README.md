@@ -116,7 +116,7 @@ alone and rely on the optional Tailwind preset instead.
 
 ## Modules
 
-168 documented modules across eleven groups — Actions, Forms, Pickers,
+171 documented modules across eleven groups — Actions, Forms, Pickers,
 Surfaces, Overlays, Feedback, Navigation, Data, Charts, Layout, and Utilities —
 each with live examples, a generated props table, and accessibility notes at
 [teal.kryvlabs.com](https://teal.kryvlabs.com).
