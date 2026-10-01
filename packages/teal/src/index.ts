@@ -38,6 +38,8 @@ export type {
   EcosystemRailHome,
   EcosystemRailProps,
 } from './EcosystemRail'
+export { EcosystemShell } from './EcosystemShell'
+export type { EcosystemShellProps } from './EcosystemShell'
 export { AccountMenu } from './AccountMenu'
 export type { AccountMenuAction, AccountMenuProps, AccountMenuUser } from './AccountMenu'
 export { LauncherCard } from './LauncherCard'
