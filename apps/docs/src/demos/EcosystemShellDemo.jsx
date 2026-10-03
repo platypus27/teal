@@ -38,9 +38,9 @@ export function EcosystemShellDemo({ exampleIndex = 0 }) {
   }
 
   return (
-    <div className="h-[30rem] w-full overflow-hidden rounded-xl border border-teal-outline-variant/50">
+    <div className="h-[36rem] w-full overflow-hidden rounded-xl border border-teal-outline-variant/50">
       <EcosystemShell
-        className="!h-[30rem]"
+        className="!h-[36rem]"
         home={home}
         destinations={destinations}
         settingsHref="#settings"

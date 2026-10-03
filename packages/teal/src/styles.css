@@ -215,10 +215,12 @@
    main region on hover/focus without moving it. Home's historical overrides
    positioned the rail `fixed` against the viewport; teal positions it
    `absolute` against the shell root (which is relative and viewport-sized in
-   real apps), so the skin also composes inside embedded demos. The selectors
-   and values otherwise match Home's overrides exactly, so consumers carrying
-   those overrides can delete them with zero visual change. These rules are
-   deliberately unlayered so they beat the rail's `teal-u-*` utilities. */
+   real apps), so the skin also composes inside embedded demos. The skin values
+   match Home's rendered rail exactly — including its glass surface recipe,
+   which Home layers over the rail from a shared selector — so consumers
+   carrying those overrides can delete them with zero visual change. These
+   rules are deliberately unlayered so they beat the rail's `teal-u-*`
+   utilities. */
 @media (min-width: 768px) {
   .ecosystem-shell > nav {
     position: absolute;
@@ -228,11 +230,22 @@
        inset, so the floating 1rem-top/1rem-bottom geometry is pinned
        explicitly. */
     height: calc(100% - 2rem);
-    border-width: 1px;
-    border-radius: 2rem;
-    background-color: color-mix(in srgb, var(--teal-color-surface) 70%, transparent);
-    backdrop-filter: blur(24px);
-    box-shadow: var(--teal-shadow-overlay);
+    /* Home's glass surface recipe (home apps/web/src/index.css): the rail shares
+       one skin with home's panels/chips/scene pills — 2px primary border at 25%,
+       a 1px primary outer ring at 10% (outline, so hover shadows never erase
+       it), 16px radius, translucent background over a 12px backdrop blur, and a
+       deep drop shadow. */
+    border: 2px solid color-mix(in srgb, var(--teal-color-primary) 25%, transparent);
+    border-radius: 16px;
+    outline: 1px solid color-mix(in srgb, var(--teal-color-primary) 10%, transparent);
+    background-color: rgb(255 255 255 / 62%);
+    box-shadow: 0 30px 80px -28px rgb(0 0 0 / 38%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .dark .ecosystem-shell > nav {
+    background-color: rgb(0 0 0 / 55%);
   }
 
   /* Home narrows the teal rail expansion from the default 18rem to 14rem. */
