@@ -1,6 +1,6 @@
 # Teal design system
 
-> Documentation for @kryv/teal v1.0.0 - typed React modules, semantic design tokens, and tested interaction behavior for Kryv applications.
+> Documentation for @kryv/teal v1.1.0 - typed React modules, semantic design tokens, and tested interaction behavior for Kryv applications.
 
 ## Start
 
