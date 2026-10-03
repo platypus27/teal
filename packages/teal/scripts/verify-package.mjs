@@ -175,7 +175,10 @@ const { stdout: packOutput } = await exec('npm', ['pack', '--json', '--workspace
   cwd: workspaceRoot,
   env: process.env,
 })
-const tarball = JSON.parse(packOutput)[0]?.filename
+const packResult = JSON.parse(packOutput)
+// npm <= 11 returns an array of pack results; npm 12 returns an object keyed
+// by workspace name.
+const tarball = (Array.isArray(packResult) ? packResult[0] : packResult[packageJson.name])?.filename
 if (!tarball) throw new Error('npm pack did not produce a tarball name')
 
 const tarballPath = resolve(packDir, tarball)
