@@ -208,3 +208,111 @@
     animation: none !important;
   }
 }
+
+/* EcosystemShell rail skin (ADR-0008): the production Home rail, promoted to
+   the ecosystem standard. The desktop rail is a floating glass-pill overlay
+   (border, radius, translucent background, blur, shadow) that widens over the
+   main region on hover/focus without moving it. Home's historical overrides
+   positioned the rail `fixed` against the viewport; teal positions it
+   `absolute` against the shell root (which is relative and viewport-sized in
+   real apps), so the skin also composes inside embedded demos. The selectors
+   and values otherwise match Home's overrides exactly, so consumers carrying
+   those overrides can delete them with zero visual change. These rules are
+   deliberately unlayered so they beat the rail's `teal-u-*` utilities. */
+@media (min-width: 768px) {
+  .ecosystem-shell > nav {
+    position: absolute;
+    inset: 1rem auto 1rem 5px;
+    z-index: 30;
+    /* The rail root carries teal-u-h-full, which would override the bottom
+       inset, so the floating 1rem-top/1rem-bottom geometry is pinned
+       explicitly. */
+    height: calc(100% - 2rem);
+    border-width: 1px;
+    border-radius: 2rem;
+    background-color: color-mix(in srgb, var(--teal-color-surface) 70%, transparent);
+    backdrop-filter: blur(24px);
+    box-shadow: var(--teal-shadow-overlay);
+  }
+
+  /* Home narrows the teal rail expansion from the default 18rem to 14rem. */
+  .ecosystem-shell > nav:hover,
+  .ecosystem-shell > nav:focus-within {
+    width: 14rem;
+  }
+
+  /* The k-mark stays anchored at the icon-column center in both rail states;
+     the "ryv" tail reveals beside it on expand, so the logo never changes size
+     or position. Mark and tail are adjacent crops of the same wordmark at equal
+     heights, so they rejoin seamlessly. EcosystemRail renders the brand inside
+     its SidebarHeader; the header is the rail's first child div. */
+  .ecosystem-shell > nav > div:first-child {
+    gap: 0;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    padding-left: 1.782rem;
+  }
+
+  .ecosystem-shell > nav:hover .ecosystem-brand__reveal,
+  .ecosystem-shell > nav:focus-within .ecosystem-brand__reveal {
+    width: 4.879rem;
+    opacity: 1;
+  }
+}
+
+.ecosystem-brand__mark {
+  display: block;
+  height: 2.25rem;
+  width: auto;
+}
+
+.ecosystem-brand__reveal {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  width: 0;
+  opacity: 0;
+  transition:
+    width var(--teal-motion-standard) ease-out,
+    opacity var(--teal-motion-standard) ease-out;
+}
+
+.ecosystem-brand__wordmark {
+  display: block;
+  flex-shrink: 0;
+  height: 2.25rem;
+  width: 4.879rem;
+}
+
+/* The mobile drawer rail (rendered in the shell's Dialog portal) keeps its
+   labels visible in full mode, so the wordmark stays revealed there too. */
+[role='dialog'] .ecosystem-brand__reveal {
+  width: 4.879rem;
+  opacity: 1;
+}
+
+/* The drawer rail fills the dialog: teal pins the full-mode sidebar to
+   16rem, which overflows the min(21rem, 92vw) dialog once root text scales
+   past ~150 percent, and pins it to the content height, which squeezes the
+   destinations into a shrinking scroll strip at large text. Fill the dialog
+   width and let the rail grow past it so the whole rail scrolls instead. */
+[role='dialog'] nav[aria-label='Kryv ecosystem'] {
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+}
+
+/* The rail content (SidebarContent, the nav's second child) is flex-1 with a
+   zero basis and its own scroll port, which would keep the destinations in a
+   collapsing strip inside the drawer; lay it out fully so the dialog's own
+   scroll region takes over. */
+[role='dialog'] nav[aria-label='Kryv ecosystem'] > div:nth-child(2) {
+  flex: none;
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ecosystem-brand__reveal {
+    transition: none;
+  }
+}

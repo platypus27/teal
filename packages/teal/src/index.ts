@@ -38,6 +38,10 @@ export type {
   EcosystemRailHome,
   EcosystemRailProps,
 } from './EcosystemRail'
+export { EcosystemBrand } from './EcosystemBrand'
+export type { EcosystemBrandProps } from './EcosystemBrand'
+export { CATALOG_ICONS, catalogIcon } from './catalog-icons'
+export type { CatalogAppId, CatalogIconKey, CatalogIconName } from './catalog-icons'
 export { EcosystemShell } from './EcosystemShell'
 export type { EcosystemShellProps } from './EcosystemShell'
 export { SettingsShell } from './SettingsShell'

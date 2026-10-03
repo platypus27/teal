@@ -1,4 +1,5 @@
 import { forwardRef, type ReactNode } from 'react'
+import { catalogIcon } from './catalog-icons'
 import { HealthIndicator, type HealthIndicatorStatus } from './HealthIndicator'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarItem, SidebarSection } from './Sidebar'
 
@@ -9,7 +10,7 @@ export interface EcosystemRailHome {
   current?: boolean
   /** URL of the stable Home destination. */
   href: string
-  /** Icon rendered beside the Home label. */
+  /** Icon rendered beside the Home label. Defaults to the canonical House glyph from catalogIcon. */
   icon?: ReactNode
   /** Visible Home label. */
   label: ReactNode
@@ -22,7 +23,7 @@ export interface EcosystemRailDestination {
   current?: boolean
   /** URL supplied by the consuming product. */
   href: string
-  /** Icon rendered beside the destination label. */
+  /** Icon rendered beside the destination label. Defaults to the canonical catalogIcon glyph for the destination id. */
   icon?: ReactNode
   /** Stable product identifier. */
   id: string
@@ -69,7 +70,7 @@ export const EcosystemRail = forwardRef<HTMLElement, EcosystemRailProps>(functio
             active={home.current ?? false}
             aria-label={home.ariaLabel ?? (typeof home.label === 'string' ? home.label : undefined)}
             href={home.href}
-            icon={home.icon}
+            icon={home.icon ?? catalogIcon('home')}
             onClick={reportNavigation('home')}
           >
             {home.label}
@@ -83,7 +84,7 @@ export const EcosystemRail = forwardRef<HTMLElement, EcosystemRailProps>(functio
                 ?? (typeof destination.label === 'string' ? destination.label : undefined)
               }
               href={destination.href}
-              icon={destination.icon}
+              icon={destination.icon ?? catalogIcon(destination.id)}
               onClick={reportNavigation(destination.id)}
             >
               <span className="teal-u-flex teal-u-min-w-0 teal-u-flex-1 teal-u-items-center teal-u-justify-between teal-u-gap-2">
