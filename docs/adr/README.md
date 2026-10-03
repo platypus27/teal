@@ -14,6 +14,7 @@ engineering it.
 | [0005](0005-esm-only-package.md) | 2026-09-24 | Ship the package as ESM-only |
 | [0006](0006-react-20-ref-as-prop.md) | 2026-09-24 | Prepare for React 20 by migrating to ref-as-prop |
 | [0007](0007-voxel-world-palette.md) | 2026-10-01 | Adopt the voxel-world palette for Teal 1.0 |
+| [0008](0008-ecosystem-rail-brand-defaults.md) | 2026-10-03 | Home's production rail becomes the EcosystemShell default |
 
 ## Adding a new ADR
 
