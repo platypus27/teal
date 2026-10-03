@@ -112,4 +112,47 @@ describe('EcosystemShell', () => {
 
     expect(screen.queryByRole('link', { name: 'Settings' })).not.toBeInTheDocument()
   })
+
+  it('renders the default EcosystemBrand when no brand prop is passed', () => {
+    renderShell()
+
+    const navigation = screen.getByRole('navigation', { name: 'Kryv ecosystem' })
+    const mark = within(navigation).getByRole('img', { name: 'Kryv' })
+    expect(mark).toHaveClass('ecosystem-brand__mark')
+    expect(mark.getAttribute('src')).toMatch(/^data:image\/png;base64,/)
+    expect(navigation.querySelector('.ecosystem-brand__reveal .ecosystem-brand__wordmark')).toBeInTheDocument()
+  })
+
+  it('lets an explicit brand prop replace the default EcosystemBrand', () => {
+    renderShell({ brand: <span>Kryv mark</span> })
+
+    const navigation = screen.getByRole('navigation', { name: 'Kryv ecosystem' })
+    expect(within(navigation).getByText('Kryv mark')).toBeInTheDocument()
+    expect(within(navigation).queryByRole('img', { name: 'Kryv' })).not.toBeInTheDocument()
+  })
+
+  it('resolves rail icons through catalogIcon by default', () => {
+    renderShell({
+      destinations: [
+        { id: 'photos', href: 'https://photos.example', label: 'Photos' },
+        { id: 'trict', href: 'https://trict.example', label: 'Trict' },
+      ],
+    })
+
+    expect(screen.getByRole('link', { name: 'Home' }).querySelector('svg')).toHaveClass('lucide-house')
+    expect(screen.getByRole('link', { name: 'Photos' }).querySelector('svg')).toHaveClass('lucide-camera')
+    expect(screen.getByRole('link', { name: 'Trict' }).querySelector('svg')).toHaveClass('lucide-chart-line')
+  })
+
+  it('lets an explicit per-item icon override the catalog default', () => {
+    renderShell({
+      destinations: [
+        { id: 'photos', href: 'https://photos.example', label: 'Photos', icon: <svg data-testid="custom-icon" /> },
+      ],
+    })
+
+    const link = screen.getByRole('link', { name: 'Photos' })
+    expect(within(link).getByTestId('custom-icon')).toBeInTheDocument()
+    expect(link.querySelector('svg.lucide-camera')).not.toBeInTheDocument()
+  })
 })

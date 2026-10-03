@@ -4,6 +4,7 @@ import { AccountMenu, type AccountMenuAction, type AccountMenuUser } from './Acc
 import { Button } from './Button'
 import { cn } from './cn'
 import { Dialog } from './Dialog'
+import { EcosystemBrand } from './EcosystemBrand'
 import { EcosystemRail, type EcosystemRailDestination, type EcosystemRailHome } from './EcosystemRail'
 import type { MenuItem } from './Menu'
 import { SidebarItem } from './Sidebar'
@@ -15,7 +16,7 @@ export interface EcosystemShellProps {
   appSignOut?: AccountMenuAction
   /** Accessible name for the ecosystem navigation. */
   ariaLabel?: string
-  /** Product-family brand content rendered at the top of the rail, such as the Kryv mark with its wordmark reveal. */
+  /** Product-family brand content rendered at the top of the rail. Defaults to EcosystemBrand: the Kryv mark with its wordmark reveal (ADR-0008). */
   brand?: ReactNode
   /** Main content of the application. */
   children: ReactNode
@@ -108,7 +109,7 @@ export const EcosystemShell = forwardRef<HTMLDivElement, EcosystemShellProps>(fu
       home={home}
       destinations={destinations}
       {...(railClassName !== undefined ? { className: railClassName } : {})}
-      {...(brand !== undefined ? { brand } : {})}
+      brand={brand ?? <EcosystemBrand />}
       {...(footerContent ? { footer: footerContent } : {})}
       onNavigate={closeOnNavigate
         ? (id) => {
@@ -120,7 +121,7 @@ export const EcosystemShell = forwardRef<HTMLDivElement, EcosystemShellProps>(fu
   )
 
   return (
-    <div ref={ref} className={cn('teal-u-flex teal-u-h-dvh teal-u-overflow-hidden teal-u-bg-background teal-u-text-on-surface', className)}>
+    <div ref={ref} className={cn('ecosystem-shell teal-u-relative teal-u-flex teal-u-h-dvh teal-u-overflow-hidden teal-u-bg-background teal-u-text-on-surface', className)}>
       {rail('rail', 'teal-u-hidden teal-u-h-full teal-u-shrink-0 md:teal-u-flex')}
       <div className="teal-u-flex teal-u-min-w-0 teal-u-flex-1 teal-u-flex-col">
         <div className="teal-u-flex teal-u-shrink-0 teal-u-items-center teal-u-gap-2 teal-u-border-b teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-px-3 teal-u-py-2 md:teal-u-hidden">

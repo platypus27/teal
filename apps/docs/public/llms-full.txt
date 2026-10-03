@@ -22296,15 +22296,15 @@ A persistent cross-product rail with a stable Home destination, caller-filtered 
 ## Usage
 
 ```js
-import { EcosystemRail, SidebarItem } from '@kryv/teal'
+import { EcosystemRail, SidebarItem, catalogIcon } from '@kryv/teal'
 ```
 
 ```jsx
 <EcosystemRail
-  home={{ href: '#', label: 'Home', icon: <Home /> }}
+  home={{ href: '#', label: 'Home' }}
   destinations={[
-    { id: 'yang', label: 'Yang Operations', href: '#', icon: <Gauge />, current: true },
-    { id: 'photos', label: 'Photos', href: '#', icon: <Camera />, status: 'degraded' },
+    { id: 'yang', label: 'Yang Operations', href: '#', current: true },
+    { id: 'photos', label: 'Photos', href: '#', status: 'degraded' },
   ]}
 />
 ```
@@ -22438,7 +22438,7 @@ export function EcosystemRailDemo({ exampleIndex = 0 }) {
 
 - **Brand** - Optional product-family mark rendered above the list, supplied through the brand prop.
 - **Home destination** - The stable Home link, always rendered first; pass current when Home is the active product.
-- **Destinations** - Caller-filtered application links with icons; an optional HealthIndicator shows an honest status beside each label.
+- **Destinations** - Caller-filtered application links; icons resolve through catalogIcon from each destination id (explicit icon props win), and an optional HealthIndicator shows an honest status beside each label.
 - **Footer** - Optional account or session controls pinned to the bottom of the rail.
 
 ## Do and don't
@@ -22493,18 +22493,17 @@ export function EcosystemRailDemo({ exampleIndex = 0 }) {
 
 # Ecosystem Shell
 
-The assembled ecosystem chrome: the EcosystemRail with brand, Home, health-dotted destinations, settings and account footer, plus a top bar slot, a scrolling main region, and a mobile drawer.
+The assembled ecosystem chrome: the floating glass-pill EcosystemRail with the default Kryv brand and wordmark reveal, Home, canonical catalog icons, health-dotted destinations, settings and account footer, plus a top bar slot, a scrolling main region, and a mobile drawer.
 
 ## Usage
 
 ```js
-import { EcosystemShell } from '@kryv/teal'
+import { EcosystemShell, EcosystemBrand, catalogIcon } from '@kryv/teal'
 ```
 
 ```jsx
 <EcosystemShell
-  brand={<KryvBrand />}
-  home={{ href: '/', label: 'Home', icon: <House /> }}
+  home={{ href: '/', label: 'Home' }}
   destinations={entitledDestinations}
   settingsHref="/settings"
   user={{ name: me.name }}
@@ -22528,40 +22527,26 @@ In-product navigation belongs to Sidebar or the product's own shell; embed those
 Purely presentational: anchors navigate natively, onNavigate reports the destination id first (use it to close menus or instrument), and the mobile drawer closes itself on navigation.
 ### Responsive
 
-At and above md the icon rail is visible and expands on hover or focus; below md it collapses into the Ecosystem drawer trigger.
+At and above md the icon rail floats over the main region and expands on hover or focus; below md it collapses into the Ecosystem drawer trigger.
 
 ## Examples
 
 ### Full ecosystem chrome
 
-Brand, Home, health-dotted destinations, settings and account footer, and a top bar above the scrolling main region.
+Default brand, canonical catalog icons, Home, health-dotted destinations, settings and account footer, and a top bar above the scrolling main region.
 
 ```jsx
-import { Camera, ChartLine, Gauge, House, Sparkles } from 'lucide-react'
-import { EcosystemShell } from '@kryv/teal'
+import { Gauge } from 'lucide-react'
+import { EcosystemBrand, EcosystemShell } from '@kryv/teal'
 
-const brand = (
-  <>
-    <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-teal-product-home text-sm font-extrabold text-white shadow-teal-raised">
-      K
-    </span>
-    <span
-      className="w-0 overflow-hidden whitespace-nowrap font-teal-headline text-base font-extrabold tracking-tight text-teal-on-surface opacity-0 transition-all duration-200 group-hover:w-auto group-hover:opacity-100 group-focus-within:w-auto group-focus-within:opacity-100"
-      aria-hidden="true"
-    >
-      Kryv
-    </span>
-  </>
-)
-
-const home = { href: '#home', label: 'Home', icon: <House className="size-5" aria-hidden="true" /> }
+const home = { href: '#home', label: 'Home' }
 
 /** @type {import('@kryv/teal').EcosystemRailDestination[]} */
 const destinations = [
-  { id: 'photos', label: 'Photos', href: '#photos', icon: <Camera className="size-5" aria-hidden="true" />, current: true, status: 'healthy' },
-  { id: 'yang', label: 'Yang', href: '#yang', icon: <Gauge className="size-5" aria-hidden="true" />, status: 'degraded' },
-  { id: 'trict', label: 'Trict', href: '#trict', icon: <ChartLine className="size-5" aria-hidden="true" /> },
-  { id: 'twinkle', label: 'Twinkle', href: '#twinkle', icon: <Sparkles className="size-5" aria-hidden="true" />, status: 'stale' },
+  { id: 'photos', label: 'Photos', href: '#photos', current: true, status: 'healthy' },
+  { id: 'yang', label: 'Yang', href: '#yang', status: 'degraded' },
+  { id: 'trict', label: 'Trict', href: '#trict' },
+  { id: 'twinkle', label: 'Twinkle', href: '#twinkle', status: 'stale' },
 ]
 
 export function EcosystemShellDemo({ exampleIndex = 0 }) {
@@ -22570,15 +22555,19 @@ export function EcosystemShellDemo({ exampleIndex = 0 }) {
       <div className="h-[26rem] w-full overflow-hidden rounded-xl border border-teal-outline-variant/50">
         <EcosystemShell
           className="!h-[26rem]"
-          brand={brand}
+          brand={<EcosystemBrand alt="Kryv Photos" />}
           home={{ ...home, current: true }}
-          destinations={destinations.map(({ current: _current, ...destination }) => destination)}
+          destinations={[
+            { id: 'yang', label: 'Yang', href: '#yang', icon: <Gauge aria-hidden="true" /> },
+          ]}
         >
-          <div className="p-6">
+          <div className="p-6 md:pl-24">
             <h2 className="font-teal-headline text-lg font-bold">Good morning.</h2>
             <p className="mt-1 max-w-md text-sm text-teal-on-surface-variant">
-              No user, settings link, or top bar: the shell is just the rail and the main region. Resize below
-              the md breakpoint and the rail folds into the Ecosystem drawer.
+              The escape hatches: an explicit brand replaces the default EcosystemBrand, and an explicit
+              per-item icon wins over the catalog glyph. No user, settings link, or top bar: the shell is
+              just the rail and the main region. Resize below the md breakpoint and the rail folds into the
+              Ecosystem drawer.
             </p>
           </div>
         </EcosystemShell>
@@ -22590,7 +22579,6 @@ export function EcosystemShellDemo({ exampleIndex = 0 }) {
     <div className="h-[30rem] w-full overflow-hidden rounded-xl border border-teal-outline-variant/50">
       <EcosystemShell
         className="!h-[30rem]"
-        brand={brand}
         home={home}
         destinations={destinations}
         settingsHref="#settings"
@@ -22599,16 +22587,17 @@ export function EcosystemShellDemo({ exampleIndex = 0 }) {
         appSignOut={{ label: 'Sign out of Photos', onSelect: () => {} }}
         ssoSignOut={{ label: 'Sign out everywhere', onSelect: () => {} }}
         topBar={
-          <div className="flex items-center justify-between px-4 py-2.5">
+          <div className="flex items-center justify-between px-4 py-2.5 md:pl-24">
             <span className="text-sm font-semibold text-teal-on-surface">Library</span>
             <span className="text-xs text-teal-on-surface-variant">12,408 items</span>
           </div>
         }
       >
-        <div className="space-y-3 p-6">
+        <div className="space-y-3 p-6 md:pl-24">
           <h2 className="font-teal-headline text-lg font-bold">Good morning.</h2>
           <p className="max-w-md text-sm text-teal-on-surface-variant">
-            The full ecosystem chrome: brand with wordmark reveal, Home first, health dots on every
+            The full ecosystem chrome with zero per-app wiring: the default EcosystemBrand with its wordmark
+            reveal, canonical catalog icons resolved from each destination id, health dots on every
             destination, settings and account pinned to the rail footer, and a top bar slot above the
             scrolling main region.
           </p>
@@ -22629,36 +22618,22 @@ export function EcosystemShellDemo({ exampleIndex = 0 }) {
 }
 ```
 
-### Minimal shell
+### Overrides and minimal shell
 
-Without user, settingsHref, or topBar the shell is just the rail and the main region.
+An explicit brand and per-item icon override the defaults; without user, settingsHref, or topBar the shell is just the rail and the main region.
 
 ```jsx
-import { Camera, ChartLine, Gauge, House, Sparkles } from 'lucide-react'
-import { EcosystemShell } from '@kryv/teal'
+import { Gauge } from 'lucide-react'
+import { EcosystemBrand, EcosystemShell } from '@kryv/teal'
 
-const brand = (
-  <>
-    <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-teal-product-home text-sm font-extrabold text-white shadow-teal-raised">
-      K
-    </span>
-    <span
-      className="w-0 overflow-hidden whitespace-nowrap font-teal-headline text-base font-extrabold tracking-tight text-teal-on-surface opacity-0 transition-all duration-200 group-hover:w-auto group-hover:opacity-100 group-focus-within:w-auto group-focus-within:opacity-100"
-      aria-hidden="true"
-    >
-      Kryv
-    </span>
-  </>
-)
-
-const home = { href: '#home', label: 'Home', icon: <House className="size-5" aria-hidden="true" /> }
+const home = { href: '#home', label: 'Home' }
 
 /** @type {import('@kryv/teal').EcosystemRailDestination[]} */
 const destinations = [
-  { id: 'photos', label: 'Photos', href: '#photos', icon: <Camera className="size-5" aria-hidden="true" />, current: true, status: 'healthy' },
-  { id: 'yang', label: 'Yang', href: '#yang', icon: <Gauge className="size-5" aria-hidden="true" />, status: 'degraded' },
-  { id: 'trict', label: 'Trict', href: '#trict', icon: <ChartLine className="size-5" aria-hidden="true" /> },
-  { id: 'twinkle', label: 'Twinkle', href: '#twinkle', icon: <Sparkles className="size-5" aria-hidden="true" />, status: 'stale' },
+  { id: 'photos', label: 'Photos', href: '#photos', current: true, status: 'healthy' },
+  { id: 'yang', label: 'Yang', href: '#yang', status: 'degraded' },
+  { id: 'trict', label: 'Trict', href: '#trict' },
+  { id: 'twinkle', label: 'Twinkle', href: '#twinkle', status: 'stale' },
 ]
 
 export function EcosystemShellDemo({ exampleIndex = 0 }) {
@@ -22667,15 +22642,19 @@ export function EcosystemShellDemo({ exampleIndex = 0 }) {
       <div className="h-[26rem] w-full overflow-hidden rounded-xl border border-teal-outline-variant/50">
         <EcosystemShell
           className="!h-[26rem]"
-          brand={brand}
+          brand={<EcosystemBrand alt="Kryv Photos" />}
           home={{ ...home, current: true }}
-          destinations={destinations.map(({ current: _current, ...destination }) => destination)}
+          destinations={[
+            { id: 'yang', label: 'Yang', href: '#yang', icon: <Gauge aria-hidden="true" /> },
+          ]}
         >
-          <div className="p-6">
+          <div className="p-6 md:pl-24">
             <h2 className="font-teal-headline text-lg font-bold">Good morning.</h2>
             <p className="mt-1 max-w-md text-sm text-teal-on-surface-variant">
-              No user, settings link, or top bar: the shell is just the rail and the main region. Resize below
-              the md breakpoint and the rail folds into the Ecosystem drawer.
+              The escape hatches: an explicit brand replaces the default EcosystemBrand, and an explicit
+              per-item icon wins over the catalog glyph. No user, settings link, or top bar: the shell is
+              just the rail and the main region. Resize below the md breakpoint and the rail folds into the
+              Ecosystem drawer.
             </p>
           </div>
         </EcosystemShell>
@@ -22687,7 +22666,6 @@ export function EcosystemShellDemo({ exampleIndex = 0 }) {
     <div className="h-[30rem] w-full overflow-hidden rounded-xl border border-teal-outline-variant/50">
       <EcosystemShell
         className="!h-[30rem]"
-        brand={brand}
         home={home}
         destinations={destinations}
         settingsHref="#settings"
@@ -22696,16 +22674,17 @@ export function EcosystemShellDemo({ exampleIndex = 0 }) {
         appSignOut={{ label: 'Sign out of Photos', onSelect: () => {} }}
         ssoSignOut={{ label: 'Sign out everywhere', onSelect: () => {} }}
         topBar={
-          <div className="flex items-center justify-between px-4 py-2.5">
+          <div className="flex items-center justify-between px-4 py-2.5 md:pl-24">
             <span className="text-sm font-semibold text-teal-on-surface">Library</span>
             <span className="text-xs text-teal-on-surface-variant">12,408 items</span>
           </div>
         }
       >
-        <div className="space-y-3 p-6">
+        <div className="space-y-3 p-6 md:pl-24">
           <h2 className="font-teal-headline text-lg font-bold">Good morning.</h2>
           <p className="max-w-md text-sm text-teal-on-surface-variant">
-            The full ecosystem chrome: brand with wordmark reveal, Home first, health dots on every
+            The full ecosystem chrome with zero per-app wiring: the default EcosystemBrand with its wordmark
+            reveal, canonical catalog icons resolved from each destination id, health dots on every
             destination, settings and account pinned to the rail footer, and a top bar slot above the
             scrolling main region.
           </p>
@@ -22728,11 +22707,12 @@ export function EcosystemShellDemo({ exampleIndex = 0 }) {
 
 ## Anatomy
 
-- **Rail** - The EcosystemRail in rail mode on desktop: brand with wordmark reveal, the stable Home destination first, then caller-filtered destinations with honest health dots.
+- **Rail** - The EcosystemRail in rail mode on desktop: a floating glass-pill overlay that expands to 14rem on hover or focus without moving the main region, the stable Home destination first, then caller-filtered destinations with honest health dots.
+- **Brand** - Defaults to EcosystemBrand — the Kryv mark with the wordmark tail that reveals as the rail expands, artwork inlined so no asset plumbing is needed. The brand prop replaces it entirely.
+- **Icons** - Home and destination icons resolve through catalogIcon from each entry's id or the catalog's icon name, so every product renders the same canonical glyphs; an explicit per-item icon wins.
 - **Footer** - Composed from settingsHref and user: a Settings SidebarItem above an AccountMenu with app-level and SSO sign-out. The footer prop replaces it entirely.
-- **Top bar slot** - Optional product-level bar above the main region, kept outside the scroll area.
-- **Main region** - The scrolling content area; the shell itself is viewport-height so the rail stays put.
-- **Mobile drawer** - Below the md breakpoint the rail folds into an Ecosystem trigger that opens a left Dialog drawer carrying the voxel shadow, with the rail in full mode inside.
+- **Top bar slot** - Optional product-level bar above the main region, kept outside the scroll area. The rail overlays it, so offset its leading content past the collapsed rail.
+- **Main region** - The scrolling content area; the shell itself is viewport-height so the rail stays put. The rail is an overlay: clear the collapsed 5rem rail in desktop layouts (for example md:pl-24 on page content).
 
 ## Do and don't
 
@@ -22740,6 +22720,7 @@ export function EcosystemShellDemo({ exampleIndex = 0 }) {
 
 - Filter destinations by entitlement before passing them in; the shell renders exactly what it is given.
 - Pass status only with real evidence; omit it or use unknown otherwise.
+- Rely on the default EcosystemBrand and catalog icons so every product renders identical chrome.
 - Use footer to fully replace the composed footer when a product needs different session controls.
 
 ### Don't
@@ -22747,6 +22728,7 @@ export function EcosystemShellDemo({ exampleIndex = 0 }) {
 - Don't import routing or auth logic into the shell; callers supply hrefs and sign-out callbacks.
 - Don't reorder Home into the destinations list; it is always rendered first.
 - Don't hide the mobile trigger; it is the only ecosystem navigation on small screens.
+- Don't let main-region content sit under the collapsed overlay rail; offset desktop layouts past it.
 
 ## Interface
 
@@ -22757,7 +22739,7 @@ export function EcosystemShellDemo({ exampleIndex = 0 }) {
 | `accountItems` | `MenuItem[]` | - | Extra account menu items rendered above the sign-out actions. |
 | `appSignOut` | `AccountMenuAction` | - | Sign-out that ends only the current application session. |
 | `ariaLabel` | `string` | `Kryv ecosystem` | Accessible name for the ecosystem navigation. |
-| `brand` | `ReactNode` | - | Product-family brand content rendered at the top of the rail, such as the Kryv mark with its wordmark reveal. |
+| `brand` | `ReactNode` | - | Product-family brand content rendered at the top of the rail. Defaults to EcosystemBrand: the Kryv mark with its wordmark reveal (ADR-0008). |
 | `children` (required) | `ReactNode` | - | Main content of the application. |
 | `className` | `string` | - | - |
 | `destinations` (required) | `EcosystemRailDestination[]` | - | Caller-filtered destinations, each with an optional honest HealthIndicator status. The shell never derives entitlements. |
@@ -22769,6 +22751,12 @@ export function EcosystemShellDemo({ exampleIndex = 0 }) {
 | `ssoSignOut` | `AccountMenuAction` | - | Sign-out that ends the shared single-sign-on session. |
 | `topBar` | `ReactNode` | - | Content rendered in a top bar above the main region. |
 | `user` | `AccountMenuUser` | - | Signed-in household identity shown in the rail footer's account menu. |
+
+### EcosystemBrand
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `alt` | `string` | `Kryv` | Accessible name announced for the mark image; the wordmark tail is decorative. |
 
 ## Related modules
 

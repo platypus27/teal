@@ -67,6 +67,8 @@ const intentionallyUndocumented = new Set([
   'useFieldControl',
   'chartColors',
   'chartColorAt',
+  'catalogIcon',
+  'CATALOG_ICONS',
   'niceTicks',
   'useFormErrors',
   'useFormFieldError',

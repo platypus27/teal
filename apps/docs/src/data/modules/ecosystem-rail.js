@@ -6,10 +6,11 @@ export default {
   ],
   "imports": [
     "EcosystemRail",
-    "SidebarItem"
+    "SidebarItem",
+    "catalogIcon"
   ],
   "description": "A persistent cross-product rail with a stable Home destination, caller-filtered applications, and honest health status.",
-  "usage": "<EcosystemRail\n  home={{ href: '#', label: 'Home', icon: <Home /> }}\n  destinations={[\n    { id: 'yang', label: 'Yang Operations', href: '#', icon: <Gauge />, current: true },\n    { id: 'photos', label: 'Photos', href: '#', icon: <Camera />, status: 'degraded' },\n  ]}\n/>",
+  "usage": "<EcosystemRail\n  home={{ href: '#', label: 'Home' }}\n  destinations={[\n    { id: 'yang', label: 'Yang Operations', href: '#', current: true },\n    { id: 'photos', label: 'Photos', href: '#', status: 'degraded' },\n  ]}\n/>",
   "anatomy": [
     {
       "part": "Brand",
@@ -21,7 +22,7 @@ export default {
     },
     {
       "part": "Destinations",
-      "description": "Caller-filtered application links with icons; an optional HealthIndicator shows an honest status beside each label."
+      "description": "Caller-filtered application links; icons resolve through catalogIcon from each destination id (explicit icon props win), and an optional HealthIndicator shows an honest status beside each label."
     },
     {
       "part": "Footer",

@@ -2559,6 +2559,19 @@
     ]
   },
   {
+    "description": "The default ecosystem brand: the Kryv \"k\" mark with the \"ryv\" wordmark tail\nthat reveals beside it when the rail expands on hover or focus (the\nproduction Home rail treatment, promoted to the ecosystem standard in\nADR-0008). EcosystemShell renders this when no brand prop is given. The\nartwork ships inlined, so consumers need no asset plumbing; pass the shell's\nbrand prop to replace it entirely.",
+    "displayName": "EcosystemBrand",
+    "props": [
+      {
+        "defaultValue": "Kryv",
+        "description": "Accessible name announced for the mark image; the wordmark tail is decorative.",
+        "name": "alt",
+        "required": false,
+        "type": "string"
+      }
+    ]
+  },
+  {
     "description": "",
     "displayName": "EcosystemRail",
     "props": [
@@ -2654,7 +2667,7 @@
       },
       {
         "defaultValue": "",
-        "description": "Product-family brand content rendered at the top of the rail, such as the Kryv mark with its wordmark reveal.",
+        "description": "Product-family brand content rendered at the top of the rail. Defaults to EcosystemBrand: the Kryv mark with its wordmark reveal (ADR-0008).",
         "name": "brand",
         "required": false,
         "type": "ReactNode"
@@ -8563,6 +8576,11 @@
         "type": "boolean"
       }
     ]
+  },
+  {
+    "description": "The canonical rail glyph for each contract icon name — the icons Home's\nproduction rail renders, promoted to the ecosystem standard (ADR-0008).\nNote the deliberate divergences from the catalog names: `images` renders\nCamera and `candlestick-chart` renders LineChart, matching Home.",
+    "displayName": "CATALOG_ICONS",
+    "props": []
   },
   {
     "description": "",

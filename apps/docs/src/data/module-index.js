@@ -785,9 +785,10 @@ export const moduleIndexGroups = [
       {
         "id": "ecosystem-shell",
         "name": "Ecosystem Shell",
-        "description": "The assembled ecosystem chrome: the EcosystemRail with brand, Home, health-dotted destinations, settings and account footer, plus a top bar slot, a scrolling main region, and a mobile drawer.",
+        "description": "The assembled ecosystem chrome: the floating glass-pill EcosystemRail with the default Kryv brand and wordmark reveal, Home, canonical catalog icons, health-dotted destinations, settings and account footer, plus a top bar slot, a scrolling main region, and a mobile drawer.",
         "apiNames": [
-          "EcosystemShell"
+          "EcosystemShell",
+          "EcosystemBrand"
         ]
       },
       {
