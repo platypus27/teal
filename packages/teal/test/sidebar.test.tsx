@@ -41,6 +41,59 @@ describe('Sidebar', () => {
     expect(screen.getByRole('link', { name: 'Projects' })).not.toHaveAttribute('aria-current')
   })
 
+  it('highlights the full-mode active row with a visible tint and inset ring', () => {
+    renderSidebar()
+
+    const overview = screen.getByRole('link', { name: 'Overview' })
+    expect(overview).toHaveClass(
+      'teal-u-bg-primary/15',
+      'teal-u-ring-1',
+      'teal-u-ring-inset',
+      'teal-u-ring-primary/20',
+      'teal-u-font-semibold',
+      'teal-u-text-primary',
+    )
+    expect(overview).not.toHaveClass('teal-u-bg-primary/10')
+  })
+
+  it('increases spacing between content sections', () => {
+    render(
+      <Sidebar>
+        <SidebarContent data-testid="content">
+          <SidebarSection label="Group">
+            <SidebarItem href="#a">A</SidebarItem>
+          </SidebarSection>
+        </SidebarContent>
+      </Sidebar>,
+    )
+
+    expect(screen.getByTestId('content')).toHaveClass('teal-u-space-y-3')
+    expect(screen.getByTestId('content')).not.toHaveClass('teal-u-space-y-1')
+  })
+
+  it('draws a hairline divider above non-first sections', () => {
+    render(
+      <Sidebar>
+        <SidebarContent>
+          <SidebarSection label="One" data-testid="section-one">
+            <SidebarItem href="#a">A</SidebarItem>
+          </SidebarSection>
+          <SidebarSection label="Two" data-testid="section-two">
+            <SidebarItem href="#b">B</SidebarItem>
+          </SidebarSection>
+        </SidebarContent>
+      </Sidebar>,
+    )
+
+    for (const section of [screen.getByTestId('section-one'), screen.getByTestId('section-two')]) {
+      expect(section).toHaveClass(
+        '[&:not(:first-child)]:teal-u-border-t',
+        '[&:not(:first-child)]:teal-u-border-[color:var(--teal-border-subtle)]',
+        '[&:not(:first-child)]:teal-u-pt-3',
+      )
+    }
+  })
+
   it('collapses to an icon rail when the collapse button is clicked', async () => {
     const user = userEvent.setup()
     const onCollapsedChange = vi.fn()
@@ -141,7 +194,7 @@ describe('Sidebar rail mode', () => {
   it('renders the active background on the row in full mode', () => {
     renderRail({ mode: 'full' })
 
-    expect(screen.getByRole('link', { name: 'Home' })).toHaveClass('teal-u-bg-primary/10', 'teal-u-rounded-xl')
+    expect(screen.getByRole('link', { name: 'Home' })).toHaveClass('teal-u-bg-primary/15', 'teal-u-rounded-xl')
   })
 
   it('applies the glass pill styling when floating', () => {

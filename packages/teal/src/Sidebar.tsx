@@ -141,7 +141,7 @@ export const SidebarContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivE
     <div
       ref={ref}
       tabIndex={mode === 'full' ? (tabIndex ?? 0) : tabIndex}
-      className={cn('teal-u-flex-1 teal-u-space-y-1 teal-u-px-2 teal-u-py-2', overflowClass, className)}
+      className={cn('teal-u-flex-1 teal-u-space-y-3 teal-u-px-2 teal-u-py-2', overflowClass, className)}
       {...props}
     />
   )
@@ -165,7 +165,14 @@ export const SidebarSection = forwardRef<HTMLDivElement, SidebarSectionProps>(fu
 ) {
   const { collapsed, mode } = useSidebar()
   return (
-    <div ref={ref} className={cn('teal-u-space-y-0.5', className)} {...props}>
+    <div
+      ref={ref}
+      className={cn(
+        'teal-u-space-y-0.5 [&:not(:first-child)]:teal-u-border-t [&:not(:first-child)]:teal-u-border-[color:var(--teal-border-subtle)] [&:not(:first-child)]:teal-u-pt-3',
+        className,
+      )}
+      {...props}
+    >
       {label ? (
         <div
           className={cn(
@@ -204,7 +211,7 @@ const SidebarItemImpl = forwardRef<HTMLElement, SidebarItemProps>(function Sideb
   const rowColorClass = active
     ? rail
       ? 'teal-u-font-semibold teal-u-text-primary'
-      : 'teal-u-bg-primary/10 teal-u-font-semibold teal-u-text-primary'
+      : 'teal-u-bg-primary/15 teal-u-ring-1 teal-u-ring-inset teal-u-ring-primary/20 teal-u-font-semibold teal-u-text-primary'
     : rail
       ? 'teal-u-text-on-surface-variant hover:teal-u-text-on-surface'
       : 'teal-u-text-on-surface-variant hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface'
