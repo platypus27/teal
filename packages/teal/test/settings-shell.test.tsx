@@ -73,7 +73,7 @@ describe('SettingsShell', () => {
       </SettingsShell>,
     )
 
-    expect(screen.getByRole('heading', { name: 'Risk' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'Risk' })).toBeInTheDocument()
     expect(screen.getByText('Caps the execution worker enforces.')).toBeInTheDocument()
     expect(screen.getByText('Step-up required')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Save changes' })).toBeInTheDocument()
