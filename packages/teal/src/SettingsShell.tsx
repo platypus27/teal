@@ -101,7 +101,7 @@ export const SettingsShell = forwardRef<HTMLDivElement, SettingsShellProps>(func
         ))}
       </nav>
       <div className="teal-u-min-w-0 teal-u-p-6 md:teal-u-p-8">
-        <h2 className="teal-u-font-headline teal-u-text-xl teal-u-font-bold">{title}</h2>
+        <h1 className="teal-u-font-headline teal-u-text-xl teal-u-font-bold">{title}</h1>
         {description ? (
           <p className="teal-u-mb-5 teal-u-mt-1 teal-u-text-sm teal-u-leading-relaxed teal-u-text-on-surface-variant">
             {description}
