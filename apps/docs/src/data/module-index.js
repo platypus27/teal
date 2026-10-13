@@ -379,6 +379,14 @@ export const moduleIndexGroups = [
         ]
       },
       {
+        "id": "voxel-motif",
+        "name": "Voxel Motif",
+        "description": "A per-product isometric voxel landmark rendered as one scalable SVG.",
+        "apiNames": [
+          "VoxelMotif"
+        ]
+      },
+      {
         "id": "badge",
         "name": "Badge",
         "description": "A compact semantic status indicator using canonical information variants.",

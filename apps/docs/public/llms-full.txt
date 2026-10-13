@@ -10255,10 +10255,21 @@ Cards stack single-column on mobile and grid at larger widths under the caller�
 The whole card navigates; status content stays caller-supplied and sanitized.
 
 ```jsx
-import { Badge, LauncherCard } from '@kryv/teal'
+import { Badge, LauncherCard, VoxelMotif } from '@kryv/teal'
 import { Camera } from 'lucide-react'
 
 export function LauncherCardDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 2) {
+    return (
+      <LauncherCard
+        href="#"
+        label="Home"
+        description="Household sign-in and settings"
+        media={<VoxelMotif motif="home" size={72} />}
+      />
+    )
+  }
+
   return exampleIndex ? (
     <LauncherCard
       href="#"
@@ -10283,10 +10294,60 @@ export function LauncherCardDemo({ exampleIndex = 0 }) {
 A disabled card is removed from focus order and blocks navigation.
 
 ```jsx
-import { Badge, LauncherCard } from '@kryv/teal'
+import { Badge, LauncherCard, VoxelMotif } from '@kryv/teal'
 import { Camera } from 'lucide-react'
 
 export function LauncherCardDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 2) {
+    return (
+      <LauncherCard
+        href="#"
+        label="Home"
+        description="Household sign-in and settings"
+        media={<VoxelMotif motif="home" size={72} />}
+      />
+    )
+  }
+
+  return exampleIndex ? (
+    <LauncherCard
+      href="#"
+      label="Trict"
+      description="Trading research and execution"
+      disabled
+    />
+  ) : (
+    <LauncherCard
+      href="#"
+      label="Photos"
+      description="Household media, albums, and sharing"
+      icon={<Camera />}
+      status={<Badge variant="success">Healthy</Badge>}
+    />
+  )
+}
+```
+
+### With motif media
+
+The media slot carries the product's voxel landmark above the label row.
+
+```jsx
+import { Badge, LauncherCard, VoxelMotif } from '@kryv/teal'
+import { Camera } from 'lucide-react'
+
+export function LauncherCardDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 2) {
+    return (
+      <LauncherCard
+        href="#"
+        label="Home"
+        description="Household sign-in and settings"
+        media={<VoxelMotif motif="home" size={72} />}
+      />
+    )
+  }
+
   return exampleIndex ? (
     <LauncherCard
       href="#"
@@ -10308,6 +10369,7 @@ export function LauncherCardDemo({ exampleIndex = 0 }) {
 
 ## Anatomy
 
+- **Media** - An optional media block above the icon row, such as the product's VoxelMotif.
 - **Icon** - The application glyph at the start of the card.
 - **Label and description** - The destination name and its one-line summary.
 - **Status** - Caller-supplied status content, such as a Badge, rendered below the summary.
@@ -10338,6 +10400,7 @@ export function LauncherCardDemo({ exampleIndex = 0 }) {
 | `href` (required) | `string` | - | URL the card navigates to. |
 | `icon` | `ReactNode` | - | Icon rendered beside the label. |
 | `label` (required) | `ReactNode` | - | Visible application label. |
+| `media` | `ReactNode` | - | Media block rendered above the icon and label row, such as a VoxelMotif. |
 | `status` | `ReactNode` | - | Status content rendered below the description, such as a health Badge. |
 
 ## Accessibility
@@ -10356,6 +10419,157 @@ export function LauncherCardDemo({ exampleIndex = 0 }) {
 - [Card](/modules/card)
 - [Badge](/modules/badge)
 - [App Switcher](/modules/app-switcher)
+
+---
+
+# Voxel Motif
+
+A per-product isometric voxel landmark — the product identities of the voxel-world design language — rendered as one scalable SVG.
+
+## Usage
+
+```js
+import { VoxelMotif } from '@kryv/teal'
+```
+
+```jsx
+<VoxelMotif motif="home" size={96} label="Home lighthouse" />
+```
+
+## Design guidance
+
+### Use when
+
+A product identity is needed in the voxel-world language — rails, settings hubs, empty states, launcher cards.
+### Avoid when
+
+A generic glyph is enough; use an icon instead of borrowing another product's landmark.
+### Behavior
+
+Static SVG rendering with literal voxel colors that read on both light and dark themes.
+### Responsive
+
+The motif scales to any width via the size prop; height follows the build's proportions.
+
+## Examples
+
+### Product motifs
+
+The six approved builds: home's lighthouse, both photos candidates, yang's beacon, trict's chart, and twinkle's fireflies.
+
+```jsx
+import { VoxelMotif, voxelMotifs } from '@kryv/teal'
+
+/** @type {Record<import('@kryv/teal').VoxelMotifId, string>} */
+const MOTIF_LABELS = {
+  home: 'Home · lighthouse',
+  'photos-tree': 'Photos · spirit tree',
+  'photos-windmill': 'Photos · windmill',
+  yang: 'Yang · beacon',
+  trict: 'Trict · harbor chart',
+  twinkle: 'Twinkle · fireflies',
+}
+
+export function VoxelMotifDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-end gap-8">
+        <VoxelMotif motif="home" size={96} label="Home lighthouse motif" />
+        <VoxelMotif motif="yang" size={64} />
+      </div>
+    )
+  }
+
+  const ids = /** @type {import('@kryv/teal').VoxelMotifId[]} */ (Object.keys(voxelMotifs))
+  return (
+    <div className="grid w-full max-w-3xl grid-cols-2 gap-6 sm:grid-cols-3">
+      {ids.map((id) => (
+        <figure key={id} className="flex flex-col items-center gap-2">
+          <VoxelMotif motif={id} size={104} label={MOTIF_LABELS[id]} />
+          <figcaption className="text-xs text-teal-on-surface-variant">{MOTIF_LABELS[id]}</figcaption>
+        </figure>
+      ))}
+    </div>
+  )
+}
+```
+
+### Accessible label
+
+A labelled motif is exposed as an image; unlabelled motifs are hidden from assistive technology.
+
+```jsx
+import { VoxelMotif, voxelMotifs } from '@kryv/teal'
+
+/** @type {Record<import('@kryv/teal').VoxelMotifId, string>} */
+const MOTIF_LABELS = {
+  home: 'Home · lighthouse',
+  'photos-tree': 'Photos · spirit tree',
+  'photos-windmill': 'Photos · windmill',
+  yang: 'Yang · beacon',
+  trict: 'Trict · harbor chart',
+  twinkle: 'Twinkle · fireflies',
+}
+
+export function VoxelMotifDemo({ exampleIndex = 0 }) {
+  if (exampleIndex === 1) {
+    return (
+      <div className="flex items-end gap-8">
+        <VoxelMotif motif="home" size={96} label="Home lighthouse motif" />
+        <VoxelMotif motif="yang" size={64} />
+      </div>
+    )
+  }
+
+  const ids = /** @type {import('@kryv/teal').VoxelMotifId[]} */ (Object.keys(voxelMotifs))
+  return (
+    <div className="grid w-full max-w-3xl grid-cols-2 gap-6 sm:grid-cols-3">
+      {ids.map((id) => (
+        <figure key={id} className="flex flex-col items-center gap-2">
+          <VoxelMotif motif={id} size={104} label={MOTIF_LABELS[id]} />
+          <figcaption className="text-xs text-teal-on-surface-variant">{MOTIF_LABELS[id]}</figcaption>
+        </figure>
+      ))}
+    </div>
+  )
+}
+```
+
+## Anatomy
+
+- **Ground plate** - The grass and sand base every build stands on.
+- **Build** - The stacked landmark cubes — lighthouse, beacon, chart, tree, windmill, or firefly cluster.
+- **Glow** - Light cubes rendered with a drop-shadow glow in their own color.
+
+## Do and don't
+
+### Do
+
+- Use the motif as the product's identity: rail icon, empty-state illustration, launcher card media.
+- Provide a label when the motif carries meaning; omit it for purely decorative repeats.
+- Scale with the size prop; proportions are preserved from the cube bounds.
+
+### Don't
+
+- Don't recolor or restyle the cubes; the literal voxel colors are the identity on both themes.
+- Don't invent local motifs; new product landmarks ship through teal.
+
+## Interface
+
+### VoxelMotif
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `motif` (required) | `enum` | - | Which product motif to render. |
+| `size` | `number` | `96` | Rendered width in pixels; height is derived from the motif's bounds so proportions are preserved. Defaults to 96. |
+| `label` | `string` | - | Accessible name for the motif. When provided the SVG is exposed as an image; when omitted it is hidden from assistive technology. |
+| `className` | `string` | - | - |
+
+## Related modules
+
+- [Launcher Card](/modules/launcher-card)
+- [Empty State](/modules/empty-state)
+- [Ecosystem Rail](/modules/ecosystem-rail)
 
 ---
 

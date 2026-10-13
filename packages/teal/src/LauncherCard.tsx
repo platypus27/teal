@@ -14,12 +14,14 @@ export interface LauncherCardProps {
   icon?: ReactNode
   /** Visible application label. */
   label: ReactNode
+  /** Media block rendered above the icon and label row, such as a VoxelMotif. */
+  media?: ReactNode
   /** Status content rendered below the description, such as a health Badge. */
   status?: ReactNode
 }
 
 export const LauncherCard = forwardRef<HTMLAnchorElement, LauncherCardProps>(function LauncherCard(
-  { className, description, disabled = false, href, icon, label, status },
+  { className, description, disabled = false, href, icon, label, media, status },
   ref,
 ) {
   return (
@@ -30,6 +32,7 @@ export const LauncherCard = forwardRef<HTMLAnchorElement, LauncherCardProps>(fun
       disabled={disabled}
       className={cn('teal-u-block teal-u-no-underline', className)}
     >
+      {media ? <span className="teal-u-mb-4 teal-u-block" data-slot="launcher-card-media">{media}</span> : null}
       <span className="teal-u-flex teal-u-items-center teal-u-gap-3">
         {icon ? (
           <span className="teal-u-shrink-0 teal-u-text-on-surface-variant [&_svg]:teal-u-size-[var(--teal-icon-lg)]">

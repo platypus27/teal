@@ -53,6 +53,7 @@
 - [Tree Select](/modules/tree-select) (Pickers): A single-select control whose popover shows an expandable, typeahead-enabled tree of options; display="columns" walks the hierarchy one column per level.
 - [Card](/modules/card) (Surfaces): A structural surface for related content without ambiguous interactive behavior.
 - [Launcher Card](/modules/launcher-card) (Surfaces): An interactive application destination card with an icon, description, optional status, and an honest unavailable state.
+- [Voxel Motif](/modules/voxel-motif) (Surfaces): A per-product isometric voxel landmark — the product identities of the voxel-world design language — rendered as one scalable SVG.
 - [Badge](/modules/badge) (Surfaces): A compact semantic status indicator using canonical information variants.
 - [Accordion](/modules/accordion) (Surfaces): A stacked disclosure list with single and multi-open modes driven by a compact item interface.
 - [Chip](/modules/chip) (Surfaces): A compact filter or selection token with an optional remove affordance.
