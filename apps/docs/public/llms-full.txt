@@ -1,6 +1,6 @@
 # Teal design system - full documentation
 
-Version: v1.1.3
+Version: v1.2.0
 ---
 
 # Getting started
@@ -38686,7 +38686,13 @@ The contribution bar and promotion criteria live in the repository CONTRIBUTING.
 
 # Changelog
 
-Versioned changes to @kryv/teal, generated from the changesets changelog. Current version: v1.1.3.
+Versioned changes to @kryv/teal, generated from the changesets changelog. Current version: v1.2.0.
+
+## v1.2.0
+
+### Minor Changes
+
+- Add the `VoxelMotif` module and a `LauncherCard` media slot. `VoxelMotif` renders the six approved per-product voxel landmarks (home lighthouse, photos tree/windmill, yang beacon, trict chart, twinkle fireflies) as one scalable SVG, ported from the redesign-2026 mockup geometry; `LauncherCard` gains an optional `media` block above the icon/label row for motif thumbnails.
 
 ## v1.1.3
 
