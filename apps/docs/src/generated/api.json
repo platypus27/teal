@@ -4096,6 +4096,13 @@
       },
       {
         "defaultValue": "",
+        "description": "Media block rendered above the icon and label row, such as a VoxelMotif.",
+        "name": "media",
+        "required": false,
+        "type": "ReactNode"
+      },
+      {
+        "defaultValue": "",
         "description": "Status content rendered below the description, such as a health Badge.",
         "name": "status",
         "required": false,
@@ -8574,6 +8581,40 @@
         "name": "asChild",
         "required": false,
         "type": "boolean"
+      }
+    ]
+  },
+  {
+    "description": "",
+    "displayName": "VoxelMotif",
+    "props": [
+      {
+        "defaultValue": "",
+        "description": "Which product motif to render.",
+        "name": "motif",
+        "required": true,
+        "type": "enum"
+      },
+      {
+        "defaultValue": "96",
+        "description": "Rendered width in pixels; height is derived from the motif's bounds so\nproportions are preserved. Defaults to 96.",
+        "name": "size",
+        "required": false,
+        "type": "number"
+      },
+      {
+        "defaultValue": "",
+        "description": "Accessible name for the motif. When provided the SVG is exposed as an\nimage; when omitted it is hidden from assistive technology.",
+        "name": "label",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "",
+        "name": "className",
+        "required": false,
+        "type": "string"
       }
     ]
   },

@@ -12,6 +12,10 @@ export default {
   "usage": "<LauncherCard\n  href=\"#\"\n  label=\"Photos\"\n  description=\"Household media, albums, and sharing\"\n  icon={<Camera />}\n  status={<Badge variant=\"success\">Healthy</Badge>}\n/>",
   "anatomy": [
     {
+      "part": "Media",
+      "description": "An optional media block above the icon row, such as the product's VoxelMotif."
+    },
+    {
       "part": "Icon",
       "description": "The application glyph at the start of the card."
     },
@@ -52,6 +56,10 @@ export default {
     {
       "title": "Unavailable application",
       "description": "A disabled card is removed from focus order and blocks navigation."
+    },
+    {
+      "title": "With motif media",
+      "description": "The media slot carries the product's voxel landmark above the label row."
     }
   ],
   "guidance": {

@@ -47,6 +47,7 @@ import m_transfer_list from './modules/transfer-list.js'
 import m_tree_select from './modules/tree-select.js'
 import m_card from './modules/card.js'
 import m_launcher_card from './modules/launcher-card.js'
+import m_voxel_motif from './modules/voxel-motif.js'
 import m_badge from './modules/badge.js'
 import m_accordion from './modules/accordion.js'
 import m_chip from './modules/chip.js'
@@ -191,7 +192,7 @@ export const moduleGroups = [
 	},
 	{
 		name: "Surfaces",
-		modules: [m_card, m_launcher_card, m_badge, m_accordion, m_chip, m_kbd, m_scroll_area, m_code_block, m_expandable_card],
+		modules: [m_card, m_launcher_card, m_voxel_motif, m_badge, m_accordion, m_chip, m_kbd, m_scroll_area, m_code_block, m_expandable_card],
 	},
 	{
 		name: "Overlays",
