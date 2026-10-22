@@ -166,7 +166,7 @@
 - [Visually Hidden](/modules/visually-hidden) (Utilities): Hides content visually while keeping it available to assistive technology.
 - [Copy Button](/modules/copy-button) (Utilities): A button that copies a value to the clipboard and confirms with an icon swap and live feedback.
 - [Theme Toggle](/modules/theme-toggle) (Utilities): An icon button that toggles the dark class on the document root and reports its state.
-- [Theme Provider](/modules/theme-provider) (Utilities): Owns the ecosystem-wide 3-way theme preference (light, dark, system), applies the dark class to the document root, and persists the choice to localStorage.
+- [Theme Provider](/modules/theme-provider) (Utilities): Owns the ecosystem-wide theme preference (light, dark, system) and the active named palette, applies the dark class and data-palette attribute to the document root, and persists both choices to localStorage.
 - [Carousel](/modules/carousel) (Utilities): A scroll-snap carousel with previous and next controls, dot indicators, and arrow-key support.
 - [Collapse](/modules/collapse) (Utilities): Animates a region's height to show or hide content, marking it hidden and inert while closed.
 - [Countdown Timer](/modules/countdown-timer) (Utilities): Counts down to a target date with a default HH:MM:SS display or a custom render prop, firing onComplete at zero.

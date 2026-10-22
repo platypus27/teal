@@ -74,6 +74,26 @@ export const colorTokens = {
   'teal-color-product-twinkle': { light: [109, 91, 208], dark: [167, 139, 250] },
 }
 
+// Named palettes override a subset of colorTokens. Tokens not listed inherit
+// the default (safari) values. Keys are the same token keys as colorTokens so
+// the generated CSS variables are the usual --teal-color-* names. The
+// generators emit override blocks scoped to [data-palette='<name>'].
+export const palettes = {
+  garden: {
+    light: {
+      'teal-color-surface': [250, 249, 244],
+      // Darkened from the mockup's #2e7d32 (46, 125, 50) so primary keeps AA
+      // contrast when it is text on surfaces and on primary/10 or /15 tints
+      // (Badge, Sidebar, TreeSelect, Command); see test/tokens.test.ts.
+      'teal-color-primary': [27, 94, 32],
+    },
+    dark: {
+      'teal-color-surface': [22, 28, 24],
+      'teal-color-primary': [129, 199, 132],
+    },
+  },
+}
+
 export const sharedTokens = {
   '--teal-font-body': "'Manrope', ui-sans-serif, system-ui, sans-serif",
   '--teal-font-headline': "'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif",

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { contrastPairs } from './tokens.generated'
+import { palettes, colorTokens } from '../token-source.mjs'
 
 function channel(value: number) {
   const normalized = value / 255
@@ -95,6 +96,101 @@ describe('semantic color tokens', () => {
     ['dark focus indicator', dark['teal-color-primary'], dark['teal-color-surface']],
   ])('%s meets WCAG non-text contrast', (_name, foreground, background) => {
     expect(contrast(foreground ?? [], background ?? [])).toBeGreaterThanOrEqual(3)
+  })
+})
+
+describe('garden palette', () => {
+  const css = readFileSync(resolve(import.meta.dirname, '../src/tokens.css'), 'utf8')
+  const defaultLight = variables(css.match(/:root\s*{([\s\S]*?)\n}/)?.[1] ?? '')
+  const defaultDark = variables(css.match(/html\.dark\s*{([\s\S]*?)\n}/)?.[1] ?? '')
+  const lightBlock = css.match(/:root:not\(\.dark\)\[data-palette='garden'\]\s*{([\s\S]*?)\n}/)?.[1] ?? ''
+  const darkBlock = css.match(/html\.dark\[data-palette='garden'\]\s*{([\s\S]*?)\n}/)?.[1] ?? ''
+  const garden = palettes.garden
+
+  test('overrides only known color tokens', () => {
+    const known = new Set(Object.keys(colorTokens))
+    expect(garden).toBeDefined()
+    if (garden === undefined) return
+    for (const mode of ['light', 'dark'] as const) {
+      for (const key of Object.keys(garden[mode])) {
+        expect(known.has(key)).toBe(true)
+      }
+    }
+  })
+
+  test('every override is an rgb channel triple', () => {
+    for (const modes of Object.values(palettes)) {
+      for (const mode of ['light', 'dark'] as const) {
+        for (const value of Object.values(modes[mode])) {
+          expect(value).toHaveLength(3)
+          for (const channel of value) {
+            expect(Number.isInteger(channel)).toBe(true)
+            expect(channel).toBeGreaterThanOrEqual(0)
+            expect(channel).toBeLessThanOrEqual(255)
+          }
+        }
+      }
+    }
+  })
+
+  test('generated css scopes overrides behind data-palette without leaking light into dark', () => {
+    expect(css).toContain(":root:not(.dark)[data-palette='garden']")
+    expect(css).toContain("html.dark[data-palette='garden']")
+    expect(css).not.toContain(":root[data-palette='garden']")
+  })
+
+  test('generated blocks contain exactly the intended overrides', () => {
+    expect(variables(lightBlock)).toEqual({
+      'teal-color-surface': [250, 249, 244],
+      'teal-color-primary': [27, 94, 32],
+    })
+    expect(variables(darkBlock)).toEqual({
+      'teal-color-surface': [22, 28, 24],
+      'teal-color-primary': [129, 199, 132],
+    })
+  })
+
+  test('generated palette blocks come after the default light and dark blocks', () => {
+    const defaultLightIndex = css.indexOf('\n:root {')
+    const defaultDarkIndex = css.indexOf('\nhtml.dark {')
+    const gardenLightIndex = css.indexOf(":root:not(.dark)[data-palette='garden']")
+    const gardenDarkIndex = css.indexOf("html.dark[data-palette='garden']")
+    expect(defaultLightIndex).toBeGreaterThan(-1)
+    expect(defaultDarkIndex).toBeGreaterThan(defaultLightIndex)
+    expect(gardenLightIndex).toBeGreaterThan(defaultDarkIndex)
+    expect(gardenDarkIndex).toBeGreaterThan(gardenLightIndex)
+  })
+
+  /* The palette's composed states are part of its AA contract: primary is used
+     as text (Badge, Sidebar, TreeSelect, Command) directly on surfaces and on
+     primary/10 or /15 tints of them, so gating only the raw token pairs would
+     miss the states users actually see. */
+  const gardenTokens = {
+    light: { ...defaultLight, ...(garden?.light ?? {}) },
+    dark: { ...defaultDark, ...(garden?.dark ?? {}) },
+  }
+  const aaProbes: Array<[string, number[], number[]]> = []
+  for (const mode of ['light', 'dark'] as const) {
+    const tokens = gardenTokens[mode]
+    const primary = tokens['teal-color-primary'] ?? []
+    const background = tokens['teal-color-background'] ?? []
+    const surface = tokens['teal-color-surface'] ?? []
+    const surfaceHigh = tokens['teal-color-surface-container-high'] ?? []
+    aaProbes.push(
+      [`${mode} on-primary on primary`, tokens['teal-color-on-primary'] ?? [], primary],
+      [`${mode} on-surface on surface`, tokens['teal-color-on-surface'] ?? [], surface],
+      [`${mode} primary on background`, primary, background],
+      [`${mode} primary on surface`, primary, surface],
+      [`${mode} primary on surface-container-high`, primary, surfaceHigh],
+      [`${mode} primary on primary/10 over background`, primary, composite(primary, background, 0.1)],
+      [`${mode} primary on primary/15 over background`, primary, composite(primary, background, 0.15)],
+      [`${mode} primary on primary/10 over surface`, primary, composite(primary, surface, 0.1)],
+      [`${mode} primary on primary/15 over surface`, primary, composite(primary, surface, 0.15)],
+    )
+  }
+
+  it.each(aaProbes)('garden %s meets WCAG AA for normal text', (_name, foreground, background) => {
+    expect(contrast(foreground, background)).toBeGreaterThanOrEqual(4.5)
   })
 })
 
