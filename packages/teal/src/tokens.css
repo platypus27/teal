@@ -152,9 +152,9 @@ html.dark {
   --teal-shadow-voxel: 0 1px 0 rgb(255 255 255 / 0.06) inset, 0 18px 50px rgb(2 10 14 / 0.55);
 }
 
-:root[data-palette='garden'] {
+:root:not(.dark)[data-palette='garden'] {
   --teal-color-surface: rgb(250 249 244);
-  --teal-color-primary: rgb(46 125 50);
+  --teal-color-primary: rgb(27 94 32);
 }
 
 html.dark[data-palette='garden'] {

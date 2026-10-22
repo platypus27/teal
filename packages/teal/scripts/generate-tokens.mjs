@@ -33,8 +33,11 @@ function sharedForTheme(theme) {
 /* Named palettes inherit the default (safari) tokens and override a subset.
    Each palette/mode pair becomes an attribute-scoped block containing only
    the overridden variables, emitted after the default :root and html.dark
-   blocks so the later, more specific selectors win. Palette order follows
-   the palettes export insertion order; modes are always light then dark. */
+   blocks so the later, more specific selectors win. The light selector
+   excludes html.dark with :not(.dark): plain :root[data-palette=...] would
+   also match in dark mode, letting a light-only override leak into dark.
+   Dark overrides stay explicit under html.dark. Palette order follows the
+   palettes export insertion order; modes are always light then dark. */
 function colorOverrides(overrides) {
   return Object.fromEntries(
     Object.entries(overrides).map(([name, value]) => [name, `rgb(${value.join(' ')})`]),
@@ -45,7 +48,8 @@ function renderPaletteCss() {
   const blocks = []
   for (const [palette, modes] of Object.entries(palettes)) {
     for (const mode of ['light', 'dark']) {
-      const selector = mode === 'light' ? `:root[data-palette='${palette}']` : `html.dark[data-palette='${palette}']`
+      const selector =
+        mode === 'light' ? `:root:not(.dark)[data-palette='${palette}']` : `html.dark[data-palette='${palette}']`
       blocks.push(`${selector} {\n${cssVariables(colorOverrides(modes[mode]))}\n}`)
     }
   }

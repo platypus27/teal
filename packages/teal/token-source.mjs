@@ -82,7 +82,10 @@ export const palettes = {
   garden: {
     light: {
       'teal-color-surface': [250, 249, 244],
-      'teal-color-primary': [46, 125, 50],
+      // Darkened from the mockup's #2e7d32 (46, 125, 50) so primary keeps AA
+      // contrast when it is text on surfaces and on primary/10 or /15 tints
+      // (Badge, Sidebar, TreeSelect, Command); see test/tokens.test.ts.
+      'teal-color-primary': [27, 94, 32],
     },
     dark: {
       'teal-color-surface': [22, 28, 24],
