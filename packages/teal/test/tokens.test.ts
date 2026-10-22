@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { contrastPairs } from './tokens.generated'
+import { palettes, colorTokens } from '../token-source.mjs'
 
 function channel(value: number) {
   const normalized = value / 255
@@ -96,6 +97,21 @@ describe('semantic color tokens', () => {
   ])('%s meets WCAG non-text contrast', (_name, foreground, background) => {
     expect(contrast(foreground ?? [], background ?? [])).toBeGreaterThanOrEqual(3)
   })
+})
+
+test('garden palette overrides only known color tokens', () => {
+  const known = new Set(Object.keys(colorTokens))
+  for (const mode of ['light', 'dark'] as const) {
+    for (const key of Object.keys(palettes.garden[mode])) {
+      expect(known.has(key)).toBe(true)
+    }
+  }
+})
+
+test('generated css scopes garden overrides behind data-palette', () => {
+  const css = readFileSync(resolve(import.meta.dirname, '../src/tokens.css'), 'utf8')
+  expect(css).toContain(":root[data-palette='garden']")
+  expect(css).toContain("html.dark[data-palette='garden']")
 })
 
 describe('visual system tokens', () => {

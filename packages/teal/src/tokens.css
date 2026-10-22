@@ -151,3 +151,13 @@ html.dark {
   --teal-color-product-twinkle: rgb(167 139 250);
   --teal-shadow-voxel: 0 1px 0 rgb(255 255 255 / 0.06) inset, 0 18px 50px rgb(2 10 14 / 0.55);
 }
+
+:root[data-palette='garden'] {
+  --teal-color-surface: rgb(250 249 244);
+  --teal-color-primary: rgb(46 125 50);
+}
+
+html.dark[data-palette='garden'] {
+  --teal-color-surface: rgb(22 28 24);
+  --teal-color-primary: rgb(129 199 132);
+}
