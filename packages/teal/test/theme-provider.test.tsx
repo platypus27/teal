@@ -191,7 +191,7 @@ describe('ThemeToggle inside a ThemeProvider', () => {
   })
 })
 
-test('applies data-palette for non-default palettes and persists choice', () => {
+test('applies data-palette for non-default palettes and persists palette', () => {
   render(
     <ThemeProvider>
       <PaletteProbe />
@@ -213,6 +213,42 @@ test('default palette removes the attribute', () => {
     </ThemeProvider>,
   )
   expect(document.documentElement.dataset.palette).toBeUndefined()
+})
+
+test('uses the palette prop when no palette is stored', () => {
+  render(
+    <ThemeProvider palette="garden">
+      <PaletteProbe />
+    </ThemeProvider>,
+  )
+  expect(screen.getByTestId('palette')).toHaveTextContent('garden')
+  expect(document.documentElement.dataset.palette).toBe('garden')
+})
+
+test('honors a custom paletteStorageKey', () => {
+  window.localStorage.setItem('photos:palette', 'garden')
+  render(
+    <ThemeProvider paletteStorageKey="photos:palette">
+      <PaletteProbe />
+    </ThemeProvider>,
+  )
+  expect(screen.getByTestId('palette')).toHaveTextContent('garden')
+
+  fireEvent.click(screen.getByRole('button', { name: 'set garden' }))
+  expect(window.localStorage.getItem('photos:palette')).toBe('garden')
+  expect(window.localStorage.getItem('kryv:palette')).toBeNull()
+  expect(document.documentElement.dataset.palette).toBe('garden')
+})
+
+test('passes an unknown stored palette through verbatim', () => {
+  window.localStorage.setItem('kryv:palette', 'sunset')
+  render(
+    <ThemeProvider>
+      <PaletteProbe />
+    </ThemeProvider>,
+  )
+  expect(screen.getByTestId('palette')).toHaveTextContent('sunset')
+  expect(document.documentElement.dataset.palette).toBe('sunset')
 })
 
 function PaletteProbe() {
