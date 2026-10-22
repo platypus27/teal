@@ -36009,6 +36009,8 @@ export function ThemeProviderDemo({ exampleIndex = 0 }) {
 | --- | --- | --- | --- |
 | `defaultChoice` | `enum` | `system` | Choice applied when nothing is persisted yet; defaults to 'system'. |
 | `storageKey` | `string` | `kryv:theme` | localStorage key the choice is persisted under; defaults to 'kryv:theme'. |
+| `palette` | `string` | `safari` | Palette applied when nothing is persisted yet; defaults to 'safari'. |
+| `paletteStorageKey` | `string` | `kryv:palette` | localStorage key the palette is persisted under; defaults to 'kryv:palette'. |
 
 ## Related modules
 

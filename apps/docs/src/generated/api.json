@@ -7697,7 +7697,7 @@
     ]
   },
   {
-    "description": "Owns the ecosystem-wide theme preference: a 3-way light/dark/system choice,\npersisted to localStorage and applied as the 'dark' class on the document\nroot (the ADR 0004 theming contract). Wrap each application once, near the\nroot, and read the state with useTheme.",
+    "description": "Owns the ecosystem-wide theme preference: a 3-way light/dark/system choice,\npersisted to localStorage and applied as the 'dark' class on the document\nroot (the ADR 0004 theming contract), plus the active named palette, applied\nas the data-palette attribute that scopes generated palette overrides.\nWrap each application once, near the root, and read the state with useTheme.",
     "displayName": "ThemeProvider",
     "props": [
       {
@@ -7711,6 +7711,20 @@
         "defaultValue": "kryv:theme",
         "description": "localStorage key the choice is persisted under; defaults to 'kryv:theme'.",
         "name": "storageKey",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "safari",
+        "description": "Palette applied when nothing is persisted yet; defaults to 'safari'.",
+        "name": "palette",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "kryv:palette",
+        "description": "localStorage key the palette is persisted under; defaults to 'kryv:palette'.",
+        "name": "paletteStorageKey",
         "required": false,
         "type": "string"
       }

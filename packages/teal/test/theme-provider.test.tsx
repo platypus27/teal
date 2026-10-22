@@ -42,6 +42,7 @@ function ThemeState({ onState }: { onState?: (value: ThemeContextValue) => void 
 
 afterEach(() => {
   document.documentElement.classList.remove('dark')
+  delete document.documentElement.dataset.palette
   window.localStorage.clear()
   unmockMatchMedia()
 })
@@ -189,3 +190,37 @@ describe('ThemeToggle inside a ThemeProvider', () => {
     expect(document.documentElement.classList.contains('dark')).toBe(false)
   })
 })
+
+test('applies data-palette for non-default palettes and persists choice', () => {
+  render(
+    <ThemeProvider>
+      <PaletteProbe />
+    </ThemeProvider>,
+  )
+  expect(screen.getByTestId('palette')).toHaveTextContent('safari')
+  fireEvent.click(screen.getByRole('button', { name: 'set garden' }))
+  expect(document.documentElement.dataset.palette).toBe('garden')
+  expect(window.localStorage.getItem('kryv:palette')).toBe('garden')
+  expect(screen.getByTestId('palette')).toHaveTextContent('garden')
+})
+
+test('default palette removes the attribute', () => {
+  window.localStorage.setItem('kryv:palette', 'safari')
+  document.documentElement.dataset.palette = 'garden'
+  render(
+    <ThemeProvider>
+      <PaletteProbe />
+    </ThemeProvider>,
+  )
+  expect(document.documentElement.dataset.palette).toBeUndefined()
+})
+
+function PaletteProbe() {
+  const { palette, setPalette } = useTheme()
+  return (
+    <>
+      <button onClick={() => setPalette('garden')}>set garden</button>
+      <output data-testid="palette">{palette}</output>
+    </>
+  )
+}
