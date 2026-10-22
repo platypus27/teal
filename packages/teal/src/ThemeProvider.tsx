@@ -10,7 +10,7 @@ export interface ThemeProviderProps {
   defaultChoice?: ThemeChoice
   /** localStorage key the choice is persisted under; defaults to 'kryv:theme'. */
   storageKey?: string
-  /** Palette applied when nothing is persisted yet; defaults to 'safari'. */
+  /** Palette applied when nothing is persisted yet; defaults to 'safari', the attribute-free default. */
   palette?: string
   /** localStorage key the palette is persisted under; defaults to 'kryv:palette'. */
   paletteStorageKey?: string
@@ -88,9 +88,11 @@ function systemTheme(): Theme {
 /**
  * Owns the ecosystem-wide theme preference: a 3-way light/dark/system choice,
  * persisted to localStorage and applied as the 'dark' class on the document
- * root (the ADR 0004 theming contract), plus the active named palette, applied
- * as the data-palette attribute that scopes generated palette overrides.
- * Wrap each application once, near the root, and read the state with useTheme.
+ * root (the ADR 0004 theming contract), plus the active named palette (ADR
+ * 0010), applied as the data-palette attribute that scopes generated palette
+ * overrides. Theme mode and palette stay separate: the default 'safari'
+ * palette removes the attribute entirely. Wrap each application once, near
+ * the root, and read the state with useTheme.
  */
 export function ThemeProvider({
   children,

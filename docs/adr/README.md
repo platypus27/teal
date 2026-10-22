@@ -16,6 +16,7 @@ engineering it.
 | [0007](0007-voxel-world-palette.md) | 2026-10-01 | Adopt the voxel-world palette for Teal 1.0 |
 | [0008](0008-ecosystem-rail-brand-defaults.md) | 2026-10-03 | Home's production rail becomes the EcosystemShell default |
 | [0009](0009-voxel-motifs-as-teal-module.md) | 2026-10-13 | Voxel motifs as a teal module |
+| [0010](0010-named-palettes-data-palette.md) | 2026-10-23 | Named palettes layer over the theme via data-palette |
 
 ## Adding a new ADR
 
