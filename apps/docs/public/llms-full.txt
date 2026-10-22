@@ -35872,13 +35872,18 @@ useTheme exposes the stored choice and the resolved theme; ThemeToggle inside th
 ```jsx
 import { Button, ThemeProvider, ThemeToggle, useTheme } from '@kryv/teal'
 
-function ThemeReadout() {
-  const { choice, resolved, setChoice } = useTheme()
+function ThemeReadout({ showPalette = false }) {
+  const { choice, resolved, setChoice, palette, setPalette } = useTheme()
   return (
     <div className="space-y-3">
       <p className="text-sm text-teal-on-surface-variant">
         choice: <strong className="text-teal-on-surface">{choice}</strong> · resolved:{' '}
         <strong className="text-teal-on-surface">{resolved}</strong>
+        {showPalette ? (
+          <>
+            {' '}· palette: <strong className="text-teal-on-surface">{palette}</strong>
+          </>
+        ) : null}
       </p>
       <div className="flex flex-wrap items-center gap-2">
         {/** @type {import('@kryv/teal').ThemeChoice[]} */ (['light', 'dark', 'system']).map((value) => (
@@ -35893,6 +35898,21 @@ function ThemeReadout() {
         ))}
         <span className="mx-1 h-5 w-px bg-teal-outline-variant/50" aria-hidden="true" />
         <ThemeToggle />
+        {showPalette ? (
+          <>
+            <span className="mx-1 h-5 w-px bg-teal-outline-variant/50" aria-hidden="true" />
+            {['safari', 'garden'].map((value) => (
+              <Button
+                key={value}
+                size="sm"
+                variant={palette === value ? 'primary' : 'secondary'}
+                onClick={() => setPalette(value)}
+              >
+                {value === 'garden' ? 'Garden' : 'Safari'}
+              </Button>
+            ))}
+          </>
+        ) : null}
       </div>
     </div>
   )
@@ -35901,11 +35921,17 @@ function ThemeReadout() {
 export function ThemeProviderDemo({ exampleIndex = 0 }) {
   if (exampleIndex === 1) {
     return (
-      <ThemeProvider storageKey="teal-docs:theme-demo" defaultChoice="light">
+      <ThemeProvider
+        storageKey="teal-docs:theme-demo"
+        defaultChoice="light"
+        palette="safari"
+        paletteStorageKey="teal-docs:palette-demo"
+      >
         <div className="space-y-2">
-          <ThemeReadout />
+          <ThemeReadout showPalette />
           <p className="text-xs text-teal-on-surface-variant">
-            Persisted under teal-docs:theme-demo — reload the page and the choice survives.
+            Theme choice persists under teal-docs:theme-demo and palette under teal-docs:palette-demo - reload the page
+            and both survive.
           </p>
         </div>
       </ThemeProvider>
@@ -35932,13 +35958,18 @@ palette, paletteStorageKey, storageKey, and defaultChoice are configurable; setP
 ```jsx
 import { Button, ThemeProvider, ThemeToggle, useTheme } from '@kryv/teal'
 
-function ThemeReadout() {
-  const { choice, resolved, setChoice } = useTheme()
+function ThemeReadout({ showPalette = false }) {
+  const { choice, resolved, setChoice, palette, setPalette } = useTheme()
   return (
     <div className="space-y-3">
       <p className="text-sm text-teal-on-surface-variant">
         choice: <strong className="text-teal-on-surface">{choice}</strong> · resolved:{' '}
         <strong className="text-teal-on-surface">{resolved}</strong>
+        {showPalette ? (
+          <>
+            {' '}· palette: <strong className="text-teal-on-surface">{palette}</strong>
+          </>
+        ) : null}
       </p>
       <div className="flex flex-wrap items-center gap-2">
         {/** @type {import('@kryv/teal').ThemeChoice[]} */ (['light', 'dark', 'system']).map((value) => (
@@ -35953,6 +35984,21 @@ function ThemeReadout() {
         ))}
         <span className="mx-1 h-5 w-px bg-teal-outline-variant/50" aria-hidden="true" />
         <ThemeToggle />
+        {showPalette ? (
+          <>
+            <span className="mx-1 h-5 w-px bg-teal-outline-variant/50" aria-hidden="true" />
+            {['safari', 'garden'].map((value) => (
+              <Button
+                key={value}
+                size="sm"
+                variant={palette === value ? 'primary' : 'secondary'}
+                onClick={() => setPalette(value)}
+              >
+                {value === 'garden' ? 'Garden' : 'Safari'}
+              </Button>
+            ))}
+          </>
+        ) : null}
       </div>
     </div>
   )
@@ -35961,11 +36007,17 @@ function ThemeReadout() {
 export function ThemeProviderDemo({ exampleIndex = 0 }) {
   if (exampleIndex === 1) {
     return (
-      <ThemeProvider storageKey="teal-docs:theme-demo" defaultChoice="light">
+      <ThemeProvider
+        storageKey="teal-docs:theme-demo"
+        defaultChoice="light"
+        palette="safari"
+        paletteStorageKey="teal-docs:palette-demo"
+      >
         <div className="space-y-2">
-          <ThemeReadout />
+          <ThemeReadout showPalette />
           <p className="text-xs text-teal-on-surface-variant">
-            Persisted under teal-docs:theme-demo — reload the page and the choice survives.
+            Theme choice persists under teal-docs:theme-demo and palette under teal-docs:palette-demo - reload the page
+            and both survive.
           </p>
         </div>
       </ThemeProvider>
