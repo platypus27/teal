@@ -26,11 +26,16 @@ export interface ThemeContextValue {
   /**
    * The active named palette. 'safari' is the default and has no data-palette
    * attribute; every other value is applied verbatim, so unknown palette names
-   * render with the default tokens.
+   * render with the default tokens. Optional in the type so contexts built
+   * against Teal 1.2.0 remain valid; ThemeProvider always supplies it.
    */
-  palette: string
-  /** Update the palette, apply it to the document root, and persist it. */
-  setPalette: (palette: string) => void
+  palette?: string
+  /**
+   * Update the palette, apply it to the document root, and persist it. Optional
+   * in the type for the same 1.2.0 compatibility reason; gate palette
+   * affordances on its presence when an application supports older Teal.
+   */
+  setPalette?: (palette: string) => void
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null)

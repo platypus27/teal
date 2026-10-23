@@ -9,6 +9,9 @@ default rendering is unchanged. The new `garden` palette overrides
 `data-palette='garden'` in both light and dark, inheriting every other token.
 `ThemeProvider` gains optional `palette` and `paletteStorageKey` props and
 `palette`/`setPalette` on the theme context, persisting the choice to
-localStorage and removing the attribute for the default palette. See the
+localStorage and removing the attribute for the default palette. The two new
+context members are optional in the exported `ThemeContextValue` type so a
+hand-built or mocked 1.2.0-shaped context still typechecks; the provider
+always supplies both at runtime. See the
 package README and `docs/palette-release-prep.md` for the attribute contract,
 supported names, capability detection, and the release checklist.

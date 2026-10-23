@@ -255,7 +255,7 @@ function PaletteProbe() {
   const { palette, setPalette } = useTheme()
   return (
     <>
-      <button onClick={() => setPalette('garden')}>set garden</button>
+      <button onClick={() => setPalette?.('garden')}>set garden</button>
       <output data-testid="palette">{palette}</output>
     </>
   )

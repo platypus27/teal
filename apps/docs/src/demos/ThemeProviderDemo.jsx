@@ -1,7 +1,7 @@
 import { Button, ThemeProvider, ThemeToggle, useTheme } from '@kryv/teal'
 
 function ThemeReadout({ showPalette = false }) {
-  const { choice, resolved, setChoice, palette, setPalette } = useTheme()
+  const { choice, resolved, setChoice, palette = 'safari', setPalette } = useTheme()
   return (
     <div className="space-y-3">
       <p className="text-sm text-teal-on-surface-variant">
@@ -26,7 +26,7 @@ function ThemeReadout({ showPalette = false }) {
         ))}
         <span className="mx-1 h-5 w-px bg-teal-outline-variant/50" aria-hidden="true" />
         <ThemeToggle />
-        {showPalette ? (
+        {showPalette && typeof setPalette === 'function' ? (
           <>
             <span className="mx-1 h-5 w-px bg-teal-outline-variant/50" aria-hidden="true" />
             {['safari', 'garden'].map((value) => (

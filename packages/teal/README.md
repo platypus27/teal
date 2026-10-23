@@ -122,7 +122,8 @@ export function App() {
 }
 
 function PaletteControl() {
-  const { palette, setPalette } = useTheme()
+  const { palette = 'safari', setPalette } = useTheme()
+  if (typeof setPalette !== 'function') return null
   return (
     <fieldset>
       <legend>Palette</legend>
@@ -150,6 +151,11 @@ function PaletteControl() {
   exposes the new value through `useTheme()`. Persisting a palette to an
   account is the consuming application's job; Home mirrors it through its
   preference API.
+- The two new context members are optional in `ThemeContextValue` so a
+  hand-built or mocked context written against Teal 1.2.0 still typechecks.
+  `ThemeProvider` always supplies both at runtime; the presence check in the
+  example is the supported way to keep one component working against both
+  versions.
 - Unknown palette names are applied verbatim. No CSS block matches them, so
   the default tokens still render. Validate values against the supported list
   before calling `setPalette`.

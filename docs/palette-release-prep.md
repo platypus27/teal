@@ -20,9 +20,11 @@ Source: `packages/teal/src/ThemeProvider.tsx` (merged on `master` at
 
 - New optional props: `palette?: string` (mount fallback, default `safari`)
   and `paletteStorageKey?: string` (default `kryv:palette`).
-- Extended context: `palette: string` and
-  `setPalette: (palette: string) => void`, alongside the unchanged
-  `choice`, `resolved`, and `setChoice`.
+- Extended context: `palette?: string` and
+  `setPalette?: (palette: string) => void`, alongside the unchanged `choice`,
+  `resolved`, and `setChoice`. Both are optional in the exported
+  `ThemeContextValue` type so a hand-built or mocked 1.2.0-shaped context
+  still typechecks, while `ThemeProvider` always supplies both at runtime.
 - State order: stored value from `paletteStorageKey`, then the `palette`
   prop, then `safari`. Unknown stored strings are passed through verbatim.
 - Effect: `palette !== 'safari'` sets
@@ -78,30 +80,32 @@ Local build and gates (branch tip):
 | --- | --- | --- |
 | `npm run test:unit` | 173 files, 1291 tests passed | 0 |
 | `npm run lint --workspace @kryv/teal` | 0 problems | 0 |
-| `npm run typecheck --workspace @kryv/teal` | clean | 0 |
+| `npm run typecheck --workspace @kryv/teal` | clean, including the compile-only legacy-context fixture | 0 |
 | `npm run check:generated` | generated artifacts current | 0 |
 | `npm run build --workspace @kryv/teal` | dist built | 0 |
 | `npm run check:size --workspace @kryv/teal` | js 511033/560000, largest 14776/18000, styles.css 69315/75000 | 0 |
 | `npm run pack:verify` | dry-run pack plus scratch consumer verified `@kryv/teal@1.2.0` | 0 |
 
-`npm pack` into a temp directory produced `kryv-teal-1.2.0.tgz` (718 KiB,
+`npm pack` into a temp directory produced `kryv-teal-1.2.0.tgz` (720 KiB,
 938 entries) with the expected published layout: `dist/` JavaScript,
 declarations and maps, `dist/tokens.css`, `dist/styles.css`,
 `dist/tailwind.preset.js`, `src/tokens.json`, and the package README.
 
 Tarball inspection:
 
-- `dist/ThemeProvider.d.ts` declares `palette?: string`,
-  `paletteStorageKey?: string`, `palette: string`, and
-  `setPalette: (palette: string) => void`.
+- `dist/ThemeProvider.d.ts` declares the optional `palette?: string` and
+  `paletteStorageKey?: string` props and the optional `palette?: string` and
+  `setPalette?: (palette: string) => void` context members.
 - `dist/tokens.css` contains `:root:not(.dark)[data-palette='garden']` and
   `html.dark[data-palette='garden']`.
 - `dist/index.js` exports `ThemeProvider` and `useTheme`, and a runtime ESM
   import of the built module resolves both exports.
-- A scratch consumer that installs the extracted tarball and imports
-  `ThemeContextValue` and `ThemeProviderProps` compiles with
-  `tsc --strict --noEmit` (exit 0), proving consumers see the palette API
-  types.
+- A scratch consumer that installs the extracted tarball compiles with
+  `tsc --strict --noEmit` (exit 0). It assigns a hand-built
+  `ThemeContextValue` with only `choice`, `resolved`, and `setChoice`, which
+  proves the additive contract: the palette members are optional in the type
+  and supplied by the provider at runtime. It also uses
+  `ThemeProviderProps` with `palette` and `paletteStorageKey`.
 
 ### Registry state
 
@@ -116,10 +120,14 @@ change.
 Home `main` installs `@kryv/teal` 1.2.0 (lockfile integrity pinned to the
 registry tarball). In that installed package `dist/ThemeProvider.d.ts` has
 zero `palette` occurrences and `dist/tokens.css` has zero `data-palette`
-selectors. Home already handles that: `apps/web/src/App.tsx` renders the
+selectors. Home handles that in `apps/web/src/App.tsx`, which renders the
 `PalettePicker` only when `typeof theme.setPalette === 'function'`, and
-`apps/web/src/palettePreference.ts` returns `false` without the capability,
-so the current UI hides the picker instead of rendering a dead control.
+`apps/web/src/palettePreference.ts` returns `false` without the capability, so
+the current UI never renders a working-looking picker that silently does
+nothing. Only the helper's capability-absent path is unit-tested today; the
+UI regression test for the hidden or disabled picker is added by the Home
+integration follow-up slice P1.5b, recorded in
+`home/docs/ecosystem/2026-10-23-unified-ecosystem-improvements.md`.
 
 ## 2. Version decision
 
@@ -130,15 +138,16 @@ so the current UI hides the picker instead of rendering a dead control.
   `setPalette` on `ThemeContextValue`, two `ThemeProvider` props) and new
   token behavior (the garden CSS blocks). Consumers need a semver-visible
   opt-in.
-- Minor, not major: no existing behavior, export, prop, or token changes.
+- Minor, not major: no existing behavior, prop, or token changes; the only
+  export change is the additive optional `palette` and `setPalette` members.
   With no palette prop or stored value, the provider renders exactly as
-  before; the default token blocks are byte-identical to 1.2.0.
-- Advisory: `ThemeContextValue` gains required members. A consumer that
-  hand-constructs that interface instead of obtaining it from `useTheme()`
-  would see a compile error on upgrade. Runtime behavior is additive, and
-  provider-owned contexts are the supported pattern, so this is recorded as
-  an upgrade note rather than a major. Revisit only if a real consumer
-  breaks.
+  before; the default token blocks are byte-identical to 1.2.0. The two new
+  `ThemeContextValue` members are optional in the exported type, so a
+  consumer that hand-builds or mocks a 1.2.0-shaped context still typechecks
+  on 1.3.0; `ThemeProvider` always supplies both values at runtime. The
+  compile-only fixture `packages/teal/test/theme-context-compat.ts` pins that
+  contract, and it failed with `TS2739` before the fields were made optional.
+  No owner semver exception is required and the changeset stays `minor`.
 - Release mechanics: the Changesets release job in
   `.github/workflows/pipeline.yml` runs on pushes to `master` after the
   quality, browser, and Lighthouse jobs. It uses the action's
@@ -175,13 +184,18 @@ Version PR:
 
 Publish:
 
-7. The same release job detects the unpublished package with a pending
-   changeset and publishes via `npx changeset publish`, then creates the
-   GitHub release and tag. Provenance is attached.
+7. The same release job runs because 1.3.0 is not yet published. The Version
+   Packages merge consumed the changeset, so the `has_changesets` flag is
+   false and `published` is false, which still selects the release path. The
+   job publishes via `npx changeset publish` and then creates the GitHub
+   release and tag. Provenance is attached.
 8. Manual fallback, owner only, from a reviewed clean checkout:
    `npm run release:version`, then `npm run verify`, then
-   `npm run publish:package`. Never run a publish from an agent session or an
-   unreviewed environment.
+   `npm run publish:package`. This path publishes only the npm package: it
+   does not create a git tag or a GitHub release. The owner must create and
+   push `v1.3.0` at the version commit and create the GitHub release
+   manually, or use the workflow path which does both. Never run a publish
+   from an agent session or an unreviewed environment.
 
 Post-publish verification:
 
@@ -208,8 +222,9 @@ Rollback and unpublish:
 - Consumer rollback: pin `@kryv/teal` to 1.2.0 until the fixed version is
   live. Rendering with no palette props is unchanged, so a pin is a
   dependency-only rollback.
-- Git rollback: revert the version commit and tag, and record the incident in
-  the GitHub release notes.
+- Git rollback: revert the version commit and tag. The workflow path creates
+  the tag; the manual fallback path requires creating and pushing `v1.3.0`
+  first. Record the incident in the GitHub release notes.
 
 ## 4. Home integration follow-up (prepared, not applied)
 
@@ -231,12 +246,14 @@ Capability-gated picker:
 - Keep the runtime guard. Current `App.tsx` hides the picker unless
   `typeof theme.setPalette === 'function'`; keep that behavior so a stale
   lockfile or older resolution can never render a working-looking control
-  that silently does nothing. A clearly disabled alternative is acceptable
-  but hiding is the current, tested behavior.
+  that silently does nothing. A clearly disabled alternative is acceptable.
+  The hiding branch is implemented in `App.tsx`; only the helper's
+  capability-absent path has a unit test today, so the Home integration
+  follow-up slice P1.5b adds the UI regression test described below.
 - After the bump, replace the structural cast and its stale 1.2.0 comments
   with the typed `ThemeContextValue`; keep the runtime capability check as a
   defensive guard, not as the type contract.
-- Add a regression test for the capability-absent path: a provider-shaped
+- Add the capability-absent UI regression test in P1.5b: a provider-shaped
   context without `setPalette` renders no palette picker (or a clearly
   disabled one if the product later chooses that).
 
@@ -259,9 +276,9 @@ Tests and verification:
   and rollback.
 - `apps/web/src/PalettePicker.test.tsx`: both options, selection, single
   change event, current-option click ignored.
-- New `App` integration test with the real Teal `ThemeProvider`: garden sets
-  `data-palette`, safari removes it, localStorage receives the choice, and a
-  capability-absent context hides the picker.
+- New `App` integration test in P1.5b with the real Teal `ThemeProvider`:
+  garden sets `data-palette`, safari removes it, localStorage receives the
+  choice, and a capability-absent context hides the picker.
 - `apps/server/test/preferences.test.js`: palette accepted and unknown
   rejected (already covered in the palette preference task).
 - Gates: `cd home/apps/web && npm test && npm run lint && npm run build`;
@@ -280,19 +297,33 @@ and contracts do not change.
 
 ## 5. Palette set drift check
 
-| Source | Supported names |
+| Location | Supported names |
 | --- | --- |
-| Teal `token-source.mjs` (garden overrides plus implicit safari default) | `safari`, `garden` |
-| Home web `ALLOWED_PALETTES` (`palettePreference.ts`) | `safari`, `garden` |
-| Home server `ALLOWED.palette` (`preferences.js`) | `safari`, `garden` |
+| Teal token map and generated selectors (`packages/teal/token-source.mjs` `palettes` plus `src/tokens.css`) | `safari` (implicit default), `garden` |
+| Teal consumer docs (`packages/teal/README.md` palette table and ADR-0010) | `safari`, `garden` |
+| Home web `ALLOWED_PALETTES` (`apps/web/src/palettePreference.ts`) | `safari`, `garden` |
+| Home web picker options (`apps/web/src/PalettePicker.tsx` `PALETTE_OPTIONS` lines 4-7) | `safari`, `garden` |
+| Home server `ALLOWED.palette` (`apps/server/src/preferences.js`) | `safari`, `garden` |
 
-There is no name drift today. The same list is maintained in three places,
-which is the drift risk: adding a palette requires a coordinated change in
-the Teal token source plus regeneration and the WCAG gate, a minor changeset,
-both Home lists, and their tests. Record this procedure with the palette
-release notes. A future additive export such as `PALETTE_NAMES` from Teal
-would let Home derive the list, but it would widen this release beyond the
-already-merged surface and is deferred.
+There is no name drift today. Five locations carry the list, which is the
+drift risk. Adding a palette is one coordinated change:
+
+1. Teal: add the override map in `token-source.mjs` (or document the default
+   for a new default palette), regenerate the tokens, and extend the WCAG
+   contrast gate.
+2. Teal docs: update the package README palette table and the supported names
+   in ADR-0010 and any generated docs data that lists them.
+3. Teal release: update the changeset as a minor, run the full gates, and
+   re-inspect the packed tarball types and CSS selectors.
+4. Home web: update `ALLOWED_PALETTES` in `palettePreference.ts` and
+   `PALETTE_OPTIONS` in `PalettePicker.tsx`, with their unit tests.
+5. Home server: update `ALLOWED.palette` in `preferences.js` and its tests.
+
+The Home values stay unused until the Teal version with the palette is
+installed and the capability guard sees `setPalette`. A future additive
+export such as `PALETTE_NAMES` from Teal would let Home derive the list, but
+it would widen this release beyond the already-merged surface and is
+deferred.
 
 ## 6. Non-claims
 
