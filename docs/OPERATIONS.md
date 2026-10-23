@@ -62,6 +62,11 @@ npm run pack:verify
 tarball into a scratch React consumer (`verify:package`) to prove the
 published artifact works.
 
+The named-palette 1.3.0 release has additional capability evidence, an owner
+publish checklist, package inspection results, and rollback and unpublish
+guidance in [palette-release-prep.md](palette-release-prep.md). Publishing
+remains owner-gated; repository work only prepares the changeset and evidence.
+
 ## Continuous integration
 
 The GitHub Actions pipeline runs on pull requests: a quality job (lint,
