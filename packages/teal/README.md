@@ -98,6 +98,75 @@ document.documentElement.classList.toggle('dark')
 The complete supported token list is documented at
 [teal.kryvlabs.com/foundations](https://teal.kryvlabs.com/foundations).
 
+### Named palettes
+
+Palettes are a separate axis from light and dark mode: a named palette
+revalues a subset of the color tokens and inherits everything else from the
+default. `ThemeProvider` owns both axes and scopes the palette with a
+`data-palette` attribute on the document root.
+
+| Palette | Attribute | Tokens |
+| --- | --- | --- |
+| `safari` (default) | none | The full default token set. Rendering is identical to Teal 1.2.0. |
+| `garden` | `data-palette="garden"` | Overrides `--teal-color-surface` and `--teal-color-primary` in light and dark; every other token inherits `safari`. |
+
+```jsx
+import { ThemeProvider, useTheme } from '@kryv/teal'
+
+export function App() {
+  return (
+    <ThemeProvider palette="safari" paletteStorageKey="kryv:palette">
+      <PaletteControl />
+    </ThemeProvider>
+  )
+}
+
+function PaletteControl() {
+  const { palette, setPalette } = useTheme()
+  return (
+    <fieldset>
+      <legend>Palette</legend>
+      {['safari', 'garden'].map((name) => (
+        <label key={name}>
+          <input
+            type="radio"
+            name="palette"
+            checked={palette === name}
+            onChange={() => setPalette(name)}
+          />
+          {name}
+        </label>
+      ))}
+    </fieldset>
+  )
+}
+```
+
+- The default `safari` palette removes the attribute entirely, so default
+  rendering stays byte-identical to earlier Teal versions.
+- The optional `palette` prop sets the initial palette when nothing is stored.
+  `paletteStorageKey` sets the localStorage key and defaults to `kryv:palette`.
+- `setPalette` applies the value immediately, persists it to localStorage, and
+  exposes the new value through `useTheme()`. Persisting a palette to an
+  account is the consuming application's job; Home mirrors it through its
+  preference API.
+- Unknown palette names are applied verbatim. No CSS block matches them, so
+  the default tokens still render. Validate values against the supported list
+  before calling `setPalette`.
+- The generated selectors are `:root:not(.dark)[data-palette='<name>']` and
+  `html.dark[data-palette='<name>']`, emitted after the default `:root` and
+  `html.dark` blocks. Consumers that persist palettes without `ThemeProvider`
+  can set `document.documentElement.dataset.palette` directly.
+- Capability detection: published Teal through 1.2.0 has no palette surface.
+  If an application supports both versions, gate palette affordances on
+  `typeof useTheme().setPalette === 'function'` and hide or clearly disable
+  the control otherwise instead of rendering a picker that does nothing.
+
+The attribute contract and design rationale are recorded in
+[ADR-0010](https://github.com/platypus27/teal/blob/master/docs/adr/0010-named-palettes-data-palette.md);
+the 1.3.0 release prep, capability evidence, and consumer follow-up are in
+[palette-release-prep.md](https://github.com/platypus27/teal/blob/master/docs/palette-release-prep.md).
+
 ## Bundle and styling model
 
 The JavaScript ships as one ES module per component, so your bundler parses and
