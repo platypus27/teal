@@ -6,6 +6,15 @@ examples, interactive playgrounds, and generated interface tables.
 
 Documentation: <https://teal.kryvlabs.com> — getting started, [foundations](https://teal.kryvlabs.com/foundations), [recipes](https://teal.kryvlabs.com/recipes), and the generated [changelog](https://teal.kryvlabs.com/changelog).
 
+## Ecosystem responsibility
+
+Home renders the shared Teal shell and product sections; Teal supplies
+presentation modules, tokens, accessibility, and interaction behavior. Identity,
+authorization, persistence, application status, and dangerous-action policy
+stay in the consuming owner. The Home + Twinkle foundation was locally
+accepted on 2026-10-25 without a Teal runtime or dependency change; its
+[acceptance record](https://github.com/platypus27/home/blob/main/docs/TRACEABILITY.md#final-acceptance-at-the-final-revisions-2026-10-25) is not a Teal publication or deployment.
+
 ## Install
 
 ```bash
@@ -48,10 +57,9 @@ icons. Radix is not part of the public interface.
 
 ## Modules
 
-171 documented module pages across eleven groups — Actions, Forms, Pickers,
-Surfaces, Overlays, Feedback, Navigation, Data, Charts, Layout, and Utilities —
-backed by 173 components in `packages/teal/src`. The full catalog with live
-examples, playgrounds, and generated interface tables lives at
+The module catalog covers Actions, Forms, Pickers, Surfaces, Overlays,
+Feedback, Navigation, Data, Charts, Layout, and Utilities. Live examples,
+playgrounds, and generated interface tables live at
 <https://teal.kryvlabs.com/modules>.
 
 ## Workspace
@@ -102,8 +110,10 @@ certificate.
 
 ## Release policy
 
-Teal remains pre-1.0 while its interfaces are proven across Kryv applications.
-Releases use Changesets and generated release notes. Product-specific status
+The repository package baseline is 1.2.0. Home's accepted foundation uses
+Teal 1.2.0; the separate 1.3.0 palette preparation is not a published release
+claim and is not required by that milestone. Releases use Changesets and
+generated release notes. Product-specific status
 mappings, persistence, data queries, and domain language stay in consuming
 applications.
 

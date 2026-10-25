@@ -4,6 +4,15 @@ Guidance for AI agents and contributors working in the Teal repository.
 Teal is the Kryv Labs shared React design system, published to npm as
 `@kryv/teal` and documented at <https://teal.kryvlabs.com>.
 
+## Ecosystem integration
+
+Home owns the current browser shell and application sections. Teal provides
+presentation and interaction modules; identity, run state, capabilities, and
+application authorization stay with the consuming owner. The accepted
+foundation uses Teal 1.2.0 without requiring the prepared 1.3.0 palette release.
+Documentation updates do not authorize package publication or edits to generated
+artifacts. See README's ecosystem responsibility and release policy.
+
 ## Stack
 
 - npm workspaces on Node 24 (`engines` pins `>=24 <25`; npm >= 11.5.1)
