@@ -159,4 +159,38 @@ describe('RichTextEditor', () => {
     await user.click(screen.getByRole('button', { name: 'Bold' }))
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Bold removed'))
   })
+
+  describe('preview link safety', () => {
+    it('renders safe markdown links as anchors with rel="noopener noreferrer"', () => {
+      render(
+        <RichTextEditor
+          label="Body"
+          preview
+          defaultValue={'See the [docs](https://example.com/docs) and the [overview](#overview)'}
+        />,
+      )
+
+      const preview = screen.getByRole('region', { name: 'Preview' })
+      const docs = within(preview).getByRole('link', { name: 'docs' })
+      expect(docs).toHaveAttribute('href', 'https://example.com/docs')
+      expect(docs).toHaveAttribute('rel', 'noopener noreferrer')
+      expect(within(preview).getByRole('link', { name: 'overview' })).not.toHaveAttribute('rel')
+    })
+
+    it('does not render anchors for unsafe link targets in the preview', () => {
+      render(
+        <RichTextEditor
+          label="Body"
+          preview
+          defaultValue={'[a](javascript:alert(1)) [b](//attacker.example) [c](/\\attacker.example)'}
+        />,
+      )
+
+      const preview = screen.getByRole('region', { name: 'Preview' })
+      expect(within(preview).queryByRole('link')).not.toBeInTheDocument()
+      expect(within(preview).getByText(/javascript:alert/)).toBeInTheDocument()
+      expect(within(preview).getByText(/\/\/attacker\.example/)).toBeInTheDocument()
+      expect(within(preview).getByText(/\/\\attacker\.example/)).toBeInTheDocument()
+    })
+  })
 })

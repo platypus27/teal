@@ -4,6 +4,7 @@ import { Bold, Heading2, Italic, Link as LinkIcon, List } from 'lucide-react'
 import { cn } from './cn'
 import { fieldVariants } from './Input'
 import { Announcer } from './Announcer'
+import { isExternalUrl, isSafeUrl } from './url-safety'
 
 export interface RichTextEditorProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
   /** Accessible name for the text area when there is no visible label. */
@@ -55,12 +56,21 @@ function renderInline(text: string): ReactNode[] {
       nodes.push(<em key={key}>{token.slice(1, -1)}</em>)
     } else {
       const link = /^\[([^\]]+)\]\(([^)]+)\)$/.exec(token)
-      if (link) {
+      const linkText = link?.[1]
+      const linkUrl = link?.[2]
+      if (linkText !== undefined && linkUrl !== undefined && isSafeUrl(linkUrl)) {
         nodes.push(
-          <a key={key} href={link[2]} className="teal-u-font-semibold teal-u-text-primary teal-u-underline teal-u-underline-offset-2">
-            {link[1]}
+          <a
+            key={key}
+            href={linkUrl}
+            {...(isExternalUrl(linkUrl) ? { rel: 'noopener noreferrer' } : {})}
+            className="teal-u-font-semibold teal-u-text-primary teal-u-underline teal-u-underline-offset-2"
+          >
+            {linkText}
           </a>,
         )
+      } else {
+        nodes.push(token)
       }
     }
     key += 1
