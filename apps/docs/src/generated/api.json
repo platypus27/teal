@@ -4590,6 +4590,20 @@
         "name": "content",
         "required": true,
         "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Additional URL schemes allowed on links, e.g. `['http:', 'tel:']`. `https:`, same-origin paths, and `mailto:` (with cc/bcc/body stripped) are always allowed.",
+        "name": "allowedLinkSchemes",
+        "required": false,
+        "type": "readonly string[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Narrows which links render. Receives the href that would be rendered; return false to show the link as literal text.",
+        "name": "isAllowedHref",
+        "required": false,
+        "type": "(href: string) => boolean"
       }
     ]
   },
@@ -6495,9 +6509,16 @@
     ]
   },
   {
-    "description": "Lightweight markdown editor: the toolbar wraps the text area selection with\nmarkdown syntax, and an optional pane previews the rendered result. Editing\nstays in a plain textarea — there is no contentEditable surface.",
+    "description": "Lightweight markdown editor: the toolbar wraps the text area selection with\nmarkdown syntax, and an optional pane previews the rendered result. Editing\nstays in a plain textarea - there is no contentEditable surface.",
     "displayName": "RichTextEditor",
     "props": [
+      {
+        "defaultValue": "",
+        "description": "Additional URL schemes allowed on preview links, e.g. `['http:', 'tel:']`. `https:`, same-origin paths, and `mailto:` (with cc/bcc/body stripped) are always allowed.",
+        "name": "allowedLinkSchemes",
+        "required": false,
+        "type": "readonly string[]"
+      },
       {
         "defaultValue": "",
         "description": "Accessible name for the text area when there is no visible label.",
@@ -6511,6 +6532,13 @@
         "name": "defaultValue",
         "required": false,
         "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Narrows which preview links render. Receives the href that would be rendered; return false to show the link as literal text.",
+        "name": "isAllowedHref",
+        "required": false,
+        "type": "(href: string) => boolean"
       },
       {
         "defaultValue": "",

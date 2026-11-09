@@ -7792,8 +7792,10 @@ export function RichTextEditorDemo({ exampleIndex = 0 }) {
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
+| `allowedLinkSchemes` | `readonly string[]` | - | Additional URL schemes allowed on preview links, e.g. `['http:', 'tel:']`. `https:`, same-origin paths, and `mailto:` (with cc/bcc/body stripped) are always allowed. |
 | `aria-label` | `string` | - | Accessible name for the text area when there is no visible label. |
 | `defaultValue` | `string` | - | Initial markdown when uncontrolled. |
+| `isAllowedHref` | `(href: string) => boolean` | - | Narrows which preview links render. Receives the href that would be rendered; return false to show the link as literal text. |
 | `label` | `ReactNode` | - | Visible label rendered above the editor. |
 | `onChange` | `(value: string) => void` | - | Called with the full markdown whenever it changes. |
 | `placeholder` | `string` | - | Placeholder text of the text area. |
@@ -29566,6 +29568,8 @@ export function MarkdownViewDemo({ exampleIndex = 0 }) {
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `content` (required) | `string` | - | Markdown source. Supports headings, bold, italic, links, lists, inline code, fenced code blocks, blockquotes, and horizontal rules. Raw HTML is rendered as literal text. |
+| `allowedLinkSchemes` | `readonly string[]` | - | Additional URL schemes allowed on links, e.g. `['http:', 'tel:']`. `https:`, same-origin paths, and `mailto:` (with cc/bcc/body stripped) are always allowed. |
+| `isAllowedHref` | `(href: string) => boolean` | - | Narrows which links render. Receives the href that would be rendered; return false to show the link as literal text. |
 
 ## Accessibility
 
