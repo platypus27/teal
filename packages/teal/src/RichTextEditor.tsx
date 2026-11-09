@@ -4,13 +4,17 @@ import { Bold, Heading2, Italic, Link as LinkIcon, List } from 'lucide-react'
 import { cn } from './cn'
 import { fieldVariants } from './Input'
 import { Announcer } from './Announcer'
-import { isExternalUrl, isSafeUrl } from './url-safety'
+import { renderMarkdown } from './MarkdownView'
 
 export interface RichTextEditorProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
+  /** Additional URL schemes allowed on preview links, e.g. `['http:', 'tel:']`. `https:`, same-origin paths, and `mailto:` (with cc/bcc/body stripped) are always allowed. */
+  allowedLinkSchemes?: readonly string[]
   /** Accessible name for the text area when there is no visible label. */
   'aria-label'?: string
   /** Initial markdown when uncontrolled. */
   defaultValue?: string
+  /** Narrows which preview links render. Receives the href that would be rendered; return false to show the link as literal text. */
+  isAllowedHref?: (href: string) => boolean
   /** Visible label rendered above the editor. */
   label?: ReactNode
   /** Called with the full markdown whenever it changes. */
@@ -40,117 +44,13 @@ interface EditorAction {
   pressed?: boolean
 }
 
-/** Renders inline markdown (`**bold**`, `*italic*`, `[label](href)`) as React nodes. */
-function renderInline(text: string): ReactNode[] {
-  const nodes: ReactNode[] = []
-  const pattern = /(\*\*[^*]+\*\*|\*[^*]+\*|\[[^\]]+\]\([^)]+\))/g
-  let lastIndex = 0
-  let key = 0
-  let match = pattern.exec(text)
-  while (match !== null) {
-    if (match.index > lastIndex) nodes.push(text.slice(lastIndex, match.index))
-    const token = match[0]
-    if (token.startsWith('**')) {
-      nodes.push(<strong key={key}>{token.slice(2, -2)}</strong>)
-    } else if (token.startsWith('*')) {
-      nodes.push(<em key={key}>{token.slice(1, -1)}</em>)
-    } else {
-      const link = /^\[([^\]]+)\]\(([^)]+)\)$/.exec(token)
-      const linkText = link?.[1]
-      const linkUrl = link?.[2]
-      if (linkText !== undefined && linkUrl !== undefined && isSafeUrl(linkUrl)) {
-        nodes.push(
-          <a
-            key={key}
-            href={linkUrl}
-            {...(isExternalUrl(linkUrl) ? { rel: 'noopener noreferrer' } : {})}
-            className="teal-u-font-semibold teal-u-text-primary teal-u-underline teal-u-underline-offset-2"
-          >
-            {linkText}
-          </a>,
-        )
-      } else {
-        nodes.push(token)
-      }
-    }
-    key += 1
-    lastIndex = match.index + token.length
-    match = pattern.exec(text)
-  }
-  if (lastIndex < text.length) nodes.push(text.slice(lastIndex))
-  return nodes
-}
-
-/** Renders a small markdown subset (headings, lists, paragraphs, inline marks) without any dependency. */
-function renderMarkdown(markdown: string): ReactNode {
-  const blocks: ReactNode[] = []
-  let paragraph: string[] = []
-  let list: string[] = []
-  let key = 0
-
-  function flushParagraph() {
-    if (paragraph.length === 0) return
-    blocks.push(
-      <p key={key} className="teal-u-leading-relaxed">
-        {renderInline(paragraph.join(' '))}
-      </p>,
-    )
-    key += 1
-    paragraph = []
-  }
-
-  function flushList() {
-    if (list.length === 0) return
-    const items = list
-    blocks.push(
-      <ul key={key} className="teal-u-list-disc teal-u-space-y-1 teal-u-ps-5">
-        {items.map((item, index) => (
-          <li key={index}>{renderInline(item)}</li>
-        ))}
-      </ul>,
-    )
-    key += 1
-    list = []
-  }
-
-  for (const line of markdown.split('\n')) {
-    const heading = /^(#{1,4})\s+(.*)$/.exec(line)
-    const listItem = /^-\s+(.*)$/.exec(line)
-    if (heading) {
-      flushParagraph()
-      flushList()
-      const Tag = `h${Math.min((heading[1] ?? '#').length + 1, 6)}` as 'h2' | 'h3' | 'h4' | 'h5'
-      blocks.push(
-        <Tag key={key} className="teal-u-font-semibold teal-u-text-on-surface">
-          {renderInline(heading[2] ?? '')}
-        </Tag>,
-      )
-      key += 1
-    } else if (listItem) {
-      flushParagraph()
-      list.push(listItem[1] ?? '')
-    } else if (line.trim() === '') {
-      flushParagraph()
-      flushList()
-    } else {
-      flushList()
-      paragraph.push(line)
-    }
-  }
-  flushParagraph()
-  flushList()
-
-  if (blocks.length === 0) return <p className="teal-u-text-on-surface-variant">Nothing to preview</p>
-  return blocks
-}
-
 /**
  * Lightweight markdown editor: the toolbar wraps the text area selection with
  * markdown syntax, and an optional pane previews the rendered result. Editing
- * stays in a plain textarea — there is no contentEditable surface.
+ * stays in a plain textarea - there is no contentEditable surface.
  */
 export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(function RichTextEditor(
-  { 'aria-label': ariaLabel, className, defaultValue, id, label, onChange, placeholder, preview = false, rows = 8, value, ...props },
+  { allowedLinkSchemes, 'aria-label': ariaLabel, className, defaultValue, id, isAllowedHref, label, onChange, placeholder, preview = false, rows = 8, value, ...props },
   ref,
 ) {
   const generatedId = useId()
@@ -362,7 +262,14 @@ export const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(fu
             aria-label="Preview"
             className="teal-u-grid teal-u-content-start teal-u-gap-2 teal-u-rounded-xl teal-u-border teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)] teal-u-bg-surface teal-u-p-4 teal-u-text-sm teal-u-text-on-surface"
           >
-            {renderMarkdown(currentValue)}
+            {currentValue.trim() === '' ? (
+              <p className="teal-u-text-on-surface-variant">Nothing to preview</p>
+            ) : (
+              renderMarkdown(currentValue, {
+                ...(allowedLinkSchemes !== undefined ? { allowedSchemes: allowedLinkSchemes } : {}),
+                ...(isAllowedHref !== undefined ? { isAllowedHref } : {}),
+              })
+            )}
           </div>
         ) : null}
       </div>

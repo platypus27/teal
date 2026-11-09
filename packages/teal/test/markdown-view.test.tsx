@@ -91,6 +91,13 @@ describe('MarkdownView', () => {
       expect(screen.getByText(/\/\/attacker\.example\/login/)).toBeInTheDocument()
     })
 
+    it('rejects dot-segment protocol-relative URLs', () => {
+      render(<MarkdownView content="Click [login](/.//attacker.example/login) now" />)
+
+      expect(screen.queryByRole('link')).not.toBeInTheDocument()
+      expect(screen.getByText(/\/\.\/\/attacker\.example\/login/)).toBeInTheDocument()
+    })
+
     it('rejects backslash-prefixed URLs', () => {
       render(<MarkdownView content={'Open [x](/\\attacker.example) and [y](\\\\attacker.example)'} />)
 
@@ -107,21 +114,75 @@ describe('MarkdownView', () => {
       expect(screen.getByText(/%6Aavascript:alert/)).toBeInTheDocument()
     })
 
-    it('adds rel="noopener noreferrer" to absolute links', () => {
-      render(
-        <MarkdownView content={'[a](https://example.com) [b](http://example.com) [c](mailto:team@example.com)'} />,
-      )
+    it('adds rel="noreferrer" to absolute links', () => {
+      render(<MarkdownView content={'[a](https://example.com) [b](mailto:team@example.com)'} />)
 
-      for (const name of ['a', 'b', 'c']) {
-        expect(screen.getByRole('link', { name })).toHaveAttribute('rel', 'noopener noreferrer')
+      for (const name of ['a', 'b']) {
+        expect(screen.getByRole('link', { name })).toHaveAttribute('rel', 'noreferrer')
       }
     })
 
-    it('does not add rel to same-origin or fragment links', () => {
-      render(<MarkdownView content={'[a](/docs) [b](#section)'} />)
+    it('does not add rel to same-origin, relative or fragment links', () => {
+      render(<MarkdownView content={'[a](/docs) [b](#section) [c](./page) [d](?tab=2)'} />)
 
-      expect(screen.getByRole('link', { name: 'a' })).not.toHaveAttribute('rel')
-      expect(screen.getByRole('link', { name: 'b' })).not.toHaveAttribute('rel')
+      for (const name of ['a', 'b', 'c', 'd']) {
+        expect(screen.getByRole('link', { name })).not.toHaveAttribute('rel')
+      }
+    })
+
+    it('renders relative links that resolve to the same origin', () => {
+      render(<MarkdownView content={'[a](./page) [b](../x) [c](page.html) [d](?tab=2)'} />)
+
+      expect(screen.getByRole('link', { name: 'a' })).toHaveAttribute('href', './page')
+      expect(screen.getByRole('link', { name: 'b' })).toHaveAttribute('href', '../x')
+      expect(screen.getByRole('link', { name: 'c' })).toHaveAttribute('href', 'page.html')
+      expect(screen.getByRole('link', { name: 'd' })).toHaveAttribute('href', '?tab=2')
+    })
+
+    it('parses URLs with balanced parentheses', () => {
+      render(<MarkdownView content="Read the [wiki](https://en.wikipedia.org/wiki/Foo_(bar)) entry" />)
+
+      expect(screen.getByRole('link', { name: 'wiki' })).toHaveAttribute(
+        'href',
+        'https://en.wikipedia.org/wiki/Foo_(bar)',
+      )
+    })
+
+    it('strips cc, bcc and body from mailto links', () => {
+      render(<MarkdownView content="[m](mailto:team@example.com?cc=other@example.com&subject=Hello&body=secret)" />)
+
+      expect(screen.getByRole('link', { name: 'm' })).toHaveAttribute('href', 'mailto:team@example.com?subject=Hello')
+    })
+
+    it('rejects http: and tel: links by default', () => {
+      render(<MarkdownView content={'[a](http://example.com) [b](tel:+15551234)'} />)
+
+      expect(screen.queryByRole('link')).not.toBeInTheDocument()
+      expect(screen.getByText(/\[a\]\(http:\/\/example\.com\)/)).toBeInTheDocument()
+      expect(screen.getByText(/\[b\]\(tel:\+15551234\)/)).toBeInTheDocument()
+    })
+
+    it('allows extra schemes via allowedLinkSchemes', () => {
+      render(
+        <MarkdownView content={'[a](http://example.com) [b](tel:+15551234)'} allowedLinkSchemes={['http:', 'tel:']} />,
+      )
+
+      expect(screen.getByRole('link', { name: 'a' })).toHaveAttribute('href', 'http://example.com')
+      expect(screen.getByRole('link', { name: 'b' })).toHaveAttribute('href', 'tel:+15551234')
+    })
+
+    it('narrows links through isAllowedHref', () => {
+      render(
+        <MarkdownView
+          content={'[ok](https://allowed.example/x) [no](https://other.example/x) [p](/docs)'}
+          isAllowedHref={(href) => href.startsWith('https://allowed.example/')}
+        />,
+      )
+
+      expect(screen.getByRole('link', { name: 'ok' })).toBeInTheDocument()
+      expect(screen.queryByRole('link', { name: 'no' })).not.toBeInTheDocument()
+      expect(screen.queryByRole('link', { name: 'p' })).not.toBeInTheDocument()
+      expect(screen.getByText(/\[no\]\(https:\/\/other\.example\/x\)/)).toBeInTheDocument()
     })
   })
 })
