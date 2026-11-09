@@ -64,4 +64,64 @@ describe('MarkdownView', () => {
 
     expect(screen.getByText('first line second line')).toBeInTheDocument()
   })
+
+  describe('link safety', () => {
+    it('accepts same-origin paths with exactly one leading slash', () => {
+      render(<MarkdownView content="Go to the [docs](/docs/page) for details" />)
+
+      expect(screen.getByRole('link', { name: 'docs' })).toHaveAttribute('href', '/docs/page')
+    })
+
+    it('accepts fragment links', () => {
+      render(<MarkdownView content="Jump to the [overview](#overview) section" />)
+
+      expect(screen.getByRole('link', { name: 'overview' })).toHaveAttribute('href', '#overview')
+    })
+
+    it('accepts mailto links', () => {
+      render(<MarkdownView content="Email the [team](mailto:team@example.com) for help" />)
+
+      expect(screen.getByRole('link', { name: 'team' })).toHaveAttribute('href', 'mailto:team@example.com')
+    })
+
+    it('rejects protocol-relative URLs that would navigate off-site', () => {
+      render(<MarkdownView content="Click [login](//attacker.example/login) now" />)
+
+      expect(screen.queryByRole('link')).not.toBeInTheDocument()
+      expect(screen.getByText(/\/\/attacker\.example\/login/)).toBeInTheDocument()
+    })
+
+    it('rejects backslash-prefixed URLs', () => {
+      render(<MarkdownView content={'Open [x](/\\attacker.example) and [y](\\\\attacker.example)'} />)
+
+      expect(screen.queryByRole('link')).not.toBeInTheDocument()
+      expect(screen.getByText(/\/\\attacker\.example/)).toBeInTheDocument()
+      expect(screen.getByText(/\\\\attacker\.example/)).toBeInTheDocument()
+    })
+
+    it('rejects mixed-case and percent-encoded scheme tricks', () => {
+      render(<MarkdownView content={'Run [a](JaVaScRiPt:alert(1)) or [b](%6Aavascript:alert(1))'} />)
+
+      expect(screen.queryByRole('link')).not.toBeInTheDocument()
+      expect(screen.getByText(/JaVaScRiPt:alert/)).toBeInTheDocument()
+      expect(screen.getByText(/%6Aavascript:alert/)).toBeInTheDocument()
+    })
+
+    it('adds rel="noopener noreferrer" to absolute links', () => {
+      render(
+        <MarkdownView content={'[a](https://example.com) [b](http://example.com) [c](mailto:team@example.com)'} />,
+      )
+
+      for (const name of ['a', 'b', 'c']) {
+        expect(screen.getByRole('link', { name })).toHaveAttribute('rel', 'noopener noreferrer')
+      }
+    })
+
+    it('does not add rel to same-origin or fragment links', () => {
+      render(<MarkdownView content={'[a](/docs) [b](#section)'} />)
+
+      expect(screen.getByRole('link', { name: 'a' })).not.toHaveAttribute('rel')
+      expect(screen.getByRole('link', { name: 'b' })).not.toHaveAttribute('rel')
+    })
+  })
 })

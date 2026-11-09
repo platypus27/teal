@@ -1,5 +1,6 @@
 import { forwardRef, useMemo, type HTMLAttributes, type ReactNode } from 'react'
 import { cn } from './cn'
+import { isExternalUrl, isSafeUrl } from './url-safety'
 
 export interface MarkdownViewProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Markdown source. Supports headings, bold, italic, links, lists, inline code, fenced code blocks, blockquotes, and horizontal rules. Raw HTML is rendered as literal text. */
@@ -102,10 +103,6 @@ function parseBlocks(content: string): Array<Block> {
   return blocks
 }
 
-function isSafeUrl(url: string): boolean {
-  return /^(https?:\/\/|mailto:|\/|#)/i.test(url)
-}
-
 const inlinePattern =
   /(\*\*([^*]+)\*\*)|(__([^_]+)__)|(\*([^*]+)\*)|(_([^_]+)_)|(`([^`]+)`)|(\[([^\]]+)\]\(([^)\s]+)\))/g
 
@@ -143,6 +140,7 @@ function renderInline(text: string): Array<ReactNode> {
         <a
           key={key++}
           href={linkUrl}
+          {...(isExternalUrl(linkUrl) ? { rel: 'noopener noreferrer' } : {})}
           className="teal-u-font-medium teal-u-text-primary teal-u-underline teal-u-underline-offset-2"
         >
           {linkText}
