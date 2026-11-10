@@ -51,6 +51,28 @@ function startsWithEncodedLetter(url: string): boolean {
   return (code >= 0x41 && code <= 0x5a) || (code >= 0x61 && code <= 0x7a)
 }
 
+/**
+ * True when the first path segment of a reference is a percent-encoded slash
+ * or backslash, single or multiply encoded: a server that decodes before
+ * redirecting would turn `/%2F/evil.com` into `//evil.com`.
+ */
+function firstSegmentDecodesToSlash(url: string): boolean {
+  const rest = url.startsWith('/') ? url.slice(1) : url
+  const end = rest.search(/[/?#]/)
+  let segment = end === -1 ? rest : rest.slice(0, end)
+  let rounds = 0
+  while (rounds < 3 && !segment.startsWith('/') && !segment.startsWith('\\')) {
+    if (!segment.includes('%')) return false
+    try {
+      segment = decodeURIComponent(segment)
+    } catch {
+      return false
+    }
+    rounds += 1
+  }
+  return segment.startsWith('/') || segment.startsWith('\\')
+}
+
 function approve(href: string, options?: MarkdownLinkOptions): string | null {
   return options?.isAllowedHref !== undefined && !options.isAllowedHref(href) ? null : href
 }
@@ -59,16 +81,19 @@ function approve(href: string, options?: MarkdownLinkOptions): string | null {
  * Returns the href to render for a URL parsed from user- or model-authored
  * content, or null when the URL must not become a link. Rejects
  * protocol-relative references, backslashes, whitespace, control and
- * zero-width characters, numeric HTML entities, and non-allowlisted schemes.
+ * zero-width characters, numeric HTML entities, first path segments that
+ * decode to a slash or backslash, absolute URLs with userinfo, and
+ * non-allowlisted schemes.
  * Same-origin relative links pass through unchanged; `mailto:` links arrive
  * with `cc`, `bcc` and `body` stripped.
  */
 export function sanitizeHref(url: string, options?: MarkdownLinkOptions, base?: string): string | null {
   if (url === '') return null
   if (unsafeCharacterPattern.test(url) || url.includes('\\') || numericEntityPattern.test(url)) return null
-  if (url.startsWith('//') || startsWithEncodedLetter(url)) return null
+  if (url.startsWith('//') || startsWithEncodedLetter(url) || firstSegmentDecodesToSlash(url)) return null
   const resolved = resolveUrl(url, base)
   if (resolved === null || resolved.pathname.startsWith('//')) return null
+  if (resolved.username !== '' || resolved.password !== '') return null
   if (isExternalUrl(url, base)) {
     const schemeAllowed =
       resolved.protocol === httpsScheme ||
