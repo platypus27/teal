@@ -128,6 +128,20 @@ describe('MarkdownView', () => {
       expect(screen.getByText(/\[b\]\(https:\/\/user:pass@good\.com\)/)).toBeInTheDocument()
     })
 
+    it('rejects dot-hidden and control-character encoded first segments', () => {
+      render(
+        <MarkdownView
+          content={'[a](/./%2F/evil.com) [b](/%2E/%2F/evil.com) [c](/%2525252F/evil.com) [d](/%09/evil.com)'}
+        />,
+      )
+
+      expect(screen.queryByRole('link')).not.toBeInTheDocument()
+      expect(screen.getByText(/\[a\]\(\/\.\/%2F\/evil\.com\)/)).toBeInTheDocument()
+      expect(screen.getByText(/\[b\]\(\/%2E\/%2F\/evil\.com\)/)).toBeInTheDocument()
+      expect(screen.getByText(/\[c\]\(\/%2525252F\/evil\.com\)/)).toBeInTheDocument()
+      expect(screen.getByText(/\[d\]\(\/%09\/evil\.com\)/)).toBeInTheDocument()
+    })
+
     it('rejects mixed-case and percent-encoded scheme tricks', () => {
       render(<MarkdownView content={'Run [a](JaVaScRiPt:alert(1)) or [b](%6Aavascript:alert(1))'} />)
 
