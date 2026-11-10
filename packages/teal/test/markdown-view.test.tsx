@@ -106,6 +106,28 @@ describe('MarkdownView', () => {
       expect(screen.getByText(/\\\\attacker\.example/)).toBeInTheDocument()
     })
 
+    it('rejects same-origin paths whose first segment is an encoded slash or backslash', () => {
+      render(
+        <MarkdownView
+          content={'[a](/%2F/evil.com) [b](/%5c/evil.com) [c](/%252F/evil.com) [d](/%255C/evil.com)'}
+        />,
+      )
+
+      expect(screen.queryByRole('link')).not.toBeInTheDocument()
+      expect(screen.getByText(/\[a\]\(\/%2F\/evil\.com\)/)).toBeInTheDocument()
+      expect(screen.getByText(/\[b\]\(\/%5c\/evil\.com\)/)).toBeInTheDocument()
+      expect(screen.getByText(/\[c\]\(\/%252F\/evil\.com\)/)).toBeInTheDocument()
+      expect(screen.getByText(/\[d\]\(\/%255C\/evil\.com\)/)).toBeInTheDocument()
+    })
+
+    it('rejects absolute URLs with userinfo', () => {
+      render(<MarkdownView content={'[a](https://evil.com@good.com) [b](https://user:pass@good.com)'} />)
+
+      expect(screen.queryByRole('link')).not.toBeInTheDocument()
+      expect(screen.getByText(/\[a\]\(https:\/\/evil\.com@good\.com\)/)).toBeInTheDocument()
+      expect(screen.getByText(/\[b\]\(https:\/\/user:pass@good\.com\)/)).toBeInTheDocument()
+    })
+
     it('rejects mixed-case and percent-encoded scheme tricks', () => {
       render(<MarkdownView content={'Run [a](JaVaScRiPt:alert(1)) or [b](%6Aavascript:alert(1))'} />)
 

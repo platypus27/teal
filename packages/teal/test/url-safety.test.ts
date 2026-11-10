@@ -24,6 +24,7 @@ describe('isSafeUrl', () => {
   it.each([
     '/docs/page',
     '/',
+    '/docs%20guide/page',
     '#section',
     '#',
     './page',
@@ -70,6 +71,16 @@ describe('isSafeUrl', () => {
     '\uFEFFhttps://example.com',
     '\u00ADhttps://example.com',
     '\u200Bhttps://example.com',
+    '/%2F/evil.com',
+    '/%2f/evil.com',
+    '/%5C/evil.com',
+    '/%5c/evil.com',
+    '/%252F/evil.com',
+    '/%252f/evil.com',
+    '/%255C/evil.com',
+    '/%255c/evil.com',
+    'https://evil.com@good.com',
+    'https://user:pass@good.com',
     '',
   ])('rejects %j', (url) => {
     expect(isSafeUrl(url, undefined, base)).toBe(false)
