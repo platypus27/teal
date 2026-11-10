@@ -7,7 +7,10 @@ export interface MarkdownLinkOptions {
 
 // eslint-disable-next-line no-control-regex -- matching control characters is the point of this guard
 const unsafeCharacterPattern = /[\s\u0000-\u001F\u007F\u00AD\u200B-\u200D\u2028\u2029\uFEFF]/
+// eslint-disable-next-line no-control-regex -- matching control characters is the point of this guard
+const decodedControlPattern = /[\u0000-\u001F\u007F]/
 const numericEntityPattern = /&#(?:x[0-9a-f]+|\d+);/i
+const maxDecodeRounds = 10
 const fallbackBaseUrl = 'http://localhost/'
 const httpsScheme = 'https:'
 const mailtoScheme = 'mailto:'
@@ -52,25 +55,30 @@ function startsWithEncodedLetter(url: string): boolean {
 }
 
 /**
- * True when the first path segment of a reference is a percent-encoded slash
- * or backslash, single or multiply encoded: a server that decodes before
- * redirecting would turn `/%2F/evil.com` into `//evil.com`.
+ * True when the first path segment of a resolved pathname decodes to a slash,
+ * backslash, or ASCII control character: a server that decodes before
+ * redirecting would turn `/%2F/` into `//` and `/%09/` into a control-led
+ * path that URL parsers normalize to `//`. Dot segments are already resolved
+ * by `new URL`, so the pathname is what the server would see.
  */
-function firstSegmentDecodesToSlash(url: string): boolean {
-  const rest = url.startsWith('/') ? url.slice(1) : url
+function firstSegmentDecodesToDanger(pathname: string): boolean {
+  const rest = pathname.startsWith('/') ? pathname.slice(1) : pathname
   const end = rest.search(/[/?#]/)
   let segment = end === -1 ? rest : rest.slice(0, end)
-  let rounds = 0
-  while (rounds < 3 && !segment.startsWith('/') && !segment.startsWith('\\')) {
-    if (!segment.includes('%')) return false
+  if (!segment.includes('%')) return false
+  for (let rounds = 0; rounds < maxDecodeRounds; rounds += 1) {
+    let decoded: string
     try {
-      segment = decodeURIComponent(segment)
+      decoded = decodeURIComponent(segment)
     } catch {
       return false
     }
-    rounds += 1
+    if (decoded === segment) {
+      return decoded.startsWith('/') || decoded.startsWith('\\') || decodedControlPattern.test(decoded)
+    }
+    segment = decoded
   }
-  return segment.startsWith('/') || segment.startsWith('\\')
+  return true
 }
 
 function approve(href: string, options?: MarkdownLinkOptions): string | null {
@@ -82,17 +90,18 @@ function approve(href: string, options?: MarkdownLinkOptions): string | null {
  * content, or null when the URL must not become a link. Rejects
  * protocol-relative references, backslashes, whitespace, control and
  * zero-width characters, numeric HTML entities, first path segments that
- * decode to a slash or backslash, absolute URLs with userinfo, and
- * non-allowlisted schemes.
+ * decode to a slash, backslash, or control character, absolute URLs with
+ * userinfo, and non-allowlisted schemes.
  * Same-origin relative links pass through unchanged; `mailto:` links arrive
  * with `cc`, `bcc` and `body` stripped.
  */
 export function sanitizeHref(url: string, options?: MarkdownLinkOptions, base?: string): string | null {
   if (url === '') return null
   if (unsafeCharacterPattern.test(url) || url.includes('\\') || numericEntityPattern.test(url)) return null
-  if (url.startsWith('//') || startsWithEncodedLetter(url) || firstSegmentDecodesToSlash(url)) return null
+  if (url.startsWith('//') || startsWithEncodedLetter(url)) return null
   const resolved = resolveUrl(url, base)
   if (resolved === null || resolved.pathname.startsWith('//')) return null
+  if (firstSegmentDecodesToDanger(resolved.pathname)) return null
   if (resolved.username !== '' || resolved.password !== '') return null
   if (isExternalUrl(url, base)) {
     const schemeAllowed =
