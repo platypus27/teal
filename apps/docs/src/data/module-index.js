@@ -1348,7 +1348,7 @@ export const moduleIndexGroups = [
       {
         "id": "theme-provider",
         "name": "Theme Provider",
-        "description": "Owns the ecosystem-wide 3-way theme preference (light, dark, system), applies the dark class to the document root, and persists the choice to localStorage.",
+        "description": "Owns the ecosystem-wide theme preference (light, dark, system) and the active named palette, applies the dark class and data-palette attribute to the document root, and persists both choices to localStorage.",
         "apiNames": [
           "ThemeProvider"
         ]

@@ -4590,6 +4590,20 @@
         "name": "content",
         "required": true,
         "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Additional URL schemes allowed on links, e.g. `['http:', 'tel:']`. `https:`, same-origin paths, and `mailto:` (with cc/bcc/body stripped) are always allowed.",
+        "name": "allowedLinkSchemes",
+        "required": false,
+        "type": "readonly string[]"
+      },
+      {
+        "defaultValue": "",
+        "description": "Narrows which links render. Receives the href that would be rendered; return false to show the link as literal text.",
+        "name": "isAllowedHref",
+        "required": false,
+        "type": "(href: string) => boolean"
       }
     ]
   },
@@ -6495,9 +6509,16 @@
     ]
   },
   {
-    "description": "Lightweight markdown editor: the toolbar wraps the text area selection with\nmarkdown syntax, and an optional pane previews the rendered result. Editing\nstays in a plain textarea — there is no contentEditable surface.",
+    "description": "Lightweight markdown editor: the toolbar wraps the text area selection with\nmarkdown syntax, and an optional pane previews the rendered result. Editing\nstays in a plain textarea - there is no contentEditable surface.",
     "displayName": "RichTextEditor",
     "props": [
+      {
+        "defaultValue": "",
+        "description": "Additional URL schemes allowed on preview links, e.g. `['http:', 'tel:']`. `https:`, same-origin paths, and `mailto:` (with cc/bcc/body stripped) are always allowed.",
+        "name": "allowedLinkSchemes",
+        "required": false,
+        "type": "readonly string[]"
+      },
       {
         "defaultValue": "",
         "description": "Accessible name for the text area when there is no visible label.",
@@ -6511,6 +6532,13 @@
         "name": "defaultValue",
         "required": false,
         "type": "string"
+      },
+      {
+        "defaultValue": "",
+        "description": "Narrows which preview links render. Receives the href that would be rendered; return false to show the link as literal text.",
+        "name": "isAllowedHref",
+        "required": false,
+        "type": "(href: string) => boolean"
       },
       {
         "defaultValue": "",
@@ -7697,7 +7725,7 @@
     ]
   },
   {
-    "description": "Owns the ecosystem-wide theme preference: a 3-way light/dark/system choice,\npersisted to localStorage and applied as the 'dark' class on the document\nroot (the ADR 0004 theming contract). Wrap each application once, near the\nroot, and read the state with useTheme.",
+    "description": "Owns the ecosystem-wide theme preference: a 3-way light/dark/system choice,\npersisted to localStorage and applied as the 'dark' class on the document\nroot (the ADR 0004 theming contract), plus the active named palette (ADR\n0010), applied as the data-palette attribute that scopes generated palette\noverrides. Theme mode and palette stay separate: the default 'safari'\npalette removes the attribute entirely. Wrap each application once, near\nthe root, and read the state with useTheme.",
     "displayName": "ThemeProvider",
     "props": [
       {
@@ -7711,6 +7739,20 @@
         "defaultValue": "kryv:theme",
         "description": "localStorage key the choice is persisted under; defaults to 'kryv:theme'.",
         "name": "storageKey",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "safari",
+        "description": "Palette applied when nothing is persisted yet; defaults to 'safari', the attribute-free default.",
+        "name": "palette",
+        "required": false,
+        "type": "string"
+      },
+      {
+        "defaultValue": "kryv:palette",
+        "description": "localStorage key the palette is persisted under; defaults to 'kryv:palette'.",
+        "name": "paletteStorageKey",
         "required": false,
         "type": "string"
       }

@@ -159,4 +159,70 @@ describe('RichTextEditor', () => {
     await user.click(screen.getByRole('button', { name: 'Bold' }))
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Bold removed'))
   })
+
+  describe('preview link safety', () => {
+    it('renders safe markdown links as anchors with rel="noreferrer"', () => {
+      render(
+        <RichTextEditor
+          label="Body"
+          preview
+          defaultValue={'See the [docs](https://example.com/docs) and the [overview](#overview)'}
+        />,
+      )
+
+      const preview = screen.getByRole('region', { name: 'Preview' })
+      const docs = within(preview).getByRole('link', { name: 'docs' })
+      expect(docs).toHaveAttribute('href', 'https://example.com/docs')
+      expect(docs).toHaveAttribute('rel', 'noreferrer')
+      expect(within(preview).getByRole('link', { name: 'overview' })).not.toHaveAttribute('rel')
+    })
+
+    it('parses URLs with balanced parentheses in the preview', () => {
+      render(
+        <RichTextEditor label="Body" preview defaultValue={'Read the [wiki](https://en.wikipedia.org/wiki/Foo_(bar))'} />,
+      )
+
+      const preview = screen.getByRole('region', { name: 'Preview' })
+      expect(within(preview).getByRole('link', { name: 'wiki' })).toHaveAttribute(
+        'href',
+        'https://en.wikipedia.org/wiki/Foo_(bar)',
+      )
+    })
+
+    it('does not render anchors for unsafe link targets in the preview', () => {
+      render(
+        <RichTextEditor
+          label="Body"
+          preview
+          defaultValue={
+            '[a](javascript:alert(1)) [b](//attacker.example) [c](/\\attacker.example) [d](data:text/html;base64,PGI+) [e](vbscript:msgbox(1)) [f](&#x6a;avascript:alert(1))'
+          }
+        />,
+      )
+
+      const preview = screen.getByRole('region', { name: 'Preview' })
+      expect(within(preview).queryByRole('link')).not.toBeInTheDocument()
+      expect(within(preview).getByText(/javascript:alert/)).toBeInTheDocument()
+      expect(within(preview).getByText(/\/\/attacker\.example/)).toBeInTheDocument()
+      expect(within(preview).getByText(/\/\\attacker\.example/)).toBeInTheDocument()
+      expect(within(preview).getByText(/data:text\/html/)).toBeInTheDocument()
+      expect(within(preview).getByText(/vbscript:msgbox/)).toBeInTheDocument()
+      expect(within(preview).getByText(/&#x6a;avascript:alert/)).toBeInTheDocument()
+    })
+
+    it('forwards isAllowedHref to the shared renderer', () => {
+      render(
+        <RichTextEditor
+          label="Body"
+          preview
+          defaultValue={'[ok](https://allowed.example/x) [no](https://other.example/x)'}
+          isAllowedHref={(href) => href.startsWith('https://allowed.example/')}
+        />,
+      )
+
+      const preview = screen.getByRole('region', { name: 'Preview' })
+      expect(within(preview).getByRole('link', { name: 'ok' })).toBeInTheDocument()
+      expect(within(preview).queryByRole('link', { name: 'no' })).not.toBeInTheDocument()
+    })
+  })
 })

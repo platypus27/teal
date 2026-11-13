@@ -1,5 +1,11 @@
 # Architecture
 
+Home owns the current household browser shell and product sections; Teal
+provides the presentation and interaction modules consumed there. Teal does
+not own route authorization, session state, run truth, or app policy. See
+[ecosystem responsibility](../README.md#ecosystem-responsibility) for the
+foundation's tested 1.2.0 baseline and independent release boundary.
+
 Teal is an npm workspace with two packages: the published `@kryv/teal` design
 system and the documentation site that renders it.
 

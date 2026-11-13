@@ -1,5 +1,13 @@
 # Teal roadmap
 
+## Current integration baseline
+
+The package version in this checkout is 1.2.0. The locally accepted Home +
+Twinkle foundation uses that version and requires no Teal change. Palette
+work prepared for 1.3.0 remains a separate release action; preparation does not
+prove npm publication. Historical release summaries below retain their dates
+and scope. See [release policy](../README.md#release-policy).
+
 ## Released in 0.2.0
 
 - npm workspace and public `@kryv/teal` package on the npm registry

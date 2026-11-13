@@ -1,9 +1,14 @@
 import { forwardRef, useMemo, type HTMLAttributes, type ReactNode } from 'react'
 import { cn } from './cn'
+import { isExternalUrl, sanitizeHref, type MarkdownLinkOptions } from './url-safety'
 
 export interface MarkdownViewProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Markdown source. Supports headings, bold, italic, links, lists, inline code, fenced code blocks, blockquotes, and horizontal rules. Raw HTML is rendered as literal text. */
   content: string
+  /** Additional URL schemes allowed on links, e.g. `['http:', 'tel:']`. `https:`, same-origin paths, and `mailto:` (with cc/bcc/body stripped) are always allowed. */
+  allowedLinkSchemes?: readonly string[]
+  /** Narrows which links render. Receives the href that would be rendered; return false to show the link as literal text. */
+  isAllowedHref?: (href: string) => boolean
 }
 
 type Block =
@@ -102,14 +107,10 @@ function parseBlocks(content: string): Array<Block> {
   return blocks
 }
 
-function isSafeUrl(url: string): boolean {
-  return /^(https?:\/\/|mailto:|\/|#)/i.test(url)
-}
-
 const inlinePattern =
-  /(\*\*([^*]+)\*\*)|(__([^_]+)__)|(\*([^*]+)\*)|(_([^_]+)_)|(`([^`]+)`)|(\[([^\]]+)\]\(([^)\s]+)\))/g
+  /(\*\*([^*]+)\*\*)|(__([^_]+)__)|(\*([^*]+)\*)|(_([^_]+)_)|(`([^`]+)`)|(\[([^\]]+)\]\(((?:[^()\s]|\([^()]*\))+)\))/g
 
-function renderInline(text: string): Array<ReactNode> {
+function renderInline(text: string, options?: MarkdownLinkOptions): Array<ReactNode> {
   const nodes: Array<ReactNode> = []
   let last = 0
   let key = 0
@@ -138,16 +139,22 @@ function renderInline(text: string): Array<ReactNode> {
           {code}
         </code>,
       )
-    } else if (linkText !== undefined && linkUrl !== undefined && isSafeUrl(linkUrl)) {
-      nodes.push(
-        <a
-          key={key++}
-          href={linkUrl}
-          className="teal-u-font-medium teal-u-text-primary teal-u-underline teal-u-underline-offset-2"
-        >
-          {linkText}
-        </a>,
-      )
+    } else if (linkText !== undefined && linkUrl !== undefined) {
+      const href = sanitizeHref(linkUrl, options)
+      if (href !== null) {
+        nodes.push(
+          <a
+            key={key++}
+            href={href}
+            {...(isExternalUrl(linkUrl) ? { rel: 'noreferrer' } : {})}
+            className="teal-u-font-medium teal-u-text-primary teal-u-underline teal-u-underline-offset-2"
+          >
+            {linkText}
+          </a>,
+        )
+      } else {
+        nodes.push(raw)
+      }
     } else {
       nodes.push(raw)
     }
@@ -166,14 +173,14 @@ const headingClasses: Record<number, string> = {
   6: 'teal-u-text-xs teal-u-font-semibold teal-u-uppercase teal-u-tracking-wider',
 }
 
-function renderBlock(block: Block, index: number): ReactNode {
+function renderBlock(block: Block, index: number, options?: MarkdownLinkOptions): ReactNode {
   switch (block.type) {
     case 'heading': {
       const level = Math.min(6, Math.max(1, block.level))
       const Tag = `h${level}` as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
       return (
         <Tag key={index} className={cn('teal-u-font-headline teal-u-text-on-surface', headingClasses[level])}>
-          {renderInline(block.text)}
+          {renderInline(block.text, options)}
         </Tag>
       )
     }
@@ -192,14 +199,14 @@ function renderBlock(block: Block, index: number): ReactNode {
           key={index}
           className="teal-u-border-0 teal-u-border-s-4 teal-u-border-solid teal-u-border-primary/40 teal-u-ps-3 teal-u-italic teal-u-text-on-surface-variant"
         >
-          {renderInline(block.text)}
+          {renderInline(block.text, options)}
         </blockquote>
       )
     case 'ul':
       return (
         <ul key={index} className="teal-u-list-disc teal-u-ps-6">
           {block.items.map((item, itemIndex) => (
-            <li key={itemIndex}>{renderInline(item)}</li>
+            <li key={itemIndex}>{renderInline(item, options)}</li>
           ))}
         </ul>
       )
@@ -207,29 +214,41 @@ function renderBlock(block: Block, index: number): ReactNode {
       return (
         <ol key={index} className="teal-u-list-decimal teal-u-ps-6">
           {block.items.map((item, itemIndex) => (
-            <li key={itemIndex}>{renderInline(item)}</li>
+            <li key={itemIndex}>{renderInline(item, options)}</li>
           ))}
         </ol>
       )
     case 'hr':
       return <hr key={index} className="teal-u-border-0 teal-u-border-t teal-u-border-solid teal-u-border-[color:var(--teal-border-subtle)]" />
     case 'p':
-      return <p key={index}>{renderInline(block.text)}</p>
+      return <p key={index}>{renderInline(block.text, options)}</p>
   }
 }
 
+/** Renders markdown content into block nodes under the shared link policy; also powers the RichTextEditor preview. */
+export function renderMarkdown(content: string, options?: MarkdownLinkOptions): Array<ReactNode> {
+  return parseBlocks(content).map((block, index) => renderBlock(block, index, options))
+}
+
 export const MarkdownView = forwardRef<HTMLDivElement, MarkdownViewProps>(function MarkdownView(
-  { className, content, ...props },
+  { allowedLinkSchemes, className, content, isAllowedHref, ...props },
   ref,
 ) {
-  const blocks = useMemo(() => parseBlocks(content), [content])
+  const blocks = useMemo(
+    () =>
+      renderMarkdown(content, {
+        ...(allowedLinkSchemes !== undefined ? { allowedSchemes: allowedLinkSchemes } : {}),
+        ...(isAllowedHref !== undefined ? { isAllowedHref } : {}),
+      }),
+    [content, allowedLinkSchemes, isAllowedHref],
+  )
   return (
     <div
       ref={ref}
       className={cn('teal-u-flex teal-u-flex-col teal-u-gap-3 teal-u-text-sm teal-u-leading-relaxed teal-u-text-on-surface', className)}
       {...props}
     >
-      {blocks.map(renderBlock)}
+      {blocks}
     </div>
   )
 })
