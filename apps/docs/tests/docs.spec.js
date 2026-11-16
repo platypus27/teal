@@ -226,7 +226,9 @@ test('transient interactions match their approved state baselines', async ({ pag
   await page.reload()
   await waitForVisualReady(page, 'Visual QA')
   await page.getByRole('combobox', { name: 'Owner' }).click()
-  await expect(page.getByRole('listbox')).toHaveScreenshot('visual-qa-select-open.png')
+  // The listbox text rasterizes with a few pixels of cross-machine anti-aliasing
+  // variance, like the button baselines above; allow the same small tolerance.
+  await expect(page.getByRole('listbox')).toHaveScreenshot('visual-qa-select-open.png', { maxDiffPixels: 30 })
 
   await page.reload()
   await waitForVisualReady(page, 'Visual QA')
@@ -256,6 +258,121 @@ test('visual states expose focus, disabled, loading, invalid, and selected feedb
   await expect(page.getByRole('button', { name: 'Saving' })).toHaveAttribute('aria-busy', 'true')
   await expect(page.getByRole('textbox', { name: 'Description' })).toHaveAttribute('aria-invalid', 'true')
   await expect(page.getByRole('tab', { name: 'Overview' })).toHaveAttribute('aria-selected', 'true')
+})
+
+test('switch thumb stays inside its track in both states, sizes, and directions', async ({ page, browserName }) => {
+  test.skip(browserName !== 'chromium', 'Geometry assertions run on the stable Chromium baseline')
+  await page.goto('/modules/switch')
+  await waitForVisualReady(page, 'Switch', '#examples')
+
+  const measure = () =>
+    page.evaluate(() => {
+      const boxes = []
+      for (const root of document.querySelectorAll('.teal-switch-root')) {
+        const thumb = root.querySelector('.teal-switch-thumb')
+        if (!thumb) continue
+        const r = root.getBoundingClientRect()
+        const t = thumb.getBoundingClientRect()
+        boxes.push({
+          state: root.getAttribute('data-state'),
+          root: { left: r.left, right: r.right, top: r.top, bottom: r.bottom },
+          thumb: { left: t.left, right: t.right, top: t.top, bottom: t.bottom },
+        })
+      }
+      return boxes
+    })
+
+  for (const dir of ['ltr', 'rtl']) {
+    // Radix Tabs pins dir="ltr" on its content panels, so drive direction at
+    // the component root where a real RTL document would reach it.
+    await page.evaluate((value) => {
+      for (const root of document.querySelectorAll('.teal-switch-root')) {
+        if (value === 'rtl') root.setAttribute('dir', 'rtl')
+        else root.removeAttribute('dir')
+      }
+    }, dir)
+    await page.waitForTimeout(300)
+    const boxes = await measure()
+    expect(boxes.length).toBeGreaterThan(0)
+    for (const box of boxes) {
+      // The thumb must clear the track's 1px border on every side; a thumb
+      // sitting on the border box (the old overflow) fails here.
+      expect(box.thumb.left, `${dir} ${box.state} thumb left edge`).toBeGreaterThanOrEqual(box.root.left + 1 - 0.5)
+      expect(box.thumb.right, `${dir} ${box.state} thumb right edge`).toBeLessThanOrEqual(box.root.right - 1 + 0.5)
+      expect(box.thumb.top, `${dir} ${box.state} thumb top edge`).toBeGreaterThanOrEqual(box.root.top + 1 - 0.5)
+      expect(box.thumb.bottom, `${dir} ${box.state} thumb bottom edge`).toBeLessThanOrEqual(box.root.bottom - 1 + 0.5)
+
+      const thumbCenter = (box.thumb.left + box.thumb.right) / 2
+      const rootCenter = (box.root.left + box.root.right) / 2
+      if (box.state === 'checked') {
+        if (dir === 'ltr') expect(thumbCenter, `${dir} checked thumb sits toward the inline end`).toBeGreaterThan(rootCenter)
+        else expect(thumbCenter, `${dir} checked thumb sits toward the inline end`).toBeLessThan(rootCenter)
+      } else {
+        if (dir === 'ltr') expect(thumbCenter, `${dir} unchecked thumb sits at inline start`).toBeLessThan(rootCenter)
+        else expect(thumbCenter, `${dir} unchecked thumb sits at inline start`).toBeGreaterThan(rootCenter)
+      }
+    }
+  }
+  await page.evaluate(() => {
+    for (const root of document.querySelectorAll('.teal-switch-root')) root.removeAttribute('dir')
+  })
+})
+
+test('switch thumb travel respects reduced motion', async ({ page, browserName }) => {
+  test.skip(browserName !== 'chromium', 'Computed-style assertions run on the stable Chromium baseline')
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/modules/switch')
+  await waitForVisualReady(page, 'Switch', '#examples')
+
+  const transitions = await page.evaluate(() => {
+    const thumbs = [...document.querySelectorAll('.teal-switch-root .teal-switch-thumb')]
+    return thumbs.map((thumb) => {
+      const style = getComputedStyle(thumb)
+      return { property: style.transitionProperty, duration: style.transitionDuration }
+    })
+  })
+  expect(transitions.length).toBeGreaterThan(0)
+  for (const transition of transitions) {
+    expect(transition.property.split(', ')).toContain('none')
+  }
+})
+
+test('switch and button keep legible off and disabled states under forced colors', async ({ page, browserName }) => {
+  test.skip(browserName !== 'chromium', 'Forced-colors emulation is only supported in Chromium')
+  await page.emulateMedia({ forcedColors: 'active' })
+
+  const systemColor = (name) =>
+    page.evaluate((colorName) => {
+      const probe = document.createElement('div')
+      probe.style.color = colorName
+      document.documentElement.appendChild(probe)
+      const value = getComputedStyle(probe).color
+      probe.remove()
+      return value
+    }, name)
+
+  await page.goto('/modules/switch')
+  await waitForVisualReady(page, 'Switch', '#examples')
+
+  const offSwitch = page.getByRole('switch', { name: 'Weekly digest' })
+  const offThumbColor = await offSwitch.locator('.teal-switch-thumb').evaluate((element) => getComputedStyle(element).backgroundColor)
+  expect(offThumbColor).toBe(await systemColor('CanvasText'))
+
+  const onSwitch = page.getByRole('switch', {
+    name: 'Security notifications',
+    description: 'Receive alerts for high-risk account activity',
+  })
+  const onTrackColor = await onSwitch.evaluate((element) => getComputedStyle(element).backgroundColor)
+  expect(onTrackColor).toBe(await systemColor('Highlight'))
+  const onThumbColor = await onSwitch.locator('.teal-switch-thumb').evaluate((element) => getComputedStyle(element).backgroundColor)
+  expect(onThumbColor).toBe(await systemColor('HighlightText'))
+
+  await page.goto('/modules/button')
+  await waitForVisualReady(page, 'Button', '#examples')
+  const disabledButton = page.getByRole('button', { name: 'Publish' })
+  await expect(disabledButton).toBeDisabled()
+  const disabledColor = await disabledButton.evaluate((element) => getComputedStyle(element).color)
+  expect(disabledColor).toBe(await systemColor('GrayText'))
 })
 
 test('merged-away module routes redirect to their surviving page', async ({ page }) => {

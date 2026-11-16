@@ -104,16 +104,63 @@ async function verifyCompiledConsumer(consumer) {
       const packagedRules = Array.from(document.styleSheets)
         .flatMap((sheet) => Array.from(sheet.cssRules))
       return {
-        hasClass: className.includes('active:teal-u-scale-[0.98]'),
+        hasClass: className.includes('[&:not(:disabled)]:active:teal-u-scale-[0.98]'),
         hasRule: packagedRules.some(
           (rule) =>
-            rule.selectorText?.includes('.active\\:teal-u-scale-\\[0\\.98\\]:active') &&
+            rule.selectorText?.includes('.\\[\\&\\:not\\(\\:disabled\\)\\]\\:active\\:teal-u-scale-\\[0\\.98\\]:active:not(:disabled)') &&
             Number.parseFloat(rule.style?.getPropertyValue('--tw-scale-x')) === 0.98,
         ),
       }
     })
     if (!activeState.hasClass || !activeState.hasRule) {
       throw new Error(`Packed consumer button lost its active transform wiring: ${JSON.stringify(activeState)}`)
+    }
+
+    const disabledState = await page.locator('#consumer-disabled-button').evaluate((element) => {
+      const style = getComputedStyle(element)
+      return {
+        className: element.getAttribute('class') ?? '',
+        backgroundColor: style.backgroundColor,
+        color: style.color,
+        cursor: style.cursor,
+      }
+    })
+    const alphaOf = (value) => {
+      const slashForm = value.match(/\/\s*([\d.]+)\s*\)/)
+      if (slashForm) return Number(slashForm[1])
+      const channels = value.match(/rgba?\(([^)]+)\)/)?.[1].split(',').map((part) => Number(part.trim())) ?? []
+      return channels.length === 4 ? (channels[3] ?? 1) : 1
+    }
+    if (
+      !disabledState.className.includes('disabled:teal-u-bg-on-surface/[0.12]') ||
+      !disabledState.className.includes('disabled:teal-u-text-on-surface/[0.38]') ||
+      !disabledState.className.includes('disabled:teal-u-cursor-not-allowed') ||
+      alphaOf(disabledState.backgroundColor) > 0.2 ||
+      alphaOf(disabledState.color) > 0.5 ||
+      disabledState.cursor !== 'not-allowed'
+    ) {
+      throw new Error(`Packed consumer button lost its disabled state wiring: ${JSON.stringify(disabledState)}`)
+    }
+
+    // Links composed through Button asChild keep hover feedback (the
+    // :not(:disabled) guard matches anchors), while disabled buttons stay inert.
+    const idleAnchorBackground = await page.locator('#consumer-anchor').evaluate((element) => getComputedStyle(element).backgroundColor)
+    await page.locator('#consumer-anchor').hover()
+    await page.waitForTimeout(300)
+    const hoveredAnchorBackground = await page.locator('#consumer-anchor').evaluate((element) => getComputedStyle(element).backgroundColor)
+    if (idleAnchorBackground === hoveredAnchorBackground) {
+      throw new Error(`Anchor composed from Button lost its hover feedback: ${idleAnchorBackground}`)
+    }
+
+    const idleDisabledBackground = await page.locator('#consumer-disabled-button').evaluate((element) => getComputedStyle(element).backgroundColor)
+    await page.locator('#consumer-disabled-button').hover()
+    await page.waitForTimeout(300)
+    const hoveredDisabled = await page.locator('#consumer-disabled-button').evaluate((element) => {
+      const style = getComputedStyle(element)
+      return { backgroundColor: style.backgroundColor, cursor: style.cursor }
+    })
+    if (hoveredDisabled.backgroundColor !== idleDisabledBackground || hoveredDisabled.cursor !== 'not-allowed') {
+      throw new Error(`Disabled button responded to hover: ${JSON.stringify(hoveredDisabled)}`)
     }
 
     const invalidInput = page.locator('#consumer-input')
@@ -151,6 +198,10 @@ async function verifyCompiledConsumer(consumer) {
     await page.waitForFunction(() => document.querySelector('.dynamic-table')?.getAttribute('tabindex') === '0')
 
     await page.emulateMedia({ forcedColors: 'active' })
+    // teal-focus-ring transitions background-color, so the switch and button
+    // colors blend from their light values for ~200ms after the media change;
+    // let that settle before reading computed styles.
+    await page.waitForTimeout(300)
     await page.locator('#consumer-button').focus()
     const forcedFocus = await page.locator('#consumer-button').evaluate((element) => {
       const style = getComputedStyle(element)
@@ -158,6 +209,72 @@ async function verifyCompiledConsumer(consumer) {
     })
     if (forcedFocus.boxShadow !== 'none' || forcedFocus.outlineStyle === 'none' || forcedFocus.outlineWidth !== '2px') {
       throw new Error(`Forced-colors focus indicator is missing: ${JSON.stringify(forcedFocus)}`)
+    }
+
+    const systemColor = (name) =>
+      page.evaluate((colorName) => {
+        const probe = document.createElement('div')
+        probe.style.color = colorName
+        document.documentElement.appendChild(probe)
+        const value = getComputedStyle(probe).color
+        probe.remove()
+        return value
+      }, name)
+
+    const forcedStates = await page.evaluate(() => {
+      const read = (id, selector) => {
+        const element = document.getElementById(id)
+        const target = selector ? element.querySelector(selector) : element
+        const style = getComputedStyle(target)
+        return { backgroundColor: style.backgroundColor, color: style.color }
+      }
+      return {
+        onTrack: read('consumer-switch-on'),
+        onThumb: read('consumer-switch-on', '.teal-switch-thumb'),
+        offTrack: read('consumer-switch-off'),
+        offThumb: read('consumer-switch-off', '.teal-switch-thumb'),
+        disabledButton: read('consumer-disabled-button'),
+      }
+    })
+    const forcedExpected = {
+      onTrackBackground: await systemColor('Highlight'),
+      onThumbBackground: await systemColor('HighlightText'),
+      offTrackBackground: await systemColor('Canvas'),
+      offThumbBackground: await systemColor('CanvasText'),
+      disabledButtonColor: await systemColor('GrayText'),
+      disabledButtonBackground: await systemColor('Canvas'),
+    }
+    if (forcedStates.onTrack.backgroundColor !== forcedExpected.onTrackBackground) {
+      const diag = await page.evaluate(() => {
+        const root = document.getElementById('consumer-switch-on')
+        const rules = Array.from(document.styleSheets).flatMap((sheet) => {
+          try { return Array.from(sheet.cssRules) } catch { return [] }
+        })
+        const hc = rules.filter((rule) => rule.cssText?.includes('forced-colors'))
+        return {
+          className: root.getAttribute('class'),
+          state: root.getAttribute('data-state'),
+          direction: getComputedStyle(root).direction,
+          mediaRules: hc.map((rule) => rule.cssText.slice(0, 400)),
+          ruleCount: rules.length,
+        }
+      })
+      throw new Error(`Forced-colors checked switch track is not Highlight: ${JSON.stringify(forcedStates.onTrack)} diag=${JSON.stringify(diag)}`)
+    }
+    if (forcedStates.onThumb.backgroundColor !== forcedExpected.onThumbBackground) {
+      throw new Error(`Forced-colors checked switch thumb is not HighlightText: ${JSON.stringify(forcedStates.onThumb)}`)
+    }
+    if (forcedStates.offTrack.backgroundColor !== forcedExpected.offTrackBackground) {
+      throw new Error(`Forced-colors unchecked switch track is not Canvas: ${JSON.stringify(forcedStates.offTrack)}`)
+    }
+    if (forcedStates.offThumb.backgroundColor !== forcedExpected.offThumbBackground) {
+      throw new Error(`Forced-colors unchecked switch thumb is not CanvasText: ${JSON.stringify(forcedStates.offThumb)}`)
+    }
+    if (
+      forcedStates.disabledButton.color !== forcedExpected.disabledButtonColor ||
+      forcedStates.disabledButton.backgroundColor !== forcedExpected.disabledButtonBackground
+    ) {
+      throw new Error(`Forced-colors disabled button is not GrayText on Canvas: ${JSON.stringify(forcedStates.disabledButton)}`)
     }
   } finally {
     await browser?.close()
@@ -213,7 +330,7 @@ try {
     await writeFile(resolve(consumer, 'main.js'), `import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { useEffect, useState } from 'react'
-import { Alert, Avatar, Badge, Button, Card, Field, Input, Select, Table, Tabs } from '@kryv/teal'
+import { Alert, Avatar, Badge, Button, Card, Field, Input, Select, Switch, Table, Tabs } from '@kryv/teal'
 import '@kryv/teal/styles.css'
 import './app.css'
 
@@ -252,6 +369,11 @@ function Harness() {
     ),
     React.createElement(Tabs, { 'aria-label': 'Consumer tabs', defaultValue: 'overview', items: [{ value: 'overview', label: 'Overview', content: 'Overview' }] }),
     React.createElement(Button, { id: 'consumer-button', variant: 'secondary' }, 'Continue'),
+    React.createElement(Button, { id: 'consumer-disabled-button', disabled: true }, 'Unavailable'),
+    React.createElement(Button, { asChild: true, id: 'consumer-anchor' },
+      React.createElement('a', { href: '/anchor-target' }, 'Anchor action')),
+    React.createElement(Switch, { id: 'consumer-switch-on', 'aria-label': 'Enabled setting', defaultChecked: true }),
+    React.createElement(Switch, { id: 'consumer-switch-off', 'aria-label': 'Disabled setting', disabled: true }),
     override('hex', '#7c3aed'),
     override('rgb', 'rgb(20 100 200)'),
     override('hsl', 'hsl(140 60% 40%)'),

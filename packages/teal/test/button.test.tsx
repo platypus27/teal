@@ -42,6 +42,35 @@ describe('Button', () => {
   })
 })
 
+describe('Button disabled treatment', () => {
+  it.each(['primary', 'secondary', 'ghost', 'danger'] as const)(
+    'gives the %s variant an explicit disabled state in every theme',
+    (variant) => {
+      render(<Button variant={variant} disabled>Save</Button>)
+      const button = screen.getByRole('button', { name: 'Save' })
+
+      expect(button).toBeDisabled()
+      expect(button).toHaveClass(
+        'disabled:teal-u-bg-on-surface/[0.12]',
+        'disabled:teal-u-text-on-surface/[0.38]',
+        'disabled:teal-u-border-transparent',
+        'disabled:teal-u-cursor-not-allowed',
+      )
+      expect(button).not.toHaveClass('disabled:teal-u-opacity-55', 'disabled:teal-u-pointer-events-none')
+    },
+  )
+
+  it('keeps hover and press feedback off disabled buttons and onto link children', () => {
+    render(<Button>Save</Button>)
+    const button = screen.getByRole('button', { name: 'Save' })
+
+    expect(button).toHaveClass(
+      '[&:not(:disabled)]:hover:teal-u-bg-primary/90',
+      '[&:not(:disabled)]:active:teal-u-scale-[0.98]',
+    )
+  })
+})
+
 describe('IconButton', () => {
   it('uses its required label as the accessible name', () => {
     render(<IconButton label="Search">icon</IconButton>)
@@ -54,5 +83,17 @@ describe('IconButton', () => {
     expect(button).toBeDisabled()
     expect(button).toHaveAttribute('aria-busy', 'true')
     expect(button).not.toHaveTextContent('icon')
+  })
+
+  it('shows an explicit disabled pill instead of opacity alone', () => {
+    render(<IconButton label="Share" disabled>icon</IconButton>)
+    const button = screen.getByRole('button', { name: 'Share' })
+
+    expect(button).toHaveClass(
+      'disabled:teal-u-bg-on-surface/[0.12]',
+      'disabled:teal-u-text-on-surface/[0.38]',
+      'disabled:teal-u-cursor-not-allowed',
+    )
+    expect(button).not.toHaveClass('disabled:teal-u-opacity-55', 'disabled:teal-u-pointer-events-none')
   })
 })
