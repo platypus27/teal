@@ -55,6 +55,37 @@
     box-shadow: none;
     outline-color: Highlight;
   }
+
+  /* Without explicit colors the forced-colors mapping paints the switch track
+     and thumb the same Canvas color, erasing the knob. */
+  .teal-switch-root {
+    forced-color-adjust: none;
+    background-color: Canvas;
+    border-color: CanvasText;
+  }
+
+  .teal-switch-root[data-state='checked'] {
+    background-color: Highlight;
+    border-color: Highlight;
+  }
+
+  .teal-switch-thumb {
+    forced-color-adjust: none;
+    background-color: CanvasText;
+  }
+
+  .teal-switch-root[data-state='checked'] .teal-switch-thumb {
+    background-color: HighlightText;
+  }
+
+  /* A forced button background would make disabled buttons look enabled. */
+  .teal-button:disabled,
+  .teal-icon-button:disabled {
+    forced-color-adjust: none;
+    background-color: Canvas;
+    border-color: GrayText;
+    color: GrayText;
+  }
 }
 
 @keyframes teal-overlay-in {
