@@ -226,7 +226,9 @@ test('transient interactions match their approved state baselines', async ({ pag
   await page.reload()
   await waitForVisualReady(page, 'Visual QA')
   await page.getByRole('combobox', { name: 'Owner' }).click()
-  await expect(page.getByRole('listbox')).toHaveScreenshot('visual-qa-select-open.png')
+  // The listbox text rasterizes with a few pixels of cross-machine anti-aliasing
+  // variance, like the button baselines above; allow the same small tolerance.
+  await expect(page.getByRole('listbox')).toHaveScreenshot('visual-qa-select-open.png', { maxDiffPixels: 30 })
 
   await page.reload()
   await waitForVisualReady(page, 'Visual QA')
@@ -256,6 +258,62 @@ test('visual states expose focus, disabled, loading, invalid, and selected feedb
   await expect(page.getByRole('button', { name: 'Saving' })).toHaveAttribute('aria-busy', 'true')
   await expect(page.getByRole('textbox', { name: 'Description' })).toHaveAttribute('aria-invalid', 'true')
   await expect(page.getByRole('tab', { name: 'Overview' })).toHaveAttribute('aria-selected', 'true')
+})
+
+test('switch thumb stays inside its track in both states, sizes, and directions', async ({ page, browserName }) => {
+  test.skip(browserName !== 'chromium', 'Geometry assertions run on the stable Chromium baseline')
+  await page.goto('/modules/switch')
+  await waitForVisualReady(page, 'Switch', '#examples')
+
+  const measure = () =>
+    page.evaluate(() => {
+      const boxes = []
+      for (const root of document.querySelectorAll('.teal-switch-root')) {
+        const thumb = root.querySelector('.teal-switch-thumb')
+        if (!thumb) continue
+        const r = root.getBoundingClientRect()
+        const t = thumb.getBoundingClientRect()
+        boxes.push({
+          state: root.getAttribute('data-state'),
+          root: { left: r.left, right: r.right, top: r.top, bottom: r.bottom },
+          thumb: { left: t.left, right: t.right, top: t.top, bottom: t.bottom },
+        })
+      }
+      return boxes
+    })
+
+  for (const dir of ['ltr', 'rtl']) {
+    // Radix Tabs pins dir="ltr" on its content panels, so drive direction at
+    // the component root where a real RTL document would reach it.
+    await page.evaluate((value) => {
+      for (const root of document.querySelectorAll('.teal-switch-root')) {
+        if (value === 'rtl') root.setAttribute('dir', 'rtl')
+        else root.removeAttribute('dir')
+      }
+    }, dir)
+    await page.waitForTimeout(300)
+    const boxes = await measure()
+    expect(boxes.length).toBeGreaterThan(0)
+    for (const box of boxes) {
+      expect(box.thumb.left, `${dir} ${box.state} thumb left edge`).toBeGreaterThanOrEqual(box.root.left - 0.5)
+      expect(box.thumb.right, `${dir} ${box.state} thumb right edge`).toBeLessThanOrEqual(box.root.right + 0.5)
+      expect(box.thumb.top, `${dir} ${box.state} thumb top edge`).toBeGreaterThanOrEqual(box.root.top - 0.5)
+      expect(box.thumb.bottom, `${dir} ${box.state} thumb bottom edge`).toBeLessThanOrEqual(box.root.bottom + 0.5)
+
+      const thumbCenter = (box.thumb.left + box.thumb.right) / 2
+      const rootCenter = (box.root.left + box.root.right) / 2
+      if (box.state === 'checked') {
+        if (dir === 'ltr') expect(thumbCenter, `${dir} checked thumb sits toward the inline end`).toBeGreaterThan(rootCenter)
+        else expect(thumbCenter, `${dir} checked thumb sits toward the inline end`).toBeLessThan(rootCenter)
+      } else {
+        if (dir === 'ltr') expect(thumbCenter, `${dir} unchecked thumb sits at inline start`).toBeLessThan(rootCenter)
+        else expect(thumbCenter, `${dir} unchecked thumb sits at inline start`).toBeGreaterThan(rootCenter)
+      }
+    }
+  }
+  await page.evaluate(() => {
+    for (const root of document.querySelectorAll('.teal-switch-root')) root.removeAttribute('dir')
+  })
 })
 
 test('switch and button keep legible off and disabled states under forced colors', async ({ page, browserName }) => {

@@ -11,10 +11,14 @@ export default defineConfig({
     baseURL: 'http://127.0.0.1:4173',
     trace: 'retain-on-failure',
   },
+  // Build the teal package first so the bundled CSS always reflects the
+  // current package source, then build the docs app on top of it. Never reuse
+  // a running server: a reused preview may keep serving CSS from an older
+  // build, which silently invalidates the visual and computed-style tests.
   webServer: {
-    command: 'npm run build && npm run preview -- --host 127.0.0.1 --port 5173',
+    command: 'npm run build --workspace @kryv/teal && npm run build && npm run preview -- --host 127.0.0.1 --port 5173',
     url: 'http://127.0.0.1:5173',
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'], baseURL: 'http://127.0.0.1:5173' } },
