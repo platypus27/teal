@@ -104,16 +104,42 @@ async function verifyCompiledConsumer(consumer) {
       const packagedRules = Array.from(document.styleSheets)
         .flatMap((sheet) => Array.from(sheet.cssRules))
       return {
-        hasClass: className.includes('active:teal-u-scale-[0.98]'),
+        hasClass: className.includes('active:enabled:teal-u-scale-[0.98]'),
         hasRule: packagedRules.some(
           (rule) =>
-            rule.selectorText?.includes('.active\\:teal-u-scale-\\[0\\.98\\]:active') &&
+            rule.selectorText?.includes('.active\\:enabled\\:teal-u-scale-\\[0\\.98\\]:enabled:active') &&
             Number.parseFloat(rule.style?.getPropertyValue('--tw-scale-x')) === 0.98,
         ),
       }
     })
     if (!activeState.hasClass || !activeState.hasRule) {
       throw new Error(`Packed consumer button lost its active transform wiring: ${JSON.stringify(activeState)}`)
+    }
+
+    const disabledState = await page.locator('#consumer-disabled-button').evaluate((element) => {
+      const style = getComputedStyle(element)
+      return {
+        className: element.getAttribute('class') ?? '',
+        backgroundColor: style.backgroundColor,
+        color: style.color,
+        cursor: style.cursor,
+      }
+    })
+    const alphaOf = (value) => {
+      const slashForm = value.match(/\/\s*([\d.]+)\s*\)/)
+      if (slashForm) return Number(slashForm[1])
+      const channels = value.match(/rgba?\(([^)]+)\)/)?.[1].split(',').map((part) => Number(part.trim())) ?? []
+      return channels.length === 4 ? (channels[3] ?? 1) : 1
+    }
+    if (
+      !disabledState.className.includes('disabled:teal-u-bg-on-surface/[0.12]') ||
+      !disabledState.className.includes('disabled:teal-u-text-on-surface/[0.38]') ||
+      !disabledState.className.includes('disabled:teal-u-cursor-not-allowed') ||
+      alphaOf(disabledState.backgroundColor) > 0.2 ||
+      alphaOf(disabledState.color) > 0.5 ||
+      disabledState.cursor !== 'not-allowed'
+    ) {
+      throw new Error(`Packed consumer button lost its disabled state wiring: ${JSON.stringify(disabledState)}`)
     }
 
     const invalidInput = page.locator('#consumer-input')
@@ -252,6 +278,7 @@ function Harness() {
     ),
     React.createElement(Tabs, { 'aria-label': 'Consumer tabs', defaultValue: 'overview', items: [{ value: 'overview', label: 'Overview', content: 'Overview' }] }),
     React.createElement(Button, { id: 'consumer-button', variant: 'secondary' }, 'Continue'),
+    React.createElement(Button, { id: 'consumer-disabled-button', disabled: true }, 'Unavailable'),
     override('hex', '#7c3aed'),
     override('rgb', 'rgb(20 100 200)'),
     override('hsl', 'hsl(140 60% 40%)'),
