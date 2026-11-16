@@ -1,9 +1,12 @@
 import fc from 'fast-check'
 import { addDays, addMonths, dateKey, getMonthGrid, isSameDay, monthShortNames, weekdayNames } from '../src/date-utils'
 
+// 1970+ keeps the generated dates clear of historical one-off offset changes
+// (for example Asia/Singapore moved +6:55:25 to +7:00 at the 1905-09-01
+// midnight boundary), which make civil-day arithmetic non-invertible.
 const dateArbitrary = fc
   .record({
-    year: fc.integer({ min: 1900, max: 2100 }),
+    year: fc.integer({ min: 1970, max: 2100 }),
     month: fc.integer({ min: 0, max: 11 }),
     day: fc.integer({ min: 1, max: 28 }),
     hours: fc.integer({ min: 0, max: 23 }),
@@ -50,7 +53,7 @@ describe('date-utils properties', () => {
     fc.assert(
       fc.property(
         fc.record({
-          year: fc.integer({ min: 1900, max: 2100 }),
+          year: fc.integer({ min: 1970, max: 2100 }),
           month: fc.integer({ min: 0, max: 11 }),
         }).map(({ year, month }) => new Date(year, month, 1)),
         (month) => {
