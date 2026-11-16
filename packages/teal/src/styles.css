@@ -49,45 +49,6 @@
   outline-offset: 2px;
 }
 
-@media (forced-colors: active) {
-  .teal-focus-ring:focus-visible,
-  .teal-input-group:focus-within {
-    box-shadow: none;
-    outline-color: Highlight;
-  }
-
-  /* Without explicit colors the forced-colors mapping paints the switch track
-     and thumb the same Canvas color, erasing the knob. */
-  .teal-switch-root {
-    forced-color-adjust: none;
-    background-color: Canvas;
-    border-color: CanvasText;
-  }
-
-  .teal-switch-root[data-state='checked'] {
-    background-color: Highlight;
-    border-color: Highlight;
-  }
-
-  .teal-switch-thumb {
-    forced-color-adjust: none;
-    background-color: CanvasText;
-  }
-
-  .teal-switch-root[data-state='checked'] .teal-switch-thumb {
-    background-color: HighlightText;
-  }
-
-  /* A forced button background would make disabled buttons look enabled. */
-  .teal-button:disabled,
-  .teal-icon-button:disabled {
-    forced-color-adjust: none;
-    background-color: Canvas;
-    border-color: GrayText;
-    color: GrayText;
-  }
-}
-
 @keyframes teal-overlay-in {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -198,6 +159,25 @@
 .teal-switch-thumb[data-state='checked'],
 .teal-switch-thumb[data-state='unchecked'] {
   animation: teal-thumb-settle var(--teal-motion-fast) ease-out;
+}
+
+/* Thumb travel uses logical margins instead of translate utilities: flex
+   places the thumb at inline start and margin-inline-start pushes it toward
+   inline end, so movement follows the element's own direction even when a
+   wrapper pins direction (for example Radix Tabs content defaults to
+   dir="ltr"), survives CSS minifiers that rewrite :dir(), and needs no
+   Tailwind base variable defaults. */
+.teal-switch-root .teal-switch-thumb {
+  margin-inline-start: 1px;
+  transition: margin-inline-start var(--teal-motion-standard) ease-out;
+}
+
+.teal-switch-root[data-state='checked'] .teal-switch-thumb {
+  margin-inline-start: 21px;
+}
+
+.teal-switch-root.teal-u-h-5[data-state='checked'] .teal-switch-thumb {
+  margin-inline-start: 17px;
 }
 
 .teal-tab-panel {
@@ -358,5 +338,51 @@
 @media (prefers-reduced-motion: reduce) {
   .ecosystem-brand__reveal {
     transition: none;
+  }
+}
+
+/* Forced-colors (Windows high contrast) overrides. This block stays at the
+   end of the stylesheet: the compiled variant utilities (disabled:,
+   data-[state=checked]:, hover:) are emitted after any rule that precedes the
+   @tailwind directives' expansion point, so equal specificity would let them
+   win. The doubled and tripled classes below also raise specificity above the
+   state utilities directly. Without these rules the forced-colors mapping
+   paints the switch track and thumb the same Canvas color, erasing the knob,
+   and a forced button background would make disabled buttons look enabled. */
+@media (forced-colors: active) {
+  .teal-focus-ring:focus-visible,
+  .teal-input-group:focus-within {
+    box-shadow: none;
+    outline-color: Highlight;
+  }
+
+  /* !important keeps the system colors authoritative over the state and hover
+     utilities, whose selectors can reach higher specificity. */
+  .teal-switch-root.teal-switch-root.teal-switch-root {
+    forced-color-adjust: none;
+    background-color: Canvas !important;
+    border-color: CanvasText !important;
+  }
+
+  .teal-switch-root.teal-switch-root[data-state='checked'] {
+    background-color: Highlight !important;
+    border-color: Highlight !important;
+  }
+
+  .teal-switch-thumb.teal-switch-thumb {
+    forced-color-adjust: none;
+    background-color: CanvasText !important;
+  }
+
+  .teal-switch-root.teal-switch-root[data-state='checked'] .teal-switch-thumb {
+    background-color: HighlightText !important;
+  }
+
+  .teal-button.teal-button:disabled,
+  .teal-icon-button.teal-icon-button:disabled {
+    forced-color-adjust: none;
+    background-color: Canvas !important;
+    border-color: GrayText !important;
+    color: GrayText !important;
   }
 }

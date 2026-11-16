@@ -60,11 +60,14 @@ describe('Button disabled treatment', () => {
     },
   )
 
-  it('keeps hover and press feedback off disabled buttons', () => {
+  it('keeps hover and press feedback off disabled buttons and onto link children', () => {
     render(<Button>Save</Button>)
     const button = screen.getByRole('button', { name: 'Save' })
 
-    expect(button).toHaveClass('hover:enabled:teal-u-bg-primary/90', 'active:enabled:teal-u-scale-[0.98]')
+    expect(button).toHaveClass(
+      '[&:not(:disabled)]:hover:teal-u-bg-primary/90',
+      '[&:not(:disabled)]:active:teal-u-scale-[0.98]',
+    )
   })
 })
 

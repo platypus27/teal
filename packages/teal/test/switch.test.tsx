@@ -18,7 +18,7 @@ describe('Switch', () => {
     expect(thumb).not.toHaveClass('teal-u-bg-white')
   })
 
-  it('keeps the checked switch on a primary track with a white thumb', () => {
+  it('keeps the checked switch on a primary track with an on-primary thumb', () => {
     render(<Switch aria-label="Security notifications" defaultChecked />)
 
     const root = screen.getByRole('switch', { name: 'Security notifications' })
@@ -26,10 +26,10 @@ describe('Switch', () => {
     expect(root).toHaveClass('data-[state=checked]:teal-u-bg-primary', 'data-[state=checked]:teal-u-border-primary')
 
     const thumb = root.querySelector('.teal-switch-thumb')
-    expect(thumb).toHaveClass('data-[state=checked]:teal-u-bg-white', 'data-[state=checked]:teal-u-size-5')
+    expect(thumb).toHaveClass('data-[state=checked]:teal-u-bg-on-primary', 'data-[state=checked]:teal-u-size-5')
   })
 
-  it('positions the thumb for both states at each size', () => {
+  it('positions the thumb for both states at each size, including RTL', () => {
     render(
       <>
         <Switch aria-label="Medium" defaultChecked />
@@ -37,11 +37,12 @@ describe('Switch', () => {
       </>,
     )
 
-    const medium = screen.getByRole('switch', { name: 'Medium' }).querySelector('.teal-switch-thumb')
-    expect(medium).toHaveClass('teal-u-translate-x-0.5', 'data-[state=checked]:teal-u-translate-x-[26px]')
-
-    const small = screen.getByRole('switch', { name: 'Small' }).querySelector('.teal-switch-thumb')
-    expect(small).toHaveClass('teal-u-translate-x-0.5', 'data-[state=checked]:teal-u-translate-x-[18px]')
+    // Thumb travel lives in styles.css (:dir-aware transforms) so the component
+    // does not carry physical translate utilities.
+    for (const name of ['Medium', 'Small']) {
+      const thumb = screen.getByRole('switch', { name }).querySelector('.teal-switch-thumb')
+      expect(thumb?.className).not.toContain('translate-x-')
+    }
   })
 
   it('centers the thumb vertically inside the track', () => {
@@ -56,5 +57,14 @@ describe('Switch', () => {
     const root = screen.getByRole('switch', { name: 'Billing alerts' })
     expect(root).toBeDisabled()
     expect(root).toHaveClass('disabled:teal-u-cursor-not-allowed')
+  })
+
+  it('layers a subtle hover state over the track for enabled switches only', () => {
+    render(<Switch aria-label="Hoverable" />)
+
+    const root = screen.getByRole('switch', { name: 'Hoverable' })
+    expect(root).toHaveClass(
+      'hover:enabled:teal-u-bg-[color:color-mix(in_srgb,var(--teal-color-on-surface)_8%,var(--teal-color-surface-container-highest))]',
+    )
   })
 })
