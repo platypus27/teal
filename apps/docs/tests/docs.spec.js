@@ -258,6 +258,44 @@ test('visual states expose focus, disabled, loading, invalid, and selected feedb
   await expect(page.getByRole('tab', { name: 'Overview' })).toHaveAttribute('aria-selected', 'true')
 })
 
+test('switch and button keep legible off and disabled states under forced colors', async ({ page, browserName }) => {
+  test.skip(browserName !== 'chromium', 'Forced-colors emulation is only supported in Chromium')
+  await page.emulateMedia({ forcedColors: 'active' })
+
+  const systemColor = (name) =>
+    page.evaluate((colorName) => {
+      const probe = document.createElement('div')
+      probe.style.color = colorName
+      document.documentElement.appendChild(probe)
+      const value = getComputedStyle(probe).color
+      probe.remove()
+      return value
+    }, name)
+
+  await page.goto('/modules/switch')
+  await waitForVisualReady(page, 'Switch', '#examples')
+
+  const offSwitch = page.getByRole('switch', { name: 'Weekly digest' })
+  const offThumbColor = await offSwitch.locator('.teal-switch-thumb').evaluate((element) => getComputedStyle(element).backgroundColor)
+  expect(offThumbColor).toBe(await systemColor('CanvasText'))
+
+  const onSwitch = page.getByRole('switch', {
+    name: 'Security notifications',
+    description: 'Receive alerts for high-risk account activity',
+  })
+  const onTrackColor = await onSwitch.evaluate((element) => getComputedStyle(element).backgroundColor)
+  expect(onTrackColor).toBe(await systemColor('Highlight'))
+  const onThumbColor = await onSwitch.locator('.teal-switch-thumb').evaluate((element) => getComputedStyle(element).backgroundColor)
+  expect(onThumbColor).toBe(await systemColor('HighlightText'))
+
+  await page.goto('/modules/button')
+  await waitForVisualReady(page, 'Button', '#examples')
+  const disabledButton = page.getByRole('button', { name: 'Publish' })
+  await expect(disabledButton).toBeDisabled()
+  const disabledColor = await disabledButton.evaluate((element) => getComputedStyle(element).color)
+  expect(disabledColor).toBe(await systemColor('GrayText'))
+})
+
 test('merged-away module routes redirect to their surviving page', async ({ page }) => {
   await page.goto('/modules/speed-dial')
   await expect(page).toHaveURL(/\/modules\/floating-action-button$/)
