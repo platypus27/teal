@@ -16,8 +16,9 @@ export default defineConfig({
   // a running server: a reused preview may keep serving CSS from an older
   // build, which silently invalidates the visual and computed-style tests.
   webServer: {
-    command: 'npm run build --workspace @kryv/teal && npm run build && npm run preview -- --host 127.0.0.1 --port 5173',
+    command: 'npm run build --workspace @kryv/teal && npm run build && npm run preview -- --host 127.0.0.1 --port 5173 --strictPort',
     url: 'http://127.0.0.1:5173',
+    timeout: 180_000,
     reuseExistingServer: false,
   },
   projects: [

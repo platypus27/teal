@@ -295,10 +295,12 @@ test('switch thumb stays inside its track in both states, sizes, and directions'
     const boxes = await measure()
     expect(boxes.length).toBeGreaterThan(0)
     for (const box of boxes) {
-      expect(box.thumb.left, `${dir} ${box.state} thumb left edge`).toBeGreaterThanOrEqual(box.root.left - 0.5)
-      expect(box.thumb.right, `${dir} ${box.state} thumb right edge`).toBeLessThanOrEqual(box.root.right + 0.5)
-      expect(box.thumb.top, `${dir} ${box.state} thumb top edge`).toBeGreaterThanOrEqual(box.root.top - 0.5)
-      expect(box.thumb.bottom, `${dir} ${box.state} thumb bottom edge`).toBeLessThanOrEqual(box.root.bottom + 0.5)
+      // The thumb must clear the track's 1px border on every side; a thumb
+      // sitting on the border box (the old overflow) fails here.
+      expect(box.thumb.left, `${dir} ${box.state} thumb left edge`).toBeGreaterThanOrEqual(box.root.left + 1 - 0.5)
+      expect(box.thumb.right, `${dir} ${box.state} thumb right edge`).toBeLessThanOrEqual(box.root.right - 1 + 0.5)
+      expect(box.thumb.top, `${dir} ${box.state} thumb top edge`).toBeGreaterThanOrEqual(box.root.top + 1 - 0.5)
+      expect(box.thumb.bottom, `${dir} ${box.state} thumb bottom edge`).toBeLessThanOrEqual(box.root.bottom - 1 + 0.5)
 
       const thumbCenter = (box.thumb.left + box.thumb.right) / 2
       const rootCenter = (box.root.left + box.root.right) / 2
@@ -314,6 +316,25 @@ test('switch thumb stays inside its track in both states, sizes, and directions'
   await page.evaluate(() => {
     for (const root of document.querySelectorAll('.teal-switch-root')) root.removeAttribute('dir')
   })
+})
+
+test('switch thumb travel respects reduced motion', async ({ page, browserName }) => {
+  test.skip(browserName !== 'chromium', 'Computed-style assertions run on the stable Chromium baseline')
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/modules/switch')
+  await waitForVisualReady(page, 'Switch', '#examples')
+
+  const transitions = await page.evaluate(() => {
+    const thumbs = [...document.querySelectorAll('.teal-switch-root .teal-switch-thumb')]
+    return thumbs.map((thumb) => {
+      const style = getComputedStyle(thumb)
+      return { property: style.transitionProperty, duration: style.transitionDuration }
+    })
+  })
+  expect(transitions.length).toBeGreaterThan(0)
+  for (const transition of transitions) {
+    expect(transition.property.split(', ')).toContain('none')
+  }
 })
 
 test('switch and button keep legible off and disabled states under forced colors', async ({ page, browserName }) => {
