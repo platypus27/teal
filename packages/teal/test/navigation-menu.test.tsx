@@ -47,6 +47,10 @@ describe('NavigationMenu', () => {
     await user.click(trigger)
     expect(await screen.findByRole('link', { name: 'Analytics suite' })).toBeInTheDocument()
 
+    // Let the first-interaction hover-intent timer fire while open so it
+    // cannot clobber the click close under a starved event loop.
+    await new Promise((resolve) => setTimeout(resolve, 300))
+
     await user.click(trigger)
     await waitFor(() => expect(screen.queryByRole('link', { name: 'Analytics suite' })).not.toBeInTheDocument())
   })
@@ -79,6 +83,12 @@ describe('NavigationMenu mega panels', () => {
     await user.click(screen.getByRole('button', { name: 'Products' }))
     expect(await screen.findByRole('link', { name: 'Analytics suite' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Hosting' })).toBeInTheDocument()
+
+    // The first pointer interaction arms Radix's 200ms hover-intent open
+    // timer. If the Escape close is still queued when that timer fires under
+    // a starved event loop, the timer's setValue wins and the panel reopens,
+    // so let the timer fire while the panel is open before dismissing it.
+    await new Promise((resolve) => setTimeout(resolve, 300))
 
     await user.keyboard('{Escape}')
     await waitFor(() => expect(screen.queryByRole('link', { name: 'Analytics suite' })).toBeNull())
