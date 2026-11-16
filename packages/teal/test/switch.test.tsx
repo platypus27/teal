@@ -37,10 +37,12 @@ describe('Switch', () => {
       </>,
     )
 
-    // Thumb travel lives in styles.css (:dir-aware transforms) so the component
-    // does not carry physical translate utilities.
-    for (const name of ['Medium', 'Small']) {
-      const thumb = screen.getByRole('switch', { name }).querySelector('.teal-switch-thumb')
+    // Thumb travel lives in styles.css as logical margins, so the component
+    // carries no physical translate utilities and sizes select via data-size.
+    for (const [name, size] of [['Medium', 'md'], ['Small', 'sm']] as const) {
+      const root = screen.getByRole('switch', { name })
+      expect(root).toHaveAttribute('data-size', size)
+      const thumb = root.querySelector('.teal-switch-thumb')
       expect(thumb?.className).not.toContain('translate-x-')
     }
   })

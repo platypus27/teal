@@ -22,14 +22,20 @@ high-contrast theme; Windows forced-colors mode is the high-contrast story.
 - The checked thumb uses the `on-primary` token (white in light, black in
   dark) so it keeps at least 3:1 contrast against the primary track in both
   themes; a white thumb on the dark primary measured 1.86:1.
-- Thumb geometry derives from the track's content box: a 2px inset on every
-  edge once the track flex-centers the thumb (1px unchecked margin, 21px
-  checked at `md`, 17px at `sm`). Thumb travel uses logical margins, not
-  translate utilities: flex places the thumb at inline start and
-  `margin-inline-start` pushes it toward inline end, so movement follows the
-  element's own direction even when a wrapper pins `direction` (for example
-  Radix Tabs content defaults to `dir="ltr"`), survives CSS minifiers that
-  rewrite `:dir()`, and needs no Tailwind base variable defaults.
+- Thumb geometry is symmetric at a 2px inset from the track border on every
+  side (md checked: a 20px thumb in a 24px track; all sm positions). The md
+  unchecked thumb stays at its smaller 16px size, which the track
+  flex-centering insets vertically at 4px, so its start inset is 4px to
+  match. Content-relative margins: md 3px unchecked and 21px checked, sm 1px
+  and 17px, sizes selected by a `data-size` attribute on the root. Thumb
+  travel uses logical margins, not translate utilities: flex places the
+  thumb at inline start and `margin-inline-start` pushes it toward inline
+  end, so movement follows the element's own direction even when a wrapper
+  pins `direction` (for example Radix Tabs content defaults to `dir="ltr"`),
+  survives CSS minifiers that rewrite `:dir()`, and needs no Tailwind base
+  variable defaults. Under `prefers-reduced-motion` the travel transition is
+  silenced with `transition: none !important`, since the component-level
+  motion-reduce utility cannot outrank the travel rule.
 - Hover feedback is a Material 3 state layer: `on-surface` at 8% over the
   unchecked track and `on-primary` at 8% over the checked track, applied to
   enabled switches only.
@@ -60,4 +66,5 @@ press scale) depend on the `--tw-*` custom-property defaults that only
 Tailwind's base layer emits. Consumers that skip `@tailwind base` (for example
 Home, which imports only `@kryv/teal/styles.css` plus `@tailwind utilities`)
 get no press scale; the switch thumb is unaffected because its travel uses
-plain transforms. Recommended fix: ship the defaults in `@kryv/teal/base.css`.
+logical margins rather than transform utilities. Recommended fix: ship the
+defaults in `@kryv/teal/base.css`.

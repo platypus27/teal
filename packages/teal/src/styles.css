@@ -166,17 +166,24 @@
    inline end, so movement follows the element's own direction even when a
    wrapper pins direction (for example Radix Tabs content defaults to
    dir="ltr"), survives CSS minifiers that rewrite :dir(), and needs no
-   Tailwind base variable defaults. */
+   Tailwind base variable defaults. The md off thumb is 16px in a 24px track,
+   so its 4px vertical inset is matched with a 4px start inset (3px from the
+   content box); every other position is symmetric at 2px. Sizes select via
+   the data-size attribute. */
 .teal-switch-root .teal-switch-thumb {
-  margin-inline-start: 1px;
+  margin-inline-start: 3px;
   transition: margin-inline-start var(--teal-motion-standard) ease-out;
+}
+
+.teal-switch-root[data-size='sm'] .teal-switch-thumb {
+  margin-inline-start: 1px;
 }
 
 .teal-switch-root[data-state='checked'] .teal-switch-thumb {
   margin-inline-start: 21px;
 }
 
-.teal-switch-root.teal-u-h-5[data-state='checked'] .teal-switch-thumb {
+.teal-switch-root[data-size='sm'][data-state='checked'] .teal-switch-thumb {
   margin-inline-start: 17px;
 }
 
@@ -217,6 +224,12 @@
   .teal-progress-spin,
   .teal-progress-dash {
     animation: none !important;
+  }
+
+  /* The thumb travel transition in styles.css outranks the motion-reduce
+     utility (0,2,0 vs 0,1,0), so it must be silenced here explicitly. */
+  .teal-switch-thumb {
+    transition: none !important;
   }
 }
 

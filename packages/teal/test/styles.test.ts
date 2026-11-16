@@ -19,8 +19,9 @@ describe('styles.css forced-colors support', () => {
   })
 
   it('travels the switch thumb inside the track in both directions and sizes', () => {
+    expect(css).toContain('.teal-switch-root .teal-switch-thumb {\n  margin-inline-start: 3px;\n  transition: margin-inline-start var(--teal-motion-standard) ease-out;\n}')
+    expect(css).toContain('.teal-switch-root[data-size=\'sm\'] .teal-switch-thumb {\n  margin-inline-start: 1px;\n}')
     expect(css).toContain('.teal-switch-root[data-state=\'checked\'] .teal-switch-thumb {\n  margin-inline-start: 21px;\n}')
-    expect(css).toContain('.teal-switch-root.teal-u-h-5[data-state=\'checked\'] .teal-switch-thumb {\n  margin-inline-start: 17px;\n}')
-    expect(css).toContain('.teal-switch-root .teal-switch-thumb {\n  margin-inline-start: 1px;\n  transition: margin-inline-start var(--teal-motion-standard) ease-out;\n}')
+    expect(css).toContain('.teal-switch-root[data-size=\'sm\'][data-state=\'checked\'] .teal-switch-thumb {\n  margin-inline-start: 17px;\n}')
   })
 })

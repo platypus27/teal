@@ -46,6 +46,7 @@ export const Switch = forwardRef<React.ComponentRef<typeof SwitchPrimitive.Root>
       <SwitchPrimitive.Root
         ref={ref}
         id={semantics.controlId}
+        data-size={size}
         aria-describedby={mergeDescriptionIds(describedBy, semantics.descriptionId, semantics.errorId)}
         aria-invalid={invalid ?? (semantics.invalid || undefined)}
         required={semantics.required}
