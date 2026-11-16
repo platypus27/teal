@@ -17,6 +17,7 @@ engineering it.
 | [0008](0008-ecosystem-rail-brand-defaults.md) | 2026-10-03 | Home's production rail becomes the EcosystemShell default |
 | [0009](0009-voxel-motifs-as-teal-module.md) | 2026-10-13 | Voxel motifs as a teal module |
 | [0010](0010-named-palettes-data-palette.md) | 2026-10-23 | Named palettes layer over the theme via data-palette |
+| [0011](0011-switch-off-and-disabled-treatment.md) | 2026-11-17 | Switch off-state and disabled controls follow Material 3 with forced-colors system colors |
 
 ## Adding a new ADR
 
