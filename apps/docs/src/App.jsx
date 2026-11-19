@@ -21,6 +21,9 @@ const VisualQaPage = lazy(() =>
 const ShowcasePage = lazy(() =>
   import('./pages/ShowcasePage.jsx').then((module) => ({ default: module.ShowcasePage })),
 )
+const OverlayLayeringPage = lazy(() =>
+  import('./pages/OverlayLayeringPage.jsx').then((module) => ({ default: module.OverlayLayeringPage })),
+)
 
 function PageLoader() {
   return (
@@ -46,6 +49,14 @@ export default function App() {
         element={
           <Suspense fallback={<PageLoader />}>
             <ShowcasePage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="overlay-layering"
+        element={
+          <Suspense fallback={<PageLoader />}>
+            <OverlayLayeringPage />
           </Suspense>
         }
       />
