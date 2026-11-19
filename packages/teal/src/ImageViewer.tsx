@@ -127,7 +127,7 @@ export const ImageViewer = forwardRef<HTMLDivElement, ImageViewerProps>(function
         onPointerUp={handlePointerEnd}
         onPointerCancel={handlePointerEnd}
         className={cn(
-          'teal-focus-ring teal-u-flex teal-u-min-h-64 teal-u-flex-1 teal-u-items-center teal-u-justify-center teal-u-overflow-hidden teal-u-outline-none',
+          'teal-focus-ring teal-u-flex teal-u-min-h-64 teal-u-flex-1 teal-u-items-center teal-u-justify-center teal-u-overflow-hidden teal-u-outline-hidden',
           pannable && (dragging ? 'teal-u-cursor-grabbing' : 'teal-u-cursor-grab'),
         )}
         style={{ touchAction: pannable ? 'none' : 'auto' }}

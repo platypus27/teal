@@ -43,7 +43,7 @@
     "./base.css": "./dist/base.css",
     "./tokens.css": "./dist/tokens.css",
     "./tailwind-preset": "./dist/tailwind.preset.js",
-      "./tokens.json": "./src/tokens.json",
+    "./tokens.json": "./src/tokens.json",
     "./package.json": "./package.json"
   },
   "publishConfig": {
@@ -103,6 +103,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitest/coverage-v8": "^5.0.5",
+    "@tailwindcss/cli": "^4.3.3",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "fast-check": "^4.10.2",
@@ -112,7 +113,7 @@
     "publint": "^0.3.25",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "tailwindcss": "^3.4.19",
+    "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.72.2",
     "vite": "^8.3.7",

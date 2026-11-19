@@ -1,0 +1,5 @@
+---
+'@kryv/teal': patch
+---
+
+Migrate the package's internal utility build from Tailwind 3 to Tailwind 4. The compiled `styles.css`, every emitted `teal-u-*` selector, and all visual output are unchanged — this is a build-tooling migration only, verified selector-for-selector against the v3 build and by the full visual baseline suite. Four source classes moved to their v4 names with identical rendering (`shadow-sm` to `shadow-xs`, `outline-none` to `outline-hidden`, `backdrop-blur-sm` to `backdrop-blur-xs`, `transform-none` to `scale-none`). The exported `tailwind.preset.js` intentionally keeps its v3 shape, so consumers on Tailwind 3 (Home, Trict, Yang, kryv-landingpage) keep working without any changes; the docs app also stays on Tailwind 3 as a real consumer of the preset. Consumers on Tailwind 4 can keep using the preset via the `@config` compatibility directive. The dist size budget for styles.css moved from 75000 to 80000 bytes to cover v4's variable-initializer plumbing at the same selector vocabulary (scripts/compare-v3-reference.mjs proves the vocabulary unchanged).

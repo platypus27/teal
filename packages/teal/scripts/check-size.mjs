@@ -8,7 +8,11 @@ import process from 'node:process'
 const BUDGETS = {
   totalJs: 560_000,
   largestModule: 18_000,
-  stylesCss: 75_000,
+  // Tailwind v4's compiled plumbing (universal --tw-* initializer, grouped
+  // motion-reduce media wrappers, :is(:where(...)) group selectors) runs
+  // heavier than v3's per-rule variable defaults at the same selector
+  // vocabulary, which scripts/compare-v3-reference.mjs proves unchanged.
+  stylesCss: 80_000,
 }
 
 const distDir = new URL('../dist', import.meta.url).pathname

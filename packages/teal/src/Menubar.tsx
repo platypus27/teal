@@ -29,7 +29,7 @@ export const Menubar = forwardRef<HTMLDivElement, MenubarProps>(function Menubar
     >
       {menus.map((menu, index) => (
         <MenubarPrimitive.Menu key={index} value={`menu-${index}`}>
-          <MenubarPrimitive.Trigger className="teal-focus-ring teal-u-flex teal-u-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-rounded-lg teal-u-px-3 teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface-variant teal-u-outline-none hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface data-[state=open]:teal-u-bg-surface-container-high data-[state=open]:teal-u-text-on-surface data-[highlighted]:teal-u-bg-surface-container-high data-[highlighted]:teal-u-text-on-surface">
+          <MenubarPrimitive.Trigger className="teal-focus-ring teal-u-flex teal-u-h-9 teal-u-cursor-default teal-u-select-none teal-u-items-center teal-u-rounded-lg teal-u-px-3 teal-u-text-sm teal-u-font-semibold teal-u-text-on-surface-variant teal-u-outline-hidden hover:teal-u-bg-surface-container-high hover:teal-u-text-on-surface data-[state=open]:teal-u-bg-surface-container-high data-[state=open]:teal-u-text-on-surface data-[highlighted]:teal-u-bg-surface-container-high data-[highlighted]:teal-u-text-on-surface">
             {menu.label}
           </MenubarPrimitive.Trigger>
           <MenubarPrimitive.Portal>

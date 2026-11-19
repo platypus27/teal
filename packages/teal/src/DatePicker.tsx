@@ -672,7 +672,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
 						side="bottom"
 						sideOffset={6}
 						onOpenAutoFocus={(event) => event.preventDefault()}
-						className="teal-popper-content teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-border teal-u-bg-surface teal-u-p-3 teal-u-text-on-surface teal-u-outline-none"
+						className="teal-popper-content teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-border teal-u-bg-surface teal-u-p-3 teal-u-text-on-surface teal-u-outline-hidden"
 					>
 						{mode === "month" ? (
 							<MonthModePanel

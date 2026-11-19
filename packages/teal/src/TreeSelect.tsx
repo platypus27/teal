@@ -446,7 +446,7 @@ export const TreeSelect = forwardRef<HTMLDivElement, TreeSelectProps>(function T
             side="bottom"
             sideOffset={6}
             className={cn(
-              'teal-popper-content teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-border teal-u-bg-surface teal-u-p-1 teal-u-text-on-surface teal-u-outline-none',
+              'teal-popper-content teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-border teal-u-bg-surface teal-u-p-1 teal-u-text-on-surface teal-u-outline-hidden',
               display === 'tree' && 'teal-u-w-[var(--radix-popover-trigger-width)]',
             )}
           >

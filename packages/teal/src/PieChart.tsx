@@ -128,7 +128,7 @@ export const PieChart = forwardRef<HTMLDivElement, PieChartProps>(function PieCh
               aria-label={`${segment.datum.name}: ${segment.datum.value} (${percent}%)`}
               stroke={focusedIndex === segmentIndex ? 'var(--teal-color-on-surface)' : 'none'}
               strokeWidth={2}
-              className="teal-u-outline-none"
+              className="teal-u-outline-hidden"
               onKeyDown={(event) => handleKeyDown(event, segmentIndex)}
               onFocus={() => setFocusedIndex(segmentIndex)}
               onBlur={() => setFocusedIndex(null)}

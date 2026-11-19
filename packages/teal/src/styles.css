@@ -1,7 +1,10 @@
-@import './tokens.css';
-
-@tailwind components;
-@tailwind utilities;
+/* Teal's utility layer is compiled by Tailwind v4 from scripts/build.mjs,
+   which assembles an entry (src/tw-theme.css + this file) and restores the
+   v3 selector vocabulary post-build; see scripts/prefix-utilities.mjs.
+   Keep the components layer below the utilities layer so component classes
+   lose to utilities, matching the v3 cascade. The unlayered custom CSS
+   below beats all layered utilities, as the individual blocks document. */
+@layer components, utilities;
 
 @layer components {
   .teal-focus-ring {

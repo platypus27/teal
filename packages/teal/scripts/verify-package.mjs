@@ -103,12 +103,21 @@ async function verifyCompiledConsumer(consumer) {
       const className = element.getAttribute('class') ?? ''
       const packagedRules = Array.from(document.styleSheets)
         .flatMap((sheet) => Array.from(sheet.cssRules))
+        .flatMap(function collect(rule) {
+          // Utilities live in @layer utilities in the Tailwind v4 build, so
+          // traverse into grouping rules (layers, media, supports).
+          return [rule, ...Array.from(rule.cssRules ?? []).flatMap(collect)]
+        })
       return {
         hasClass: className.includes('[&:not(:disabled)]:active:teal-u-scale-[0.98]'),
         hasRule: packagedRules.some(
           (rule) =>
-            rule.selectorText?.includes('.\\[\\&\\:not\\(\\:disabled\\)\\]\\:active\\:teal-u-scale-\\[0\\.98\\]:active:not(:disabled)') &&
-            Number.parseFloat(rule.style?.getPropertyValue('--tw-scale-x')) === 0.98,
+            rule.selectorText?.includes('.\\[\\&\\:not\\(\\:disabled\\)\\]\\:active\\:teal-u-scale-\\[0\\.98\\]:not(:disabled):active') &&
+            // Tailwind v4 drives scale through the individual `scale`
+            // property instead of the v3 --tw-scale-* transform variables;
+            // the rendered result is the same shrink.
+            (Number.parseFloat(rule.style?.getPropertyValue('--tw-scale-x')) === 0.98 ||
+              Number.parseFloat(rule.style?.getPropertyValue('scale')) === 0.98),
         ),
       }
     })
@@ -249,6 +258,8 @@ async function verifyCompiledConsumer(consumer) {
         const root = document.getElementById('consumer-switch-on')
         const rules = Array.from(document.styleSheets).flatMap((sheet) => {
           try { return Array.from(sheet.cssRules) } catch { return [] }
+        }).flatMap(function collect(rule) {
+          return [rule, ...Array.from(rule.cssRules ?? []).flatMap(collect)]
         })
         const hc = rules.filter((rule) => rule.cssText?.includes('forced-colors'))
         return {
