@@ -3641,7 +3641,7 @@ export function SelectDemo({ exampleIndex = 0 }) {
 | `placeholder` | `ReactNode` | `Select an option` | Text shown when no value is selected. |
 | `size` | `enum` | - | Size of the trigger button. |
 | `defaultValue` | `string` | - | - |
-| `onValueChange` | `(value: string) => void` | - | - |
+| `onValueChange` | `((value: string) => void)` | - | - |
 | `value` | `string` | - | - |
 
 ## Accessibility
