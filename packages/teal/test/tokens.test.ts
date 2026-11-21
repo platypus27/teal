@@ -222,3 +222,21 @@ describe('visual system tokens', () => {
     expect(css).toMatch(new RegExp(`${token}:\\s*[^;]+;`))
   })
 })
+
+describe('layering tokens', () => {
+  const css = readFileSync(resolve(import.meta.dirname, '../src/tokens.css'), 'utf8')
+  const root = css.match(/:root\s*{([\s\S]*?)\n}/)?.[1] ?? ''
+
+  function zIndex(name: string) {
+    const match = new RegExp(`--${name}:\\s*(\\d+)`).exec(root)
+    expect(match, `--${name} is published`).not.toBeNull()
+    return Number(match?.[1])
+  }
+
+  it('stacks popup layers above the dialog surface so menus opened inside a dialog stay interactive', () => {
+    expect(zIndex('teal-z-dialog')).toBeGreaterThan(zIndex('teal-z-overlay'))
+    expect(zIndex('teal-z-popover')).toBeGreaterThan(zIndex('teal-z-dialog'))
+    expect(zIndex('teal-z-toast')).toBeGreaterThan(zIndex('teal-z-popover'))
+    expect(zIndex('teal-z-tooltip')).toBeGreaterThan(zIndex('teal-z-toast'))
+  })
+})

@@ -18,6 +18,7 @@ engineering it.
 | [0009](0009-voxel-motifs-as-teal-module.md) | 2026-10-13 | Voxel motifs as a teal module |
 | [0010](0010-named-palettes-data-palette.md) | 2026-10-23 | Named palettes layer over the theme via data-palette |
 | [0011](0011-switch-off-and-disabled-treatment.md) | 2026-11-17 | Switch off-state and disabled controls follow Material 3 with forced-colors system colors |
+| [0012](0012-docs-per-run-ports.md) | 2026-11-20 | Docs browser suite and dev server reserve ports per run |
 
 ## Adding a new ADR
 

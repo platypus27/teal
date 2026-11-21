@@ -130,7 +130,11 @@ export const sharedTokens = {
   '--teal-motion-med': '320ms',
   '--teal-motion-slow': '600ms',
   '--teal-motion-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
-  '--teal-z-popover': '40',
+  /* Popups stay above the dialog surface: a menu, select, or combobox opened
+     from inside a dialog is portaled to the body, so a lower layer would put
+     it under the dialog and make its items unclickable. Toasts stay above
+     popups; tooltips stay topmost. */
+  '--teal-z-popover': '52',
   '--teal-z-overlay': '50',
   '--teal-z-dialog': '51',
   '--teal-z-toast': '60',
