@@ -7,7 +7,7 @@ workspace. For the contribution workflow and change bar, see
 
 ## Requirements
 
-- Node `>=24 <25` and npm `>=11.5.1` (enforced by `engines` and
+- Node `>=24.15.0 <25` and npm `>=11.5.1` (enforced by `engines` and
   `.node-version`).
 
 ## Local setup

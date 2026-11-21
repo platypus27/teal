@@ -15,7 +15,7 @@ artifacts. See README's ecosystem responsibility and release policy.
 
 ## Stack
 
-- npm workspaces on Node 24 (`engines` pins `>=24 <25`; npm >= 11.5.1)
+- npm workspaces on Node 24 (`engines` pins `>=24.15.0 <25`; npm >= 11.5.1)
 - `packages/teal` — the published package: TypeScript React components in
   `src/`, interface tests in `test/` (vitest + Testing Library)
 - `apps/docs` — the documentation site (React + Vite + React Router): demos in
