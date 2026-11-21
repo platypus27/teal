@@ -22,6 +22,30 @@ const files = (await readdir(source))
   .filter((file) => file.endsWith('.tsx'))
   .map((file) => resolve(source, file))
 
+// The TypeScript printer wraps some function types in a redundant outer pair
+// of parentheses (for example `((value: string) => void)` from Radix Select's
+// widened signature). Strip parentheses only when they enclose the whole type,
+// so unions such as `((a: string) => void) | ((b: string[]) => void)` keep
+// the grouping they need.
+function stripEnclosingParens(type) {
+  let result = type
+  while (result.startsWith('(') && result.endsWith(')')) {
+    let depth = 0
+    let enclosesAll = true
+    for (let index = 0; index < result.length; index += 1) {
+      if (result[index] === '(') depth += 1
+      else if (result[index] === ')') depth -= 1
+      if (depth === 0 && index < result.length - 1) {
+        enclosesAll = false
+        break
+      }
+    }
+    if (!enclosesAll) break
+    result = result.slice(1, -1)
+  }
+  return result
+}
+
 // react-docgen-typescript also reports plain function exports (toast,
 // dismissToast, mergeDescriptionIds, useFieldControl) as pseudo-components.
 // Components are PascalCase by convention; anything else is a function or
@@ -37,7 +61,7 @@ const docs = parser
       description: prop.description,
       name: prop.name,
       required: prop.required,
-      type: prop.name === 'as' ? 'ElementType' : prop.type.name,
+      type: prop.name === 'as' ? 'ElementType' : stripEnclosingParens(prop.type.name),
     })),
   }))
 

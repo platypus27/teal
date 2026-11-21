@@ -28,6 +28,8 @@ describe("ScrollArea", () => {
 			</ScrollArea>,
 		);
 
-		expect(container.firstChild).toHaveStyle("max-height: 12rem");
+		// jsdom resolves rem in computed styles (12rem -> 192px), so assert the
+		// specified inline declaration rather than a computed value.
+		expect((container.firstChild as HTMLElement).style.maxHeight).toBe("12rem");
 	});
 });
