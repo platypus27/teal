@@ -24,7 +24,7 @@ export interface DialogProps {
   footer?: ReactNode
   /** Called when the dialog opens or closes. */
   onOpenChange?: (open: boolean) => void
-  /** Event handler called when auto-focusing on close. Call `event.preventDefault()` to skip `restoreFocusRef` (and Radix's default) — the caller owns the next focus move, e.g. a navigation replaced the surface. */
+  /** Event handler called when auto-focusing on close. Call `event.preventDefault()` to skip `restoreFocusRef` (and Radix's default): the caller owns the next focus move, e.g. a navigation replaced the surface. */
   onCloseAutoFocus?: (event: Event) => void
   /** Controlled open state. */
   open?: boolean
