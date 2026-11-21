@@ -1,6 +1,26 @@
 {
-  "version": "1.2.0",
+  "version": "1.3.0",
   "entries": [
+    {
+      "version": "1.3.0",
+      "groups": [
+        {
+          "label": "Minor Changes",
+          "items": [
+            "Add named palettes as an additive selection layer over the existing light and dark modes. `safari` stays the default and emits no `data-palette` attribute, so default rendering is unchanged. The new `garden` palette overrides `--teal-color-surface` and `--teal-color-primary` under `data-palette='garden'` in both light and dark, inheriting every other token. `ThemeProvider` gains optional `palette` and `paletteStorageKey` props and `palette`/`setPalette` on the theme context, persisting the choice to localStorage and removing the attribute for the default palette. The two new context members are optional in the exported `ThemeContextValue` type so a hand-built or mocked 1.2.0-shaped context still typechecks; the provider always supplies both at runtime. See the package README and `docs/palette-release-prep.md` for the attribute contract, supported names, capability detection, and the release checklist.",
+            "Skip the trigger focus-restore when an ecosystem drawer destination is picked or an account-menu sign-out action runs: those closes navigate or replace the surface, and the consumer owns the next focus move. `Dialog` gains an optional `onCloseAutoFocus` hook (call `event.preventDefault()` to take over close focus); drawer Escape/close-button closes and plain menu items keep restoring focus to their triggers. Consumers of the previous behavior can delete their workarounds once they consume this release: Home drops the route-focus MutationObserver/veil path for the drawer (its plain route focus remains) and the sign-out focus guard in App.tsx, and removes the two teal-workarounds.md entries."
+          ]
+        },
+        {
+          "label": "Patch Changes",
+          "items": [
+            "Fix Switch and Button states that misread in dark mode and high contrast. An unchecked Switch no longer fills its track with the primary container color in dark mode, which made it look switched on; the off state now follows the Material 3 pattern with an outline track on a neutral surface container and a smaller outline-colored thumb, so off reads as off in light, dark, and forced-colors modes, where the switch thumb, checked track, and disabled buttons resolve to system colors with authority over the state utilities. The checked thumb now uses the on-primary token so it keeps at least 3:1 contrast with the primary track in both themes, the thumb sits at a 1px inset inside the track in both states and sizes and moves logically in RTL, and a subtle Material 3 state layer restores hover feedback on enabled switches. Button and IconButton disabled states no longer rely on opacity alone, which kept a dimmed primary looking active on dark surfaces; disabled buttons now use an explicit on-surface treatment (12% container, 38% content, no border or shadow) with a not-allowed cursor. Disabled buttons now also receive pointer events, so tooltips work and clicks no longer pass through to elements underneath; hover and press feedback stay suppressed on disabled buttons while links composed via asChild keep theirs.",
+            "Reject markdown link targets whose first path segment decodes to a slash, backslash, or ASCII control character, including multiply-encoded forms such as `/%2525252F/evil.com` and dot-hidden forms such as `/./%2F/evil.com`, which a server that decodes before redirecting could turn into a protocol-relative URL, and reject absolute URLs with userinfo such as `https://evil.com@good.com` from MarkdownView and the RichTextEditor preview. Encoded slashes later in the path, such as `/a/%2F/b`, remain allowed.",
+            "Harden link rendering in MarkdownView and the RichTextEditor preview against URL allowlist bypasses. Links now resolve against the document origin: `https:` and same-origin links (including relative paths like `./page` or `?tab=2`) render, `mailto:` links render with `cc`/`bcc`/`body` stripped, and protocol-relative (`//`, `/.//`), backslash, whitespace/control/zero-width-prefixed, numeric-entity, and percent-encoded scheme tricks are rejected. `http:` and `tel:` render only when passed via the new `allowedLinkSchemes` prop, and apps can narrow links further with the new `isAllowedHref` prop. Absolute links render with `rel=\"noreferrer\"`, matching `Link`."
+          ]
+        }
+      ]
+    },
     {
       "version": "1.2.0",
       "groups": [
