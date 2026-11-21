@@ -11,10 +11,21 @@ updates:
     cooldown:
       default-days: 7
       semver-major-days: 30
+    # Version and security updates cannot share a group, so each dependency
+    # type gets one rule set per update kind. Without the security groups every
+    # advisory-driven bump (often a transitive package) opens its own PR.
     groups:
       production:
+        applies-to: version-updates
         dependency-type: production
       development:
+        applies-to: version-updates
+        dependency-type: development
+      production-security:
+        applies-to: security-updates
+        dependency-type: production
+      development-security:
+        applies-to: security-updates
         dependency-type: development
     ignore:
       - dependency-name: "vite"
@@ -41,6 +52,16 @@ updates:
       day: monday
     labels:
       - dependencies
+    # Actions have no dev/prod split; batch every pin bump into one PR.
+    groups:
+      github-actions:
+        applies-to: version-updates
+        patterns:
+          - "*"
+      github-actions-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
 
   - package-ecosystem: docker
     directory: /apps/docs
@@ -51,3 +72,12 @@ updates:
       day: monday
     labels:
       - dependencies
+    groups:
+      docker:
+        applies-to: version-updates
+        patterns:
+          - "*"
+      docker-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
