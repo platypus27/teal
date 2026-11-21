@@ -195,10 +195,13 @@ export function refreshClaims() {
 
 // Create `path` holding this process's token, or fail with EEXIST. The token
 // is written to a private file first and hard-linked into place, so the
-// marker never exists without its owner in it.
+// marker never exists without its owner in it. The draft is created
+// exclusively and private to the owner ('wx', 0600): the registry may live
+// under /tmp, so an existing file or a planted symlink at the draft path must
+// fail the write instead of being followed or reused.
 function createOwned(path) {
   const draft = `${path}.${process.pid}.${randomBytes(4).toString('hex')}.draft`
-  writeFileSync(draft, ownerToken())
+  writeFileSync(draft, ownerToken(), { flag: 'wx', mode: 0o600 })
   try {
     linkSync(draft, path)
   } finally {
