@@ -14,7 +14,7 @@ async function collectFiles(target) {
 
 async function main(argv) {
   if (argv.length === 0) {
-    console.error('Usage: npx @kryv/teal-codemod <file-or-directory>...')
+    console.error('Usage: teal-codemod <file-or-directory>...')
     process.exit(1)
   }
   const files = (await Promise.all(argv.map((arg) => collectFiles(resolve(arg))))).flat()

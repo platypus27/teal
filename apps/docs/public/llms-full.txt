@@ -110,10 +110,13 @@ export function SignInForm() {
 
 ### 8. Migrate across breaking releases
 
-When a release consolidates components, run the published codemod on a clean working tree: it renames removed components, inserts the replacement attributes, and lists the prop changes it cannot make automatically.
+When a release consolidates components, run the Teal codemod from a checkout of the Teal repository on a clean working tree: it renames removed components, inserts the replacement attributes, and lists the prop changes it cannot make automatically.
 
 ```sh
-npx @kryv/teal-codemod@latest src/
+# The codemod is not published to npm; run it from a Teal checkout.
+git clone --depth 1 https://github.com/platypus27/teal.git ../teal
+npm ci --prefix ../teal --workspace @kryv/teal-codemod
+node ../teal/packages/teal-codemod/cli.mjs src/
 # Review the diff, then apply the printed manual follow-ups.
 ```
 

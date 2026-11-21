@@ -54,7 +54,10 @@ const fontsMarkup = `<link rel="preconnect" href="https://fonts.googleapis.com" 
 const themeSnippet = `// Teal themes by toggling the "dark" class on <html>.
 document.documentElement.classList.toggle('dark', darkMode)`
 
-const migrationSnippet = `npx @kryv/teal-codemod@latest src/
+const migrationSnippet = `# The codemod is not published to npm; run it from a Teal checkout.
+git clone --depth 1 https://github.com/platypus27/teal.git ../teal
+npm ci --prefix ../teal --workspace @kryv/teal-codemod
+node ../teal/packages/teal-codemod/cli.mjs src/
 # Review the diff, then apply the printed manual follow-ups.`
 
 const usageSnippet = `import { Button, Field, Input } from '@kryv/teal'
@@ -125,7 +128,7 @@ export const installSteps = [
   {
     title: 'Migrate across breaking releases',
     description:
-      'When a release consolidates components, run the published codemod on a clean working tree: it renames removed components, inserts the replacement attributes, and lists the prop changes it cannot make automatically.',
+      'When a release consolidates components, run the Teal codemod from a checkout of the Teal repository on a clean working tree: it renames removed components, inserts the replacement attributes, and lists the prop changes it cannot make automatically.',
     code: migrationSnippet,
     lang: 'sh',
     label: 'terminal',

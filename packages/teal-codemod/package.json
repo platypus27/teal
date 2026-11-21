@@ -1,6 +1,7 @@
 {
   "name": "@kryv/teal-codemod",
   "version": "0.1.0",
+  "private": true,
   "description": "Codemods for migrating @kryv/teal across breaking releases",
   "license": "MIT",
   "repository": {
@@ -20,9 +21,6 @@
     "cli.mjs",
     "README.md"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
     "typescript": "^5.9.3"
   }
