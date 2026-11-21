@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useRef, useState, type KeyboardEvent, type ReactNode, type Ref } from 'react'
+import { forwardRef, useRef, useState, type KeyboardEvent, type ReactNode, type Ref } from 'react'
 import { useControllableState } from './use-controllable-state'
 import * as PopoverPrimitive from '@radix-ui/react-popover'
 import { Check, ChevronDown, X } from 'lucide-react'
@@ -119,10 +119,14 @@ const ComboboxSingle = forwardRef<HTMLInputElement, ComboboxSingleProps>(functio
   // controlled value when the parent changes it externally (a reload, a
   // suggestion, a saved canonical name) and appear once options load for a
   // value that was set before they arrived. Typing does not change the
-  // value, so the text the user is entering is never rewritten.
-  useEffect(() => {
+  // value, so the text the user is entering is never rewritten. The text is
+  // adjusted during render rather than in an effect, so the input never
+  // paints a frame with the previous label.
+  const [syncedSelection, setSyncedSelection] = useState({ label: selectedLabel, value: selectedValue })
+  if (syncedSelection.value !== selectedValue || syncedSelection.label !== selectedLabel) {
+    setSyncedSelection({ label: selectedLabel, value: selectedValue })
     setInputText(selectedLabel)
-  }, [selectedValue, selectedLabel])
+  }
 
   const query = inputText.trim().toLowerCase()
   const filtered = open && inputText !== selectedLabel
