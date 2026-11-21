@@ -2428,6 +2428,13 @@
       },
       {
         "defaultValue": "",
+        "description": "Event handler called when auto-focusing on close. Call `event.preventDefault()` to skip `restoreFocusRef` (and Radix's default): the caller owns the next focus move, e.g. a navigation replaced the surface.",
+        "name": "onCloseAutoFocus",
+        "required": false,
+        "type": "(event: Event) => void"
+      },
+      {
+        "defaultValue": "",
         "description": "Controlled open state.",
         "name": "open",
         "required": false,

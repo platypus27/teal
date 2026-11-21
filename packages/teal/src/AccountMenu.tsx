@@ -1,4 +1,4 @@
-import { forwardRef, type ReactNode } from 'react'
+import { forwardRef, useRef, type ReactNode } from 'react'
 import * as MenuPrimitive from '@radix-ui/react-dropdown-menu'
 import { Avatar } from './Avatar'
 import { cn } from './cn'
@@ -7,7 +7,11 @@ import { type MenuItem } from './Menu'
 export interface AccountMenuAction {
   /** Visible label. The product words it to say exactly which session ends. */
   label: ReactNode
-  /** Called when the action is selected. */
+  /**
+   * Called when the action is selected. Sign-out actions replace the
+   * surface (a full navigation on success, an error state on failure), so
+   * the menu skips its usual restore of focus to the trigger for them.
+   */
   onSelect: () => void
 }
 
@@ -43,6 +47,14 @@ export const AccountMenu = forwardRef<HTMLDivElement, AccountMenuProps>(function
   { align = 'end', appSignOut, className, items = [], label, ssoSignOut, user },
   ref,
 ) {
+  // Set when a sign-out action runs: that action replaces the surface, so
+  // the menu's close must not restore focus to the trigger over whatever
+  // the product renders next.
+  const actionReplacedSurfaceRef = useRef(false)
+  const runSurfaceReplacing = (onSelect: () => void) => () => {
+    actionReplacedSurfaceRef.current = true
+    onSelect()
+  }
   return (
     <MenuPrimitive.Root modal={false}>
       <MenuPrimitive.Trigger
@@ -57,6 +69,11 @@ export const AccountMenu = forwardRef<HTMLDivElement, AccountMenuProps>(function
           align={align}
           sideOffset={6}
           aria-label={label}
+          onCloseAutoFocus={(event) => {
+            if (!actionReplacedSurfaceRef.current) return
+            actionReplacedSurfaceRef.current = false
+            event.preventDefault()
+          }}
           className={cn(
             'teal-overlay-surface teal-u-z-[var(--teal-z-popover)] teal-u-min-w-44 teal-u-border teal-u-bg-surface teal-u-p-1 teal-u-text-on-surface',
             className,
@@ -94,13 +111,13 @@ export const AccountMenu = forwardRef<HTMLDivElement, AccountMenuProps>(function
             <MenuPrimitive.Separator className="teal-u-my-1 teal-u-h-px teal-u-bg-outline-variant/30" />
           ) : null}
           {appSignOut ? (
-            <MenuPrimitive.Item onSelect={appSignOut.onSelect} className={itemClass}>
+            <MenuPrimitive.Item onSelect={runSurfaceReplacing(appSignOut.onSelect)} className={itemClass}>
               {appSignOut.label}
             </MenuPrimitive.Item>
           ) : null}
           {ssoSignOut ? (
             <MenuPrimitive.Item
-              onSelect={ssoSignOut.onSelect}
+              onSelect={runSurfaceReplacing(ssoSignOut.onSelect)}
               className={cn(itemClass, 'teal-u-text-error data-[highlighted]:teal-u-bg-error/10')}
             >
               {ssoSignOut.label}

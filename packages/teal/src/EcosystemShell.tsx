@@ -70,6 +70,10 @@ export const EcosystemShell = forwardRef<HTMLDivElement, EcosystemShellProps>(fu
 ) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const drawerTriggerRef = useRef<HTMLButtonElement>(null)
+  // Set when a drawer rail destination is picked: that close starts an
+  // in-page navigation whose consumer replaces the surface and owns the
+  // next focus move, so the drawer's trigger restore must not run.
+  const drawerNavigatedRef = useRef(false)
 
   const footerContent = footer ?? (settingsHref || user ? (
     <>
@@ -113,6 +117,7 @@ export const EcosystemShell = forwardRef<HTMLDivElement, EcosystemShellProps>(fu
       {...(footerContent ? { footer: footerContent } : {})}
       onNavigate={closeOnNavigate
         ? (id) => {
+            drawerNavigatedRef.current = true
             setDrawerOpen(false)
             onNavigate?.(id)
           }
@@ -146,6 +151,13 @@ export const EcosystemShell = forwardRef<HTMLDivElement, EcosystemShellProps>(fu
         open={drawerOpen}
         onOpenChange={setDrawerOpen}
         restoreFocusRef={drawerTriggerRef}
+        onCloseAutoFocus={(event) => {
+          if (!drawerNavigatedRef.current) return
+          drawerNavigatedRef.current = false
+          // A destination pick is navigating away; leave the next focus
+          // move to the consumer instead of the trigger.
+          event.preventDefault()
+        }}
         placement="left"
         title={ariaLabel}
         closeLabel="Close ecosystem navigation"

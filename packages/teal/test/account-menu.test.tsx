@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AccountMenu } from '../src/AccountMenu'
 
@@ -41,5 +41,30 @@ describe('AccountMenu', () => {
     await userEvent_.click(screen.getByRole('button', { name: 'Ada Lovelace' }))
     await userEvent_.click(await screen.findByRole('menuitem', { name: 'Sign out of everything' }))
     expect(ssoSignOut).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not restore focus to the trigger when a sign-out action replaces the surface', async () => {
+    const userEvent_ = userEvent.setup()
+    render(<AccountMenu user={user} appSignOut={{ label: 'Sign out', onSelect: () => {} }} />)
+    const button = screen.getByRole('button', { name: 'Ada Lovelace' })
+
+    await userEvent_.click(button)
+    await userEvent_.click(await screen.findByRole('menuitem', { name: 'Sign out' }))
+    // The sign-out replaces the surface (full navigation on success, or an
+    // error state on failure): the menu must not park focus back on the
+    // trigger. The trigger restore is deferred; settle past it.
+    await act(() => new Promise((resolve) => setTimeout(resolve, 100)))
+    expect(button).not.toHaveFocus()
+  })
+
+  it('restores focus to the trigger when a plain item is selected', async () => {
+    const userEvent_ = userEvent.setup()
+    render(<AccountMenu user={user} items={[{ id: 'settings', label: 'Settings', onSelect: () => {} }]} />)
+    const button = screen.getByRole('button', { name: 'Ada Lovelace' })
+
+    await userEvent_.click(button)
+    await userEvent_.click(await screen.findByRole('menuitem', { name: 'Settings' }))
+    await act(() => new Promise((resolve) => setTimeout(resolve, 100)))
+    expect(button).toHaveFocus()
   })
 })

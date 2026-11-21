@@ -24,6 +24,8 @@ export interface DialogProps {
   footer?: ReactNode
   /** Called when the dialog opens or closes. */
   onOpenChange?: (open: boolean) => void
+  /** Event handler called when auto-focusing on close. Call `event.preventDefault()` to skip `restoreFocusRef` (and Radix's default): the caller owns the next focus move, e.g. a navigation replaced the surface. */
+  onCloseAutoFocus?: (event: Event) => void
   /** Controlled open state. */
   open?: boolean
   /** Where the dialog surface is placed: centered modal, fullscreen, a left/right drawer edge, or a bottom sheet. */
@@ -49,6 +51,7 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
     description,
     footer,
     onOpenChange,
+    onCloseAutoFocus,
     open,
     placement = 'center',
     restoreFocusRef,
@@ -80,10 +83,18 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(function Dialog(
         <DialogPrimitive.Overlay className="teal-dialog-overlay teal-u-fixed teal-u-inset-0 teal-u-z-[var(--teal-z-overlay)] teal-u-bg-black/50 teal-u-backdrop-blur-sm" />
         <DialogPrimitive.Content
           ref={ref}
-          onCloseAutoFocus={restoreFocusRef ? (event) => {
-            event.preventDefault()
-            restoreFocusRef.current?.focus()
-          } : undefined}
+          {...(restoreFocusRef || onCloseAutoFocus
+            ? {
+              onCloseAutoFocus: (event: Event) => {
+                onCloseAutoFocus?.(event)
+                if (event.defaultPrevented) return
+                if (restoreFocusRef) {
+                  event.preventDefault()
+                  restoreFocusRef.current?.focus()
+                }
+              },
+            }
+            : {})}
           {...(isDrawer ? { 'data-side': placement } : {})}
           {...(isBottom ? { 'data-snap': snap } : {})}
           {...(isDrawer ? { style: { width } } : {})}

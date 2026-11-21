@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { act, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { EcosystemShell } from '../src/EcosystemShell'
 
@@ -105,6 +105,40 @@ describe('EcosystemShell', () => {
     await user.click(within(drawer).getByRole('link', { name: 'Yang' }))
     expect(onNavigate).toHaveBeenCalledWith('yang')
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    // The trigger restore is deferred; settle past it before asserting.
+    await act(() => new Promise((resolve) => setTimeout(resolve, 100)))
+    // A destination pick starts an in-page navigation that replaces the
+    // surface: the consumer's router owns the next focus move, so the
+    // drawer must not pull focus back to its trigger.
+    expect(trigger).not.toHaveFocus()
+  })
+
+  it('restores focus to the drawer trigger when the drawer closes without a navigation', async () => {
+    const user = userEvent.setup()
+    renderShell()
+
+    const trigger = screen.getByRole('button', { name: 'Open ecosystem navigation' })
+    await user.click(trigger)
+    await screen.findByRole('dialog', { name: 'Kryv ecosystem' })
+    await user.keyboard('{Escape}')
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    await act(() => new Promise((resolve) => setTimeout(resolve, 100)))
+    // Escape and the close button keep the drawer's own contract: focus
+    // returns to the trigger so the member stays oriented.
+    expect(trigger).toHaveFocus()
+  })
+
+  it('restores focus to the drawer trigger when the drawer closes via its close button', async () => {
+    const user = userEvent.setup()
+    renderShell()
+
+    const trigger = screen.getByRole('button', { name: 'Open ecosystem navigation' })
+    await user.click(trigger)
+    const drawer = await screen.findByRole('dialog', { name: 'Kryv ecosystem' })
+    await user.click(within(drawer).getByRole('button', { name: 'Close ecosystem navigation' }))
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    await act(() => new Promise((resolve) => setTimeout(resolve, 100)))
+    expect(trigger).toHaveFocus()
   })
 
   it('renders no rail footer when neither footer, settingsHref, nor user is given', () => {

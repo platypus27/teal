@@ -13609,6 +13609,7 @@ export function DialogDemo({ exampleIndex = 0 }) {
 | `description` | `ReactNode` | - | Supporting text rendered under the title. |
 | `footer` | `ReactNode` | - | Action area rendered at the bottom of the dialog. |
 | `onOpenChange` | `(open: boolean) => void` | - | Called when the dialog opens or closes. |
+| `onCloseAutoFocus` | `(event: Event) => void` | - | Event handler called when auto-focusing on close. Call `event.preventDefault()` to skip `restoreFocusRef` (and Radix's default): the caller owns the next focus move, e.g. a navigation replaced the surface. |
 | `open` | `boolean` | - | Controlled open state. |
 | `placement` | `enum` | `center` | Where the dialog surface is placed: centered modal, fullscreen, a left/right drawer edge, or a bottom sheet. |
 | `restoreFocusRef` | `RefObject<HTMLElement \| null>` | - | Element that receives focus after a controlled dialog closes. |
