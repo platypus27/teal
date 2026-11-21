@@ -128,6 +128,19 @@ describe('EcosystemShell', () => {
     expect(trigger).toHaveFocus()
   })
 
+  it('restores focus to the drawer trigger when the drawer closes via its close button', async () => {
+    const user = userEvent.setup()
+    renderShell()
+
+    const trigger = screen.getByRole('button', { name: 'Open ecosystem navigation' })
+    await user.click(trigger)
+    const drawer = await screen.findByRole('dialog', { name: 'Kryv ecosystem' })
+    await user.click(within(drawer).getByRole('button', { name: 'Close ecosystem navigation' }))
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    await act(() => new Promise((resolve) => setTimeout(resolve, 100)))
+    expect(trigger).toHaveFocus()
+  })
+
   it('renders no rail footer when neither footer, settingsHref, nor user is given', () => {
     renderShell()
 
