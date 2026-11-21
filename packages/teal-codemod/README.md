@@ -12,14 +12,17 @@ listed as manual follow-ups after the run.
 ## Usage
 
 The codemod is a private workspace package: it is not published to npm. Run it
-from a checkout of the Teal repository, pointing it at your application's
-sources:
+from a checkout of the Teal repository next to your application, pointing it at
+your application's sources:
 
 ```sh
-git clone --depth 1 https://github.com/platypus27/teal.git
-npm ci --prefix teal --workspace @kryv/teal-codemod
-node teal/packages/teal-codemod/cli.mjs <file-or-directory>...
+git clone --depth 1 https://github.com/platypus27/teal.git ../teal
+npm ci --prefix ../teal --workspace @kryv/teal-codemod
+node ../teal/packages/teal-codemod/cli.mjs <file-or-directory>...
 ```
+
+Directories are walked recursively, skipping `node_modules`, `.git`, `dist`,
+`build`, and `coverage`.
 
 Inside the Teal workspace itself, `npx teal-codemod <file-or-directory>...`
 runs the linked workspace copy.

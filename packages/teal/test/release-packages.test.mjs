@@ -50,15 +50,21 @@ describe('release packages', () => {
     expect(misconfigured).toEqual([])
   })
 
+  it('versions private packages without tagging or publishing them', () => {
+    const { privatePackages } = readJson(join(repoRoot, '.changeset/config.json'))
+    expect(privatePackages).toEqual({ version: true, tag: false })
+  })
+
   it('does not tell consumers to install the unpublished codemod from npm', () => {
     const sources = [
       'apps/docs/src/data/getting-started.js',
+      'apps/docs/public/llms-full.txt',
       'packages/teal-codemod/README.md',
       'packages/teal-codemod/cli.mjs',
     ]
     for (const source of sources) {
       expect(readFileSync(join(repoRoot, source), 'utf8'), source).not.toMatch(
-        /np[mx]\s+(?:exec\s+)?(?:install\s+|i\s+|add\s+)?(?:-\S+\s+)*@kryv\/teal-codemod/,
+        /(?:npx|bunx|npm\s+(?:exec|install|i|add)|(?:pnpm|yarn)\s+(?:dlx|add)|bun\s+add)\s+(?:-\S+\s+)*@kryv\/teal-codemod/,
       )
     }
   })
