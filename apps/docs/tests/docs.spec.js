@@ -27,13 +27,17 @@ test.describe('module accessibility', () => {
       await page.goto(`/modules/${moduleId}`)
       await waitForVisualReady(page, moduleNames.get(moduleId), '#examples')
 
-      if (moduleId === 'dialog') await page.locator('#examples').getByRole('button', { name: 'Open dialog' }).click()
-      if (moduleId === 'tooltip') await page.getByRole('button', { name: 'Open search' }).hover()
-      if (moduleId === 'menu') await page.getByRole('button', { name: 'Project actions' }).click()
-      if (moduleId === 'popover') await page.locator('#examples').getByRole('button', { name: 'Filters' }).first().click()
-      if (moduleId === 'toast') await page.getByRole('button', { name: 'Show toast' }).click()
-
-      await page.waitForTimeout(250)
+      if (moduleId === 'dialog') {
+        await page.locator('#examples').getByRole('button', { name: 'Open dialog' }).click()
+        // Contrast measurements require the dialog's fully opaque state.
+        await expect(page.getByRole('dialog', { name: 'Archive project?' })).toHaveCSS('opacity', '1')
+      } else {
+        if (moduleId === 'tooltip') await page.getByRole('button', { name: 'Open search' }).hover()
+        if (moduleId === 'menu') await page.getByRole('button', { name: 'Project actions' }).click()
+        if (moduleId === 'popover') await page.locator('#examples').getByRole('button', { name: 'Filters' }).first().click()
+        if (moduleId === 'toast') await page.getByRole('button', { name: 'Show toast' }).click()
+        await page.waitForTimeout(250)
+      }
 
       const results = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
@@ -63,8 +67,11 @@ test('command search is keyboard navigable and transfers focus', async ({ page }
   const input = page.getByRole('textbox', { name: 'Search the docs' })
   await expect(input).toBeFocused()
   await input.fill('Select')
+  const palette = page.getByRole('dialog', { name: 'Search the documentation' })
+  await expect(palette.getByText('Select', { exact: true })).toBeVisible()
   await input.press('Enter')
-  await expect(page.getByRole('heading', { level: 1, name: 'Select' })).toBeVisible()
+  await expect(page).toHaveURL(/\/modules\/select$/)
+  await expect(page.getByRole('heading', { level: 1, name: 'Select' })).toBeVisible({ timeout: 10_000 })
 })
 
 test('disclosed search uses focus transfer and Escape dismissal', async ({ page }) => {

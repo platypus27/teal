@@ -1,4 +1,14 @@
 import { defineConfig, devices } from '@playwright/test'
+import { runPort } from './scripts/e2e-ports.mjs'
+
+// Reserve one free loopback port per run (scripts/e2e-ports.mjs, ADR-0012 in
+// docs/adr): the first config evaluation publishes it on TEAL_DOCS_E2E_PORT
+// and every later evaluation sees the same value, because Playwright
+// re-evaluates this config in each worker with the runner's environment and
+// the webServer command inherits it. Set TEAL_DOCS_E2E_PORT explicitly to
+// pin a port instead.
+const port = await runPort('TEAL_DOCS_E2E_PORT')
+const origin = `http://127.0.0.1:${port}`
 
 export default defineConfig({
   testDir: './tests',
@@ -8,7 +18,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: 'list',
   use: {
-    baseURL: 'http://127.0.0.1:4173',
+    baseURL: origin,
     trace: 'retain-on-failure',
   },
   // Build the teal package first so the bundled CSS always reflects the
@@ -16,15 +26,15 @@ export default defineConfig({
   // a running server: a reused preview may keep serving CSS from an older
   // build, which silently invalidates the visual and computed-style tests.
   webServer: {
-    command: 'npm run build --workspace @kryv/teal && npm run build && npm run preview -- --host 127.0.0.1 --port 5173 --strictPort',
-    url: 'http://127.0.0.1:5173',
+    command: `npm run build --workspace @kryv/teal && npm run build && npm run preview -- --host 127.0.0.1 --port ${port} --strictPort`,
+    url: origin,
     timeout: 180_000,
     reuseExistingServer: false,
   },
   projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'], baseURL: 'http://127.0.0.1:5173' } },
-    { name: 'firefox', use: { ...devices['Desktop Firefox'], baseURL: 'http://127.0.0.1:5173' } },
-    { name: 'webkit', use: { ...devices['Desktop Safari'], baseURL: 'http://127.0.0.1:5173' } },
-    { name: 'mobile-chromium', use: { ...devices['Pixel 7'], baseURL: 'http://127.0.0.1:5173' } },
+    { name: 'chromium', use: devices['Desktop Chrome'] },
+    { name: 'firefox', use: devices['Desktop Firefox'] },
+    { name: 'webkit', use: devices['Desktop Safari'] },
+    { name: 'mobile-chromium', use: devices['Pixel 7'] },
   ],
 })

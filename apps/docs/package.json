@@ -17,6 +17,7 @@
     "typecheck": "tsc --noEmit --allowJs --checkJs --jsx react-jsx --moduleResolution bundler --module esnext --target es2022 src/vite-env.d.ts src/**/*.jsx vite.config.js",
     "lint": "eslint src scripts --max-warnings 0",
     "test:e2e": "playwright test",
+    "test:scripts": "node --test scripts/*.test.mjs",
     "test": "npm run test:e2e"
   },
   "dependencies": {

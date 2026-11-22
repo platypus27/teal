@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Combobox } from '../src/Combobox'
@@ -185,5 +186,87 @@ describe('Combobox multiple', () => {
 
     fireEvent.keyDown(screen.getByLabelText('Filter options'), { key: 'Escape' })
     expect(control).toHaveAttribute('aria-expanded', 'false')
+  })
+})
+
+describe('Combobox controlled value sync', () => {
+  const options = [
+    { value: 'admin', label: 'Administrator' },
+    { value: 'editor', label: 'Editor' },
+    { value: 'viewer', label: 'Viewer' },
+  ]
+
+  it('updates the displayed label when the controlled value changes externally', async () => {
+    const user = userEvent.setup()
+    function Harness() {
+      const [value, setValue] = useState('viewer')
+      return (
+        <>
+          <Combobox label="Project role" options={options} value={value} onValueChange={setValue} />
+          <button type="button" onClick={() => setValue('admin')}>
+            Load stored role
+          </button>
+        </>
+      )
+    }
+    render(<Harness />)
+    const input = screen.getByRole('combobox', { name: 'Project role' })
+    expect(input).toHaveValue('Viewer')
+
+    await user.click(screen.getByRole('button', { name: 'Load stored role' }))
+    expect(input).toHaveValue('Administrator')
+  })
+
+  it('clears the displayed text when the controlled value matches no option', () => {
+    const { rerender } = render(<Combobox label="Project role" options={options} value="editor" />)
+    const input = screen.getByRole('combobox', { name: 'Project role' })
+    expect(input).toHaveValue('Editor')
+
+    rerender(<Combobox label="Project role" options={options} value="ghost" />)
+    expect(input).toHaveValue('')
+  })
+
+  it('does not clobber typed text when the options array changes identity without a value change', () => {
+    const { rerender } = render(<Combobox label="Project role" options={options} value="viewer" />)
+    const input = screen.getByRole('combobox', { name: 'Project role' })
+    fireEvent.change(input, { target: { value: 'Adm' } })
+    expect(input).toHaveValue('Adm')
+
+    rerender(<Combobox label="Project role" options={[...options]} value="viewer" />)
+    expect(input).toHaveValue('Adm')
+  })
+
+  it('preserves the query when refreshed options omit the selected value', () => {
+    const { rerender } = render(<Combobox label="Project role" options={options} value="viewer" />)
+    const input = screen.getByRole('combobox', { name: 'Project role' })
+    fireEvent.change(input, { target: { value: 'Adm' } })
+
+    rerender(<Combobox label="Project role" options={options.slice(0, 1)} value="viewer" />)
+
+    expect(input).toHaveValue('Adm')
+    expect(screen.getByRole('option', { name: 'Administrator' })).toBeVisible()
+    fireEvent.keyDown(input, { key: 'Escape' })
+    expect(input).toHaveValue('')
+  })
+
+  it('shows the label once options arrive for the current value', () => {
+    const { rerender } = render(<Combobox label="Timezone" options={[]} value="asia/shanghai" />)
+    const input = screen.getByRole('combobox', { name: 'Timezone' })
+    expect(input).toHaveValue('')
+
+    rerender(<Combobox label="Timezone" options={[{ value: 'asia/shanghai', label: 'Shanghai' }]} value="asia/shanghai" />)
+    expect(input).toHaveValue('Shanghai')
+  })
+
+  it('shows the loaded label while the list is open and the input is idle', async () => {
+    const user = userEvent.setup()
+    const { rerender } = render(<Combobox label="Timezone" options={[]} value="asia/shanghai" />)
+    const input = screen.getByRole('combobox', { name: 'Timezone' })
+    await user.click(input)
+
+    rerender(<Combobox label="Timezone" options={[{ value: 'asia/shanghai', label: 'Shanghai' }]} value="asia/shanghai" />)
+
+    expect(input).toHaveAttribute('aria-expanded', 'true')
+    expect(input).toHaveValue('Shanghai')
   })
 })

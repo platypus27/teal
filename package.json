@@ -16,7 +16,7 @@
     "build": "npm run build --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
-    "test:unit": "npm run test --workspace @kryv/teal",
+    "test:unit": "npm run test --workspace @kryv/teal && npm run test:scripts --workspace @kryv/teal-docs",
     "test:e2e": "npm run test:e2e --workspace @kryv/teal-docs",
     "lint": "npm run lint --workspaces --if-present",
     "generate:tokens": "node packages/teal/scripts/generate-tokens.mjs",

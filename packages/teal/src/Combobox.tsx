@@ -107,15 +107,26 @@ const ComboboxSingle = forwardRef<HTMLInputElement, ComboboxSingleProps>(functio
 
   const [selectedValue, setInternalValue] = useControllableState(value, defaultValue)
   const selectedOption = options.find((option) => option.value === selectedValue)
+  const selectedLabel = selectedOption?.label ?? ''
 
   const [open, setOpen] = useState(false)
-  const [inputText, setInputText] = useState(selectedOption?.label ?? '')
+  const [inputText, setInputText] = useState(selectedLabel)
   const [highlightIndex, setHighlightIndex] = useState(-1)
   const listRef = useRef<HTMLDivElement>(null)
   const anchorRef = useRef<HTMLDivElement>(null)
 
+  // Sync during render so a programmatic value change never paints the
+  // previous label. Preserve an active query if only the options changed.
+  const [syncedSelection, setSyncedSelection] = useState({ label: selectedLabel, value: selectedValue })
+  const valueChanged = syncedSelection.value !== selectedValue
+  const isEditing = open && inputText !== syncedSelection.label
+  if (valueChanged || (!isEditing && syncedSelection.label !== selectedLabel)) {
+    setSyncedSelection({ label: selectedLabel, value: selectedValue })
+    setInputText(selectedLabel)
+  }
+
   const query = inputText.trim().toLowerCase()
-  const filtered = open && inputText !== (selectedOption?.label ?? '')
+  const filtered = open && inputText !== selectedLabel
     ? options.filter((option) => option.label.toLowerCase().includes(query))
     : options
 
@@ -127,7 +138,7 @@ const ComboboxSingle = forwardRef<HTMLInputElement, ComboboxSingleProps>(functio
   function closeList() {
     setOpen(false)
     setHighlightIndex(-1)
-    setInputText(selectedOption?.label ?? '')
+    setInputText(selectedLabel)
   }
 
   function selectOption(option: ComboboxOption) {
