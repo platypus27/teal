@@ -85,6 +85,18 @@ jobs:
       - run: npm run build
       - run: npx @lhci/cli@0.14.0 autorun --config=lighthouserc.cjs
 
+  production-documentation-image:
+    name: Production documentation image
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: docker build --file apps/docs/Dockerfile .
+
   release:
     name: Release
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
