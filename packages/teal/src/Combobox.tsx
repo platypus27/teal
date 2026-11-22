@@ -115,15 +115,12 @@ const ComboboxSingle = forwardRef<HTMLInputElement, ComboboxSingleProps>(functio
   const listRef = useRef<HTMLDivElement>(null)
   const anchorRef = useRef<HTMLDivElement>(null)
 
-  // The input shows the selected option's label, so it must follow the
-  // controlled value when the parent changes it externally (a reload, a
-  // suggestion, a saved canonical name) and appear once options load for a
-  // value that was set before they arrived. Typing does not change the
-  // value, so the text the user is entering is never rewritten. The text is
-  // adjusted during render rather than in an effect, so the input never
-  // paints a frame with the previous label.
+  // Sync during render so a programmatic value change never paints the
+  // previous label. Preserve an active query if only the options changed.
   const [syncedSelection, setSyncedSelection] = useState({ label: selectedLabel, value: selectedValue })
-  if (syncedSelection.value !== selectedValue || syncedSelection.label !== selectedLabel) {
+  const valueChanged = syncedSelection.value !== selectedValue
+  const isEditing = open && inputText !== syncedSelection.label
+  if (valueChanged || (!isEditing && syncedSelection.label !== selectedLabel)) {
     setSyncedSelection({ label: selectedLabel, value: selectedValue })
     setInputText(selectedLabel)
   }

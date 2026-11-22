@@ -236,12 +236,37 @@ describe('Combobox controlled value sync', () => {
     expect(input).toHaveValue('Adm')
   })
 
+  it('preserves the query when refreshed options omit the selected value', () => {
+    const { rerender } = render(<Combobox label="Project role" options={options} value="viewer" />)
+    const input = screen.getByRole('combobox', { name: 'Project role' })
+    fireEvent.change(input, { target: { value: 'Adm' } })
+
+    rerender(<Combobox label="Project role" options={options.slice(0, 1)} value="viewer" />)
+
+    expect(input).toHaveValue('Adm')
+    expect(screen.getByRole('option', { name: 'Administrator' })).toBeVisible()
+    fireEvent.keyDown(input, { key: 'Escape' })
+    expect(input).toHaveValue('')
+  })
+
   it('shows the label once options arrive for the current value', () => {
     const { rerender } = render(<Combobox label="Timezone" options={[]} value="asia/shanghai" />)
     const input = screen.getByRole('combobox', { name: 'Timezone' })
     expect(input).toHaveValue('')
 
     rerender(<Combobox label="Timezone" options={[{ value: 'asia/shanghai', label: 'Shanghai' }]} value="asia/shanghai" />)
+    expect(input).toHaveValue('Shanghai')
+  })
+
+  it('shows the loaded label while the list is open and the input is idle', async () => {
+    const user = userEvent.setup()
+    const { rerender } = render(<Combobox label="Timezone" options={[]} value="asia/shanghai" />)
+    const input = screen.getByRole('combobox', { name: 'Timezone' })
+    await user.click(input)
+
+    rerender(<Combobox label="Timezone" options={[{ value: 'asia/shanghai', label: 'Shanghai' }]} value="asia/shanghai" />)
+
+    expect(input).toHaveAttribute('aria-expanded', 'true')
     expect(input).toHaveValue('Shanghai')
   })
 })
