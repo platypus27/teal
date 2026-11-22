@@ -228,7 +228,7 @@ test('candidates never fall in the kernel ephemeral range', async (t) => {
   }
 })
 
-test('claim markers are private to their owner and created exclusively', async (t) => {
+test('claim markers are private to their owner under a permissive umask', async (t) => {
   const directory = registry(t)
   const previous = process.umask(0o022)
   t.after(() => process.umask(previous))

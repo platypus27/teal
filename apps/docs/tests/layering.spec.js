@@ -11,17 +11,16 @@ test('a menu opened inside a dialog renders above the dialog and stays clickable
 
   await page.getByRole('button', { name: 'Project actions' }).click()
   const menu = page.getByRole('menu', { name: 'Project actions' })
-  await expect(menu).toBeVisible()
+  const rename = menu.getByRole('menuitem', { name: 'Rename' })
+  await expect(rename).toBeVisible()
 
-  // The menu must win hit-testing at its own center. With the old z-scale
-  // the click landed on the dialog surface instead of the open menu.
-  const box = (await menu.boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 }
-  const hitsMenu = await page.evaluate(
-    ([x, y]) => document.elementFromPoint(x, y)?.closest('[role="menu"]') !== null,
-    [box.x + box.width / 2, box.y + box.height / 2],
-  )
-  expect(hitsMenu).toBe(true)
+  // Wait for the menu item's center to receive pointer input as it opens.
+  // With the old z-scale the dialog intercepted the click.
+  await expect.poll(() => rename.evaluate((item) => {
+    const { x, y, width, height } = item.getBoundingClientRect()
+    return item.contains(document.elementFromPoint(x + width / 2, y + height / 2))
+  })).toBe(true)
 
-  await menu.getByRole('menuitem', { name: 'Rename' }).click()
+  await rename.click()
   await expect(page.getByTestId('last-action')).toHaveText('rename')
 })

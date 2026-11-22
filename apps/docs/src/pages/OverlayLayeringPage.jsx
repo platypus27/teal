@@ -9,27 +9,27 @@ export function OverlayLayeringPage() {
   const [lastAction, setLastAction] = useState('none')
 
   return (
-    <main className="teal-u-p-8">
-      <h1 className="teal-u-mb-4 teal-u-text-xl teal-u-font-semibold teal-u-text-on-surface">
+    <main className="mx-auto max-w-2xl px-6 py-8">
+      <h1 className="mb-4 text-xl font-semibold text-teal-on-surface">
         Overlay layering probe
       </h1>
-      <p className="teal-u-mb-4 teal-u-text-sm teal-u-text-on-surface-variant">
+      <p className="mb-4 text-sm text-teal-on-surface-variant">
         Last menu action:{' '}
-        <span data-testid="last-action" className="teal-u-font-semibold teal-u-text-on-surface">
+        <span data-testid="last-action" className="font-semibold text-teal-on-surface">
           {lastAction}
         </span>
       </p>
       <Button onClick={() => setOpen(true)}>Open dialog</Button>
       <Dialog open={open} onOpenChange={setOpen} title="Layering probe" size="sm">
-        <div className="teal-u-flex teal-u-flex-col teal-u-gap-4">
-          <p className="teal-u-text-sm teal-u-text-on-surface-variant">
+        <div className="flex flex-col gap-4">
+          <p className="text-sm text-teal-on-surface-variant">
             Open the menu, then activate Rename. The menu must stay above this dialog and its items
             must receive the click.
           </p>
           <Menu
             label="Project actions"
             trigger={
-              <Button variant="secondary" className="teal-u-self-start">
+              <Button variant="secondary" className="self-start">
                 Project actions
               </Button>
             }

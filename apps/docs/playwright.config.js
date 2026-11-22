@@ -32,9 +32,9 @@ export default defineConfig({
     reuseExistingServer: false,
   },
   projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'], baseURL: origin } },
-    { name: 'firefox', use: { ...devices['Desktop Firefox'], baseURL: origin } },
-    { name: 'webkit', use: { ...devices['Desktop Safari'], baseURL: origin } },
-    { name: 'mobile-chromium', use: { ...devices['Pixel 7'], baseURL: origin } },
+    { name: 'chromium', use: devices['Desktop Chrome'] },
+    { name: 'firefox', use: devices['Desktop Firefox'] },
+    { name: 'webkit', use: devices['Desktop Safari'] },
+    { name: 'mobile-chromium', use: devices['Pixel 7'] },
   ],
 })

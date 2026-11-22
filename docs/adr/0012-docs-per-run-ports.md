@@ -8,12 +8,10 @@ Accepted
 
 ## Context
 
-The docs app pinned every server to 5173: `vite` dev, `vite preview` for the
-Playwright webServer, and all four project baseURLs. On the shared
-development host, where several agents run Teal and Home suites at the same
-time, the second run failed on a busy port (the preview used `--strictPort`)
-or attached to the first run's server. Teal had no port story of its own, and
-inventing a different one per repo would only move the collision.
+The docs dev server starts at 5173 by default. The Playwright preview server
+also required 5173, and all four projects used it as their base URL. Starting
+the browser suite while that port served another docs run or a dev session
+caused a collision on the shared development host.
 
 ## Decision
 
@@ -33,15 +31,15 @@ inventing a different one per repo would only move the collision.
   runner's environment, and the webServer command inherits it, so the
   preview server, `baseURL`, and the specs always agree. Setting
   `TEAL_DOCS_E2E_PORT` explicitly pins a port (validated, not claimed).
-- The dev server keeps 5173 as its default but no longer hard-fails when the
-  port is busy: `strictPort` stays off unless `TEAL_DOCS_PORT` is set, in
+- The dev server keeps Vite's fallback to the next free port when the default
+  5173 is busy. It uses strict port checking when `TEAL_DOCS_PORT` is set, in
   which case the pinned port is enforced. A pinned dev port fails loudly
   instead of silently serving elsewhere.
 
 ## Consequences
 
-- Any number of docs suites and dev servers run concurrently on the shared
-  host from one checkout or several worktrees; nothing serializes on 5173.
+- Docs suites and dev servers in separate worktrees can run concurrently on
+  the shared host without contending for 5173.
 - Agents (or sandboxes) that cannot see the default registry point
   `KRYV_E2E_PORT_REGISTRY` at a shared directory, exactly as Home runs do.
 - A hand-run `npm run dev` still starts at 5173 when free, matching

@@ -1,4 +1,4 @@
-// Free loopback ports for the Teal docs Playwright runs and dev servers.
+// Free loopback ports for the Teal docs Playwright runs.
 //
 // The docs suite used to pin 5173, so two runs on one shared host collided
 // and had to be serialized by hand. Each run now reserves its ports here and
