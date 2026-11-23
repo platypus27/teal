@@ -123,7 +123,6 @@ test('module pages match the approved desktop visual baseline', async ({ page, b
   test.skip(browserName !== 'chromium' || isMobile, 'Stable visual baseline uses desktop Chromium')
   await page.goto('/modules/button')
   await waitForVisualReady(page, 'Button', '#examples')
-  // Allow small cross-machine rasterization variance in the light-theme baseline.
   await expect(page).toHaveScreenshot('button-module-light.png', { fullPage: true, maxDiffPixels: 1500, animations: 'disabled' })
   await page.getByRole('button', { name: 'Dark mode' }).click()
   await expect(page.locator('html')).toHaveClass(/dark/)
@@ -163,7 +162,6 @@ test('visual QA surface covers every module family in both themes', async ({ pag
     expect(overflow).toBeLessThanOrEqual(0)
   }
   const lightBaselineMaxDiffPixels = isMobile ? 600 : 650
-  // Allow small cross-machine rasterization variance in the desktop light-theme baseline.
   await expect(page).toHaveScreenshot(`visual-qa-${viewport}-light.png`, {
     fullPage: true,
     maxDiffPixels: lightBaselineMaxDiffPixels,
@@ -214,9 +212,7 @@ test('transient interactions match their approved state baselines', async ({ pag
   const primary = page.getByRole('button', { name: 'Primary action' })
   await primary.hover()
   // The teal-focus-ring background-color transition is still settling right after hover();
-  // disabling animations pins the capture to the final hover state so CI and local renders agree.
-  // CI's runner rasterizes the bold label with ~20px of anti-aliasing difference from the machine
-  // that captured the baseline (deterministic across retries), so allow that noise here only.
+  // disabling animations pins the capture to the final hover state.
   await expect(primary).toHaveScreenshot('visual-qa-button-hover.png', { maxDiffPixels: 30, animations: 'disabled' })
   await primary.click({ position: { x: 20, y: 20 }, delay: 200 })
   const primaryBox = await primary.boundingBox()
@@ -233,7 +229,6 @@ test('transient interactions match their approved state baselines', async ({ pag
       }),
     )
     .toMatch(/0\.98/)
-  // Chromium rasterizes the scaled active edge slightly differently on CI; keep this below 1%.
   await expect(primary).toHaveScreenshot('visual-qa-button-active.png', { maxDiffPixels: 40 })
   await page.mouse.up()
 
@@ -244,8 +239,6 @@ test('transient interactions match their approved state baselines', async ({ pag
   await page.reload()
   await waitForVisualReady(page, 'Visual QA')
   await page.getByRole('combobox', { name: 'Owner' }).click()
-  // The listbox text rasterizes with a few pixels of cross-machine anti-aliasing
-  // variance, like the button baselines above; allow the same small tolerance.
   await expect(page.getByRole('listbox')).toHaveScreenshot('visual-qa-select-open.png', { maxDiffPixels: 30 })
 
   await page.reload()
