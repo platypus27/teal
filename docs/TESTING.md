@@ -34,16 +34,29 @@ rules for every module.
 ## Browser tests
 
 ```bash
-npm run test:e2e
+# once, so the pinned image is local:
+docker pull $(cut -d= -f2 apps/docs/scripts/playwright-image.env | tail -1)
+
+# the suite, in the pinned environment (locally and in CI):
+apps/docs/scripts/playwright-pinned.sh -- npm run test:e2e -w @kryv/teal-docs
+
+# regenerate baselines (must happen inside the same environment):
+apps/docs/scripts/playwright-pinned.sh -- npm run test:e2e -w @kryv/teal-docs -- --update-snapshots
 ```
 
 Playwright suite in `apps/docs/tests` across four projects: chromium,
-firefox, webkit, and mobile-chromium (Pixel 7). Chromium, mobile-chromium,
-and firefox run everywhere; webkit needs extra system libraries on Linux
-(`npx playwright install-deps` on Debian/Ubuntu) and always runs in CI. The
-suite includes axe accessibility checks and visual-regression coverage, with
-the demos in `apps/docs/src/demos/` doubling as test fixtures — any behavior
-change should update or add a demo so it is covered.
+firefox, webkit, and mobile-chromium (Pixel 7). Screenshot baselines only
+match the one pinned, digest-locked Playwright image
+(`apps/docs/scripts/playwright-image.env`), which carries all four browsers
+and its own fonts: run the suite through
+`apps/docs/scripts/playwright-pinned.sh` on any machine, never through a
+host-installed browser (`npm run test:e2e` directly still works for
+non-screenshot debugging, but its renders are not the baseline
+environment). The suite includes axe accessibility checks and
+visual-regression coverage, with the demos in `apps/docs/src/demos/`
+doubling as test fixtures — any behavior change should update or add a demo
+so it is covered. Retries stay disabled: fix flakes at their cause rather
+than masking them.
 
 ## Generated output
 
