@@ -219,9 +219,20 @@ test('transient interactions match their approved state baselines', async ({ pag
   // that captured the baseline (deterministic across retries), so allow that noise here only.
   await expect(primary).toHaveScreenshot('visual-qa-button-hover.png', { maxDiffPixels: 30, animations: 'disabled' })
   await primary.click({ position: { x: 20, y: 20 }, delay: 200 })
-  await primary.hover()
+  const primaryBox = await primary.boundingBox()
+  await page.mouse.move(primaryBox.x + primaryBox.width / 2, primaryBox.y + primaryBox.height / 2)
   await page.mouse.down()
-  await page.waitForTimeout(200)
+  // Gate on the pressed scale actually applying before the capture: a fixed
+  // sleep can screenshot an unpressed button when the synthesized press is
+  // slow, which diffed the whole element (141px vs the active 139px).
+  await expect
+    .poll(() =>
+      primary.evaluate((element) => {
+        const style = getComputedStyle(element)
+        return `${style.transform} ${style.scale}`
+      }),
+    )
+    .toMatch(/0\.98/)
   // Chromium rasterizes the scaled active edge slightly differently on CI; keep this below 1%.
   await expect(primary).toHaveScreenshot('visual-qa-button-active.png', { maxDiffPixels: 40 })
   await page.mouse.up()
