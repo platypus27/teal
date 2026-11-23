@@ -382,13 +382,19 @@ test('switch and button keep legible off and disabled states under forced colors
   expect(disabledColor).toBe(await systemColor('GrayText'))
 })
 
-test('merged-away module routes redirect to their surviving page', async ({ page }) => {
+test('merged-away module routes redirect to their surviving page', async ({ page, context }) => {
   await page.goto('/modules/speed-dial')
   await expect(page).toHaveURL(/\/modules\/floating-action-button$/)
   await expect(page.getByRole('heading', { level: 1, name: 'Floating Action Button' })).toBeVisible()
-  await page.goto('/modules/date-range-picker')
-  await expect(page).toHaveURL(/\/modules\/date-picker$/)
-  await expect(page.getByRole('heading', { level: 1, name: 'Date Picker' })).toBeVisible()
+
+  // A fresh page: in Firefox a goto issued right after the client-side
+  // history replace of the first redirect is aborted (NS_BINDING_ABORTED);
+  // a clean docshell has no racing history entry.
+  const second = await context.newPage()
+  await second.goto('/modules/date-range-picker')
+  await expect(second).toHaveURL(/\/modules\/date-picker$/)
+  await expect(second.getByRole('heading', { level: 1, name: 'Date Picker' })).toBeVisible()
+  await second.close()
 })
 
 test('sidebar marks only the current module as active', async ({ page }) => {
