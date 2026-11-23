@@ -126,7 +126,10 @@ test('the CI browser job runs its gate in the pinned image and installs no brows
   assert.doesNotMatch(body, /playwright install/, 'the browser job must not use the runner\'s own browser')
   assert.match(body, /chromium/, 'the matrix keeps the chromium baseline project')
   assert.match(body, /mobile-chromium/, 'the matrix keeps the mobile-chromium baseline project')
-  assert.doesNotMatch(ci, /playwright install/, 'no job installs browsers on the runner anymore')
+  // The only runner-side browser install is the quality job's chromium for
+  // verify:package, the packed-tarball smoke test; it is not a screenshot gate.
+  assert.doesNotMatch(ci.replace(job(ci, 'quality'), ''), /playwright install/)
+  assert.match(job(ci, 'quality'), /npx playwright install --with-deps chromium/)
 })
 
 test('checked-in screenshot baselines exist for the pinned projects', () => {
