@@ -44,13 +44,12 @@ and the generated [changelog](https://teal.kryvlabs.com/changelog).
 ## Browser tests
 
 ```bash
-cd apps/docs
-npx playwright test
+apps/docs/scripts/playwright-pinned.sh -- npm run test:e2e -w @kryv/teal-docs
 ```
 
-Chromium, mobile-chromium, and Firefox run everywhere. WebKit requires extra
-system libraries on Linux (`npx playwright install-deps` on Debian/Ubuntu); it
-runs in CI.
+The suite runs in one pinned, digest-locked Playwright image
+(`apps/docs/scripts/playwright-image.env`) so screenshot baselines match on
+every machine; see `docs/TESTING.md` and ADR-0013.
 
 ## Releases
 

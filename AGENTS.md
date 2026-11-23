@@ -34,7 +34,11 @@ npm run dev --workspace @kryv/teal-docs        # local docs site
 ```
 
 CI additionally runs the Playwright browser matrix and Lighthouse on pull
-requests; WebKit needs `npx playwright install-deps` on Linux.
+requests. The browser matrix runs inside one pinned, digest-locked
+Playwright image (`apps/docs/scripts/playwright-pinned.sh`,
+`apps/docs/scripts/playwright-image.env`) on any runner; WebKit never needs
+`npx playwright install-deps` on Linux because the image carries its
+libraries.
 
 ## Conventions
 

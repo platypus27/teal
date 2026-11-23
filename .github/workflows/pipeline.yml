@@ -36,6 +36,8 @@ jobs:
       - run: npm run test:coverage --workspace @kryv/teal
       - run: npm run check:generated
       - run: npm run build
+      # verify:package smoke-tests the packed tarball in headless chromium
+      # (scripts/verify-package.mjs); the visual baselines never run here.
       - run: npx playwright install --with-deps chromium
       - run: npm run pack:verify
 
@@ -60,9 +62,11 @@ jobs:
           node-version-file: .node-version
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps ${{ matrix.project == 'mobile-chromium' && 'chromium' || matrix.project }}
-      - run: npm run build --workspace @kryv/teal
-      - run: npm run test:e2e --workspace @kryv/teal-docs -- --project=${{ matrix.project }}
+      # Screenshot baselines only match one pinned environment: the digest-locked
+      # Playwright image (apps/docs/scripts/playwright-image.env), never the
+      # runner's own browser and fonts.
+      - name: Run the docs browser suite in the pinned Playwright image
+        run: apps/docs/scripts/playwright-pinned.sh -- npm run test:e2e --workspace @kryv/teal-docs -- --project=${{ matrix.project }}
 
   lighthouse:
     name: Lighthouse

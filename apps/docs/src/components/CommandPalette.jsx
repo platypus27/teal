@@ -210,7 +210,11 @@ function PaletteBody({ onClose }) {
             <button
               key={entry.to}
               type="button"
-              onMouseEnter={() => setActiveIndex(index)}
+              // Select on real pointer motion only: Chrome's hover fixup fires a
+              // synthetic mouseenter on freshly mounted rows beneath a
+              // stationary pointer (the click point, while the dialog animates
+              // in), which used to hijack the keyboard selection.
+              onMouseMove={() => setActiveIndex(index)}
               onClick={() => go(entry)}
               className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-primary ${
                 index === activeIndex ? 'bg-teal-primary/10 text-teal-primary' : 'text-teal-on-surface-variant hover:bg-teal-surface-container-high'
